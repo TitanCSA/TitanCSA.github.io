@@ -5,13 +5,14 @@ import json,re,xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 class Page(HTMLParser):
-    def __init__(self):super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[]
+    def __init__(self):super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[];self.google_verification=None
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
         if 'id' in a:self.ids.append(a['id'])
         if tag=='h1':self.h1+=1
         if tag=='title':self.in_title=True
         if tag=='meta' and a.get('name')=='description':self.description=a.get('content','')
+        if tag=='meta' and a.get('name')=='google-site-verification':self.google_verification=a.get('content')
         if tag=='link' and a.get('rel')=='canonical':self.canonical=a.get('href','')
         if tag in ['a','img','link','script']:
             value=a.get('href') or a.get('src')
@@ -42,6 +43,7 @@ for p in OUT.rglob('*.html'):
     assert p.stat().st_size<200_000,('HTML budget exceeded',p)
 assert len({p.title for p in parsed.values()})==len(parsed)
 assert len({p.description for p in parsed.values()})==len(parsed)
+if (ROOT/'site-verification.json').exists():assert parsed[(OUT/'index.html').resolve()].google_verification==json.loads((ROOT/'site-verification.json').read_text())['google_site_verification']
 for path,page in parsed.items():
     for link in page.links:
         url=urlparse(link)

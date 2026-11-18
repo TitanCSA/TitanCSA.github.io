@@ -29,3 +29,5 @@ Guides are in `content/`; presentation and local interactions are in `src/`. The
 `scripts/validate.py` checks data shape, unique project links, generated metadata, structured data, local links and file budgets. Browser QA checks desktop/mobile layouts, catalogue search/filter/reset behavior, preview warnings, theme switching and navigation without JavaScript. Those checks are distinct from product or driver qualification.
 
 The initial social preview is generated from owned text and shapes; it makes no customer, certification or performance claim. Content and code are maintained with AI assistance.
+
+`site-verification.json`, when present, contains the public Google ownership-verification meta value for this site. It is deliberately rendered in the homepage and is not an API credential. Preserve it for the existing site's verification; replace/remove it before deploying a fork to another website. Search Console ownership and sitemap submission do not guarantee indexing or rankings.
