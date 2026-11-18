@@ -1,0 +1,45 @@
+<div class="wrap">
+<section class="hero" aria-labelledby="hero-title">
+  <div>
+    <p class="eyebrow">Windows tools / Developer SDKs</p>
+    <h1 id="hero-title">Find the right tool for your Windows workflow.</h1>
+    <p class="lead">Driver SDKs, virtual devices, input tools and diagnostics. Start with the job you need to do, then follow the matching guide.</p>
+    <div class="actions"><a class="button primary" href="#projects">Explore projects <span aria-hidden="true">&nbsp;↗</span></a><a class="button" href="/guides/first-run/">Make a first run</a></div>
+    <p class="subtle">Public documentation · Native Windows tools · Project-specific licences</p>
+  </div>
+  <div class="workflow-panel">
+    <div class="panel-title"><span class="live-dot" aria-hidden="true"></span>Choose the boundary</div>
+    <a class="workflow-item" href="/guides/choose-input/"><span class="workflow-num">01</span><div><strong>Work with an existing device</strong><small>Read, transform or forward input through a matching filter.</small></div><span class="arrow" aria-hidden="true">↗</span></a>
+    <a class="workflow-item" href="#virtual-usb"><span class="workflow-num">02</span><div><strong>Create a virtual device</strong><small>Define the device contract, descriptors and reports.</small></div><span class="arrow" aria-hidden="true">↗</span></a>
+    <a class="workflow-item" href="#diagnostics"><span class="workflow-num">03</span><div><strong>Inspect before changing</strong><small>Collect device, driver or application evidence.</small></div><span class="arrow" aria-hidden="true">↗</span></a>
+    <p class="panel-foot">Applications, SDKs and drivers have separate prerequisites.</p>
+  </div>
+</section>
+<div class="evidence-strip"><p><strong>Choose with evidence.</strong> Versioned source, documented first runs and an open input benchmark dataset.</p><a href="/about/evidence/">Read the scope and known issues ↗</a></div>
+<section id="projects" class="section" aria-labelledby="projects-title">
+  <div class="section-intro"><div><p class="eyebrow">Project catalogue</p><h2 id="projects-title">Start from your use case.</h2><p>Explore {{PROJECT_COUNT}} projects and SDK source repositories across ten workflows. Preview limitations and separate driver requirements remain visible.</p></div></div>
+  <form class="catalogue-tools" role="search" onsubmit="return false">
+    <div class="field"><label for="project-search">Find a project</label><input id="project-search" type="search" placeholder="Try keyboard, USB, browser, storage…" autocomplete="off" aria-controls="project-results"></div>
+    <div class="field"><label for="category-filter">Workflow</label><select id="category-filter" aria-controls="project-results"><option value="">All workflows</option>{{CATEGORY_OPTIONS}}</select></div>
+    <label class="check" for="no-driver-filter"><input id="no-driver-filter" type="checkbox">Start without adding a driver</label>
+  </form>
+  <div class="filter-note"><span id="result-count" role="status" aria-live="polite">{{PROJECT_COUNT}} entries shown</span><button class="reset" type="button" data-reset>Reset filters</button></div>
+  <noscript><p class="notice">All projects are listed below. Search and filters need JavaScript; the project links and guides work without it.</p></noscript>
+  <nav class="jump-links" aria-label="Project workflows">{{CATEGORY_LINKS}}</nav>
+  <div id="empty-results" class="empty" hidden>No project matches those filters. Try a broader term or reset the filters.</div>
+  <div id="project-results">{{PROJECTS}}</div>
+  <p class="subtle">Catalogue checked {{CHECKED_DATE}}. A public repository or source preview is not a promise of production qualification. <a href="https://github.com/TitanCSA/TitanCSA/blob/main/PROJECTS.en.md">Detailed source guide</a>.</p>
+</section>
+</div>
+<section class="guide-area"><div class="wrap section">
+  <p class="eyebrow">Practical guides</p><h2>Understand the first decision.</h2>
+  <div class="guide-grid">
+    <article class="guide-card"><p class="eyebrow">Getting started</p><h3>A first run without an input driver.</h3><p>Start with browser automation, read-only diagnostics or offline fixture validation. Know what a successful first step actually proves.</p><a href="/guides/first-run/">Follow the guide ↗</a></article>
+    <article class="guide-card"><p class="eyebrow">Device architecture</p><h3>Interception or a virtual device?</h3><p>Choose between modifying an existing device's input, creating a new device and inspecting the Windows stack.</p><a href="/guides/choose-input/">Compare the paths ↗</a></article>
+    <article class="guide-card"><p class="eyebrow">Measurement</p><h3>Read a latency number in context.</h3><p>Separate API calls, independently observed reports and physical latency. Keep protocol boundaries and failed runs in view.</p><a href="/guides/read-benchmarks/">Read the evidence ↗</a></article>
+  </div>
+</div></section>
+<section class="wrap section trust-row">
+  <div><p class="eyebrow">Evidence over promises</p><h2>Inspect the results behind the claim.</h2><p>The publisher-operated benchmark lab retains raw QPC timestamps, versions, independent receiver checks and invalid trials. Its initial campaign measures selected virtual-device paths in Windows 11 Hyper-V.</p><a class="button" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Open the benchmark lab ↗</a></div>
+  <div><div class="notice"><p><strong>Known stability finding</strong></p><p>Vdevice controller teardown reproduced two guest WDF queue-purge crashes. The finding remains open; successful timing rows do not establish teardown stability. <a href="https://titancsa.github.io/TitanCSA-Benchmarks/methodology/incident-wdf-001/">Read WDF-001 and its scope</a>.</p></div><p class="subtle" style="margin-top:18px">Signing, demonstrated functionality and production qualification are different evidence levels. Choose the exact edition, release and device profile described by the project.</p></div>
+</section>

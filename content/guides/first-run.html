@@ -1,0 +1,29 @@
+<p class="eyebrow">Getting started / Windows</p>
+<h1>A useful first run without adding an input driver.</h1>
+<p class="article-lead">Start with a small observable result. Add driver dependencies when your actual workflow needs them.</p>
+<p class="byline">TitanCSA project documentation · Checked 18 November 2026 · AI-assisted maintenance</p>
+<p>Several tools have a useful starting point before you install a kernel component: reading a device inventory, opening a browser tab through an SDK, or checking a fixture offline. Those first steps are deliberately different from intercepting physical input or creating a live USB device.</p>
+<h2>Automate a dedicated browser</h2>
+<p><a href="https://github.com/TitanCSA/Browser-Control-SDK">Browser Control SDK</a> controls its own Windows WebView2 browser through Python, JavaScript, C++ and other clients. It does not require an input driver or administrator rights.</p>
+<ol><li>Download and extract the <a href="https://github.com/TitanCSA/Browser-Control-SDK/releases/latest">complete Windows x64 release</a>.</li><li>Open <code>BrowserControl.exe</code>. Microsoft Edge WebView2 Evergreen is a runtime dependency; follow the application's official runtime link if it is missing.</li><li>With Python 3.10 or later, install the client:</li></ol>
+<pre><code>python -m pip install browser-control-sdk</code></pre>
+<p>The package installs a client, not the browser application. Save this script and run it with the same Python environment:</p>
+<pre><code>from browser_control import Browser
+
+browser = Browser.connect()
+tab = browser.new_tab("https://example.com")
+print(tab.snapshot()["text"])</code></pre>
+<p><strong>Expected result:</strong> the dedicated browser opens Example Domain and the script prints the page's visible text. This demonstrates a browser connection and page observation; it does not establish that every website or authentication flow can be automated. The example needs Internet access.</p>
+<p>If no browser is found, open the extracted application first. If Python cannot import the client, check that the package was installed into the interpreter running the script. Closing a client script does not close a connected browser. Use the browser normally or explicitly close only the instance you intend to close.</p>
+<h2>Collect read-only device evidence</h2>
+<p><a href="https://github.com/titanfyre/Driver-Readiness-Inspector">Driver Readiness Inspector</a> is a MIT Windows utility without a demo timer or paid unlock. It uses user-mode Windows APIs and does not install a driver.</p>
+<ol><li>Extract its complete <a href="https://github.com/titanfyre/Driver-Readiness-Inspector/releases/latest">Windows x64 release</a>.</li><li>Open <code>DriverReadinessInspector.exe</code>, then select a device node.</li><li>Inspect the reported PnP problem code, package and service evidence. Export an HTML or JSON report when you need to share a support case.</li></ol>
+<p><strong>Expected result:</strong> a local report of observed device and driver state. Missing or access-denied fields remain unknown. A report does not repair the device, certify security or establish the physical device count: Windows often exposes several nodes for one device.</p>
+<p>Review a report before sharing it. Device identifiers and system details can be relevant to support while still being unnecessary in a public issue.</p>
+<h2>Validate a fixture before a live run</h2>
+<p><a href="https://github.com/titanfyre/Input-CI-Runner">Input CI Runner</a> and <a href="https://github.com/titanfyre/HID-Fixture-Studio">HID Fixture Studio</a> separate offline fixture validation from explicit live operations. Begin with the documented validation path.</p>
+<p>A valid JSON model or HID descriptor is an integration starting point. It does not prove device enumeration, filter attachment, report consumption or application compatibility. Live Vdevice-backed tests require the matching product driver and must account for its documented evaluation and known stability limits.</p>
+<h2>When your next step needs a driver</h2>
+<p>Use the matching product's complete release and examples. Check the Windows build, CPU architecture, device family, evaluation terms and removal procedure. A C++ or language SDK package is a separate deliverable and normally does not install the product driver.</p>
+<p>Some engineering previews intentionally do not publish a usable driver. For example, the serial/COM preview repositories document unvalidated live paths, and the file/registry previews document pending altitude, signing or live qualification. A preview is not made ready by copying files from a different edition.</p>
+<div class="related"><a href="/guides/choose-input/">Choose the device path</a><a href="/about/evidence/">Check scope and licences</a><a href="/#projects">Find a project</a></div>
