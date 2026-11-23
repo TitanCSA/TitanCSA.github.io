@@ -9,6 +9,17 @@ data=json.loads((ROOT/'projects.json').read_text(encoding='utf8'));projects=data
 verification_file=ROOT/'site-verification.json'
 verification=json.loads(verification_file.read_text())['google_site_verification'] if verification_file.exists() else None
 if verification:assert re.fullmatch(r'[A-Za-z0-9_=-]{20,200}',verification)
+indexnow_key=json.loads(verification_file.read_text()).get('indexnow_key') if verification_file.exists() else None
+if indexnow_key:assert re.fullmatch(r'[a-f0-9]{32}',indexnow_key)
+featured={
+    'interceptor':("Interceptor","Interceptor | Windows keyboard, mouse and gamepad filter","Use a single C++17 SDK to observe and transform supported physical keyboard, mouse and controller input on Windows."),
+    'interceptor-keyboard-mouse':("Interceptor-Keyboard-Mouse","Interceptor Keyboard & Mouse | Per-device keyboard and mouse remapping on Windows","Distinguish physical keyboards and mice and remap input from selected devices with a Windows filter and C++17 SDK."),
+    'interceptor-gamepad-controller':("Interceptor-Gamepad-Controller","Interceptor Gamepad & Controller | Windows controller remapping for physical gamepads","Inspect and adjust input from compatible Windows gamepads with a controller-focused C++17 SDK, including stick curves, deadzones and button changes."),
+    'vdevice':("Vdevice","Vdevice | Virtual USB keyboard, mouse and gamepad SDK for Windows","Create virtual USB devices on Windows with a C++17 SDK for descriptors, endpoints, reports and control data."),
+    'interception-v2':("Interception-V2","Interception V2 | Windows keyboard and mouse driver for the original Interception C API","Evaluate legacy applications using the original Interception C SDK against TitanCSA’s independently maintained keyboard and mouse driver."),
+}
+featured_paths={repo:f'/projects/{slug}/' for slug,(repo,_,_) in featured.items()}
+featured_date='2026-11-23'
 assert len(projects)==60 and len({p['url'].lower() for p in projects})==60
 assert all(p['url'].startswith(('https://github.com/TitanCSA/','https://github.com/titanfyre/')) for p in projects)
 OUT.mkdir(exist_ok=True)
@@ -27,9 +38,11 @@ for (key,title),entries in groups.items():
         kind=escape(p['kind']);note=f'<span class="start-tag">{escape(p["start_mode"])}</span>' if p['start_without_adding_driver'] else ''
         issue=f'<a class="known-issue" href="{escape(p["known_issue_url"])}">Open WDF stability finding ↗</a>' if p['known_issue_url'] else ''
         ident='project-'+re.sub(r'[^a-z0-9-]','-',p['name'].lower())
+        overview=featured_paths.get(p['url'].rsplit('/',1)[-1])
+        overview_link=f'<p><a href="{overview}">Project overview</a></p>' if overview else ''
         items.append(f'''<article id="{ident}" class="project" data-project data-category="{escape(key)}" data-no-driver="{str(p['start_without_adding_driver']).lower()}" data-search="{search}">
 <div class="project-title"><h3><a href="{escape(p['url'])}">{escape(p['name'])} <span aria-hidden="true">↗</span></a></h3><span class="{tag}">{kind}</span>{note}</div>
-<div><p>{escape(p['description'])}</p><details><summary>Start and scope</summary><p>{escape(p['first_step'])}</p></details>{issue}</div></article>''')
+<div><p>{escape(p['description'])}</p><details><summary>Start and scope</summary><p>{escape(p['first_step'])}</p></details>{issue}{overview_link}</div></article>''')
     cards.append(f'<section id="{escape(key)}" class="project-group" data-project-group aria-labelledby="heading-{escape(key)}"><div class="group-heading"><h2 id="heading-{escape(key)}">{escape(title)}</h2><span class="group-count" data-group-count>{len(entries)} entries</span></div>'+''.join(items)+'</section>')
 replacements={'PROJECT_COUNT':str(len(projects)),'CHECKED_DATE':checked,'PROJECTS':'\n'.join(cards),'CATEGORY_OPTIONS':''.join(f'<option value="{escape(key)}">{escape(title)}</option>' for key,title in groups),'CATEGORY_LINKS':''.join(f'<a href="#{escape(key)}" data-category-jump>{escape(title)}</a>' for key,title in groups)}
 pages={
@@ -38,10 +51,17 @@ pages={
  'guides/choose-input/':('Input interception or virtual devices? Choose the Windows path — TitanCSA','Compare physical-device filters, virtual USB creation and diagnostics. Match the SDK edition, device contract and observation path before a live test.','guides/choose-input.html'),
  'guides/read-benchmarks/':('How to read Windows input latency benchmarks — TitanCSA','Understand QPC endpoints, HID/Raw Input/XInput/WinMM receiver contracts, warm-up, tails, invalid runs and the difference between virtual and physical latency.','guides/read-benchmarks.html'),
  'about/evidence/':('About TitanCSA projects, evidence and support','Understand TitanCSA project evidence, separate SDK and driver licences, engineering previews, known issues, support and private vulnerability reporting.','about/evidence.html')}
+for slug,(_,title,description) in featured.items():
+    pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
+updated={'','guides/choose-input/',*(f'projects/{slug}/' for slug in featured)}
+
 def render(title,description,path,body,article=False):
     canonical=BASE+path
     schema={'@context':'https://schema.org','@type':'TechArticle' if article else 'WebSite','name':title,'description':description,'url':canonical,'inLanguage':'en','publisher':{'@type':'Organization','name':'TitanCSA','url':BASE}}
-    if article:schema.update(datePublished='2026-11-18',dateModified=checked,author={'@type':'Organization','name':'TitanCSA'})
+    if article:
+        published=featured_date if path.startswith('projects/') else '2026-11-18'
+        modified=featured_date if path in updated else checked
+        schema.update(datePublished=published,dateModified=modified,author={'@type':'Organization','name':'TitanCSA'})
     schemas=[schema]
     if not path:schemas.append({'@context':'https://schema.org','@type':'ItemList','name':'TitanCSA public project catalogue','numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
     structured=''.join('<script type="application/ld+json">'+json.dumps(s,ensure_ascii=True).replace('<','\\u003c')+'</script>' for s in schemas)
@@ -54,8 +74,9 @@ for path,(title,description,source) in pages.items():
     assert '{{' not in body
     target=OUT/path/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(title,description,path,body,bool(path)),encoding='utf8')
 (OUT/'404.html').write_text(render('Page not found — TitanCSA','Find the TitanCSA project catalogue and first-run guides.','404.html','<h1>Page not found.</h1><p>The address may have changed. <a href="/">Open the project catalogue</a> or <a href="/guides/first-run/">read the first-run guide</a>.</p>',True).replace('index,follow,max-image-preview:large','noindex,follow'),encoding='utf8')
-urls=''.join(f'<url><loc>{BASE+path}</loc><lastmod>{checked}</lastmod></url>' for path in pages)
+urls=''.join(f'<url><loc>{BASE+path}</loc><lastmod>{featured_date if path in updated else checked}</lastmod></url>' for path in pages)
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls+'</urlset>',encoding='utf8')
 (OUT/'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: '+BASE+'sitemap.xml\nSitemap: '+BASE+'TitanCSA-Benchmarks/sitemap.xml\n',encoding='utf8')
 (OUT/'projects.json').write_bytes((ROOT/'projects.json').read_bytes())
+if indexnow_key:(OUT/f'{indexnow_key}.txt').write_text(indexnow_key+'\n',encoding='utf8')
 print('Built',len(pages),'public pages and',len(projects),'curated project entries')

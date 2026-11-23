@@ -31,3 +31,5 @@ Guides are in `content/`; presentation and local interactions are in `src/`. The
 The initial social preview is generated from owned text and shapes; it makes no customer, certification or performance claim. Content and code are maintained with AI assistance.
 
 `site-verification.json`, when present, contains the public Google ownership-verification meta value for this site. It is deliberately rendered in the homepage and is not an API credential. Preserve it for the existing site's verification; replace/remove it before deploying a fork to another website. Search Console ownership and sitemap submission do not guarantee indexing or rankings.
+
+The same file contains a public IndexNow key. The builder publishes its verification file at the site root. Submit only URLs on this host after the updated pages are live.

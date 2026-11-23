@@ -1,0 +1,17 @@
+<p class="eyebrow">Windows input SDKs</p>
+<h1>Vdevice</h1>
+<p class="article-lead">Virtual USB keyboard, mouse and gamepad SDK for Windows. Create virtual USB devices on Windows with a C++17 SDK for descriptors, endpoints, reports and control data.</p>
+<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/latest">Latest release and checksums</a><a class="button" href="https://github.com/TitanCSA/Vdevice">Source and README</a></div>
+<h2>When to use it</h2>
+<p>Build a repeatable input fixture for a Windows application. Start with a virtual keyboard or vendor HID sample, then verify enumeration and the content delivered to an independent receiver. A controller profile adds its own descriptor and protocol requirements.</p>
+<h2>First validation</h2>
+<p>The signed demo targets Windows 10/11 x64. Start with the installation guide and a bundled example. The demo allows one hour per Windows kernel boot from the first successful virtual device creation.</p>
+<ul>
+  <li><a href="https://github.com/TitanCSA/Vdevice/blob/main/docs/INSTALLATION.md">Installation and removal</a></li>
+  <li><a href="https://github.com/TitanCSA/Vdevice/blob/main/docs/VALIDATION.md">Supported devices and compatibility</a></li>
+  <li><a href="https://github.com/TitanCSA/Vdevice/blob/main/licenses/BINARY-LICENSE.txt">Driver licence terms</a></li>
+</ul>
+<h2>Scope and evidence</h2>
+<p>The WDF-001 issue tracks two guest crashes during repeated virtual controller/filter teardown. Review the tested scope before using repeated controller removal in a lab workflow. The examples and compatibility notes describe which device paths were exercised. <a href="https://github.com/TitanCSA/Vdevice/issues/1">Read WDF-001</a>.</p>
+<p><a href="https://titancsa.github.io/TitanCSA-Benchmarks/">Windows input benchmark methods and data</a></p>
+<div class="related"><a href="/guides/choose-input/">Compare Windows input SDKs</a><a href="/about/evidence/">Evidence and project support</a></div>

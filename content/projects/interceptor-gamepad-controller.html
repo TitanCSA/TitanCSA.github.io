@@ -1,0 +1,17 @@
+<p class="eyebrow">Windows input SDKs</p>
+<h1>Interceptor Gamepad &amp; Controller</h1>
+<p class="article-lead">Windows controller remapping for physical gamepads. Inspect and adjust input from compatible Windows gamepads with a controller-focused C++17 SDK, including stick curves, deadzones and button changes.</p>
+<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/releases/latest">Latest release and checksums</a><a class="button" href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller">Source and README</a></div>
+<h2>When to use it</h2>
+<p>Use the controller examples to compare a stick’s raw response with the result of a deadzone or response curve. Select the exact profile before assuming that a remap observed on a wired Xbox 360 device will carry over to a DS4 or DualSense.</p>
+<h2>First validation</h2>
+<p>Start with the signed demo on Windows 10 1709+ or Windows 11 x64. Observe the connected device in the viewer and check the transformed result in an independent consumer. The demo allows one hour per Windows kernel boot.</p>
+<ul>
+  <li><a href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/blob/main/docs/INSTALLATION.md">Installation and removal</a></li>
+  <li><a href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/blob/main/docs/COMPATIBILITY.md">Supported devices and compatibility</a></li>
+  <li><a href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/blob/main/licenses/BINARY-LICENSE.txt">Driver licence terms</a></li>
+</ul>
+<h2>Scope and evidence</h2>
+<p>Supported HID, XInput/XUSB, XInputHID and GIP paths depend on device profile and connection. The Vdevice-backed controller lab has an open teardown stability finding. Compare hardware and virtual-device evidence separately. <a href="https://titancsa.github.io/TitanCSA-Benchmarks/methodology/incident-wdf-001/">Read the benchmark incident report</a>.</p>
+<p><a href="https://titancsa.github.io/TitanCSA-Benchmarks/">Windows input benchmark methods and data</a></p>
+<div class="related"><a href="/guides/choose-input/">Compare Windows input SDKs</a><a href="/about/evidence/">Evidence and project support</a></div>

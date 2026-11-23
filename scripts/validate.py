@@ -43,7 +43,11 @@ for p in OUT.rglob('*.html'):
     assert p.stat().st_size<200_000,('HTML budget exceeded',p)
 assert len({p.title for p in parsed.values()})==len(parsed)
 assert len({p.description for p in parsed.values()})==len(parsed)
-if (ROOT/'site-verification.json').exists():assert parsed[(OUT/'index.html').resolve()].google_verification==json.loads((ROOT/'site-verification.json').read_text())['google_site_verification']
+if (ROOT/'site-verification.json').exists():
+    verification=json.loads((ROOT/'site-verification.json').read_text())
+    assert parsed[(OUT/'index.html').resolve()].google_verification==verification['google_site_verification']
+    if key:=verification.get('indexnow_key'):
+        assert (OUT/f'{key}.txt').read_text().strip()==key
 for path,page in parsed.items():
     for link in page.links:
         url=urlparse(link)
@@ -61,5 +65,13 @@ assert (OUT/'assets/social.png').is_file()
 assert (OUT/'assets/site.css').stat().st_size<50_000
 assert (OUT/'assets/catalogue.js').stat().st_size<15_000
 robots=(OUT/'robots.txt').read_text();assert 'Allow: /' in robots and BASE+'sitemap.xml' in robots
-tree=ET.parse(OUT/'sitemap.xml');assert len(tree.getroot())==5
+tree=ET.parse(OUT/'sitemap.xml')
+assert {url.findtext('{*}loc') for url in tree.getroot()} == {
+    page.canonical for path,page in parsed.items() if path.name!='404.html'
+}
+project_pages={path for path in parsed if path.parent.parent.name=='projects'}
+assert len(project_pages)==5
+for path in project_pages:
+    assert parsed[path].canonical==f'{BASE}projects/{path.parent.name}/'
+    assert any(link.endswith('/releases/latest') for link in parsed[path].links)
 print('Validated',len(parsed),'HTML files, 60 entries, 10 workflows, metadata, JSON-LD, anchors and asset budgets')
