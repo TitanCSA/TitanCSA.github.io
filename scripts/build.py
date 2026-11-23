@@ -74,7 +74,7 @@ def render(title,description,path,body,article=False):
         if language=='fr' else ('Skip to content','TitanCSA home','Main navigation','Switch color theme')
     )
     nav_links=(
-        '<a href="/#projects" lang="en">Projets</a><a href="/guides/choose-input/" lang="en">Comparatif EN</a>'
+        '<a href="/#projects">Projets</a><a href="/guides/choose-input/">Comparatif EN</a>'
         if language=='fr' else
         '<a href="/#projects">Projects</a><a href="/guides/first-run/">Get started</a><a class="optional" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Benchmarks</a><a class="optional" href="/about/evidence/">Evidence &amp; support</a><a href="https://github.com/TitanCSA/TitanCSA/blob/main/DEMARRER.md" lang="fr">FR</a>'
     )

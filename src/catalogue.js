@@ -4,7 +4,9 @@
   const toggle = document.querySelector('[data-theme-toggle]');
   try { const saved = localStorage.getItem('titancsa-theme'); if (saved === 'light' || saved === 'dark') root.dataset.theme = saved; } catch (_) {}
   const dark = () => root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
-  const updateThemeLabel = () => { if (toggle) toggle.textContent = dark() ? 'Light' : 'Dark'; };
+  const updateThemeLabel = () => {
+    if (toggle) toggle.textContent = root.lang === 'fr' ? (dark() ? 'Clair' : 'Sombre') : (dark() ? 'Light' : 'Dark');
+  };
   if (toggle) toggle.addEventListener('click', () => { const value = dark() ? 'light' : 'dark'; root.dataset.theme = value; try { localStorage.setItem('titancsa-theme', value); } catch (_) {} updateThemeLabel(); });
   updateThemeLabel();
   const search = document.querySelector('#project-search');
