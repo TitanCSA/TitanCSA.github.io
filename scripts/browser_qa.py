@@ -8,7 +8,9 @@ base=sys.argv[1].rstrip('/')+'/' if len(sys.argv)>1 else 'http://127.0.0.1:8778/
 errors=[];checks=[]
 routes=['','guides/first-run/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
         'guides/windows-input-release-compare/','guides/release-activation-help/',
-        'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','fr/activation-release/']
+        'guides/interception-v2-migration/','guides/windows-input-sdk-packages/',
+        'guides/verify-windows-driver-package/','guides/vdevice-custom-hid-test/',
+        'fr/activation-release/','fr/pilotes-entree-windows/']
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='C:/Program Files/Google/Chrome/Application/chrome.exe',headless=True)
     for width in [1440,390]:
@@ -48,6 +50,10 @@ with sync_playwright() as p:
     assert checkout.count()==5 and checkout.first.is_visible()
     assert page.locator('tbody').inner_text().count('€400 Lifetime')==5
     assert page.locator('a[href="/guides/release-activation-help/"]').is_visible()
+    page.locator('main a[lang="fr"]').click()
+    assert page.url.endswith('/fr/pilotes-entree-windows/') and page.locator('html').get_attribute('lang')=='fr'
+    assert page.locator('main a[href^="https://licences.configcsa.com/"]').count()==5
+    assert '400 €' in page.locator('main').inner_text() and 'Lifetime' in page.locator('main').inner_text()
     page.close();browser.close()
 assert not errors,errors
 report={'verified_utc':datetime.now(timezone.utc).isoformat(),'base':base,'pages':checks,'search_filter_reset':'passed desktop/mobile','preview_scope':'passed','dark_mode':'passed','javascript_disabled':'all 60 entries and guides accessible','page_errors':errors,'limits':'Layout/interaction QA in existing headless Chrome; not product, driver, search indexing or real-user performance qualification'}

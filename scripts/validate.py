@@ -1,5 +1,6 @@
 from pathlib import Path
 from html.parser import HTMLParser
+from hashlib import sha256
 from urllib.parse import urlparse,unquote
 import json,re,xml.etree.ElementTree as ET
 
@@ -75,6 +76,8 @@ assert (OUT/'index.html').read_text(encoding='utf8').count('data-project data-ca
 assert (OUT/'assets/social.png').is_file()
 assert (OUT/'assets/site.css').stat().st_size<50_000
 assert (OUT/'assets/catalogue.js').stat().st_size<15_000
+hid_result=json.loads((OUT/'assets/vdevice-hid-test-20261124.json').read_text(encoding='utf8'))
+assert hid_result['source_sha256']==sha256((OUT/'assets/vdevice-hid-test.cpp').read_bytes()).hexdigest()
 robots=(OUT/'robots.txt').read_text();assert 'Allow: /' in robots and BASE+'sitemap.xml' in robots
 for bot in ('OAI-SearchBot','Claude-SearchBot','Claude-User'):
     assert f'User-agent: {bot}\n' in robots

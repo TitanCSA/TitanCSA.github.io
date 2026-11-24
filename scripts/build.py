@@ -90,14 +90,16 @@ pages={
  'guides/windows-input-sdk-packages/':('Install Windows input SDK packages for Node.js, PowerShell and C++ — TitanCSA','Find registry-verified Interceptor, Vdevice and Interception V2 SDK packages. Match the SDK to the installed Windows driver.','guides/windows-input-sdk-packages.html'),
  'guides/gamepad-controller-first-run/':('Test and remap a physical gamepad on Windows — TitanCSA','Identify HID, XUSB, XInputHID or GIP input, use the signed controller demo and try the C++ stick deadzone example.','guides/gamepad-controller-first-run.html'),
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Try a signed virtual audio pair, test stereo playback and recording, and find the matching Titan Audio Link commercial package.','guides/titan-audio-link-first-run.html'),
+ 'guides/verify-windows-driver-package/':('Verify a signed Windows driver package before installation — TitanCSA','Compare the published SHA-256, verify the Microsoft-signed driver catalog and check the INF package version with PowerShell and SignTool.','guides/verify-windows-driver-package.html'),
+ 'guides/vdevice-custom-hid-test/':('Test a custom virtual USB HID with Vdevice and hidapitester — TitanCSA','Create a vendor-defined virtual USB HID, read and return exact report bytes with hidapitester, and verify device removal on Windows.','guides/vdevice-custom-hid-test.html'),
  'fr/activation-release/':('Installer et activer une édition Release TitanCSA sous Windows','Résoudre les erreurs d’activation de Vdevice et Interceptor, vérifier les versions du pilote et du SDK et préparer un rapport de support.','guides/release-activation-fr.html'),
  'about/evidence/':('About TitanCSA projects, evidence and support','Understand TitanCSA project evidence, separate SDK and driver licences, engineering previews, known issues, support and private vulnerability reporting.','about/evidence.html'),
  'fr/pilotes-entree-windows/':('Pilotes d’entrée Windows · Choisir, essayer et acheter | TitanCSA','Comparez Interceptor, Interceptor Keyboard & Mouse, Interceptor Gamepad & Controller, Vdevice et Interception V2. Démonstrations, compatibilité et licences.','guides/windows-input-fr.html')}
 for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
-demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/'}
-release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','fr/activation-release/'}
+demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/','guides/vdevice-custom-hid-test/'}
+release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/'}
 translations=(
     {'en':'guides/release-activation-help/','fr':'fr/activation-release/'},
     {'en':'guides/windows-input-release-compare/','fr':'fr/pilotes-entree-windows/'},
@@ -183,9 +185,11 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
     f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
     f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
+    f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
     f'- [Physical gamepad quickstart]({BASE}guides/gamepad-controller-first-run/)',
     f'- [Titan Audio Link virtual microphone]({BASE}guides/titan-audio-link-first-run/)',
     f'- [Virtual USB mouse tutorial]({BASE}guides/vdevice-virtual-usb-mouse/)',
+    f'- [Reproduce the Vdevice custom HID test]({BASE}guides/vdevice-custom-hid-test/)',
     f'- [Per-device AutoHotkey tutorial]({BASE}guides/autohotkey-remap-second-keyboard/)',
     f'- [Benchmark results and scope]({BASE}TitanCSA-Benchmarks/)', '', '## Products']
 reference_links.extend(

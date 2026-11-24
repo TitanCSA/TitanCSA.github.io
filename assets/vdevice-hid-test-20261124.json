@@ -1,0 +1,20 @@
+{
+    "tested_utc":  "2026-11-24T22:16:54.3334832Z",
+    "windows_build":  26100,
+    "secure_boot":  true,
+    "driver":  "1.0.6.0",
+    "driver_sha256":  "74056F7FA1FC00B4833B3ADA989F78ECDFCF56A002FE2AF92C118072A5F70F39",
+    "hidapitester":  "hidapitester version: v0.7\r\nhidapi version: 0.15.0",
+    "before":  "No HID devices found",
+    "active_listing":  "FFFF/0010 / FF00/0001  Vdevice examples - Raw vendor HID",
+    "input_read":  "Opening device, vid/pid:0xFFFF/0x0010, usagePage/usage: FF00/0\r\nDevice opened\r\nReading up to 16-byte input report, 4000 msec timeout...read 16 bytes:\r\n 54 43 53 41 10 20 30 40 50 60 70 80 90 A0 B0 C0\r\nClosing device",
+    "output_write":  "Opening device, vid/pid:0xFFFF/0x0010, usagePage/usage: FF00/0\r\nDevice opened\r\nWriting output report of 17-bytes...wrote 17 bytes:\r\n 00 48 49 44 41 11 22 33 44 55 66 77 88 99 AA BB CC\r\nClosing device",
+    "producer_exit":  0,
+    "producer_log":  "READY\r\nExact 16-byte OUT report received on endpoint 0x01.\r\nDevice disconnected.\r\n",
+    "producer_error":  "",
+    "after":  "No HID devices found",
+    "source_sha256":  "c463a1b90cc8f3ddf45ad6e5f227a4483636391d922fca67fb99ef53a98b2368",
+    "sdk_zip_sha256":  "eaa3b92c5da10cdb551d0877264369abf618fac32e379a5249d2f82218f019e2",
+    "hidapitester_zip_sha256":  "f8c6fdc2a3f6c7b56d7cf16f60201eab9d49baeba624d110244e55d90b3bef33",
+    "setup_console_sha256":  "8c46c5ae67680e2813e61ec28301bf6e3ed24d8bb17a7eca8ae70634c8c0e07f"
+}

@@ -7,8 +7,10 @@
 <p>Build a repeatable input fixture for a Windows application. Start with a virtual keyboard or vendor HID sample, then verify enumeration and the content delivered to an independent receiver. A controller profile adds its own descriptor and protocol requirements.</p>
 <h2>First validation</h2>
 <p><a href="/guides/vdevice-virtual-usb-mouse/">Create and test a virtual USB mouse</a> with the signed demo and its bundled control panel.</p>
+<p><a href="/guides/vdevice-custom-hid-test/">Verify a custom virtual HID with hidapitester</a>. Read and return a test report using a separate receiver, then check removal.</p>
 <p>The signed demo targets Windows 10/11 x64. Start with the installation guide and a bundled example. The demo allows one hour per Windows kernel boot from the first successful virtual device creation.</p>
 <ul>
+  <li><a href="/guides/verify-windows-driver-package/">Verify the demo ZIP, Microsoft-signed catalog and driver version</a></li>
   <li><a href="https://github.com/TitanCSA/Vdevice/blob/main/docs/INSTALLATION.md">Installation and removal</a></li>
   <li><a href="https://github.com/TitanCSA/Vdevice/blob/main/docs/VALIDATION.md">Supported devices and compatibility</a></li>
   <li><a href="https://github.com/TitanCSA/Vdevice/blob/main/licenses/BINARY-LICENSE.txt">Driver licence terms</a></li>
