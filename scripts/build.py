@@ -118,15 +118,19 @@ reviewed={
     **dict.fromkeys(release_guides | {'','guides/choose-input/','about/evidence/',*(f'projects/{slug}/' for slug in editions)},release_date),
 }
 purchase_terms='<p class="subtle">Licensed Release at €400 per edition, paid once. Online activation is required after installation and again after a driver reload or Windows restart.</p>'
+publisher={
+    '@type':'Organization', '@id':BASE+'#publisher', 'name':'TitanCSA', 'url':BASE,
+    'sameAs':['https://github.com/TitanCSA'],
+}
 
 def render(title,description,path,body,article=False):
     canonical=BASE+path
     language='fr' if path.startswith('fr/') else 'en'
-    schema={'@context':'https://schema.org','@type':'TechArticle' if article else 'WebSite','name':title,'description':description,'url':canonical,'inLanguage':language,'publisher':{'@type':'Organization','name':'TitanCSA','url':BASE}}
+    schema={'@context':'https://schema.org','@type':'TechArticle' if article else 'WebSite','name':title,'description':description,'url':canonical,'inLanguage':language,'publisher':publisher}
     if article:
         published='2026-11-24' if path in demo_guides | release_guides else featured_date if path.startswith(('projects/','fr/')) else '2026-11-18'
         modified=reviewed.get(path,checked)
-        schema.update(datePublished=published,dateModified=modified,author={'@type':'Organization','name':'TitanCSA'})
+        schema.update(datePublished=published,dateModified=modified,author={'@id':publisher['@id']})
     schemas=[schema]
     if path.startswith('projects/'):
         edition=editions[path.split('/')[1]]
@@ -136,7 +140,7 @@ def render(title,description,path,body,article=False):
             'applicationCategory':'DeveloperApplication','operatingSystem':'Microsoft Windows x64',
             'description':edition['use'],
             'offers':{'@type':'Offer','url':edition['purchase_url'],'price':edition['price_eur'],'priceCurrency':'EUR'},
-            'publisher':{'@type':'Organization','name':'TitanCSA','url':BASE},
+            'publisher':{'@id':publisher['@id']},
         })
     if not path:schemas.append({'@context':'https://schema.org','@type':'ItemList','name':'TitanCSA public project catalogue','numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
     structured=''.join('<script type="application/ld+json">'+json.dumps(s,ensure_ascii=True).replace('<','\\u003c')+'</script>' for s in schemas)

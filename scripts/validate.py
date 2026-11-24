@@ -48,6 +48,10 @@ for p in OUT.rglob('*.html'):
     assert p.stat().st_size<200_000,('HTML budget exceeded',p)
 assert len({p.title for p in parsed.values()})==len(parsed)
 assert len({p.description for p in parsed.values()})==len(parsed)
+for page in parsed.values():
+    content=[item for item in page.schemas if item.get('@type') in ('WebSite','TechArticle')]
+    publisher=content[0]['publisher']
+    assert publisher['@id']==BASE+'#publisher' and publisher['sameAs']==['https://github.com/TitanCSA']
 by_canonical={p.canonical:p for path,p in parsed.items() if path.name!='404.html'}
 for page in by_canonical.values():
     if page.alternates:
