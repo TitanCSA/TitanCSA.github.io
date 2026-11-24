@@ -1,0 +1,62 @@
+name: Verify the Interception V2 documentation sample
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sdk-examples.yml'
+      - 'assets/interception-device-inventory.c'
+  pull_request:
+    paths:
+      - '.github/workflows/sdk-examples.yml'
+      - 'assets/interception-device-inventory.c'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - abi: x86
+            generator_platform: Win32
+          - abi: x64
+            generator_platform: x64
+    env:
+      V2_ABI: ${{ matrix.abi }}
+      V2_GENERATOR_PLATFORM: ${{ matrix.generator_platform }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile against the published SDK ZIP
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $release = 'https://github.com/TitanCSA/Interception-V2/releases/download/v2.0.0'
+          $work = Join-Path $env:RUNNER_TEMP 'interception-v2-sample'
+          New-Item -ItemType Directory -Path $work | Out-Null
+          $zip = Join-Path $work 'Interception-V2.zip'
+          $sums = Join-Path $work 'SHA256SUMS.txt'
+          Invoke-WebRequest "$release/Interception-V2.zip" -OutFile $zip
+          Invoke-WebRequest "$release/SHA256SUMS.txt" -OutFile $sums
+          $expected = (Get-Content $sums | Where-Object { $_ -match 'Interception-V2\.zip$' }) -split '\s+'
+          if ($expected[0] -ne (Get-FileHash $zip).Hash) { throw 'Release ZIP checksum mismatch' }
+          Expand-Archive -LiteralPath $zip -DestinationPath $work
+          Copy-Item -LiteralPath assets/interception-device-inventory.c -Destination $work
+          @'
+          cmake_minimum_required(VERSION 3.20)
+          project(InterceptionInventory C)
+          add_executable(inventory interception-device-inventory.c)
+          target_compile_options(inventory PRIVATE /W4 /WX)
+          target_include_directories(inventory PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Interception/library")
+          target_link_libraries(inventory PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Interception/library/${ABI}/interception.lib")
+          '@ | Set-Content -LiteralPath (Join-Path $work 'CMakeLists.txt') -Encoding ascii
+          $build = Join-Path $work 'build'
+          cmake -S $work -B $build -G 'Visual Studio 17 2022' -A $env:V2_GENERATOR_PLATFORM "-DABI=$env:V2_ABI"
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          cmake --build $build --config Release
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
