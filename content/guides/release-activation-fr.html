@@ -6,10 +6,13 @@
 <h2>Comprendre le message</h2>
 <div class="table-scroll"><table><thead><tr><th scope="col">Message</th><th scope="col">Vérification</th></tr></thead><tbody>
 <tr><td>Vdevice, erreur Windows 2, <code>driver_open</code> / <code>activation_interface_unavailable</code></td><td>Windows ne trouve pas l’interface d’activation Release. Vérifie l’édition du pilote détecté. Ouvre <code>VdeviceReleaseSetup.exe</code> depuis le ZIP commercial, choisis la réparation ou la réinstallation, puis redémarre si nécessaire.</td></tr>
+<tr><td>Vdevice, erreur Windows <code>7054</code> pendant la création ou l’utilisation d’un périphérique</td><td>Le pilote Release demande une activation depuis son dernier chargement. Lance <code>VdeviceActivation.exe</code> depuis le ZIP commercial avec ta clé, puis réessaie. Un ancien SDK peut afficher le texte générique de Windows sur une limite de connexions pour ce code.</td></tr>
 <tr><td><code>invalid_key_format</code></td><td>Recopie la clé complète remise après l’achat et vérifie qu’elle correspond à l’édition installée.</td></tr>
 <tr><td><code>invalid_license</code> ou clé désactivée</td><td>Reprends la clé depuis la livraison de cette édition. Si le serveur la refuse toujours, contacte le support avec le message exact.</td></tr>
 <tr><td>Erreur HTTPS, de proxy ou délai dépassé</td><td>Vérifie la connexion et les paramètres de certificats du PC. Lance le diagnostic réseau sans clé si l’aide de l’outil le propose.</td></tr>
 </tbody></table></div>
+<h2>Le service de pilote Vdevice Release</h2>
+<p><code>VdeviceRelease</code> est le service de pilote noyau Windows associé à <code>VdeviceRelease.sys</code>. L’installateur prépare et enregistre le package signé. Windows charge le pilote et expose son interface d’activation. <code>VdeviceReleaseSetupConsole.exe /diagnose</code> vérifie séparément l’état du service et la réponse de l’interface.</p>
 <h2>Préparer un rapport de support</h2>
 <p>Indique le nom du ZIP, la version et le build de Windows, la version du pilote installé, celle du SDK et les champs <code>stage</code>, <code>reason</code> et <code>error</code>. Pour Vdevice, l’installateur console accepte <code>VdeviceReleaseSetupConsole.exe /diagnose</code>. Retire la clé et les données personnelles du rapport partagé.</p>
 <div class="related"><a href="/fr/pilotes-entree-windows/">Choisir une édition</a><a href="/about/evidence/">Support officiel TitanCSA</a></div>

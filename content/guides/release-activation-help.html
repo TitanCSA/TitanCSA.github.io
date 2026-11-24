@@ -7,10 +7,13 @@
 <h2>Read the stage, reason and Windows error</h2>
 <div class="table-scroll"><table><thead><tr><th scope="col">What you see</th><th scope="col">What to check</th></tr></thead><tbody>
 <tr><td>Vdevice <code>driver_open</code> / <code>activation_interface_unavailable</code> with Windows error 2</td><td>Windows cannot open the Release activation interface. Check which driver is installed, run <code>VdeviceReleaseSetup.exe</code> from the commercial ZIP, choose reinstall or repair, and restart if requested. Check the installed versions in the diagnostic output when your SDK provides them.</td></tr>
+<tr><td>Vdevice Windows error <code>7054</code> during device creation or use</td><td>The Release driver requires activation for its current load. Run <code>VdeviceActivation.exe</code> from the commercial ZIP with your key, then retry. Older SDK builds can show Windows' generic connection-limit text for this code.</td></tr>
 <tr><td><code>key_format</code> / <code>invalid_key_format</code></td><td>Copy the complete key supplied through the purchase flow. Check for missing characters and that the key belongs to the installed edition.</td></tr>
 <tr><td><code>server_verification</code> / <code>invalid_license</code> or a disabled-key reason</td><td>Use the original delivery page for the matching edition. Contact support if the current key is still refused.</td></tr>
 <tr><td>HTTPS, timeout, proxy or certificate error</td><td>Check that the computer can reach the license service with its normal Windows network and certificate settings. Run the keyless network diagnostic if it is listed in the activation tool's help.</td></tr>
 </tbody></table></div>
+<h2>What the Vdevice Release driver service is</h2>
+<p><code>VdeviceRelease</code> is the Windows kernel driver service for <code>VdeviceRelease.sys</code>. The installer stages and registers the signed driver package. Windows loads the driver and exposes its activation interface. A running service and a responding interface are two separate checks in <code>VdeviceReleaseSetupConsole.exe /diagnose</code>.</p>
 <h2>Send a report support can reproduce</h2>
 <p>Include the project and edition, ZIP name, Windows version and build, installed driver version, SDK version and complete error stage, reason and Windows code. For Vdevice, the bundled console installer supports <code>VdeviceReleaseSetupConsole.exe /diagnose</code>. Share the diagnostic report after removing personal details and the activation key.</p>
 <p><a href="/about/evidence/">Find official support</a> · <a href="/guides/windows-input-release-compare/">Compare editions and open the matching checkout</a></p>
