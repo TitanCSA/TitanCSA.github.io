@@ -65,6 +65,11 @@ for (key,title),entries in groups.items():
     cards.append(f'<section id="{escape(key)}" class="project-group" data-project-group aria-labelledby="heading-{escape(key)}"><div class="group-heading"><h2 id="heading-{escape(key)}">{escape(title)}</h2><span class="group-count" data-group-count>{len(entries)} entries</span></div>'+''.join(items)+'</section>')
 replacements={'PROJECT_COUNT':str(len(projects)),'CHECKED_DATE':checked,'PROJECTS':'\n'.join(cards),'CATEGORY_OPTIONS':''.join(f'<option value="{escape(key)}">{escape(title)}</option>' for key,title in groups),'CATEGORY_LINKS':''.join(f'<a href="#{escape(key)}" data-category-jump>{escape(title)}</a>' for key,title in groups)}
 replacements['RELEASE_REVIEW_DATE']=release_date
+for slug, edition in editions.items():
+    key=slug.upper().replace('-','_')
+    replacements[f'{key}_DEMO_URL']=escape(edition['demo_url'],quote=True)
+    replacements[f'{key}_DEMO_VERSION']=escape(edition['demo'])
+    replacements[f'{key}_PURCHASE_URL']=escape(edition['purchase_url'],quote=True)
 replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
     f'<tr><th scope="row"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
     f'<td>{escape(e["use"])} <strong>{escape(e["api"])}</strong> {escape(e["note"])}</td>'
@@ -93,7 +98,10 @@ for slug,(_,title,description) in featured.items():
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/'}
 release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','fr/activation-release/'}
-activation_translations={'en':'guides/release-activation-help/','fr':'fr/activation-release/'}
+translations=(
+    {'en':'guides/release-activation-help/','fr':'fr/activation-release/'},
+    {'en':'guides/windows-input-release-compare/','fr':'fr/pilotes-entree-windows/'},
+)
 reviewed={
     **dict.fromkeys(updated,featured_date),
     **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
@@ -122,19 +130,20 @@ def render(title,description,path,body,article=False):
         })
     if not path:schemas.append({'@context':'https://schema.org','@type':'ItemList','name':'TitanCSA public project catalogue','numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
     structured=''.join('<script type="application/ld+json">'+json.dumps(s,ensure_ascii=True).replace('<','\\u003c')+'</script>' for s in schemas)
-    if path in activation_translations.values():
-        structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in activation_translations.items())
+    for variants in translations:
+        if path in variants.values():
+            structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in variants.items())
     if not path and verification:structured+='<meta name="google-site-verification" content="'+escape(verification,quote=True)+'">'
     skip_label,home_label,nav_label,theme_label=(
-        ('Aller au contenu','Accueil TitanCSA','Navigation principale','Changer le th?me')
+        ('Aller au contenu','Accueil TitanCSA','Navigation principale','Changer le thème')
         if language=='fr' else ('Skip to content','TitanCSA home','Main navigation','Switch color theme')
     )
     nav_links=(
-        '<a href="/#projects">Projets</a><a href="/guides/choose-input/">Comparatif EN</a>'
+        '<a href="/#projects">Projets</a><a href="/fr/pilotes-entree-windows/">Comparatif</a>'
         if language=='fr' else
         '<a href="/#projects">Projects</a><a href="/guides/first-run/">Get started</a><a class="optional" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Benchmarks</a><a class="optional" href="/about/evidence/">Evidence &amp; support</a><a href="https://github.com/TitanCSA/TitanCSA/blob/main/DEMARRER.md" lang="fr">FR</a>'
     )
-    theme_text='Th?me' if language=='fr' else 'Theme'
+    theme_text='Thème' if language=='fr' else 'Theme'
     footer_lang=' lang="en"' if language=='fr' else ''
     main=f'<main id="main" class="wrap article">{body}</main>' if article else f'<main id="main">{body}</main>'
     return f'''<!doctype html><html lang="{language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title><meta name="description" content="{escape(description,quote=True)}"><link rel="canonical" href="{canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#194fd1"><link rel="icon" type="image/svg+xml" href="/assets/icon.svg"><link rel="stylesheet" href="/assets/site.css"><meta property="og:type" content="{'article' if article else 'website'}"><meta property="og:site_name" content="TitanCSA"><meta property="og:title" content="{escape(title,quote=True)}"><meta property="og:description" content="{escape(description,quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}assets/social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">{structured}<script src="/assets/catalogue.js" defer></script></head><body><a class="skip" href="#main">{skip_label}</a><header class="header"><div class="wrap"><a class="brand" href="/" aria-label="{home_label}"><span class="brand-mark" aria-hidden="true">T</span>TitanCSA</a><nav class="nav" aria-label="{nav_label}">{nav_links}<button type="button" class="theme-toggle" data-theme-toggle aria-label="{theme_label}">{theme_text}</button></nav></div></header>{main}<footer class="footer"{footer_lang}><div class="wrap"><p>© 2026 TitanCSA. Documentation maintained with AI assistance. Individual project licences and tested limits apply. This is a publisher-operated catalogue.</p><nav aria-label="Footer"><a href="/about/evidence/">About &amp; support</a><a href="https://github.com/TitanCSA/TitanCSA">GitHub</a><a href="https://github.com/TitanCSA/sdk-packages">SDK packages</a><a href="https://github.com/TitanCSA/TitanCSA.github.io">Website source</a></nav></div></footer></body></html>'''

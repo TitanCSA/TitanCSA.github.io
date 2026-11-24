@@ -5,7 +5,7 @@ import json,re,xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 class Page(HTMLParser):
-    def __init__(self):super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[];self.google_verification=None
+    def __init__(self):super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[];self.google_verification=None;self.language=None;self.alternates={}
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
         if 'id' in a:self.ids.append(a['id'])
@@ -14,6 +14,10 @@ class Page(HTMLParser):
         if tag=='meta' and a.get('name')=='description':self.description=a.get('content','')
         if tag=='meta' and a.get('name')=='google-site-verification':self.google_verification=a.get('content')
         if tag=='link' and a.get('rel')=='canonical':self.canonical=a.get('href','')
+        if tag=='html':self.language=a.get('lang')
+        if tag=='link' and a.get('rel')=='alternate' and 'hreflang' in a:
+            assert a['hreflang'] not in self.alternates
+            self.alternates[a['hreflang']]=a['href']
         if tag in ['a','img','link','script']:
             value=a.get('href') or a.get('src')
             if value:self.links.append(value)
@@ -43,6 +47,13 @@ for p in OUT.rglob('*.html'):
     assert p.stat().st_size<200_000,('HTML budget exceeded',p)
 assert len({p.title for p in parsed.values()})==len(parsed)
 assert len({p.description for p in parsed.values()})==len(parsed)
+by_canonical={p.canonical:p for path,p in parsed.items() if path.name!='404.html'}
+for page in by_canonical.values():
+    if page.alternates:
+        assert page.alternates[page.language]==page.canonical
+        for language,url in page.alternates.items():
+            target=by_canonical[url]
+            assert target.language==language and target.alternates==page.alternates
 if (ROOT/'site-verification.json').exists():
     verification=json.loads((ROOT/'site-verification.json').read_text())
     assert parsed[(OUT/'index.html').resolve()].google_verification==verification['google_site_verification']
@@ -76,6 +87,8 @@ assert len(project_pages)==5
 editions={row['slug']:row for row in json.loads((OUT/'releases.json').read_text(encoding='utf8'))['editions']}
 assert set(editions)=={path.parent.name for path in project_pages}
 comparison=parsed[(OUT/'guides/windows-input-release-compare/index.html').resolve()]
+french_comparison=by_canonical[BASE+'fr/pilotes-entree-windows/']
+assert comparison.alternates=={'en':comparison.canonical,'fr':french_comparison.canonical}
 reference=(OUT/'llms.txt').read_text(encoding='utf8')
 for path in project_pages:
     edition=editions[path.parent.name]
@@ -83,6 +96,7 @@ for path in project_pages:
     assert page.canonical==edition['overview_url']
     assert edition['demo_url'] in page.links and edition['demo_url'] in comparison.links
     assert edition['purchase_url'] in page.links and edition['purchase_url'] in comparison.links
+    assert edition['demo_url'] in french_comparison.links and edition['purchase_url'] in french_comparison.links
     assert edition['overview_url'] in reference and edition['demo_url'] in reference
     app,=[item for item in page.schemas if item.get('@type')=='SoftwareApplication']
     assert app['offers']['url']==edition['purchase_url'] and app['offers']['price']==edition['price_eur']
