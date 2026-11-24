@@ -25,6 +25,7 @@ from interceptor import Interceptor
 
 print(version('interceptor-multilang'))</code></pre>
 <p>The exact Windows wheel installed into a temporary Python directory and printed <code>1.0.1</code>. Its wheel and source archive both matched the SHA-256 published on PyPI. <a href="https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md">Read the Python API and driver requirements</a>.</p>
+<p>After setup, <code>with Interceptor() as io: print(io.info())</code> reads driver status. In a test without the combined driver, the wheel loaded its native bridge and the status query returned Windows error <code>2</code>. If the message mentions <code>Install.cmd</code>, use the <a href="https://github.com/TitanCSA/Interceptor/releases/tag/v1.4.22.0-demo">matching combined demo’s InterceptorSetup.exe</a> and follow its restart instructions.</p>
 <h2>Start with a known result</h2>
 <ul>
 <li><a href="/guides/vdevice-virtual-usb-mouse/">Try the Vdevice mouse example</a> to confirm the Windows device path.</li>
