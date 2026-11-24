@@ -20,6 +20,23 @@ featured={
 }
 featured_paths={repo:f'/projects/{slug}/' for slug,(repo,_,_) in featured.items()}
 featured_date='2026-11-23'
+shop='https://licences.configcsa.com/'
+release_data=json.loads((ROOT/'releases.json').read_text(encoding='utf8'))
+release_date=release_data['reviewed']
+editions={}
+for edition in release_data['editions']:
+    slug=edition['slug']
+    repo,title,_=featured[slug]
+    editions[slug]={
+        **edition,
+        'name':title.split(' | ',1)[0],
+        'repository':f'https://github.com/TitanCSA/{repo}',
+        'demo_url':f'https://github.com/TitanCSA/{repo}/releases/tag/{edition["tag"]}',
+        'overview_url':f'{BASE}projects/{slug}/',
+        'purchase_url':shop+slug,
+        'price_eur':400,
+    }
+assert set(editions)==set(featured) and len(editions)==len(release_data['editions'])
 assert len(projects)==60 and len({p['url'].lower() for p in projects})==60
 assert all(p['url'].startswith(('https://github.com/TitanCSA/','https://github.com/titanfyre/')) for p in projects)
 OUT.mkdir(exist_ok=True)
@@ -45,6 +62,14 @@ for (key,title),entries in groups.items():
 <div><p>{escape(p['description'])}</p><details><summary>Start and scope</summary><p>{escape(p['first_step'])}</p></details>{issue}{overview_link}</div></article>''')
     cards.append(f'<section id="{escape(key)}" class="project-group" data-project-group aria-labelledby="heading-{escape(key)}"><div class="group-heading"><h2 id="heading-{escape(key)}">{escape(title)}</h2><span class="group-count" data-group-count>{len(entries)} entries</span></div>'+''.join(items)+'</section>')
 replacements={'PROJECT_COUNT':str(len(projects)),'CHECKED_DATE':checked,'PROJECTS':'\n'.join(cards),'CATEGORY_OPTIONS':''.join(f'<option value="{escape(key)}">{escape(title)}</option>' for key,title in groups),'CATEGORY_LINKS':''.join(f'<a href="#{escape(key)}" data-category-jump>{escape(title)}</a>' for key,title in groups)}
+replacements['RELEASE_REVIEW_DATE']=release_date
+replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
+    f'<tr><th scope="row"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
+    f'<td>{escape(e["use"])} <strong>{escape(e["api"])}</strong> {escape(e["note"])}</td>'
+    f'<td><a href="{e["demo_url"]}">{escape(e["name"])} demo {e["demo"]}</a></td>'
+    f'<td><a href="{e["purchase_url"]}">Buy {escape(e["name"])} Release</a> · €{e["price_eur"]} Lifetime</td></tr>'
+    for e in editions.values()
+)
 pages={
  '':('TitanCSA — Windows tools, device SDKs and practical guides','Find Windows input tools, virtual devices, diagnostics and SDKs by workflow. Clear first-run guides, project licences, public evidence and known limits.','index.html'),
  'guides/first-run/':('A first Windows tool run without an input driver — TitanCSA','Start with Browser Control SDK, read-only Driver Readiness Inspector or offline fixture validation. Prerequisites, exact steps and expected results.','guides/first-run.html'),
@@ -52,15 +77,19 @@ pages={
  'guides/read-benchmarks/':('How to read Windows input latency benchmarks — TitanCSA','Understand QPC endpoints, HID/Raw Input/XInput/WinMM receiver contracts, warm-up, tails, invalid runs and the difference between virtual and physical latency.','guides/read-benchmarks.html'),
  'guides/vdevice-virtual-usb-mouse/':('Create a virtual USB mouse on Windows with Vdevice — TitanCSA','Try a signed Windows 10/11 virtual USB mouse. Follow the mouse panel, verify movement and find the C++ example.','guides/vdevice-virtual-usb-mouse.html'),
  'guides/autohotkey-remap-second-keyboard/':('Remap a second keyboard with AutoHotkey v2 on Windows — TitanCSA','Remap A to B on one selected keyboard. Download the AutoHotkey v2 script and compare results on both keyboards.','guides/autohotkey-remap-second-keyboard.html'),
+ 'guides/windows-input-release-compare/':('Compare Windows input drivers and Lifetime editions — TitanCSA','Compare Interceptor, Vdevice and Interception V2. Find the matching API, signed demo, device scope and commercial edition.','guides/windows-input-release-compare.html'),
+ 'guides/release-activation-help/':('Install and activate a TitanCSA Windows Release — error help','Resolve missing activation interfaces, invalid keys and HTTPS failures. Find the correct Windows Release ZIP, SDK and driver version.','guides/release-activation-help.html'),
  'about/evidence/':('About TitanCSA projects, evidence and support','Understand TitanCSA project evidence, separate SDK and driver licences, engineering previews, known issues, support and private vulnerability reporting.','about/evidence.html'),
  'fr/pilotes-entree-windows/':('Pilotes d’entrée Windows · Choisir, essayer et acheter | TitanCSA','Comparez Interceptor, Interceptor Keyboard & Mouse, Interceptor Gamepad & Controller, Vdevice et Interception V2. Démonstrations, compatibilité et licences.','guides/windows-input-fr.html')}
 for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/'}
+release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/'}
 reviewed={
     **dict.fromkeys(updated,featured_date),
     **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
+    **dict.fromkeys(release_guides | {'','guides/choose-input/','about/evidence/',*(f'projects/{slug}/' for slug in editions)},release_date),
 }
 purchase_terms='<p class="subtle">Licensed Release at €400 per edition, paid once. Online activation is required after installation and again after a driver reload or Windows restart.</p>'
 
@@ -69,10 +98,20 @@ def render(title,description,path,body,article=False):
     language='fr' if path.startswith('fr/') else 'en'
     schema={'@context':'https://schema.org','@type':'TechArticle' if article else 'WebSite','name':title,'description':description,'url':canonical,'inLanguage':language,'publisher':{'@type':'Organization','name':'TitanCSA','url':BASE}}
     if article:
-        published=reviewed[path] if path in demo_guides else featured_date if path.startswith(('projects/','fr/')) else '2026-11-18'
+        published='2026-11-24' if path in demo_guides | release_guides else featured_date if path.startswith(('projects/','fr/')) else '2026-11-18'
         modified=reviewed.get(path,checked)
         schema.update(datePublished=published,dateModified=modified,author={'@type':'Organization','name':'TitanCSA'})
     schemas=[schema]
+    if path.startswith('projects/'):
+        edition=editions[path.split('/')[1]]
+        schemas.append({
+            '@context':'https://schema.org','@type':'SoftwareApplication',
+            '@id':canonical+'#release','name':edition['name']+' Release','url':canonical,
+            'applicationCategory':'DeveloperApplication','operatingSystem':'Microsoft Windows x64',
+            'description':edition['use'],
+            'offers':{'@type':'Offer','url':edition['purchase_url'],'price':edition['price_eur'],'priceCurrency':'EUR'},
+            'publisher':{'@type':'Organization','name':'TitanCSA','url':BASE},
+        })
     if not path:schemas.append({'@context':'https://schema.org','@type':'ItemList','name':'TitanCSA public project catalogue','numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
     structured=''.join('<script type="application/ld+json">'+json.dumps(s,ensure_ascii=True).replace('<','\\u003c')+'</script>' for s in schemas)
     if not path and verification:structured+='<meta name="google-site-verification" content="'+escape(verification,quote=True)+'">'
@@ -94,13 +133,41 @@ for path,(title,description,source) in pages.items():
     for key,value in replacements.items():body=body.replace('{{'+key+'}}',value)
     if path.startswith('projects/'):
         slug=path.split('/')[1]
-        body=body.replace('{{PURCHASE_URL}}',f'https://licences.configcsa.com/{slug}').replace('{{PURCHASE_TERMS}}',purchase_terms)
+        edition=editions[slug]
+        links=(
+            f'<p>Signed demo <a href="{edition["demo_url"]}">{edition["demo"]}</a>. '
+            '<a href="/guides/windows-input-release-compare/">Compare editions</a> · '
+            '<a href="/guides/release-activation-help/">Installation and activation help</a>.</p>'
+        )
+        body=body.replace('{{PURCHASE_URL}}',edition['purchase_url']).replace('{{PURCHASE_TERMS}}',purchase_terms+links)
     assert '{{' not in body
     target=OUT/path/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(title,description,path,body,bool(path)),encoding='utf8')
 (OUT/'404.html').write_text(render('Page not found — TitanCSA','Find the TitanCSA project catalogue and first-run guides.','404.html','<h1>Page not found.</h1><p>The address may have changed. <a href="/">Open the project catalogue</a> or <a href="/guides/first-run/">read the first-run guide</a>.</p>',True).replace('index,follow,max-image-preview:large','noindex,follow'),encoding='utf8')
 urls=''.join(f'<url><loc>{BASE+path}</loc><lastmod>{reviewed.get(path,checked)}</lastmod></url>' for path in pages)
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls+'</urlset>',encoding='utf8')
-(OUT/'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: '+BASE+'sitemap.xml\nSitemap: '+BASE+'TitanCSA-Benchmarks/sitemap.xml\n',encoding='utf8')
+search_robots=['OAI-SearchBot','Claude-SearchBot','Claude-User']
+(OUT/'robots.txt').write_text(
+    'User-agent: *\nAllow: /\n\n'
+    + ''.join(f'User-agent: {bot}\n' for bot in search_robots)
+    + 'Allow: /\n\nSitemap: '+BASE+'sitemap.xml\nSitemap: '+BASE+'TitanCSA-Benchmarks/sitemap.xml\n',
+    encoding='utf8',
+)
+(OUT/'releases.json').write_text(
+    json.dumps({'reviewed':release_date,'editions':list(editions.values())},ensure_ascii=False,indent=2)+'\n',
+    encoding='utf8',
+)
+reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documentation from the publisher.', '',
+    '## Choose, try and activate',
+    f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',
+    f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
+    f'- [Virtual USB mouse tutorial]({BASE}guides/vdevice-virtual-usb-mouse/)',
+    f'- [Per-device AutoHotkey tutorial]({BASE}guides/autohotkey-remap-second-keyboard/)',
+    f'- [Benchmark results and scope]({BASE}TitanCSA-Benchmarks/)', '', '## Products']
+reference_links.extend(
+    f'- [{e["name"]}]({e["overview_url"]}): {e["use"]} Signed demo: {e["demo_url"]}. Release checkout: {e["purchase_url"]}.'
+    for e in editions.values()
+)
+(OUT/'llms.txt').write_text('\n'.join(reference_links)+'\n',encoding='utf8')
 (OUT/'projects.json').write_bytes((ROOT/'projects.json').read_bytes())
 if indexnow_key:(OUT/f'{indexnow_key}.txt').write_text(indexnow_key+'\n',encoding='utf8')
 print('Built',len(pages),'public pages and',len(projects),'curated project entries')

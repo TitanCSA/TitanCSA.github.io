@@ -65,13 +65,26 @@ assert (OUT/'assets/social.png').is_file()
 assert (OUT/'assets/site.css').stat().st_size<50_000
 assert (OUT/'assets/catalogue.js').stat().st_size<15_000
 robots=(OUT/'robots.txt').read_text();assert 'Allow: /' in robots and BASE+'sitemap.xml' in robots
+for bot in ('OAI-SearchBot','Claude-SearchBot','Claude-User'):
+    assert f'User-agent: {bot}\n' in robots
 tree=ET.parse(OUT/'sitemap.xml')
 assert {url.findtext('{*}loc') for url in tree.getroot()} == {
     page.canonical for path,page in parsed.items() if path.name!='404.html'
 }
 project_pages={path for path in parsed if path.parent.parent.name=='projects'}
 assert len(project_pages)==5
+editions={row['slug']:row for row in json.loads((OUT/'releases.json').read_text(encoding='utf8'))['editions']}
+assert set(editions)=={path.parent.name for path in project_pages}
+comparison=parsed[(OUT/'guides/windows-input-release-compare/index.html').resolve()]
+reference=(OUT/'llms.txt').read_text(encoding='utf8')
 for path in project_pages:
-    assert parsed[path].canonical==f'{BASE}projects/{path.parent.name}/'
-    assert any(link.endswith('/releases/latest') for link in parsed[path].links)
+    edition=editions[path.parent.name]
+    page=parsed[path]
+    assert page.canonical==edition['overview_url']
+    assert edition['demo_url'] in page.links and edition['demo_url'] in comparison.links
+    assert edition['purchase_url'] in page.links and edition['purchase_url'] in comparison.links
+    assert edition['overview_url'] in reference and edition['demo_url'] in reference
+    app,=[item for item in page.schemas if item.get('@type')=='SoftwareApplication']
+    assert app['offers']['url']==edition['purchase_url'] and app['offers']['price']==edition['price_eur']
+    assert app['offers']['priceCurrency']=='EUR' and f'€{edition["price_eur"]}' in path.read_text(encoding='utf8')
 print('Validated',len(parsed),'HTML files, 60 entries, 10 workflows, metadata, JSON-LD, anchors and asset budgets')
