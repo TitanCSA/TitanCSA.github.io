@@ -73,7 +73,7 @@ for slug, edition in editions.items():
 replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
     f'<tr><th scope="row"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
     f'<td>{escape(e["use"])} <strong>{escape(e["api"])}</strong> {escape(e["note"])}</td>'
-    f'<td><a href="{e["demo_url"]}">{escape(e["name"])} demo {e["demo"]}</a></td>'
+    f'<td><a href="{e["demo_url"]}">{escape(e["name"])} demo {e["demo"]}</a><br>Starts on {escape(e["trial_starts"].lower())}.</td>'
     f'<td><a href="{e["purchase_url"]}">Buy {escape(e["name"])} Release</a> · €{e["price_eur"]} Lifetime</td></tr>'
     for e in editions.values()
 )

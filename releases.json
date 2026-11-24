@@ -7,6 +7,7 @@
       "tag": "v1.4.22.0-demo",
       "use": "Remap supported physical keyboards, mice and controllers in one C++17 integration.",
       "api": "Combined C++17 SDK",
+      "trial_starts": "First capture, controller monitor subscription or raw GIP diagnostic access",
       "note": "Remove overlapping editions before installation. Check the supported device stack and profile."
     },
     {
@@ -15,6 +16,7 @@
       "tag": "v1.0.5.0-demo",
       "use": "Distinguish physical keyboards and mice and remap input from selected devices.",
       "api": "C++17 SDK and optional AutoHotInterceptor integration",
+      "trial_starts": "First successful capture",
       "note": "Try the per-keyboard AutoHotkey v2 guide with two keyboards."
     },
     {
@@ -23,6 +25,7 @@
       "tag": "v1.0.13.0-demo",
       "use": "Inspect and remap supported physical gamepad input, including stick curves and button mappings.",
       "api": "Controller-focused C++17 SDK",
+      "trial_starts": "First capture or monitor subscription",
       "note": "Compatibility varies by controller profile and transport. Check the matching HID, XUSB, XInputHID or GIP documentation."
     },
     {
@@ -31,6 +34,7 @@
       "tag": "v1.0.6.0-demo",
       "use": "Create a new virtual USB keyboard, mouse, controller or supported custom device.",
       "api": "Raw USB/HID C++17 SDK",
+      "trial_starts": "First successful virtual device creation",
       "note": "Start with the signed virtual USB mouse demo. The signed demo includes the WDF-001 teardown fix."
     },
     {
@@ -39,6 +43,7 @@
       "tag": "v2.0.0",
       "use": "Run applications built against the original Interception C API for keyboard and mouse input.",
       "api": "Original interception_* C API with x86/x64 user-mode libraries",
+      "trial_starts": "First successful context creation",
       "note": "Match the library architecture to your application. Remove overlapping Interception editions before installing."
     }
   ]
