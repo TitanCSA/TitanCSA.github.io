@@ -89,6 +89,14 @@ tree=ET.parse(OUT/'sitemap.xml')
 assert {url.findtext('{*}loc') for url in tree.getroot()} == {
     page.canonical for path,page in parsed.items() if path.name!='404.html'
 }
+feed=ET.parse(OUT/'rss.xml').getroot()
+entries=feed.findall('channel/item')
+assert feed.tag=='rss' and feed.get('version')=='2.0' and len(entries)>=10
+assert len(entries)==len({item.findtext('guid') for item in entries})
+for item in entries:
+    url=item.findtext('link')
+    assert item.findtext('guid')==url and url in by_canonical
+    assert item.findtext('title')==by_canonical[url].title
 project_pages={path for path in parsed if path.parent.parent.name=='projects'}
 assert len(project_pages)==5
 editions={row['slug']:row for row in json.loads((OUT/'releases.json').read_text(encoding='utf8'))['editions']}

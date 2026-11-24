@@ -2,6 +2,7 @@
 from pathlib import Path
 from collections import OrderedDict
 from html import escape
+from xml.etree import ElementTree as ET
 import json,re,shutil
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
@@ -147,6 +148,8 @@ def render(title,description,path,body,article=False):
     for variants in translations:
         if path in variants.values():
             structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in variants.items())
+    if not path:
+        structured+=f'<link rel="alternate" type="application/rss+xml" title="TitanCSA guides" href="{BASE}rss.xml">'
     if not path and verification:structured+='<meta name="google-site-verification" content="'+escape(verification,quote=True)+'">'
     skip_label,home_label,nav_label,theme_label=(
         ('Aller au contenu','Accueil TitanCSA','Navigation principale','Changer le thème')
@@ -179,6 +182,23 @@ for path,(title,description,source) in pages.items():
 (OUT/'404.html').write_text(render('Page not found — TitanCSA','Find the TitanCSA project catalogue and first-run guides.','404.html','<h1>Page not found.</h1><p>The address may have changed. <a href="/">Open the project catalogue</a> or <a href="/guides/first-run/">read the first-run guide</a>.</p>',True).replace('index,follow,max-image-preview:large','noindex,follow'),encoding='utf8')
 urls=''.join(f'<url><loc>{BASE+path}</loc><lastmod>{reviewed.get(path,checked)}</lastmod></url>' for path in pages)
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls+'</urlset>',encoding='utf8')
+feed=ET.Element('rss', version='2.0')
+channel=ET.SubElement(feed,'channel')
+ET.SubElement(channel,'title').text='TitanCSA guides'
+ET.SubElement(channel,'link').text=BASE
+ET.SubElement(channel,'description').text='Practical Windows input and device SDK guides from TitanCSA.'
+ET.register_namespace('atom','http://www.w3.org/2005/Atom')
+ET.SubElement(channel,'{http://www.w3.org/2005/Atom}link',href=BASE+'rss.xml',rel='self',type='application/rss+xml')
+for path,(title,description,_) in reversed(pages.items()):
+    if path not in demo_guides | release_guides:
+        continue
+    item=ET.SubElement(channel,'item')
+    ET.SubElement(item,'title').text=title
+    ET.SubElement(item,'link').text=BASE+path
+    ET.SubElement(item,'guid',isPermaLink='true').text=BASE+path
+    ET.SubElement(item,'description').text=description
+ET.indent(feed)
+ET.ElementTree(feed).write(OUT/'rss.xml',encoding='utf-8',xml_declaration=True)
 search_robots=['OAI-SearchBot','Claude-SearchBot','Claude-User']
 (OUT/'robots.txt').write_text(
     'User-agent: *\nAllow: /\n\n'
