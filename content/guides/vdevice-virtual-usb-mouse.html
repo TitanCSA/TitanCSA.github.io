@@ -1,0 +1,18 @@
+<h1>Create a virtual USB mouse on Windows with Vdevice</h1>
+<p class="article-lead">Create a mouse, send a small relative movement and check the result on the Windows desktop.</p>
+<p class="byline">TitanCSA project documentation · Checked 24 November 2026</p>
+<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/VdeviceSetup.exe">Download demo installer</a><a class="button" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/Vdevice-Examples-1.0.6.0.zip">Download mouse and device examples</a></div>
+<h2>Try the mouse panel</h2>
+<p>Use Windows 10 or 11 x64 and an administrator account. The package contains the Microsoft-signed demo 1.0.6.0. Its one-hour allowance starts on the first successful virtual device creation per Windows kernel boot.</p>
+<ol>
+<li>Run <code>VdeviceSetup.exe</code> and choose Install or Reinstall / repair. Restart Windows if setup requests it.</li>
+<li>Extract the examples ZIP and open <code>VdeviceMouseUI.exe</code>. Click <strong>Create device</strong> and wait for <strong>READY</strong>.</li>
+<li>Put the cursor away from the screen edges. Set <code>x</code> to <code>32</code>, <code>y</code> to <code>0</code> and leave buttons released. Click <strong>Send state</strong>. The cursor should move to the right. Windows pointer settings affect the visible distance.</li>
+<li>Choose <strong>Release / neutral</strong> and <strong>Disconnect</strong> when finished. Use the installer’s Uninstall option to remove the demo.</li>
+</ol>
+<h2>Use the same profile from C++</h2>
+<p>The mouse example builds a USB HID descriptor in <code>Device_Config</code>, calls <code>Create_Device</code> and sends reports with <code>Send_Input</code>. Its seven-byte report carries five button bits, signed relative X/Y motion and two wheel values. Read the C++ example at the version used for this guide.</p>
+<p><a href="https://github.com/TitanCSA/Vdevice/blob/v1.0.6.0-demo/Examples/UI/Mouse.cpp">Mouse example source at 1.0.6.0</a> · <a href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/SHA256SUMS.txt">SHA-256 checksums</a></p>
+<h2>Validation</h2>
+<p>For the signed 1.0.6.0 demo, the Windows 11 Hyper-V lab with Secure Boot enabled confirmed that the Windows USB stack consumed mouse reports during the five-device campaign. Cursor movement is the manual check in this guide. The lab did not assert desktop cursor position or application-specific behavior. <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Read the signed release validation</a>.</p>
+<div class="related"><a href="/projects/vdevice/">Vdevice overview and support</a><a href="https://licences.configcsa.com/vdevice">Buy Vdevice Release</a></div>

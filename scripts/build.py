@@ -36,7 +36,7 @@ for (key,title),entries in groups.items():
         search=escape(' '.join(str(p[k]) for k in ['name','description','first_step','kind','category_title']),quote=True)
         tag='tag preview' if p['kind']=='Preview' else 'tag'
         kind=escape(p['kind']);note=f'<span class="start-tag">{escape(p["start_mode"])}</span>' if p['start_without_adding_driver'] else ''
-        issue=f'<a class="known-issue" href="{escape(p["known_issue_url"])}">Open WDF stability finding ↗</a>' if p['known_issue_url'] else ''
+        issue=f'<a class="known-issue" href="{escape(p["known_issue_url"])}">WDF-001 status by edition ↗</a>' if p['known_issue_url'] else ''
         ident='project-'+re.sub(r'[^a-z0-9-]','-',p['name'].lower())
         overview=featured_paths.get(p['url'].rsplit('/',1)[-1])
         overview_link=f'<p><a href="{overview}">Project overview</a></p>' if overview else ''
@@ -50,11 +50,18 @@ pages={
  'guides/first-run/':('A first Windows tool run without an input driver — TitanCSA','Start with Browser Control SDK, read-only Driver Readiness Inspector or offline fixture validation. Prerequisites, exact steps and expected results.','guides/first-run.html'),
  'guides/choose-input/':('Input interception or virtual devices? Choose the Windows path — TitanCSA','Compare physical-device filters, virtual USB creation and diagnostics. Match the SDK edition, device contract and observation path before a live test.','guides/choose-input.html'),
  'guides/read-benchmarks/':('How to read Windows input latency benchmarks — TitanCSA','Understand QPC endpoints, HID/Raw Input/XInput/WinMM receiver contracts, warm-up, tails, invalid runs and the difference between virtual and physical latency.','guides/read-benchmarks.html'),
+ 'guides/vdevice-virtual-usb-mouse/':('Create a virtual USB mouse on Windows with Vdevice — TitanCSA','Try a signed Windows 10/11 virtual USB mouse. Follow the mouse panel, verify movement and find the C++ example.','guides/vdevice-virtual-usb-mouse.html'),
+ 'guides/autohotkey-remap-second-keyboard/':('Remap a second keyboard with AutoHotkey v2 on Windows — TitanCSA','Remap A to B on one selected keyboard. Download the AutoHotkey v2 script and compare results on both keyboards.','guides/autohotkey-remap-second-keyboard.html'),
  'about/evidence/':('About TitanCSA projects, evidence and support','Understand TitanCSA project evidence, separate SDK and driver licences, engineering previews, known issues, support and private vulnerability reporting.','about/evidence.html'),
  'fr/pilotes-entree-windows/':('Pilotes d’entrée Windows · Choisir, essayer et acheter | TitanCSA','Comparez Interceptor, Interceptor Keyboard & Mouse, Interceptor Gamepad & Controller, Vdevice et Interception V2. Démonstrations, compatibilité et licences.','guides/windows-input-fr.html')}
 for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
+demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/'}
+reviewed={
+    **dict.fromkeys(updated,featured_date),
+    **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
+}
 purchase_terms='<p class="subtle">Licensed Release at €400 per edition, paid once. Online activation is required after installation and again after a driver reload or Windows restart.</p>'
 
 def render(title,description,path,body,article=False):
@@ -62,8 +69,8 @@ def render(title,description,path,body,article=False):
     language='fr' if path.startswith('fr/') else 'en'
     schema={'@context':'https://schema.org','@type':'TechArticle' if article else 'WebSite','name':title,'description':description,'url':canonical,'inLanguage':language,'publisher':{'@type':'Organization','name':'TitanCSA','url':BASE}}
     if article:
-        published=featured_date if path.startswith(('projects/','fr/')) else '2026-11-18'
-        modified=featured_date if path in updated else checked
+        published=reviewed[path] if path in demo_guides else featured_date if path.startswith(('projects/','fr/')) else '2026-11-18'
+        modified=reviewed.get(path,checked)
         schema.update(datePublished=published,dateModified=modified,author={'@type':'Organization','name':'TitanCSA'})
     schemas=[schema]
     if not path:schemas.append({'@context':'https://schema.org','@type':'ItemList','name':'TitanCSA public project catalogue','numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
@@ -91,7 +98,7 @@ for path,(title,description,source) in pages.items():
     assert '{{' not in body
     target=OUT/path/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(title,description,path,body,bool(path)),encoding='utf8')
 (OUT/'404.html').write_text(render('Page not found — TitanCSA','Find the TitanCSA project catalogue and first-run guides.','404.html','<h1>Page not found.</h1><p>The address may have changed. <a href="/">Open the project catalogue</a> or <a href="/guides/first-run/">read the first-run guide</a>.</p>',True).replace('index,follow,max-image-preview:large','noindex,follow'),encoding='utf8')
-urls=''.join(f'<url><loc>{BASE+path}</loc><lastmod>{featured_date if path in updated else checked}</lastmod></url>' for path in pages)
+urls=''.join(f'<url><loc>{BASE+path}</loc><lastmod>{reviewed.get(path,checked)}</lastmod></url>' for path in pages)
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls+'</urlset>',encoding='utf8')
 (OUT/'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: '+BASE+'sitemap.xml\nSitemap: '+BASE+'TitanCSA-Benchmarks/sitemap.xml\n',encoding='utf8')
 (OUT/'projects.json').write_bytes((ROOT/'projects.json').read_bytes())
