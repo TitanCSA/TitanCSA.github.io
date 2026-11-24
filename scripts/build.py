@@ -79,13 +79,16 @@ pages={
  'guides/autohotkey-remap-second-keyboard/':('Remap a second keyboard with AutoHotkey v2 on Windows — TitanCSA','Remap A to B on one selected keyboard. Download the AutoHotkey v2 script and compare results on both keyboards.','guides/autohotkey-remap-second-keyboard.html'),
  'guides/windows-input-release-compare/':('Compare Windows input drivers and Lifetime editions — TitanCSA','Compare Interceptor, Vdevice and Interception V2. Find the matching API, signed demo, device scope and commercial edition.','guides/windows-input-release-compare.html'),
  'guides/release-activation-help/':('Install and activate a TitanCSA Windows Release — error help','Resolve missing activation interfaces, invalid keys and HTTPS failures. Find the correct Windows Release ZIP, SDK and driver version.','guides/release-activation-help.html'),
+ 'guides/interception-v2-migration/':('Migrate an Interception application to Interception V2 — TitanCSA','Migrate an application using interception.dll, check x86 or x64 library compatibility and list keyboard and mouse hardware IDs.','guides/interception-v2-migration.html'),
+ 'fr/activation-release/':('Installer et activer une édition Release TitanCSA sous Windows','Résoudre les erreurs d’activation de Vdevice et Interceptor, vérifier les versions du pilote et du SDK et préparer un rapport de support.','guides/release-activation-fr.html'),
  'about/evidence/':('About TitanCSA projects, evidence and support','Understand TitanCSA project evidence, separate SDK and driver licences, engineering previews, known issues, support and private vulnerability reporting.','about/evidence.html'),
  'fr/pilotes-entree-windows/':('Pilotes d’entrée Windows · Choisir, essayer et acheter | TitanCSA','Comparez Interceptor, Interceptor Keyboard & Mouse, Interceptor Gamepad & Controller, Vdevice et Interception V2. Démonstrations, compatibilité et licences.','guides/windows-input-fr.html')}
 for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/'}
-release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/'}
+release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','fr/activation-release/'}
+activation_translations={'en':'guides/release-activation-help/','fr':'fr/activation-release/'}
 reviewed={
     **dict.fromkeys(updated,featured_date),
     **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
@@ -114,6 +117,8 @@ def render(title,description,path,body,article=False):
         })
     if not path:schemas.append({'@context':'https://schema.org','@type':'ItemList','name':'TitanCSA public project catalogue','numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
     structured=''.join('<script type="application/ld+json">'+json.dumps(s,ensure_ascii=True).replace('<','\\u003c')+'</script>' for s in schemas)
+    if path in activation_translations.values():
+        structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in activation_translations.items())
     if not path and verification:structured+='<meta name="google-site-verification" content="'+escape(verification,quote=True)+'">'
     skip_label,home_label,nav_label,theme_label=(
         ('Aller au contenu','Accueil TitanCSA','Navigation principale','Changer le th?me')
@@ -160,6 +165,8 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     '## Choose, try and activate',
     f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',
     f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
+    f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
+    f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
     f'- [Virtual USB mouse tutorial]({BASE}guides/vdevice-virtual-usb-mouse/)',
     f'- [Per-device AutoHotkey tutorial]({BASE}guides/autohotkey-remap-second-keyboard/)',
     f'- [Benchmark results and scope]({BASE}TitanCSA-Benchmarks/)', '', '## Products']

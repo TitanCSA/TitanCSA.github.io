@@ -1,0 +1,15 @@
+<h1>Installer et activer une édition Release TitanCSA</h1>
+<p class="article-lead">Vérifie le ZIP, l’état du pilote et la réponse du serveur pour identifier la cause d’un échec d’activation.</p>
+<p><a href="/guides/release-activation-help/" lang="en">Read the English version</a></p>
+<h2>Installer le bon ZIP</h2>
+<ol><li>Extrais le ZIP commercial fourni après l’achat. Utilise son installateur, son outil d’activation et son SDK.</li><li>Lance l’installation en administrateur. Redémarre Windows si l’installateur le demande. Avant de changer entre éditions Interceptor qui se chevauchent, suis la procédure de désinstallation de l’ancienne édition.</li><li>Ouvre l’outil d’activation et utilise la clé de cette édition. La vérification en ligne autorise le chargement actuel du pilote. Répète-la après un redémarrage ou un rechargement du pilote.</li></ol>
+<h2>Comprendre le message</h2>
+<div class="table-scroll"><table><thead><tr><th scope="col">Message</th><th scope="col">Vérification</th></tr></thead><tbody>
+<tr><td>Vdevice, erreur Windows 2, <code>driver_open</code> / <code>activation_interface_unavailable</code></td><td>Windows ne trouve pas l’interface d’activation Release. Vérifie l’édition du pilote détecté. Ouvre <code>VdeviceReleaseSetup.exe</code> depuis le ZIP commercial, choisis la réparation ou la réinstallation, puis redémarre si nécessaire.</td></tr>
+<tr><td><code>invalid_key_format</code></td><td>Recopie la clé complète remise après l’achat et vérifie qu’elle correspond à l’édition installée.</td></tr>
+<tr><td><code>invalid_license</code> ou clé désactivée</td><td>Reprends la clé depuis la livraison de cette édition. Si le serveur la refuse toujours, contacte le support avec le message exact.</td></tr>
+<tr><td>Erreur HTTPS, de proxy ou délai dépassé</td><td>Vérifie la connexion et les paramètres de certificats du PC. Lance le diagnostic réseau sans clé si l’aide de l’outil le propose.</td></tr>
+</tbody></table></div>
+<h2>Préparer un rapport de support</h2>
+<p>Indique le nom du ZIP, la version et le build de Windows, la version du pilote installé, celle du SDK et les champs <code>stage</code>, <code>reason</code> et <code>error</code>. Pour Vdevice, l’installateur console accepte <code>VdeviceReleaseSetupConsole.exe /diagnose</code>. Retire la clé et les données personnelles du rapport partagé.</p>
+<div class="related"><a href="/fr/pilotes-entree-windows/">Choisir une édition</a><a href="/about/evidence/">Support officiel TitanCSA</a></div>

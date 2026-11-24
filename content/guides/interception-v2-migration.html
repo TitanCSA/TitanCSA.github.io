@@ -1,0 +1,20 @@
+<h1>Migrate an original Interception application to Interception V2</h1>
+<p class="article-lead">Check the driver, DLL architecture and input sources before trying your existing Windows application.</p>
+<p class="byline">Publisher documentation · Demo ZIP checked 24 November 2026</p>
+<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Interception-V2/releases/download/v2.0.0/Interception-V2.zip">Download Interception V2 demo 2.0.0.0</a><a class="button" href="/assets/interception-device-inventory.c" download>Download C hardware-ID example</a></div>
+<h2>Check the Windows and application architecture</h2>
+<p>The package targets Windows 10 version 1709 or later and Windows 11 x64. It supports compatible keyboard and mouse HID paths. The original <code>interception_*</code> C API is available to 32-bit and 64-bit applications. Use the DLL and import library that match the application architecture.</p>
+<ol>
+<li>In a test environment, close your existing capture application. Follow the removal instructions of the old Interception driver or overlapping Interceptor edition first, then restart Windows.</li>
+<li>Extract the demo ZIP. From an administrator Command Prompt opened in the extracted <code>Interception</code> folder, run the bundled setup.</li>
+<li>Restart if requested. With a single capture application open, test your intended keyboard or mouse and confirm the normal input reaches a local editor. For a mapped key, check press and release, then exit and confirm ordinary input is restored.</li>
+</ol>
+<pre><code>"command line installer\install-interception.exe" /install</code></pre>
+<p>Use <code>/uninstall</code> with the same installer to remove the demo. If requested, restart Windows to finish removal. In the demo, the first successful context starts the one-hour allowance for that Windows boot.</p>
+<h2>Check hardware IDs before remapping</h2>
+<p>The downloadable C example opens a context, lists available keyboard and mouse hardware IDs and destroys the context. It sets no input filter. Device numbers can change after reboot or reconnect, so re-identify the device before applying a mapping.</p>
+<p>Save the C file in the extracted <code>Interception</code> directory and open the Visual Studio developer command prompt for your application's architecture. This is the x64 build. For x86, use the x86 developer prompt and replace both <code>library\x64</code> paths with <code>library\x86</code>.</p>
+<pre><code>cl /nologo /W4 /I library interception-device-inventory.c /link /LIBPATH:library\x64 interception.lib
+copy /y library\x64\interception.dll .</code></pre>
+<p>Run the sample as administrator after installing the demo. A supported fixture should produce a line with its device class, number and hardware ID. The sample compiled against both import libraries in the signed-demo ZIP. Compatibility with a specific application still needs a live test with that application's devices and filters.</p>
+<div class="related"><a href="/projects/interception-v2/">Interception V2 overview</a><a href="https://licences.configcsa.com/interception-v2">Buy Interception V2 Release</a><a href="/guides/windows-input-release-compare/">Compare driver editions</a></div>
