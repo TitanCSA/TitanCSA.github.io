@@ -1,0 +1,18 @@
+<h1>Test and remap a physical gamepad on Windows</h1>
+<p class="article-lead">Use the Interceptor Gamepad &amp; Controller demo to identify your controller's input path, then try the included stick deadzone example.</p>
+<p class="byline">Publisher documentation · Signed demo and examples checked 24 November 2026</p>
+<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/releases/download/v1.0.13.0-demo/InterceptorSetup.exe">Download demo installer</a><a class="button" href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/releases/download/v1.0.13.0-demo/Interceptor-Gamepad-Controller-1.0.13.0-Examples.zip">Download controller examples</a></div>
+<h2>Identify the input path Windows sees</h2>
+<ol>
+<li>Use Windows 10 version 1709 or later or Windows 11 x64. Remove overlapping combined Interceptor installations before switching editions. Follow the installation and restart instructions for the controller edition.</li>
+<li>Connect your gamepad using the exact connection you want to test. Extract the examples ZIP and open <code>InterceptorExampleUI.exe</code> as administrator.</li>
+<li>Select the family tab and move one control at a time. Check that the viewer changes for your controller and note whether the source appears as HID, XInput/XUSB, XInputHID or GIP. Use <strong>Diagnose</strong> when the device is present but no reports appear.</li>
+<li>Use <strong>Stop</strong> and close the viewer before running a remapping example. Use one capture application at a time.</li>
+</ol>
+<p>Controller names such as Xbox, DualShock 4 or DualSense describe product families. Your cable, receiver, firmware and Windows driver determine the input path. A supported USB configuration and a Bluetooth configuration can behave differently. <a href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/blob/v1.0.13.0-demo/docs/COMPATIBILITY.md">Read the versioned compatibility guide</a>.</p>
+<h2>Try a stick deadzone</h2>
+<p>In a local controller testing application, observe the unmodified movement first. Then run <code>ExamplesConsole\Controller_04_Deadzone_50.exe</code> from the examples ZIP. Move the same stick slowly and compare the output with your baseline. Close the example and confirm normal input returns. The one-hour demo allowance is shared across apps for the current Windows kernel boot.</p>
+<p><a href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/blob/v1.0.13.0-demo/ExamplesConsole/Controller_04_Deadzone_50.cpp">Read the C++ deadzone example</a> · <a href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/releases/download/v1.0.13.0-demo/SHA256SUMS.txt">Check downloaded files</a>.</p>
+<h2>What was validated</h2>
+<p>The published 1.0.13.0 release documents Microsoft signature checks and separate user-mode fixtures. The physical-controller comparison above is a test to perform on your own controller and connection. <a href="https://github.com/TitanCSA/Interceptor-Gamepad-Controller/blob/v1.0.13.0-demo/docs/DEMO-VALIDATION.md">Read the published validation scope</a>.</p>
+<div class="related"><a href="/projects/interceptor-gamepad-controller/">Controller SDK and support</a><a href="https://licences.configcsa.com/interceptor-gamepad-controller">Buy Gamepad &amp; Controller Release</a></div>

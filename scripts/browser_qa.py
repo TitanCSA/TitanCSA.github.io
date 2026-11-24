@@ -6,7 +6,9 @@ from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1];out=ROOT/'.local/qa';out.mkdir(parents=True,exist_ok=True)
 base=sys.argv[1].rstrip('/')+'/' if len(sys.argv)>1 else 'http://127.0.0.1:8778/'
 errors=[];checks=[]
-routes=['','guides/first-run/','guides/choose-input/','guides/read-benchmarks/','about/evidence/']
+routes=['','guides/first-run/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
+        'guides/windows-input-release-compare/','guides/release-activation-help/',
+        'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','fr/activation-release/']
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='C:/Program Files/Google/Chrome/Application/chrome.exe',headless=True)
     for width in [1440,390]:
@@ -41,6 +43,11 @@ with sync_playwright() as p:
     page.goto(base,wait_until='networkidle');assert page.locator('[data-project]:visible').count()==60
     page.locator('a[href="/guides/first-run/"]').first.click()
     assert page.url.endswith('/guides/first-run/') and page.locator('h1').inner_text().startswith('A useful first run')
+    page.goto(base+'guides/windows-input-release-compare/',wait_until='domcontentloaded')
+    checkout=page.locator('tbody a[href^="https://licences.configcsa.com/"]')
+    assert checkout.count()==5 and checkout.first.is_visible()
+    assert page.locator('tbody').inner_text().count('€400 Lifetime')==5
+    assert page.locator('a[href="/guides/release-activation-help/"]').is_visible()
     page.close();browser.close()
 assert not errors,errors
 report={'verified_utc':datetime.now(timezone.utc).isoformat(),'base':base,'pages':checks,'search_filter_reset':'passed desktop/mobile','preview_scope':'passed','dark_mode':'passed','javascript_disabled':'all 60 entries and guides accessible','page_errors':errors,'limits':'Layout/interaction QA in existing headless Chrome; not product, driver, search indexing or real-user performance qualification'}
