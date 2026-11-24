@@ -71,10 +71,10 @@ for slug, edition in editions.items():
     replacements[f'{key}_DEMO_VERSION']=escape(edition['demo'])
     replacements[f'{key}_PURCHASE_URL']=escape(edition['purchase_url'],quote=True)
 replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
-    f'<tr><th scope="row"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
-    f'<td>{escape(e["use"])} <strong>{escape(e["api"])}</strong> {escape(e["note"])}</td>'
-    f'<td><a href="{e["demo_url"]}">{escape(e["name"])} demo {e["demo"]}</a><br>Starts on {escape(e["trial_starts"])}.</td>'
-    f'<td><a href="{e["purchase_url"]}">Buy {escape(e["name"])} Release</a> · €{e["price_eur"]} Lifetime</td></tr>'
+    f'<tr role="row"><th scope="row" role="rowheader"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
+    f'<td role="cell">{escape(e["use"])} <strong>{escape(e["api"])}</strong> {escape(e["note"])}</td>'
+    f'<td role="cell"><a href="{e["demo_url"]}">{escape(e["name"])} demo {e["demo"]}</a><br>Starts on {escape(e["trial_starts"])}.</td>'
+    f'<td role="cell"><a href="{e["purchase_url"]}">Buy {escape(e["name"])} Release</a><br><strong>€{e["price_eur"]} Lifetime</strong></td></tr>'
     for e in editions.values()
 )
 pages={

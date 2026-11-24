@@ -50,6 +50,10 @@ with sync_playwright() as p:
     checkout=page.locator('tbody a[href^="https://licences.configcsa.com/"]')
     assert checkout.count()==5 and checkout.first.is_visible()
     assert page.locator('tbody').inner_text().count('€400 Lifetime')==5
+    assert page.get_by_role('table',name='Windows input driver editions').get_by_role('rowheader').count()==5
+    for link in checkout.all():
+        box=link.bounding_box()
+        assert box and box['x']>=0 and box['x']+box['width']<=390, 'Checkout link is clipped on mobile'
     assert page.locator('a[href="/guides/release-activation-help/"]').is_visible()
     page.locator('main a[lang="fr"]').click()
     assert page.url.endswith('/fr/pilotes-entree-windows/') and page.locator('html').get_attribute('lang')=='fr'
