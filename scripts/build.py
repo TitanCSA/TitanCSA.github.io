@@ -70,14 +70,16 @@ replacements['SUPPORT_ISSUE_FORMS']=''.join(
     f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'
     for e in editions.values()
 )
-replacements['OTHER_SDK_REGISTRY_ROWS']='\n'.join(
-    f'<tr><th scope="row"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
-    + (f'<td><a href="https://central.sonatype.com/artifact/io.github.titancsa/{slug}/1.0.0"><code>io.github.titancsa:{slug}</code></a></td>' if slug!='interceptor' else '<td>—</td>')
-    + f'<td><a href="https://packagist.org/packages/titancsa/{slug}"><code>titancsa/{slug}</code></a></td>'
-    + (f'<td><a href="https://rubygems.org/gems/{slug}/versions/1.0.0"><code>{slug}</code></a></td>' if slug!='interceptor' else '<td>—</td>')
-    + '</tr>'
-    for slug,e in editions.items()
-)
+language_package_rows=[]
+for slug,edition in editions.items():
+    java_version,gem=('1.0.1','interceptor-multilang') if slug=='interceptor' else ('1.0.0',slug)
+    language_package_rows.append(
+        f'<tr><th scope="row"><a href="{edition["overview_url"]}">{escape(edition["name"])}</a></th>'
+        f'<td><a href="https://central.sonatype.com/artifact/io.github.titancsa/{slug}/{java_version}"><code>io.github.titancsa:{slug}:{java_version}</code></a></td>'
+        f'<td><a href="https://packagist.org/packages/titancsa/{slug}"><code>titancsa/{slug}</code></a> 1.0.0</td>'
+        f'<td><a href="https://rubygems.org/gems/{gem}/versions/1.0.0"><code>{gem}</code></a> 1.0.0</td></tr>'
+    )
+replacements['OTHER_SDK_REGISTRY_ROWS']='\n'.join(language_package_rows)
 for slug, edition in editions.items():
     key=slug.upper().replace('-','_')
     replacements[f'{key}_DEMO_URL']=escape(edition['demo_url'],quote=True)
@@ -126,6 +128,7 @@ reviewed={
     **dict.fromkeys(updated,featured_date),
     **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
     **dict.fromkeys(release_guides | {'','guides/choose-input/','about/evidence/',*(f'projects/{slug}/' for slug in editions)},release_date),
+    **dict.fromkeys({'guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/'},'2026-11-25'),
 }
 purchase_terms='<p class="subtle">Licensed Release at €400 per edition, paid once. Online activation is required after installation and again after a driver reload or Windows restart.</p>'
 publisher={
