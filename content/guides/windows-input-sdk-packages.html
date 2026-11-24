@@ -1,0 +1,20 @@
+<h1>Install TitanCSA Windows input SDK packages</h1>
+<p class="article-lead">Find published packages for Node.js, PowerShell and native C++. Then install the matching Windows driver from the product's release.</p>
+<p class="byline">Publisher documentation · Registry artifacts checked 24 November 2026</p>
+<h2>Choose the binding for your project</h2>
+<div class="table-scroll"><table><thead><tr><th scope="col">Project</th><th scope="col">Published package</th><th scope="col">Install in your development environment</th></tr></thead><tbody>
+<tr><th scope="row"><a href="/projects/interceptor/">Interceptor</a></th><td><a href="https://www.npmjs.com/package/interceptor-sdk/v/1.0.0">interceptor-sdk 1.0.0</a></td><td><code>npm install interceptor-sdk@1.0.0</code></td></tr>
+<tr><th scope="row"><a href="/projects/interceptor-keyboard-mouse/">Interceptor Keyboard &amp; Mouse</a></th><td><a href="https://www.npmjs.com/package/interceptor-keyboard-mouse-sdk/v/1.0.0">interceptor-keyboard-mouse-sdk 1.0.0</a></td><td><code>npm install interceptor-keyboard-mouse-sdk@1.0.0</code></td></tr>
+<tr><th scope="row"><a href="/projects/interceptor-gamepad-controller/">Interceptor Gamepad &amp; Controller</a></th><td><a href="https://www.npmjs.com/package/interceptor-gamepad-controller/v/1.0.0">interceptor-gamepad-controller 1.0.0</a></td><td><code>npm install interceptor-gamepad-controller@1.0.0</code></td></tr>
+<tr><th scope="row"><a href="/projects/vdevice/">Vdevice</a></th><td><a href="https://www.powershellgallery.com/packages/Vdevice/1.0.0">Vdevice PowerShell module 1.0.0</a></td><td><code>Install-Module Vdevice -RequiredVersion 1.0.0 -Scope CurrentUser</code></td></tr>
+<tr><th scope="row">Vdevice native C++</th><td><a href="https://www.nuget.org/packages/Vdevice.Native/1.0.5">Vdevice.Native 1.0.5</a></td><td>Use NuGet from a matching Windows native project. For the demo 1.0.6.0 source SDK, use its own release assets.</td></tr>
+<tr><th scope="row"><a href="/projects/interception-v2/">Interception V2</a></th><td><a href="https://www.nuget.org/packages/Interception-V2.Native/2.0.0">Interception-V2.Native 2.0.0</a></td><td>Use the original <code>interception_*</code> C API and match the library architecture to your application.</td></tr>
+</tbody></table></div>
+<p>Use Node.js 20 or later on Windows x64 for the three npm bindings. The Vdevice module requires PowerShell 7.4 or later. The SDK package version and the Windows driver version are separate. A registry installation provides the SDK files. Use the matching demo or commercial ZIP for driver installation and activation.</p>
+<h2>Start with a known result</h2>
+<ul>
+<li><a href="/guides/vdevice-virtual-usb-mouse/">Try the Vdevice mouse example</a> to confirm the Windows device path.</li>
+<li><a href="/guides/interception-v2-migration/">Compile the Interception V2 device inventory</a> with the x86 or x64 libraries from the signed demo.</li>
+<li><a href="/guides/windows-input-release-compare/">Compare the driver demos and commercial packages</a> before switching editions.</li>
+</ul>
+<p>The checks for this page covered registry availability and archive contents. The three npm downloads also matched the registry integrity values. Live device support depends on the installed driver, operating system and device profile. <a href="https://github.com/TitanCSA/sdk-packages">See the publisher's SDK package sources and licences</a>.</p>

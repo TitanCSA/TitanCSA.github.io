@@ -80,6 +80,7 @@ pages={
  'guides/windows-input-release-compare/':('Compare Windows input drivers and Lifetime editions — TitanCSA','Compare Interceptor, Vdevice and Interception V2. Find the matching API, signed demo, device scope and commercial edition.','guides/windows-input-release-compare.html'),
  'guides/release-activation-help/':('Install and activate a TitanCSA Windows Release — error help','Resolve missing activation interfaces, invalid keys and HTTPS failures. Find the correct Windows Release ZIP, SDK and driver version.','guides/release-activation-help.html'),
  'guides/interception-v2-migration/':('Migrate an Interception application to Interception V2 — TitanCSA','Migrate an application using interception.dll, check x86 or x64 library compatibility and list keyboard and mouse hardware IDs.','guides/interception-v2-migration.html'),
+ 'guides/windows-input-sdk-packages/':('Install Windows input SDK packages for Node.js, PowerShell and C++ — TitanCSA','Find registry-verified Interceptor, Vdevice and Interception V2 SDK packages. Match the SDK to the installed Windows driver.','guides/windows-input-sdk-packages.html'),
  'fr/activation-release/':('Installer et activer une édition Release TitanCSA sous Windows','Résoudre les erreurs d’activation de Vdevice et Interceptor, vérifier les versions du pilote et du SDK et préparer un rapport de support.','guides/release-activation-fr.html'),
  'about/evidence/':('About TitanCSA projects, evidence and support','Understand TitanCSA project evidence, separate SDK and driver licences, engineering previews, known issues, support and private vulnerability reporting.','about/evidence.html'),
  'fr/pilotes-entree-windows/':('Pilotes d’entrée Windows · Choisir, essayer et acheter | TitanCSA','Comparez Interceptor, Interceptor Keyboard & Mouse, Interceptor Gamepad & Controller, Vdevice et Interception V2. Démonstrations, compatibilité et licences.','guides/windows-input-fr.html')}
@@ -87,7 +88,7 @@ for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/'}
-release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','fr/activation-release/'}
+release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','fr/activation-release/'}
 activation_translations={'en':'guides/release-activation-help/','fr':'fr/activation-release/'}
 reviewed={
     **dict.fromkeys(updated,featured_date),
@@ -142,7 +143,8 @@ for path,(title,description,source) in pages.items():
         links=(
             f'<p>Signed demo <a href="{edition["demo_url"]}">{edition["demo"]}</a>. '
             '<a href="/guides/windows-input-release-compare/">Compare editions</a> · '
-            '<a href="/guides/release-activation-help/">Installation and activation help</a>.</p>'
+            '<a href="/guides/release-activation-help/">Installation and activation help</a> · '
+            '<a href="/guides/windows-input-sdk-packages/">SDK packages</a>.</p>'
         )
         body=body.replace('{{PURCHASE_URL}}',edition['purchase_url']).replace('{{PURCHASE_TERMS}}',purchase_terms+links)
     assert '{{' not in body
@@ -167,6 +169,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
     f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
+    f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
     f'- [Virtual USB mouse tutorial]({BASE}guides/vdevice-virtual-usb-mouse/)',
     f'- [Per-device AutoHotkey tutorial]({BASE}guides/autohotkey-remap-second-keyboard/)',
     f'- [Benchmark results and scope]({BASE}TitanCSA-Benchmarks/)', '', '## Products']
