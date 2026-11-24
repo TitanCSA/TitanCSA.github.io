@@ -1,0 +1,16 @@
+<h1>Remapper un deuxième clavier avec AutoHotkey v2 sous Windows</h1>
+<p class="article-lead">Fais produire B à la touche A sur un clavier précis. La même touche continue de produire A sur ton autre clavier.</p>
+<p class="byline">Documentation TitanCSA · Paquet AutoHotInterceptor 1.0.0 vérifié le 24 novembre 2026</p>
+<p><a href="/guides/autohotkey-remap-second-keyboard/" lang="en">Read the English guide</a></p>
+<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/AutoHotInterceptor/releases/download/v1.0.0/AutoHotInterceptor-1.0.0-win64.zip">Télécharger AutoHotInterceptor 1.0.0</a><a class="button" href="/assets/remap-selected-keyboard.ahk" download>Télécharger le script AutoHotkey v2</a></div>
+<h2>Identifier et remapper le bon clavier</h2>
+<ol>
+<li>Connecte deux claviers pris en charge et extrais le ZIP complet. Lance <code>AutoHotInterceptor.exe</code> et choisis <strong>Install / repair driver</strong>. Redémarre Windows si demandé.</li>
+<li>Choisis <strong>AutoHotkey v2</strong> et ouvre le moniteur d’entrée. Appuie sur A sur chaque clavier et relève l’identifiant du clavier à remapper. Ferme le moniteur avant de lancer le script.</li>
+<li>Enregistre le script dans <code>AHK v2</code>, à côté du dossier <code>Lib</code>. Choisis <strong>Run a script</strong> dans le lanceur, sélectionne le fichier et accepte la demande administrateur. Saisis l’identifiant relevé. Si un clavier a été reconnecté, relève à nouveau son identifiant.</li>
+<li>Ouvre le Bloc-notes. Appuie sur A sur le clavier sélectionné pour obtenir B. Sur le deuxième clavier, vérifie que A donne toujours A. Utilise F8 ou quitte le script depuis son icône pour rétablir les entrées habituelles.</li>
+</ol>
+<p>Le ZIP contient AutoHotkey, les DLL et l’installateur de la démo Keyboard &amp; Mouse. La démo dure une heure par démarrage du noyau Windows. L’ouverture du moniteur peut lancer le compteur. <a href="https://github.com/TitanCSA/AutoHotInterceptor/releases/download/v1.0.0/SHA256SUMS.txt">Empreintes SHA-256</a>.</p>
+<h2>Ce qui a été vérifié</h2>
+<p>Dans le test AutoHotInterceptor sous Windows 11, un observateur Raw Input a confirmé le changement A vers B sur un clavier de test et le passage normal des entrées sur l’autre. La validation de deux claviers physiques et du script de sélection reste le test à réaliser avec ton matériel. <a href="https://github.com/TitanCSA/AutoHotInterceptor/blob/v1.0.0/docs/VALIDATION.md">Lire le périmètre du test publié</a>.</p>
+<div class="related"><a href="/fr/pilotes-entree-windows/">Comparer les éditions</a><a href="https://licences.configcsa.com/interceptor-keyboard-mouse">Acheter Interceptor Keyboard &amp; Mouse Release</a></div>

@@ -10,7 +10,8 @@ routes=['','guides/first-run/','guides/choose-input/','guides/read-benchmarks/',
         'guides/windows-input-release-compare/','guides/release-activation-help/',
         'guides/interception-v2-migration/','guides/windows-input-sdk-packages/',
         'guides/verify-windows-driver-package/','guides/vdevice-custom-hid-test/',
-        'fr/activation-release/','fr/pilotes-entree-windows/']
+        'fr/activation-release/','fr/pilotes-entree-windows/',
+        'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/']
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='C:/Program Files/Google/Chrome/Application/chrome.exe',headless=True)
     for width in [1440,390]:

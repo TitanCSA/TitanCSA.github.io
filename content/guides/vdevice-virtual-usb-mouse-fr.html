@@ -1,0 +1,19 @@
+<h1>Créer une souris USB virtuelle avec Vdevice sous Windows</h1>
+<p class="article-lead">Crée une souris avec la démo signée, puis envoie un déplacement relatif et vérifie le résultat sur le bureau Windows.</p>
+<p class="byline">Documentation TitanCSA · Démo Vdevice 1.0.6.0 vérifiée le 24 novembre 2026</p>
+<p><a href="/guides/vdevice-virtual-usb-mouse/" lang="en">Read the English guide</a></p>
+<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/VdeviceSetup.exe">Télécharger l’installateur de la démo</a><a class="button" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/Vdevice-Examples-1.0.6.0.zip">Télécharger les exemples</a></div>
+<h2>Essayer le panneau de la souris</h2>
+<p>Utilise Windows 10 ou 11 x64 avec les droits administrateur. La démo signée par Microsoft dure une heure par démarrage du noyau Windows, à partir du premier périphérique virtuel créé.</p>
+<ol>
+<li>Lance <code>VdeviceSetup.exe</code>, puis choisis l’installation ou la réparation. Redémarre Windows si l’installateur le demande.</li>
+<li>Extrais le ZIP des exemples et ouvre <code>VdeviceMouseUI.exe</code>. Clique sur <strong>Create device</strong> et attends l’état <strong>READY</strong>.</li>
+<li>Éloigne le pointeur du bord de l’écran. Règle <code>x</code> sur <code>32</code> et <code>y</code> sur <code>0</code>. Laisse les boutons relâchés, puis clique sur <strong>Send state</strong>. Le pointeur doit se déplacer vers la droite. La distance visible dépend des réglages Windows.</li>
+<li>Clique sur <strong>Release / neutral</strong> puis sur <strong>Disconnect</strong> pour terminer. L’installateur permet de retirer la démo.</li>
+</ol>
+<h2>Reprendre le même profil en C++</h2>
+<p>L’exemple configure le descripteur USB HID avec <code>Device_Config</code>, crée le périphérique avec <code>Create_Device</code>, puis envoie un rapport de sept octets avec <code>Send_Input</code>. Le rapport contient cinq bits de boutons, les déplacements relatifs X/Y signés et deux valeurs de molette.</p>
+<p><a href="https://github.com/TitanCSA/Vdevice/blob/v1.0.6.0-demo/Examples/UI/Mouse.cpp">Lire le code de la souris pour la démo 1.0.6.0</a> · <a href="/guides/verify-windows-driver-package/">Vérifier le ZIP et le catalogue signé (guide en anglais)</a></p>
+<h2>Ce qui a été vérifié</h2>
+<p>La campagne Windows 11 Hyper-V avec Secure Boot a confirmé que la pile USB de Windows consommait les rapports de la souris dans les essais des cinq profils. Le déplacement du pointeur et le comportement de ton application restent à vérifier avec les étapes ci-dessus. <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Voir la validation publiée avec la démo</a>.</p>
+<div class="related"><a href="/fr/pilotes-entree-windows/">Comparer les éditions</a><a href="https://licences.configcsa.com/vdevice">Acheter Vdevice Release</a></div>
