@@ -1,4 +1,4 @@
-name: Verify the Interception V2 documentation sample
+name: Verify the Windows SDK documentation samples
 
 on:
   push:
@@ -6,10 +6,12 @@ on:
     paths:
       - '.github/workflows/sdk-examples.yml'
       - 'assets/interception-device-inventory.c'
+      - 'assets/vdevice-hid-test.cpp'
   pull_request:
     paths:
       - '.github/workflows/sdk-examples.yml'
       - 'assets/interception-device-inventory.c'
+      - 'assets/vdevice-hid-test.cpp'
   workflow_dispatch:
 
 permissions:
@@ -60,4 +62,29 @@ jobs:
           cmake -S $work -B $build -G 'Visual Studio 17 2022' -A $env:V2_GENERATOR_PLATFORM "-DABI=$env:V2_ABI"
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cmake --build $build --config Release
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+  vdevice-hid:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile the HID fixture against the pinned Vdevice demo SDK
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $work = Join-Path $env:RUNNER_TEMP 'vdevice-hid-sample'
+          New-Item -ItemType Directory -Path $work | Out-Null
+          $zip = Join-Path $work 'Vdevice-SDK-1.0.6.0.zip'
+          $release = 'https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo'
+          Invoke-WebRequest "$release/Vdevice-SDK-1.0.6.0.zip" -OutFile $zip
+          $proof = Get-Content -LiteralPath assets/vdevice-hid-test-20261124.json -Raw | ConvertFrom-Json
+          if ((Get-FileHash -LiteralPath $zip).Hash -ne $proof.sdk_zip_sha256) { throw 'Demo SDK checksum mismatch' }
+          Expand-Archive -LiteralPath $zip -DestinationPath $work
+          Copy-Item -LiteralPath assets/vdevice-hid-test.cpp -Destination $work
+          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'
+          $studio = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (!$studio) { throw 'Visual Studio C++ desktop tools are required' }
+          & (Join-Path $studio 'Common7/Tools/Launch-VsDevShell.ps1') -Arch amd64 -HostArch amd64 -SkipAutomaticLocation
+          Set-Location -LiteralPath $work
+          cl /nologo /W4 /WX /MT /std:c++17 /EHsc /utf-8 /permissive- /DUNICODE /D_UNICODE /I Vdevice-SDK-1.0.6.0\Vdevice vdevice-hid-test.cpp Vdevice-SDK-1.0.6.0\Vdevice\Vdevice.cpp /Fe:vdevice-hid-test.exe
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
