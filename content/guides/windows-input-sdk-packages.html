@@ -4,6 +4,7 @@
 <h2>Choose the binding for your project</h2>
 <div class="table-scroll"><table><thead><tr><th scope="col">Project</th><th scope="col">Published package</th><th scope="col">Install in your development environment</th></tr></thead><tbody>
 <tr><th scope="row"><a href="/projects/interceptor/">Interceptor</a></th><td><a href="https://www.npmjs.com/package/interceptor-sdk/v/1.0.0">interceptor-sdk 1.0.0</a></td><td><code>npm install interceptor-sdk@1.0.0</code></td></tr>
+<tr><th scope="row">Interceptor Python</th><td><a href="https://pypi.org/project/interceptor-multilang/1.0.1/">interceptor-multilang 1.0.1</a></td><td><code>python -m pip install interceptor-multilang==1.0.1</code></td></tr>
 <tr><th scope="row"><a href="/projects/interceptor-keyboard-mouse/">Interceptor Keyboard &amp; Mouse</a></th><td><a href="https://www.npmjs.com/package/interceptor-keyboard-mouse-sdk/v/1.0.0">interceptor-keyboard-mouse-sdk 1.0.0</a></td><td><code>npm install interceptor-keyboard-mouse-sdk@1.0.0</code></td></tr>
 <tr><th scope="row"><a href="/projects/interceptor-gamepad-controller/">Interceptor Gamepad &amp; Controller</a></th><td><a href="https://www.npmjs.com/package/interceptor-gamepad-controller/v/1.0.0">interceptor-gamepad-controller 1.0.0</a></td><td><code>npm install interceptor-gamepad-controller@1.0.0</code></td></tr>
 <tr><th scope="row"><a href="/projects/vdevice/">Vdevice</a></th><td><a href="https://www.powershellgallery.com/packages/Vdevice/1.0.0">Vdevice PowerShell module 1.0.0</a></td><td><code>Install-Module Vdevice -RequiredVersion 1.0.0 -Scope CurrentUser</code></td></tr>
@@ -13,6 +14,13 @@
 </tbody></table></div>
 <p>Use Node.js 20 or later on Windows x64 for the three npm bindings. The Vdevice and InterceptionV2 modules require PowerShell 7.4 or later. The SDK package version and the Windows driver version are separate. A registry installation provides the SDK files. Use the matching demo or commercial ZIP for driver installation and activation.</p>
 <p>For direct, machine-readable npm version metadata, use the official registry entries for <a href="https://registry.npmjs.org/interceptor-sdk/1.0.0">Interceptor</a>, <a href="https://registry.npmjs.org/interceptor-keyboard-mouse-sdk/1.0.0">Keyboard &amp; Mouse</a> and <a href="https://registry.npmjs.org/interceptor-gamepad-controller/1.0.0">Gamepad &amp; Controller</a>.</p>
+<h2>Verify the Python installation first</h2>
+<p>The Python wheel requires Python 3.10 or later on Windows x64. It includes the native bridge for the combined Interceptor 1.4.22.0 driver. For a live test, use that driver and the documented <code>info()</code> read-only query. The following import check works before installing a driver.</p>
+<pre><code>from importlib.metadata import version
+from interceptor import Interceptor
+
+print(version('interceptor-multilang'))</code></pre>
+<p>The exact Windows wheel installed into a temporary Python directory and printed <code>1.0.1</code>. Its wheel and source archive both matched the SHA-256 published on PyPI. <a href="https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md">Read the Python API and driver requirements</a>.</p>
 <h2>Start with a known result</h2>
 <ul>
 <li><a href="/guides/vdevice-virtual-usb-mouse/">Try the Vdevice mouse example</a> to confirm the Windows device path.</li>
