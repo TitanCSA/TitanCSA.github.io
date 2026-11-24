@@ -70,6 +70,14 @@ replacements['SUPPORT_ISSUE_FORMS']=''.join(
     f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'
     for e in editions.values()
 )
+replacements['OTHER_SDK_REGISTRY_ROWS']='\n'.join(
+    f'<tr><th scope="row"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
+    + (f'<td><a href="https://central.sonatype.com/artifact/io.github.titancsa/{slug}/1.0.0"><code>io.github.titancsa:{slug}</code></a></td>' if slug!='interceptor' else '<td>—</td>')
+    + f'<td><a href="https://packagist.org/packages/titancsa/{slug}"><code>titancsa/{slug}</code></a></td>'
+    + (f'<td><a href="https://rubygems.org/gems/{slug}/versions/1.0.0"><code>{slug}</code></a></td>' if slug!='interceptor' else '<td>—</td>')
+    + '</tr>'
+    for slug,e in editions.items()
+)
 for slug, edition in editions.items():
     key=slug.upper().replace('-','_')
     replacements[f'{key}_DEMO_URL']=escape(edition['demo_url'],quote=True)
@@ -93,6 +101,7 @@ pages={
  'guides/release-activation-help/':('Install and activate a TitanCSA Windows Release — error help','Resolve missing activation interfaces, invalid keys and HTTPS failures. Find the correct Windows Release ZIP, SDK and driver version.','guides/release-activation-help.html'),
  'guides/interception-v2-migration/':('Migrate an Interception application to Interception V2 — TitanCSA','Migrate an application using interception.dll, check x86 or x64 library compatibility and list keyboard and mouse hardware IDs.','guides/interception-v2-migration.html'),
  'guides/windows-input-sdk-packages/':('Install Windows input SDK packages for Python, Node.js, PowerShell and C++ — TitanCSA','Find verified packages for Interceptor, Vdevice and Interception V2 in PyPI, npm, PowerShell Gallery and NuGet. Match the SDK to the installed Windows driver.','guides/windows-input-sdk-packages.html'),
+ 'guides/windows-input-sdk-java-php-ruby/':('Java, PHP and Ruby SDKs for Windows input drivers — TitanCSA','Find the verified Maven Central, Packagist and RubyGems bindings for Interceptor, Vdevice and Interception V2, with Windows and runtime prerequisites.','guides/windows-input-sdk-java-php-ruby.html'),
  'guides/gamepad-controller-first-run/':('Test and remap a physical gamepad on Windows — TitanCSA','Identify HID, XUSB, XInputHID or GIP input, use the signed controller demo and try the C++ stick deadzone example.','guides/gamepad-controller-first-run.html'),
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Try a signed virtual audio pair, test stereo playback and recording, and find the matching Titan Audio Link commercial package.','guides/titan-audio-link-first-run.html'),
  'guides/verify-windows-driver-package/':('Verify a signed Windows driver package before installation — TitanCSA','Compare the published SHA-256, verify the Microsoft-signed driver catalog and check the INF package version with PowerShell and SignTool.','guides/verify-windows-driver-package.html'),
@@ -106,7 +115,7 @@ for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/','guides/vdevice-custom-hid-test/','fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/'}
-release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/'}
+release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/'}
 translations=(
     {'en':'guides/release-activation-help/','fr':'fr/activation-release/'},
     {'en':'guides/windows-input-release-compare/','fr':'fr/pilotes-entree-windows/'},
@@ -217,6 +226,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
     f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
     f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
+    f'- [Java, PHP and Ruby SDK packages]({BASE}guides/windows-input-sdk-java-php-ruby/)',
     f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
     f'- [Physical gamepad quickstart]({BASE}guides/gamepad-controller-first-run/)',
     f'- [Titan Audio Link virtual microphone]({BASE}guides/titan-audio-link-first-run/)',

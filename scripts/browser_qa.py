@@ -8,7 +8,7 @@ base=sys.argv[1].rstrip('/')+'/' if len(sys.argv)>1 else 'http://127.0.0.1:8778/
 errors=[];checks=[]
 routes=['','guides/first-run/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
         'guides/windows-input-release-compare/','guides/release-activation-help/',
-        'guides/interception-v2-migration/','guides/windows-input-sdk-packages/',
+        'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','guides/vdevice-custom-hid-test/',
         'fr/activation-release/','fr/pilotes-entree-windows/',
         'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/']
