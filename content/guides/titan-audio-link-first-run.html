@@ -1,0 +1,17 @@
+<h1>Route Windows playback to a virtual microphone with Titan Audio Link</h1>
+<p class="article-lead">Send audio from one app to another through a paired virtual playback and recording device. Use the built-in test signal to verify the pair before connecting your own apps.</p>
+<p class="byline">Publisher documentation · Evaluation ZIP and checkout checked 24 November 2026</p>
+<div class="actions"><a class="button primary" href="https://github.com/titanfyre/Titan-Audio-Link/releases/download/v0.1.1/Titan-Audio-Link-0.1.1-Signed-Evaluation-Windows-x64.zip">Download signed evaluation 0.1.1</a><a class="button" href="https://licences.configcsa.com/titan-audio-link">Buy Titan Audio Link Release</a></div>
+<h2>Try the matching playback and recording pair</h2>
+<ol>
+<li>Extract the complete evaluation ZIP. Run <code>Dependencies\TitanAudioLinkSetup.exe</code> with administrator approval. Restart Windows if setup requests it.</li>
+<li>Open <code>TitanAudioLink.exe</code>, refresh the endpoint list and select one pair.</li>
+<li>Click <strong>Test virtual cable</strong>. The app sends a known stereo fixture to the selected virtual playback endpoint and checks it at the paired recording endpoint.</li>
+<li>When ready, select the pair's playback endpoint in the source app and the matching recording endpoint in the receiving app. Check that both endpoints belong to the same adapter. Remove the virtual devices using the setup's Uninstall option when finished.</li>
+</ol>
+<p>The evaluation uses shared-mode WASAPI and native stereo PCM16 at 48 kHz. Select endpoints explicitly inside your apps. Windows microphone permissions can affect access to the virtual recording endpoint.</p>
+<h2>What the evaluation evidence covers</h2>
+<p>Evaluation bundle 0.1.1 embeds signed driver 0.1.0.0. The published test evidence covers Windows 10 build 19045 x64 and two virtual audio pairs, including stereo signal transfer, isolation and repeated stream open and close. Windows 11, HVCI and Secure Boot qualification remain outside that evidence for this evaluation bundle. <a href="https://github.com/titanfyre/Titan-Audio-Link/releases/tag/v0.1.1">Read the pinned evaluation release and checksum</a>.</p>
+<h2>Commercial Release</h2>
+<p>Titan Audio Link Release is a separate €400 Lifetime purchase. Use its own ZIP and activation tool. See the commercial documentation for its supported scope and licence conditions. <a href="https://licences.configcsa.com/titan-audio-link/docs">Installation and C++ guide for the commercial Release</a>.</p>
+<div class="related"><a href="https://github.com/titanfyre/Titan-Audio-Link">Source and evaluation documentation</a><a href="/guides/release-activation-help/">Release activation support</a></div>
