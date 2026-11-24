@@ -14,7 +14,8 @@
 <h2>Check hardware IDs before remapping</h2>
 <p>The downloadable C example opens a context, lists available keyboard and mouse hardware IDs and destroys the context. It sets no input filter. Device numbers can change after reboot or reconnect, so re-identify the device before applying a mapping.</p>
 <p>Save the C file in the extracted <code>Interception</code> directory and open the Visual Studio developer command prompt for your application's architecture. This is the x64 build. For x86, use the x86 developer prompt and replace both <code>library\x64</code> paths with <code>library\x86</code>.</p>
-<pre><code>cl /nologo /W4 /I library interception-device-inventory.c /link /LIBPATH:library\x64 interception.lib
+<pre><code>cl /nologo /W4 /MT /I library interception-device-inventory.c /link /LIBPATH:library\x64 interception.lib
 copy /y library\x64\interception.dll .</code></pre>
+<p>The <code>/MT</code> option builds the example with a static C runtime so it can start on a clean VM with the matching <code>interception.dll</code>.</p>
 <p>Run the sample as administrator after installing the demo. A supported fixture should produce a line with its device class, number and hardware ID. The sample compiled against both import libraries in the signed-demo ZIP. Compatibility with a specific application still needs a live test with that application's devices and filters.</p>
 <div class="related"><a href="/projects/interception-v2/">Interception V2 overview</a><a href="https://licences.configcsa.com/interception-v2">Buy Interception V2 Release</a><a href="/guides/windows-input-release-compare/">Compare driver editions</a></div>
