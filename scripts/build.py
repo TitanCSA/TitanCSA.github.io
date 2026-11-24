@@ -143,7 +143,7 @@ def render(title,description,path,body,article=False):
     nav_links=(
         '<a href="/#projects">Projets</a><a href="/fr/pilotes-entree-windows/">Comparatif</a>'
         if language=='fr' else
-        '<a href="/#projects">Projects</a><a href="/guides/first-run/">Get started</a><a class="optional" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Benchmarks</a><a class="optional" href="/about/evidence/">Evidence &amp; support</a><a href="https://github.com/TitanCSA/TitanCSA/blob/main/DEMARRER.md" lang="fr">FR</a>'
+        '<a href="/#projects">Projects</a><a href="/guides/first-run/">Get started</a><a class="optional" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Benchmarks</a><a class="optional" href="/about/evidence/">Evidence &amp; support</a><a href="/fr/pilotes-entree-windows/" lang="fr" aria-label="Comparatif des pilotes en français">FR</a>'
     )
     theme_text='Thème' if language=='fr' else 'Theme'
     footer_lang=' lang="en"' if language=='fr' else ''
