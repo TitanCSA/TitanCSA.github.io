@@ -1,0 +1,38 @@
+{
+  "tested_utc": "2026-11-25T06:59:42.7861756Z",
+  "edition": "public Demo",
+  "product": "Vdevice",
+  "driver_version": "1.0.6.0",
+  "driver_sha256": "74056f7fa1fc00b4833b3ada989f78ecdfcf56a002fe2af92c118072a5f70f39",
+  "release": "https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo",
+  "platform": {
+    "windows": "Windows 11",
+    "build": 26100,
+    "architecture": "x64",
+    "environment": "Hyper-V guest",
+    "secure_boot": true,
+    "memory_integrity": true,
+    "device_guard_vbs_status": 2,
+    "device_guard_running_security_services": [
+      1,
+      2
+    ]
+  },
+  "receiver": "hidapitester v0.7",
+  "profile": {
+    "vid_pid": "FFFF:0010",
+    "usage_page": "FF00",
+    "usage": "0001"
+  },
+  "observed": {
+    "input_bytes": "54 43 53 41 10 20 30 40 50 60 70 80 90 A0 B0 C0",
+    "output_payload_bytes": "48 49 44 41 11 22 33 44 55 66 77 88 99 AA BB CC",
+    "input_payload_length": 16,
+    "output_payload_length": 16,
+    "created": true,
+    "disconnected": true,
+    "receiver_found_no_matching_device_after_removal": true,
+    "producer_exit": 0
+  },
+  "scope": "Single vendor-defined virtual HID creation, verified input and output and device removal."
+}

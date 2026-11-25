@@ -1,6 +1,7 @@
 <h1>Test a custom virtual USB HID device with Vdevice and hidapitester</h1>
 <p class="article-lead">Create a vendor-defined HID fixture on Windows, read its exact 16-byte input report from an independent application and check the 16-byte return report.</p>
 <p class="byline">Publisher lab result · Vdevice Demo 1.0.6.0 · Windows 11 build 26100 x64 · Secure Boot enabled · 24 November 2026</p>
+<p>On 25 November, the same pinned demo and independent receiver also passed in a Windows 11 build 26100 guest with Secure Boot and Memory Integrity active. Windows reported running HVCI through <code>Win32_DeviceGuard</code>. Both 16-byte HID payloads matched and the test device disappeared after disconnect. <a href="/assets/vdevice-hid-test-20261125-hvci.json">Read the separate Memory Integrity test record</a>.</p>
 <div class="actions"><a class="button primary" href="/assets/vdevice-hid-test.cpp" download>Download the C++ test</a><a class="button" href="/assets/vdevice-hid-test-20261124.json">Read the lab result</a></div>
 <h2>Prepare the signed demo and the independent HID reader</h2>
 <ol>
