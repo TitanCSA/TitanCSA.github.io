@@ -182,7 +182,17 @@
             "expected": { "type": "string", "minLength": 1 },
             "requires_installed_driver": { "type": "boolean" },
             "requires_application": { "type": "boolean" },
-            "opens_input_context": { "const": false }
+            "opens_input_context": { "const": false },
+            "source_url": { "$ref": "#/$defs/url" },
+            "source_sha256": { "$ref": "#/$defs/sha256" },
+            "command_from_app_folder": { "type": "string", "minLength": 1 },
+            "after_setup_command_from_app_folder": { "type": "string", "minLength": 1 },
+            "create_example_project_command": { "type": "string", "minLength": 1 },
+            "save_as": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" }
+          },
+          "dependentRequired": {
+            "source_url": ["source_sha256"],
+            "source_sha256": ["source_url"]
           }
         },
         "verified_archive": {

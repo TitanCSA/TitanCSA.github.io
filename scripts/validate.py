@@ -178,6 +178,8 @@ language_guide_fr=by_canonical[BASE+'fr/sdk-java-php-ruby/']
 assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell'} | other_registries
 runtime_path='assets/sdk-registry-runtime-2026-11-25.json'
 runtime_proof=json.loads((OUT/runtime_path).read_text(encoding='utf8'))
+for record in runtime_proof['reproduced_examples']:
+    assert sha256((OUT/'assets'/record['file']).read_bytes()).hexdigest()==record['sha256']
 runtime_checks=runtime_proof['checks']
 runtime_results={(item['ecosystem'],item['name'],item['version']):item for item in runtime_checks}
 assert len(runtime_results) == len(runtime_checks)

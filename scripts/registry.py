@@ -130,6 +130,17 @@ def registry_catalogue(manifest, base):
         elif row["ecosystem"] == "powershell":
             sample = "assets/gallery-sdk-status.ps1"
             command = f'pwsh -NoProfile -File .\\gallery-sdk-status.ps1 -Module {name}'
+        elif row["ecosystem"] == "pypi" and name == "interceptor-multilang":
+            sample = "assets/python-interceptor-status.py"
+            command = "python python-interceptor-status.py"
+            row["first_check"]["after_setup_command_from_app_folder"] = command + " --status"
+        elif row["ecosystem"] == "nuget-managed" and name == "Interceptor.MultiLang":
+            sample = "assets/dotnet-interceptor-status.cs"
+            command = "dotnet run --arch x64"
+            row["first_check"].update(
+                create_example_project_command="dotnet new console --framework net8.0 --output InterceptorSdkCheck",
+                save_as="Program.cs",
+            )
         else:
             sample = None
         if sample:

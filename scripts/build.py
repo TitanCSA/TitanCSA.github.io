@@ -79,6 +79,8 @@ replacements['REGISTRY_TABLES_FR']=registry_tables(integration['sdk_registry'],f
 browser_package=next(row for row in integration['sdk_registry'] if row['name']=='browser-control-sdk')
 replacements['BROWSER_PYPI_URL']=escape(browser_package['package_url'],quote=True)
 replacements['BROWSER_PYPI_INSTALL']=escape(browser_package['install_command'])
+managed_package=next(row for row in integration['sdk_registry'] if row['name']=='Interceptor.MultiLang')
+replacements['INTERCEPTOR_MANAGED_INSTALL']=escape(managed_package['install_command'])
 for lang in ('en', 'fr'):
     replacements[f'APP_CARDS_{lang.upper()}']=app_cards(integration, lang)
     replacements[f'APP_MORE_{lang.upper()}']=app_cards(integration, lang, more=True)

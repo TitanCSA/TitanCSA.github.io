@@ -367,6 +367,30 @@
       "edition": "interceptor",
       "driver_version": "1.4.22.0",
       "result": "Installed driver responded. Read status left capture inactive."
+    },
+    {
+      "file": "python-interceptor-status.py",
+      "sha256": "3b2ed2e0bd013046b954b055dda277abff3248a2e7c4fb834659ed428f8f04ec",
+      "edition": "interceptor",
+      "driver_version": "1.4.22.0",
+      "result": "The installed combined driver responded with its trial timer idle.",
+      "status": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
+    },
+    {
+      "file": "dotnet-interceptor-status.cs",
+      "sha256": "fecceec21a9ffc32c7a1292e318d69a35de8ae80d8ce847c5bd3b0ac798bc31d",
+      "edition": "interceptor",
+      "driver_version": "1.4.22.0",
+      "result": "The installed combined driver responded with its trial timer idle.",
+      "status": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
     }
   ],
   "without_driver": {

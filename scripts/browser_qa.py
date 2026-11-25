@@ -89,6 +89,14 @@ with sync_playwright() as p:
     native_packages.locator('summary').click()
     assert native_packages.get_by_text('Install-Package Vdevice.Native -Version 1.0.6',exact=True).is_visible()
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Registry table causes horizontal page scrolling'
+    checks_help=page.locator('main details.first-run-more').filter(
+        has=page.locator('a[href="/assets/python-interceptor-status.py"]'))
+    assert not checks_help.locator('a[href="/assets/python-interceptor-status.py"]').is_visible()
+    checks_help.locator('summary').click()
+    assert checks_help.locator('a[href="/assets/python-interceptor-status.py"]').is_visible()
+    assert checks_help.locator('a[href="/assets/dotnet-interceptor-status.cs"]').is_visible()
+    assert checks_help.get_by_text('dotnet run --arch x64',exact=True).is_visible()
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Example project causes horizontal page scrolling'
     page.goto(base+'fr/sdk-java-php-ruby/',wait_until='domcontentloaded')
     page.get_by_text('Voir les commandes pour Vdevice',exact=True).click()
     assert page.get_by_text('composer require titancsa/vdevice:1.0.0',exact=True).is_visible()

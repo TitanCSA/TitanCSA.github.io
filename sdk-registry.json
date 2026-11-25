@@ -296,7 +296,7 @@
       "requires_application": true,
       "opens_input_context": false
     },
-    "documentation_url": "https://github.com/TitanCSA/Browser-Control-SDK/blob/main/docs/SDK.md",
+    "documentation_url": "https://github.com/TitanCSA/Browser-Control-SDK/blob/main/SDK/Python/README.md",
     "verified_archive": {
       "filename": "browser_control_sdk-0.2.1-py3-none-any.whl",
       "sha256": "1167ad3f817ed164b32ef490ab196e4b6c5c06b28e4cb8f0a685d804d2056fca"

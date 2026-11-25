@@ -25,15 +25,14 @@
 <li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-gamepad-controller-1.0.1.tgz">interceptor-gamepad-controller 1.0.1</a></li>
 </ul>
 <p>The three 1.0.1 archives report the matching <code>InterceptorSetup.exe</code> when Windows error <code>2</code> indicates a missing driver. Each archive was installed from its GitHub URL. Node.js 24.21.0 also read driver status for each matching signed demo on Windows 11 build 26100 with Secure Boot. The checks used the read-only <code>info()</code> example.</p>
-<h2>Verify the Python installation first</h2>
-<p>The Python wheel requires Python 3.10 or later on Windows x64. It includes the native bridge for the combined Interceptor 1.4.22.0 driver. For a live test, use that driver and the documented <code>info()</code> read-only query. The following import check works before installing a driver.</p>
-<pre><code>from importlib.metadata import version
-from interceptor import Interceptor
-
-print(version('interceptor-multilang'))</code></pre>
-<p>The exact Windows wheel installed into a temporary Python directory and reported <code>1.0.2</code>. Its wheel and source archive both matched the SHA-256 published on PyPI. <a href="https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md">Read the Python API and driver requirements</a>.</p>
-<p>After setup, <code>with Interceptor() as io: print(io.info())</code> reads driver status. In a test without the combined driver, the wheel loaded its native bridge and returned Windows error <code>2</code> with the corrected setup instructions. Use the <a href="https://github.com/TitanCSA/Interceptor/releases/tag/v1.4.22.0-demo">matching combined demo’s InterceptorSetup.exe</a>, then restart if requested. <code>Install.cmd</code> is available in the full MultiLang ZIP.</p>
-<p>The NuGet wrapper requires .NET 8 or later on Windows x64. It includes the same native bridge as the Python wheel. After setup, <code>Interceptor.GetInfo()</code> queries the matching driver without starting input capture. The exact public 1.0.2 package returned the corrected one-line setup message on a machine without that driver.</p>
+<h2>Run a complete Python or .NET check</h2>
+<p>For the combined Interceptor edition, install its Python package from the table, save <a href="/assets/python-interceptor-status.py" download>python-interceptor-status.py</a> and run this command in your project. It prints the SDK version. After installing the matching driver, add <code>--status</code> to read its state.</p>
+<pre><code>python python-interceptor-status.py</code></pre>
+<p>For .NET, create a small separate console project and add the package.</p>
+<pre><code>dotnet new console --framework net8.0 --output InterceptorSdkCheck
+cd InterceptorSdkCheck
+{{INTERCEPTOR_MANAGED_INSTALL}}</code></pre>
+<p>In that test project, save <a href="/assets/dotnet-interceptor-status.cs" download>the .NET example</a> as <code>Program.cs</code> and run <code>dotnet run --arch x64</code>. On an idle system with the driver installed, the example prints <code>installed: true</code> and <code>active: false</code>.</p>
 <h2>Check the PowerShell modules</h2>
 <p>All five Gallery modules at 1.0.0 imported on Windows x64 with PowerShell 7.6.6. The Interceptor-family status calls and Vdevice's <code>status</code> operation reported Windows error <code>2</code> with the matching driver absent. If the Interceptor module mentions <code>Install.cmd</code>, use <code>InterceptorSetup.exe</code> from your edition's signed demo or the installer supplied in its commercial ZIP. For Vdevice, use the matching <code>VdeviceSetup.exe</code>. Restart Windows if setup requests it. <a href="/guides/windows-input-release-compare/">Choose the correct driver edition</a>.</p>
 <p>The InterceptionV2 module's <code>check</code> operation identifies keyboard and mouse numbers in the original C API. Use the <a href="/guides/interception-v2-migration/">device inventory example</a> to verify a live driver and available devices.</p>

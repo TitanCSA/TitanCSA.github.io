@@ -24,13 +24,14 @@
 <li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-gamepad-controller-1.0.1.tgz">interceptor-gamepad-controller 1.0.1</a></li>
 </ul>
 <p>Les archives 1.0.1 indiquent l’installeur <code>InterceptorSetup.exe</code> de la bonne édition quand Windows renvoie l’erreur <code>2</code>. Chaque paquet est passé par une installation depuis GitHub et une lecture d’état avec Node.js 24.21.0 sur Windows 11 build 26100 avec Secure Boot et le pilote de démo correspondant.</p>
-<h2>Vérifier l’installation du SDK</h2>
-<p>Avec Python, vérifiez l’import et la version avant d’installer un pilote.</p>
-<pre><code>from importlib.metadata import version
-from interceptor import Interceptor
-
-print(version("interceptor-multilang"))</code></pre>
-<p>Avec Python ou .NET, installez la <a href="https://github.com/TitanCSA/Interceptor/releases/tag/v1.4.22.0-demo">démo combinée Interceptor 1.4.22.0</a> pour le premier essai. Python <code>info()</code> et .NET <code>GetInfo()</code> interrogent le pilote en lecture seule. Les deux paquets 1.0.2 affichent le nom de l’installeur si le pilote manque.</p>
+<h2>Exemples complets pour Python et .NET</h2>
+<p>Pour Interceptor combiné, installe le paquet Python indiqué dans le tableau et enregistre <a href="/assets/python-interceptor-status.py" download>python-interceptor-status.py</a> dans ton projet. Lance la commande pour afficher la version du SDK. Une fois le pilote installé, ajoute <code>--status</code> pour lire son état.</p>
+<pre><code>python python-interceptor-status.py</code></pre>
+<p>Pour .NET, crée un petit projet de test à part et ajoute le paquet.</p>
+<pre><code>dotnet new console --framework net8.0 --output InterceptorSdkCheck
+cd InterceptorSdkCheck
+{{INTERCEPTOR_MANAGED_INSTALL}}</code></pre>
+<p>Dans ce projet, enregistre <a href="/assets/dotnet-interceptor-status.cs" download>l’exemple .NET</a> sous le nom <code>Program.cs</code>. Lance <code>dotnet run --arch x64</code>. Sur un système au repos avec le pilote installé, le résultat est <code>installed: true</code> et <code>active: false</code>.</p>
 <p>Les cinq modules Gallery 1.0.0 ont été importés sous PowerShell 7.6.6. Si un module Interceptor affiche l’erreur <code>2</code> et mentionne <code>Install.cmd</code>, lancez <code>InterceptorSetup.exe</code> depuis la démo de votre édition ou utilisez l’installeur de votre ZIP commercial. Pour Vdevice, utilisez <code>VdeviceSetup.exe</code> avec la démo. Redémarrez Windows si l’installeur le demande.</p>
 <p>L’opération <code>check</code> du module InterceptionV2 classe un numéro de périphérique selon l’API C. L’<a href="/guides/interception-v2-migration/">inventaire des identifiants matériels</a> permet de vérifier les périphériques disponibles avec le pilote.</p>
 <div class="related"><a href="/fr/pilotes-entree-windows/">Comparer les démos et les éditions Lifetime</a><a href="/fr/activation-release/">Dépanner l’installation ou l’activation</a></div>
