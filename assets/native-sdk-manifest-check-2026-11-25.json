@@ -2,7 +2,7 @@
   "schema_version": 1,
   "checked": "2026-11-25",
   "manifest_url": "https://titancsa.github.io/integration.json",
-  "manifest_sha256": "7f7dc2d1c6232cf42541a724a046a8dfa29e2eb11e53ddef1ab24f6363bd57be",
+  "manifest_sha256": "200da138634c2b1aed62e0c5c7ea836832eff0d12a79b70d5387bf4a38bd47d8",
   "environment": "Windows x64, Visual Studio 2022 and CMake, build directory containing spaces",
   "scope": "A separate consumer used the live integration JSON and downloaded the exact SDK archives and sample sources it specifies. It built and ran the read-only first check for each listed app architecture.",
   "configuration_count": 7,
@@ -12,7 +12,7 @@
       "architecture": "x64",
       "exit": 2,
       "output": "Driver status unavailable (Windows 2). Use the installer for your Interceptor edition.",
-      "sdk_archive_sha256": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f",
+      "sdk_archive_sha256": "734fde1cbe20fd3d99250174432af50ee5690848b92daba0e8a984fb291bceb7",
       "sample_source_sha256": "18e82f2853d4cb8a6c26bc5a5ce0aa3ab19c6fc285368240ec400e70029ec5ea"
     },
     {
