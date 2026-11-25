@@ -4,6 +4,7 @@ from hashlib import sha256
 from html import escape
 import json
 from pathlib import Path
+from zipfile import ZIP_STORED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 REVIEW_DATE = "2026-11-25"
@@ -46,7 +47,7 @@ def make_manifest(base, editions):
             "sdk_check": {
                 "api": api,
                 "archive_url": edition["demo_assets"][recipe["asset_role"]],
-                "archive_sha256": recipe["sha256"],
+                "archive_sha256": edition["sdk_sha256"],
                 "source_url": base + "assets/" + recipe["sample"],
                 "source_sha256": sha256(sample_path.read_bytes()).hexdigest(),
                 "source_file": recipe["sample"],
@@ -66,6 +67,7 @@ def make_manifest(base, editions):
                 "build_verification": {
                     "platform": "Windows x64 with Visual Studio 2022 C++ desktop tools and CMake 3.20+",
                     "command_from_portal_source": f"python scripts/test_first_sdk.py {slug} --run",
+                    "command_from_starter_zip": f"python scripts/test_first_sdk.py {slug} --run",
                     "scope": "Compile and run the documented first check. The build does not install a driver.",
                 },
             },
@@ -74,6 +76,8 @@ def make_manifest(base, editions):
         "schema_version": 1,
         "reviewed": REVIEW_DATE,
         "project_catalogue_url": base + "projects.json",
+        "starter_zip_url": base + "downloads/first-sdk-checks.zip",
+        "starter_zip_checksum_url": base + "downloads/first-sdk-checks.zip.sha256",
         "source_repository": "https://github.com/TitanCSA/TitanCSA.github.io",
         "guides": {"en": base + "guides/installer-and-sdk/", "fr": base + "fr/installeur-et-sdk/"},
         "commercial_contact": {
@@ -106,3 +110,50 @@ def sdk_rows(manifest, french=False):
             f'<td>{links[0]}</td><td>{sdk["api"]} · {architecture}<br>{links[1]} · {links[2]}</td></tr>'
         )
     return "\n".join(lines)
+
+
+def write_starter(out, manifest):
+    files = {
+        "LICENSE": ROOT / "LICENSE",
+        "sdk-checks.json": ROOT / "sdk-checks.json",
+        "integration.json": out / "integration.json",
+        "dist/releases.json": out / "releases.json",
+        "scripts/integration.py": ROOT / "scripts/integration.py",
+        "scripts/test_first_sdk.py": ROOT / "scripts/test_first_sdk.py",
+    }
+    for row in manifest["products"]:
+        source = "assets/" + row["sdk_check"]["source_file"]
+        files[source] = ROOT / source
+    items = {name: path.read_bytes() for name, path in files.items()}
+    items["START-HERE.txt"] = b"""First Windows SDK check
+
+You need Python 3.10+, CMake 3.20+, and Visual Studio 2022 with
+Desktop development with C++ on a Windows x64 PC.
+
+1. Extract this ZIP.
+2. Open PowerShell in the extracted folder.
+3. Run the check for your edition. For example:
+
+   python scripts/test_first_sdk.py vdevice --run
+
+The script downloads the exact SDK archive, checks its SHA-256 and runs
+a small program. Windows 2 means a driver status check could not find
+the driver interface. Install the matching demo and run the check again.
+
+For Interception V2, append --arch x86 if your own app is 32-bit.
+The sample reports DLL slot ranges without opening a device context.
+
+See integration.json for edition IDs and official source links.
+Human instructions are at https://titancsa.github.io/guides/installer-and-sdk/
+"""
+    downloads = out / "downloads"
+    downloads.mkdir(exist_ok=True)
+    path = downloads / "first-sdk-checks.zip"
+    with ZipFile(path, "w", compression=ZIP_STORED) as zipped:
+        for name, content in sorted(items.items()):
+            entry = ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
+            entry.create_system = 3
+            entry.external_attr = 0o100644 << 16
+            zipped.writestr(entry, content)
+    digest = sha256(path.read_bytes()).hexdigest()
+    path.with_suffix(".zip.sha256").write_bytes(f"{digest}  {path.name}\n".encode("ascii"))

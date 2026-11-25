@@ -32,7 +32,13 @@ Guides are in `content/`; presentation and local interactions are in `src/`. The
 
 The [public integration manifest](https://titancsa.github.io/integration.json) lists the setup download, SDK archive, app architectures, exact first check and expected output. Its bilingual download table and JSON use the same source data.
 
-Update the approved tag and asset filenames in `releases.json`, then record the matching SDK archive SHA-256 in `sdk-checks.json`. For native SDK ZIPs, the build uses the ZIP filename to resolve the release directory. The pipeline verifies links to official assets, and the Windows job builds and runs every listed architecture.
+Update the approved tag, demo version, asset filenames and SDK archive SHA-256 in releases.json. The build derives the native SDK folder from the archive's filename. The file sdk-checks.json holds the sample layout and supported app architectures, which only change when the integration changes.
+
+To preview a proposed update, run the release checker with the edition ID, public GitHub tag and driver version. The command prints the exact metadata without changing files.
+
+    python scripts/verify_release_assets.py --candidate vdevice v1.0.6.0-demo 1.0.6.0
+
+Use --asset role=filename when the new release changes a filename's pattern. The pipeline verifies the links and digest. Its Windows job builds and runs every listed architecture.
 
 ```text
 python scripts/build.py

@@ -20,9 +20,8 @@
 <div class="table-scroll"><table><thead><tr><th scope="col">Édition</th><th scope="col">Pour essayer</th><th scope="col">Pour programmer</th></tr></thead><tbody>{{INSTALLER_SDK_ROWS_FR}}</tbody></table></div>
 <details class="more-info">
   <summary>Compiler le premier test SDK</summary>
-  <p>Installe Visual Studio 2022 avec le développement de bureau en C++, CMake 3.20+ et Python 3.10+. Depuis le <a href="https://github.com/TitanCSA/TitanCSA.github.io">dépôt source du portail</a>, lance les commandes suivantes.</p>
-  <pre><code>python scripts/build.py
-python scripts/test_first_sdk.py vdevice --run</code></pre>
+  <p>Installe Visual Studio 2022 avec le développement de bureau en C++, CMake 3.20+ et Python 3.10+. Décompresse le <a href="/downloads/first-sdk-checks.zip">ZIP de premiers tests SDK</a>, ouvre PowerShell dans ce dossier et lance une commande.</p>
+  <pre><code>python scripts/test_first_sdk.py vdevice --run</code></pre>
   <p>Le script vérifie le SHA-256 du ZIP exact, compile l’exemple et l’exécute. Remplace <code>vdevice</code> par l’identifiant de l’édition dans le <a href="/integration.json">fichier d’intégration</a>. Pour la bibliothèque Interception V2 en 32 bits, ajoute <code>--arch x86</code>.</p>
   <ul><li>Pour Interceptor et Vdevice, <strong>Driver answered</strong> signifie que le pilote a répondu. <strong>Windows 2</strong> indique que le test ne trouve pas son interface.</li><li>Pour Interception V2, le test fonctionne sans pilote et affiche <strong>10 emplacements clavier et 10 souris</strong>. Pour voir les périphériques connectés, utilise ensuite <a href="/guides/interception-v2-migration/">l’exemple d’inventaire</a>. Celui-ci ouvre un contexte et démarre la démo.</li></ul>
   <p>Les premiers tests ne capturent aucune entrée et ne créent aucun périphérique virtuel. Ils ne démarrent pas le compteur de démo. Le numéro de version du pilote et le numéro de l’interface affiché par le test sont deux informations différentes.</p>

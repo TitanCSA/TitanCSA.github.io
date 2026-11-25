@@ -1,3 +1,4 @@
+from zipfile import ZipFile
 from pathlib import Path
 from html.parser import HTMLParser
 from hashlib import sha256
@@ -161,4 +162,17 @@ for row in manifest['products']:
         assert demo['setup_download_url'] in page.links
         assert check['source_url'] in page.links and check['archive_url'] in page.links
 assert 'licences.configcsa.com' not in (OUT/'integration.json').read_text(encoding='utf8')
+download=OUT/'downloads/first-sdk-checks.zip'
+assert (OUT/'downloads/first-sdk-checks.zip.sha256').read_text(encoding='ascii').split()[0] == sha256(download.read_bytes()).hexdigest()
+with ZipFile(download) as package:
+    expected={'LICENSE','START-HERE.txt','sdk-checks.json','integration.json','dist/releases.json',
+              'scripts/integration.py','scripts/test_first_sdk.py',
+              *{'assets/'+row['sdk_check']['source_file'] for row in manifest['products']}}
+    assert package.testzip() is None and set(package.namelist()) == expected
+    assert package.read('integration.json') == (OUT/'integration.json').read_bytes()
+    assert package.read('dist/releases.json') == (OUT/'releases.json').read_bytes()
+    for name in expected - {'START-HERE.txt','integration.json','dist/releases.json'}:
+        assert package.read(name) == (ROOT/name).read_bytes()
+for route in manifest['guides'].values():
+    assert '/downloads/first-sdk-checks.zip' in by_canonical[route].links
 print('Validated',len(parsed),'HTML files, 60 entries, 10 workflows, metadata, JSON-LD, anchors and asset budgets')

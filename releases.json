@@ -20,7 +20,8 @@
         "sdk": "Interceptor-SDK-1.4.22.0.zip",
         "checksums": "SHA256SUMS.txt",
         "viewer": "InterceptorExampleUI.exe"
-      }
+      },
+      "sdk_sha256": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f"
     },
     {
       "slug": "interceptor-keyboard-mouse",
@@ -40,7 +41,8 @@
         "sdk": "Interceptor-Keyboard-Mouse-SDK-1.0.5.0.zip",
         "checksums": "SHA256SUMS.txt",
         "viewer": "InterceptorExampleUI.exe"
-      }
+      },
+      "sdk_sha256": "31789cca1f20b10a1184b0234e8ebe699e31a191c20b80092075efa19d856328"
     },
     {
       "slug": "interceptor-gamepad-controller",
@@ -60,7 +62,8 @@
         "sdk": "Interceptor-Gamepad-Controller-SDK-1.0.13.0.zip",
         "checksums": "SHA256SUMS.txt",
         "viewer": "InterceptorExampleUI.exe"
-      }
+      },
+      "sdk_sha256": "f50d10483bdb4875c63a822c8d333768d6da4d54316b60a433b0d5670373ea02"
     },
     {
       "slug": "vdevice",
@@ -79,7 +82,8 @@
         "examples": "Vdevice-Examples-1.0.6.0.zip",
         "sdk": "Vdevice-SDK-1.0.6.0.zip",
         "checksums": "SHA256SUMS.txt"
-      }
+      },
+      "sdk_sha256": "eaa3b92c5da10cdb551d0877264369abf618fac32e379a5249d2f82218f019e2"
     },
     {
       "slug": "interception-v2",
@@ -96,7 +100,8 @@
       "demo_files": {
         "archive": "Interception-V2.zip",
         "checksums": "SHA256SUMS.txt"
-      }
+      },
+      "sdk_sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed"
     }
   ]
 }

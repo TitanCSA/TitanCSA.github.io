@@ -20,9 +20,8 @@
 <div class="table-scroll"><table><thead><tr><th scope="col">Edition</th><th scope="col">Try it</th><th scope="col">Build an app</th></tr></thead><tbody>{{INSTALLER_SDK_ROWS_EN}}</tbody></table></div>
 <details class="more-info">
   <summary>Build the first SDK check</summary>
-  <p>Install Visual Studio 2022 with the Desktop development with C++ workload, CMake 3.20+ and Python 3.10+. From the <a href="https://github.com/TitanCSA/TitanCSA.github.io">portal source repository</a>, run the following commands.</p>
-  <pre><code>python scripts/build.py
-python scripts/test_first_sdk.py vdevice --run</code></pre>
+  <p>Install Visual Studio 2022 with Desktop development with C++, CMake 3.20+ and Python 3.10+. Extract the <a href="/downloads/first-sdk-checks.zip">first SDK checks ZIP</a>, open PowerShell in that folder and run one command.</p>
+  <pre><code>python scripts/test_first_sdk.py vdevice --run</code></pre>
   <p>The script checks the exact archive’s SHA-256, compiles the sample and runs it. Replace <code>vdevice</code> with the edition ID in the <a href="/integration.json">integration manifest</a>. Use <code>--arch x86</code> for the Interception V2 32-bit library.</p>
   <ul><li>For Interceptor or Vdevice, <strong>Driver answered</strong> confirms the status query. <strong>Windows 2</strong> means this check could not find the driver interface.</li><li>For Interception V2, the result is <strong>10 keyboard slots and 10 mouse slots</strong> without a driver. These are library positions. To list connected devices later, use the <a href="/guides/interception-v2-migration/">separate inventory example</a>, which opens a context and starts its demo allowance.</li></ul>
   <p>The supplied first checks do not capture input, create virtual devices or start a demo timer. The driver’s package version and the API version printed by a sample are separate values.</p>

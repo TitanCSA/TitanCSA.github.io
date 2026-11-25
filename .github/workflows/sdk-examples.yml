@@ -15,6 +15,7 @@ on:
       - 'scripts/integration.py'
       - 'releases.json'
       - 'scripts/verify_release_assets.py'
+      - 'scripts/tests/test_release_assets.py'
   pull_request:
     paths:
       - '.github/workflows/sdk-examples.yml'
@@ -28,6 +29,7 @@ on:
       - 'scripts/integration.py'
       - 'releases.json'
       - 'scripts/verify_release_assets.py'
+      - 'scripts/tests/test_release_assets.py'
   workflow_dispatch:
 
 permissions:
@@ -41,6 +43,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: python3 scripts/build.py
       - run: python3 scripts/verify_release_assets.py
+      - run: python3 -m unittest discover -s scripts/tests
   inventory:
     runs-on: windows-2022
     timeout-minutes: 12
@@ -120,4 +123,11 @@ jobs:
         with:
           python-version: '3.11'
       - run: python scripts/build.py
-      - run: python scripts/test_first_sdk.py all --expect-clean
+      - name: Extract the public starter ZIP and run every check
+        shell: pwsh
+        run: |
+          $saved = Join-Path $env:RUNNER_TEMP 'First SDK Checks'
+          Expand-Archive -LiteralPath dist/downloads/first-sdk-checks.zip -DestinationPath $saved
+          Set-Location -LiteralPath $saved
+          python scripts/test_first_sdk.py all --expect-clean
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }

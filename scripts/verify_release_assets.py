@@ -1,5 +1,6 @@
-"""Check that every demo asset in the generated catalogue exists on its pinned GitHub release."""
+"""Check pinned GitHub assets or preview the metadata for a candidate tag."""
 
+from argparse import ArgumentParser
 import json
 from pathlib import Path
 import re
@@ -9,8 +10,10 @@ from urllib.parse import quote, urlparse
 from urllib.request import Request, urlopen
 
 
-CATALOGUE = Path(__file__).resolve().parents[1] / "dist" / "releases.json"
+ROOT = Path(__file__).resolve().parents[1]
+CATALOGUE = ROOT / "dist" / "releases.json"
 RETRYABLE_STATUS = {429, 500, 502, 503, 504}
+SHA256_TAG = re.compile(r"sha256:([0-9a-f]{64})")
 
 
 def fetch_release(url):
@@ -31,36 +34,80 @@ def fetch_release(url):
         time.sleep(1 + attempt)
 
 
-def check_edition(edition):
+def official_assets(edition, tag, filenames):
     repository = urlparse(edition["repository"])
-    if repository.scheme != "https" or repository.netloc != "github.com":
+    if (repository.scheme != "https" or repository.netloc != "github.com"
+            or not re.fullmatch(r"/TitanCSA/[A-Za-z0-9._-]+", repository.path)):
         raise ValueError(f"{edition['slug']}: expected the official GitHub repository")
-
-    tag = edition["tag"]
-    url = f"https://api.github.com/repos{repository.path}/releases/tags/{quote(tag, safe='')}"
-    release = fetch_release(url)
+    if not re.fullmatch(r"[A-Za-z0-9._-]+", tag):
+        raise ValueError("Unexpected release tag")
+    release = fetch_release(f"https://api.github.com/repos{repository.path}/releases/tags/{quote(tag, safe='')}")
     if release["draft"] or tag != release["tag_name"]:
         raise ValueError(f"{edition['slug']}: unpublished or mismatched release {tag}")
 
     assets = {asset["name"]: asset for asset in release["assets"]}
-    for role, filename in edition["demo_files"].items():
+    result = {}
+    for role, filename in filenames.items():
         asset = assets.get(filename)
         if not asset or asset["state"] != "uploaded" or asset["size"] <= 0:
             raise ValueError(f"{edition['slug']} {tag}: missing uploaded {role} asset {filename}")
-        if asset["browser_download_url"] != edition["demo_assets"][role]:
+        expected = f'{edition["repository"]}/releases/download/{tag}/{filename}'
+        if asset["browser_download_url"] != expected:
             raise ValueError(f"{edition['slug']} {tag}: incorrect {role} URL")
-        if not re.fullmatch(r"sha256:[0-9a-f]{64}", asset.get("digest") or ""):
+        digest = SHA256_TAG.fullmatch(asset.get("digest") or "")
+        if not digest:
             raise ValueError(f"{edition['slug']} {tag}: no SHA-256 recorded for {filename}")
-    return len(edition["demo_files"])
+        result[role] = (expected, digest[1])
+    return result
+
+
+def check_edition(edition, sdk_role):
+    assets = official_assets(edition, edition["tag"], edition["demo_files"])
+    if edition["demo_assets"] != {role: url for role, (url, _) in assets.items()}:
+        raise ValueError(f"{edition['slug']}: generated asset URLs differ from the official URLs")
+    if assets[sdk_role][1] != edition["sdk_sha256"]:
+        raise ValueError(f"{edition['slug']}: pinned SDK SHA-256 differs from the official digest")
+    return len(assets)
+
+
+def candidate(edition, tag, version, sdk_role, overrides):
+    if not re.fullmatch(r"\d+\.\d+\.\d+\.\d+", version):
+        raise ValueError("Supply the four-part demo driver version")
+    filenames = {role: name.replace(edition["demo"], version) for role, name in edition["demo_files"].items()}
+    for change in overrides:
+        role, sep, filename = change.partition("=")
+        if not sep or role not in filenames or not re.fullmatch(r"[A-Za-z0-9._-]+", filename):
+            raise ValueError("Use --asset once per replacement with an existing role and a filename")
+        filenames[role] = filename
+    assets = official_assets(edition, tag, filenames)
+    source_fields = {"slug", "demo", "tag", "commercial", "use", "api", "trial_starts", "note", "demo_files", "sdk_sha256"}
+    row = {name: value for name, value in edition.items() if name in source_fields}
+    row.update(demo=version, tag=tag, demo_files=filenames, sdk_sha256=assets[sdk_role][1])
+    return row
 
 
 def main():
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--candidate", nargs=3, metavar=("EDITION", "TAG", "VERSION"))
+    parser.add_argument("--asset", action="append", default=[], metavar="ROLE=FILENAME")
+    args = parser.parse_args()
     editions = json.loads(CATALOGUE.read_text(encoding="utf-8"))["editions"]
+    recipes = json.loads((ROOT / "sdk-checks.json").read_text(encoding="utf-8"))
+    if args.candidate:
+        name, tag, version = args.candidate
+        edition = next((row for row in editions if row["slug"] == name), None)
+        if edition is None:
+            parser.error(f"Unknown edition {name}")
+        print(json.dumps(candidate(edition, tag, version, recipes[name]["asset_role"], args.asset),
+                         ensure_ascii=False, indent=2))
+        return
+    if args.asset:
+        parser.error("--asset requires --candidate")
     checked = 0
     for edition in editions:
-        assets = check_edition(edition)
-        print(f"{edition['slug']} {edition['tag']}: {assets} official assets")
-        checked += assets
+        count = check_edition(edition, recipes[edition["slug"]]["asset_role"])
+        print(f"{edition['slug']} {edition['tag']}: {count} official assets and exact SDK digest")
+        checked += count
     print(f"Verified {checked} asset references across {len(editions)} pinned releases.")
 
 

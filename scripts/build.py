@@ -4,7 +4,7 @@ from collections import OrderedDict
 from html import escape
 from xml.etree import ElementTree as ET
 import json,re,shutil
-from integration import make_manifest, sdk_rows
+from integration import make_manifest, sdk_rows, write_starter
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 data=json.loads((ROOT/'projects.json').read_text(encoding='utf8'));projects=data['projects'];checked=data['checked']
@@ -281,6 +281,7 @@ reference_links.extend(
     for e in editions.values()
 )
 (OUT/'llms.txt').write_text('\n'.join(reference_links)+'\n',encoding='utf8')
+write_starter(OUT,integration)
 (OUT/'projects.json').write_bytes((ROOT/'projects.json').read_bytes())
 if indexnow_key:(OUT/f'{indexnow_key}.txt').write_text(indexnow_key+'\n',encoding='utf8')
 print('Built',len(pages),'public pages and',len(projects),'curated project entries')

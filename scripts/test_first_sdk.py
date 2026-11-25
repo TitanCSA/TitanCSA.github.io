@@ -6,6 +6,7 @@ from pathlib import Path, PurePosixPath
 import re
 import shutil
 import subprocess
+import sys
 from tempfile import TemporaryDirectory
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
@@ -73,7 +74,18 @@ def make_project(directory, sdk, recipe, arch):
     (directory / "CMakeLists.txt").write_text("\n".join(cmake) + "\n", encoding="utf-8")
 
 
-def run_check(slug, arch, run, expect_clean, cached_archive):
+def cmake(command, verbose):
+    completed = subprocess.run(["cmake", *command],
+                               stdout=None if verbose else subprocess.PIPE,
+                               stderr=None if verbose else subprocess.STDOUT,
+                               text=True, errors="replace")
+    if completed.returncode:
+        if completed.stdout:
+            print(completed.stdout, end="", file=sys.stderr)
+        completed.check_returncode()
+
+
+def run_check(slug, arch, run, expect_clean, cached_archive, verbose):
     rows = json.loads((ROOT / "dist/releases.json").read_text(encoding="utf-8"))["editions"]
     edition = next(row for row in rows if row["slug"] == slug)
     recipe = json.loads((ROOT / "sdk-checks.json").read_text(encoding="utf-8"))[slug]
@@ -84,18 +96,17 @@ def run_check(slug, arch, run, expect_clean, cached_archive):
         folder = Path(scratch)
         archive = folder / "sdk.zip"
         if cached_archive:
-            if sha256(cached_archive.read_bytes()).hexdigest() != recipe["sha256"]:
+            if sha256(cached_archive.read_bytes()).hexdigest() != edition["sdk_sha256"]:
                 raise ValueError("Cached archive SHA-256 does not match the pinned asset")
             shutil.copyfile(cached_archive, archive)
         else:
-            checked_archive(url, recipe["sha256"], archive)
+            checked_archive(url, edition["sdk_sha256"], archive)
         safe_extract(archive, folder / "sdk")
         sdk = folder / "sdk" / sdk_folder(edition, recipe)
         make_project(folder, sdk, recipe, arch)
         build = folder / "build"
-        subprocess.run(["cmake", "-S", str(folder), "-B", str(build), "-G", "Visual Studio 17 2022",
-                        "-A", GENERATORS[arch]], check=True)
-        subprocess.run(["cmake", "--build", str(build), "--config", "Release"], check=True)
+        cmake(["-S", str(folder), "-B", str(build), "-G", "Visual Studio 17 2022", "-A", GENERATORS[arch]], verbose)
+        cmake(["--build", str(build), "--config", "Release"], verbose)
         if not run:
             return
         exe = build / "Release" / "first-sdk-check.exe"
@@ -123,6 +134,7 @@ def main():
     parser.add_argument("--run", action="store_true", help="Run the sample without installing a driver")
     parser.add_argument("--expect-clean", action="store_true", help="Require the expected missing-driver result on a clean host")
     parser.add_argument("--cached-archive", type=Path, help="Use a previously downloaded SDK ZIP and check its SHA-256")
+    parser.add_argument("--verbose", action="store_true", help="Print full compiler and linker output")
     args = parser.parse_args()
     if args.edition == "all":
         if args.cached_archive or args.arch:
@@ -133,7 +145,7 @@ def main():
         pairs = [(args.edition, args.arch or "x64")]
     for slug, arch in pairs:
         print(f"Checking {slug} ({arch})", flush=True)
-        run_check(slug, arch, args.run or args.expect_clean, args.expect_clean, args.cached_archive)
+        run_check(slug, arch, args.run or args.expect_clean, args.expect_clean, args.cached_archive, args.verbose)
 
 
 if __name__ == "__main__":
