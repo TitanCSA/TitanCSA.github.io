@@ -161,16 +161,32 @@ assert preview['preview_exit_code'] == 0 and preview['secure_boot'] is True
 assert sha256((OUT/preview['screenshot_url'].removeprefix(BASE)).read_bytes()).hexdigest() == preview['screenshot_sha256']
 rows = manifest['sdk_registry']
 assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell'}
+runtime_path='assets/sdk-registry-runtime-2026-11-25.json'
+runtime_checks=json.loads((OUT/runtime_path).read_text(encoding='utf8'))['checks']
+runtime_results={(item['ecosystem'],item['name'],item['version']):item for item in runtime_checks}
+assert len(runtime_results) == len(runtime_checks)
 for row in rows:
     assert row['package_url'] in packages_en.links and row['package_url'] in packages_fr.links
     assert row['install_includes_driver_or_application'] is False
     assert row['first_check']['opens_input_context'] is False
     assert isinstance(row['first_check']['requires_installed_driver'], bool)
     assert isinstance(row['first_check']['requires_application'], bool)
+    if example := row['first_check'].get('source_url'):
+        assert example.startswith(BASE+'assets/')
+        example_file=OUT/example.removeprefix(BASE)
+        assert sha256(example_file.read_bytes()).hexdigest()==row['first_check']['source_sha256']
+    if evidence := row.get('lab_verification'):
+        observed=runtime_results[(row['ecosystem'],row['name'],row['version'])]
+        assert evidence=={'source_url':BASE+runtime_path,'driver_version':observed['driver_version'],'runtime':observed['runtime']}
+        assert observed['edition']==row['edition'] and observed['demo_timer_started'] is False
+        if 'verified_archive' in row:
+            assert observed['package_sha256']==row['verified_archive']['sha256']
     if archive := row.get('verified_archive'):
         assert re.fullmatch(r'[a-f0-9]{64}', archive['sha256'])
-        if row['ecosystem'] == 'nuget-native':
+        if row['ecosystem'].startswith('nuget-'):
             assert urlparse(archive['url']).netloc == 'api.nuget.org'
+        if row['ecosystem'] == 'npm':
+            assert urlparse(archive['url']).netloc == 'registry.npmjs.org'
 assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]

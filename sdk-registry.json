@@ -11,7 +11,11 @@
       "requires_application": false,
       "opens_input_context": false
     },
-    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor/Interceptor-JavaScript-npm#readme"
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor/Interceptor-JavaScript-npm#readme",
+    "verified_archive": {
+      "url": "https://registry.npmjs.org/interceptor-sdk/-/interceptor-sdk-1.0.0.tgz",
+      "sha256": "151ffeb073f6dffcb6b0ca8b7370bd78f863df9703537035d36e73fa89cd3ac6"
+    }
   },
   {
     "edition": "interceptor",
@@ -23,9 +27,14 @@
       "expected": "1.0.2",
       "requires_installed_driver": false,
       "requires_application": false,
-      "opens_input_context": false
+      "opens_input_context": false,
+      "after_setup": "With a matching Interceptor driver, client.info() reports installed=True. The query does not start capture."
     },
-    "documentation_url": "https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md"
+    "documentation_url": "https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md",
+    "verified_archive": {
+      "filename": "interceptor_multilang-1.0.2-py3-none-win_amd64.whl",
+      "sha256": "74c04862b8413a70f032b7393a5e0d181451fa526a80f2208adc070e079adf24"
+    }
   },
   {
     "edition": "interceptor",
@@ -39,7 +48,11 @@
       "requires_application": false,
       "opens_input_context": false
     },
-    "documentation_url": "https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md"
+    "documentation_url": "https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md",
+    "verified_archive": {
+      "url": "https://api.nuget.org/v3-flatcontainer/interceptor.multilang/1.0.2/interceptor.multilang.1.0.2.nupkg",
+      "sha256": "d774846eb7904d550f037dbb062d98e6d5961936e65856f1983aaaa2b896b298"
+    }
   },
   {
     "edition": "interceptor",
@@ -67,7 +80,11 @@
       "requires_application": false,
       "opens_input_context": false
     },
-    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-JavaScript-npm#readme"
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-JavaScript-npm#readme",
+    "verified_archive": {
+      "url": "https://registry.npmjs.org/interceptor-keyboard-mouse-sdk/-/interceptor-keyboard-mouse-sdk-1.0.0.tgz",
+      "sha256": "dfcc0df6cbf05f7a8f07ab2e9adeba50576bc14d2757d3eb0593c571c5fca0b7"
+    }
   },
   {
     "edition": "interceptor-keyboard-mouse",
@@ -95,7 +112,11 @@
       "requires_application": false,
       "opens_input_context": false
     },
-    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-JavaScript-npm#readme"
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-JavaScript-npm#readme",
+    "verified_archive": {
+      "url": "https://registry.npmjs.org/interceptor-gamepad-controller/-/interceptor-gamepad-controller-1.0.0.tgz",
+      "sha256": "eb7146cdbacd487250350eec7908acc9cffd50bd885458dd102ca898ffd17de2"
+    }
   },
   {
     "edition": "interceptor-gamepad-controller",

@@ -1,6 +1,7 @@
 """Generate the registry install table and the exact package integration data."""
 
 from html import escape
+from hashlib import sha256
 from pathlib import Path
 import json
 import re
@@ -48,7 +49,7 @@ REGISTRIES = {
 def registry_catalogue(manifest, base):
     targets = {
         row["id"]: {"name": row["name"], "url": row["overview_url"], "type": "driver",
-                    "demo_url": row["demo"]["notes_url"]}
+                    "demo_url": row["demo"]["notes_url"], "demo_version": row["demo"]["version"]}
         for row in manifest["products"]
     }
     browser = next(row for row in manifest["applications"] if row["id"] == "browser")
@@ -56,6 +57,9 @@ def registry_catalogue(manifest, base):
                           "url": base + "guides/first-run/#browser",
                           "release_url": browser["source"] + "/releases/tag/" + browser["tag"]}
     rows = json.loads((ROOT / "sdk-registry.json").read_text(encoding="utf-8"))
+    proof_file = "assets/sdk-registry-runtime-2026-11-25.json"
+    evidence = json.loads((ROOT / proof_file).read_text(encoding="utf-8"))["checks"]
+    lab_results = {(row["ecosystem"], row["name"].casefold(), row["version"]): row for row in evidence}
     seen = set()
     for row in rows:
         name, version = row["name"], row["version"]
@@ -79,6 +83,28 @@ def registry_catalogue(manifest, base):
                              if row["ecosystem"] == "nuget-native" else registry["label"] + " environment"),
             install_includes_driver_or_application=False,
         )
+        if result := lab_results.get(key):
+            if result["edition"] != row["edition"]:
+                raise ValueError(f"Lab result uses a different edition for {name}")
+            row["lab_verification"] = {
+                "source_url": base + proof_file,
+                "driver_version": result["driver_version"],
+                "runtime": result["runtime"],
+            }
+        if row["ecosystem"] == "npm":
+            sample = "assets/node-sdk-status.cjs"
+            command = f'node node-sdk-status.cjs {row["edition"]}'
+        elif row["ecosystem"] == "powershell":
+            sample = "assets/gallery-sdk-status.ps1"
+            command = f'pwsh -NoProfile -File .\\gallery-sdk-status.ps1 -Module {name}'
+        else:
+            sample = None
+        if sample:
+            row["first_check"].update(
+                source_url=base + sample,
+                source_sha256=sha256((ROOT / sample).read_bytes()).hexdigest(),
+                command_from_app_folder=command,
+            )
         if row["edition"] == "browser":
             row["first_check"].update(
                 source_url=browser["test"]["source_url"],

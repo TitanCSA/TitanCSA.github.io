@@ -1,6 +1,7 @@
 """Optional visual/interaction QA with an existing Playwright/Chrome installation."""
 from pathlib import Path
 from datetime import datetime,timezone
+from time import monotonic
 import json,sys
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1];out=ROOT/'.local/qa';out.mkdir(parents=True,exist_ok=True)
@@ -69,7 +70,10 @@ with sync_playwright() as p:
     page.locator('main .guide-card details > summary').first.click()
     image=page.locator('main .first-run-image').first
     image.scroll_into_view_if_needed()
-    page.wait_for_function('document.querySelector(".first-run-image").naturalWidth > 0',polling=100)
+    deadline=monotonic()+10
+    while not image.evaluate('img => img.complete && img.naturalWidth > 0'):
+        assert monotonic()<deadline, f'Screenshot did not load: {image.get_attribute("src")}'
+        page.wait_for_timeout(125)
     page.goto(base+'fr/installer-sdk-windows/',wait_until='domcontentloaded')
     native_packages=page.locator('main details').filter(has=page.locator('summary').get_by_text('C/C++',exact=True))
     assert not native_packages.locator('table').is_visible()

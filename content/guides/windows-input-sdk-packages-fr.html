@@ -8,8 +8,14 @@
 {{REGISTRY_TABLES_FR}}
 <p>Le paquet donne à ton programme le code du SDK. Installe séparément le pilote ou l’application Windows du projet. <a href="/integration.json">Versions exactes et premiers appels d’API</a>.</p>
 <p>Le paquet NuGet Interception V2 compile la bibliothèque C dans ton application. Si elle charge <code>interception.dll</code>, prends les fichiers x86 ou x64 correspondants dans le <a href="/guides/interception-v2-migration/">ZIP de la démo Interception V2</a>.</p>
+<p><a href="/assets/sdk-registry-runtime-2026-11-25.json">Voir les résultats de neuf tests de paquets SDK sous Windows 11</a>. Node.js, PowerShell, Python et .NET ont lu l’état du pilote installé. Le compteur de démo est resté au repos.</p>
 <p><a href="/guides/windows-input-sdk-java-php-ruby/">Trouver les paquets Java, PHP et Ruby</a>.</p>
 <details class="first-run-more"><summary>Premiers appels d’API et archives Node.js 1.0.1</summary>
+<h2>Lire l’état du pilote depuis ton projet</h2>
+<p>Après la commande npm du tableau, enregistre <a href="/assets/node-sdk-status.cjs" download>node-sdk-status.cjs</a> dans le dossier de ton projet. Ouvre PowerShell dans ce dossier et lance la commande ci-dessous pour l’édition Interceptor combinée.</p>
+<pre><code>node node-sdk-status.cjs interceptor</code></pre>
+<p>Le script affiche l’état du pilote. Windows 2 signifie que l’appel ne trouve pas son interface. Pour une autre édition, prends la commande exacte dans le <a href="/integration.json">fichier d’intégration</a>.</p>
+<p>Pour un module de la Gallery, utilise <a href="/assets/gallery-sdk-status.ps1">l’exemple PowerShell</a> après avoir installé le bon module. Le test Interception V2 classe un emplacement de la bibliothèque et fonctionne avant l’installation du pilote.</p>
 <h2>Télécharger les paquets Node.js 1.0.1 corrigés</h2>
 <p>La <a href="https://github.com/TitanCSA/sdk-packages/releases/tag/node-input-sdk-v1.0.1">publication GitHub 1.0.1</a> contient les trois archives et leurs sommes SHA-256. Après téléchargement, lancez <code>npm install ./NOM-DU-FICHIER.tgz</code> avec le nom du fichier correspondant. Les commandes du tableau installent les versions 1.0.0 du registre npm.</p>
 <ul>

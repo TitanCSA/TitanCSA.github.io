@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-25",
+  "environment": {
+    "windows_build": 26100,
+    "architecture": "x64",
+    "secure_boot": true,
+    "account": "administrator"
+  },
+  "scope": "Read-only status calls after separately installing the matching public demo in a publisher-operated Hyper-V VM.",
+  "checks": [
+    {
+      "edition": "interceptor",
+      "driver_version": "1.4.22.0",
+      "driver_sha256": "d091a6f832f34d28c9b1337358a5ea1504a09d222445c0c42932e0eabefc37f5",
+      "demo_timer_started": false,
+      "ecosystem": "powershell",
+      "name": "Interceptor",
+      "version": "1.0.0",
+      "runtime": "PowerShell 7.6.6 x64",
+      "package_sha256": "5ebe68306ba190a18ef4be13d2182f250bcd1fcdf430ea188d45a30bdd2f53ab",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
+    },
+    {
+      "edition": "interceptor",
+      "driver_version": "1.4.22.0",
+      "driver_sha256": "d091a6f832f34d28c9b1337358a5ea1504a09d222445c0c42932e0eabefc37f5",
+      "demo_timer_started": false,
+      "ecosystem": "npm",
+      "name": "interceptor-sdk",
+      "version": "1.0.0",
+      "runtime": "Node.js 24.21.0 x64",
+      "package_sha256": "151ffeb073f6dffcb6b0ca8b7370bd78f863df9703537035d36e73fa89cd3ac6",
+      "package_integrity": "sha512-wnOG+onuIlLmRr+ZkTxgEgNDSaJuctCqtcdmNem8J9Kg40EZYQ17SV6csNPlZWPNE/Ex+zmo10D+H+5fUi3RlA==",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
+    },
+    {
+      "edition": "interceptor-keyboard-mouse",
+      "driver_version": "1.0.5.0",
+      "driver_sha256": "562a52d2ef70867682a37eaeb1ad87cbca6a7bd186df8f272920ba7ddd834794",
+      "demo_timer_started": false,
+      "ecosystem": "powershell",
+      "name": "InterceptorKeyboardMouse",
+      "version": "1.0.0",
+      "runtime": "PowerShell 7.6.6 x64",
+      "package_sha256": "8b8738dc19666c8c8aa92155abce950ce5ad6dacd5313782d7c5841daa7bac1f",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
+    },
+    {
+      "edition": "interceptor-keyboard-mouse",
+      "driver_version": "1.0.5.0",
+      "driver_sha256": "562a52d2ef70867682a37eaeb1ad87cbca6a7bd186df8f272920ba7ddd834794",
+      "demo_timer_started": false,
+      "ecosystem": "npm",
+      "name": "interceptor-keyboard-mouse-sdk",
+      "version": "1.0.0",
+      "runtime": "Node.js 24.21.0 x64",
+      "package_sha256": "dfcc0df6cbf05f7a8f07ab2e9adeba50576bc14d2757d3eb0593c571c5fca0b7",
+      "package_integrity": "sha512-5bglGNNNthlAY8PHtcRYkPotzWRgXGFXE4+WQPXQI5cSuYiMUfP5+IxNKw05qDEvCrEZlBi8bbJxgw/chjgWIA==",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
+    },
+    {
+      "edition": "interceptor-gamepad-controller",
+      "driver_version": "1.0.13.0",
+      "driver_sha256": "2b792a9d6398de9cf46ddbb7db6075e70e2e4812d1e2083248205db04873a727",
+      "demo_timer_started": false,
+      "ecosystem": "powershell",
+      "name": "InterceptorGamepadController",
+      "version": "1.0.0",
+      "runtime": "PowerShell 7.6.6 x64",
+      "package_sha256": "55e350e139e01b844c1fa8970812f55222f26b1367d5c3132f9c87a741245dd1",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
+    },
+    {
+      "edition": "interceptor-gamepad-controller",
+      "driver_version": "1.0.13.0",
+      "driver_sha256": "2b792a9d6398de9cf46ddbb7db6075e70e2e4812d1e2083248205db04873a727",
+      "demo_timer_started": false,
+      "ecosystem": "npm",
+      "name": "interceptor-gamepad-controller",
+      "version": "1.0.0",
+      "runtime": "Node.js 24.21.0 x64",
+      "package_sha256": "eb7146cdbacd487250350eec7908acc9cffd50bd885458dd102ca898ffd17de2",
+      "package_integrity": "sha512-rKoFU/hOInvMQmzg8BhcWwRQ44PN1OqGrlg/7+2M5a74gyP/sN6ZUxco5FgqAjFnX6Oo5xFX2ani0FUZwVKppQ==",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
+    },
+    {
+      "edition": "vdevice",
+      "driver_version": "1.0.6.0",
+      "driver_sha256": "74056f7fa1fc00b4833b3ada989f78ecdfcf56a002fe2af92c118072a5f70f39",
+      "demo_timer_started": false,
+      "ecosystem": "powershell",
+      "name": "Vdevice",
+      "version": "1.0.0",
+      "runtime": "PowerShell 7.6.6 x64",
+      "package_sha256": "2ff84af92a6913e70bd1679e263c627559014b57fdd173646fa7e26504fad40f",
+      "result": {
+        "info_abi": 1,
+        "max_devices": 16,
+        "trial_started": false
+      }
+    },
+    {
+      "edition": "interceptor",
+      "ecosystem": "pypi",
+      "name": "interceptor-multilang",
+      "version": "1.0.2",
+      "driver_version": "1.4.22.0",
+      "driver_sha256": "d091a6f832f34d28c9b1337358a5ea1504a09d222445c0c42932e0eabefc37f5",
+      "demo_timer_started": false,
+      "runtime": "Python 3.14.9 x64",
+      "package_sha256": "74c04862b8413a70f032b7393a5e0d181451fa526a80f2208adc070e079adf24",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
+    },
+    {
+      "edition": "interceptor",
+      "ecosystem": "nuget-managed",
+      "name": "Interceptor.MultiLang",
+      "version": "1.0.2",
+      "driver_version": "1.4.22.0",
+      "driver_sha256": "d091a6f832f34d28c9b1337358a5ea1504a09d222445c0c42932e0eabefc37f5",
+      "demo_timer_started": false,
+      "runtime": ".NET 8.0.22 x64",
+      "package_sha256": "d774846eb7904d550f037dbb062d98e6d5961936e65856f1983aaaa2b896b298",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      }
+    }
+  ],
+  "reproduced_examples": [
+    {
+      "file": "node-sdk-status.cjs",
+      "sha256": "9c9ddb7d2203b401451f3146b0f9ac01488bcb113d196dba7c200db7168fcb06",
+      "edition": "interceptor",
+      "driver_version": "1.4.22.0",
+      "result": "Installed driver responded. Read status left capture inactive."
+    },
+    {
+      "file": "gallery-sdk-status.ps1",
+      "sha256": "5a73c07bc06d7dbd36953c6ef3a8b3696907031a959dab624c1a3b6e307c9a0c",
+      "edition": "interceptor",
+      "driver_version": "1.4.22.0",
+      "result": "Installed driver responded. Read status left capture inactive."
+    }
+  ]
+}

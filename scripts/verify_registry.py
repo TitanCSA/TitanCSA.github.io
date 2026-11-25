@@ -39,6 +39,9 @@ def verify(row):
                 )
         elif registry == "npm":
             available = document["name"] == name and document["version"] == version and bool(document["dist"]["integrity"])
+            if archive:
+                available = (available and document["dist"]["tarball"] == archive["url"]
+                             and sha256(read(archive["url"])).hexdigest() == archive["sha256"])
         else:
             available = version in document["versions"]
             if archive:

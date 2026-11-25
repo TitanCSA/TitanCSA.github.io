@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 from datetime import datetime, timezone
+from hashlib import sha256
 import json
 import os
 from pathlib import Path
@@ -68,7 +69,17 @@ def official_assets(edition, tag, filenames):
     return result
 
 
-def check_edition(edition, sdk_role):
+def verify_download(url, expected):
+    request = Request(url, headers={"User-Agent": "TitanCSA-Catalogue-Download-Check"})
+    digest = sha256()
+    with urlopen(request, timeout=30) as response:
+        for chunk in iter(lambda: response.read(1 << 20), b""):
+            digest.update(chunk)
+    if digest.hexdigest() != expected:
+        raise ValueError(f"Downloaded bytes differ from the expected SHA-256: {url}")
+
+
+def check_edition(edition, sdk_role, verify_bytes=False):
     assets = official_assets(edition, edition["tag"], edition["demo_files"])
     if edition["demo_assets"] != {role: url for role, (url, _) in assets.items()}:
         raise ValueError(f"{edition['slug']}: generated asset URLs differ from the official URLs")
@@ -76,10 +87,13 @@ def check_edition(edition, sdk_role):
         raise ValueError(f"{edition['slug']}: pinned SDK SHA-256 differs from the official digest")
     if edition["demo_asset_sha256"] != {role: digest for role, (_, digest) in assets.items()}:
         raise ValueError(f"{edition['slug']}: pinned asset SHA-256 differs from the official digest")
+    if verify_bytes:
+        for url, digest in assets.values():
+            verify_download(url, digest)
     return len(assets)
 
 
-def candidate(edition, tag, version, sdk_role, overrides):
+def candidate(edition, tag, version, sdk_role, overrides, verify_bytes=False):
     if not re.fullmatch(r"\d+\.\d+\.\d+\.\d+", version):
         raise ValueError("Supply the four-part demo driver version")
     filenames = {role: name.replace(edition["demo"], version) for role, name in edition["demo_files"].items()}
@@ -89,6 +103,9 @@ def candidate(edition, tag, version, sdk_role, overrides):
             raise ValueError("Use --asset once per replacement with an existing role and a filename")
         filenames[role] = filename
     assets = official_assets(edition, tag, filenames)
+    if verify_bytes:
+        for url, digest in assets.values():
+            verify_download(url, digest)
     source_fields = {"slug", "demo", "tag", "commercial", "use", "api", "trial_starts", "note", "demo_files", "sdk_sha256", "setup_member"}
     row = {name: value for name, value in edition.items() if name in source_fields}
     row.update(demo=version, tag=tag, demo_files=filenames, sdk_sha256=assets[sdk_role][1],
@@ -130,7 +147,12 @@ def main():
     parser.add_argument("--candidate", nargs=3, metavar=("EDITION", "TAG", "VERSION"))
     parser.add_argument("--asset", action="append", default=[], metavar="ROLE=FILENAME")
     parser.add_argument("--apply", action="store_true", help="Write the checked candidate revision to releases.json")
+    parser.add_argument("--verify-downloads", action="store_true", help="Download each public file and hash its bytes")
     args = parser.parse_args()
+    if (args.asset or args.apply) and not args.candidate:
+        parser.error("--asset and --apply require --candidate")
+    if not CATALOGUE.is_file():
+        parser.error("Run python scripts/build.py before checking a release.")
     editions = json.loads(CATALOGUE.read_text(encoding="utf-8"))["editions"]
     recipes = json.loads((ROOT / "sdk-checks.json").read_text(encoding="utf-8"))
     if args.candidate:
@@ -138,16 +160,14 @@ def main():
         edition = next((row for row in editions if row["slug"] == name), None)
         if edition is None:
             parser.error(f"Unknown edition {name}")
-        reviewed = candidate(edition, tag, version, recipes[name]["asset_role"], args.asset)
+        reviewed = candidate(edition, tag, version, recipes[name]["asset_role"], args.asset, args.verify_downloads)
         if args.apply:
             update_pin(SOURCE, edition, reviewed)
         print(json.dumps(reviewed, ensure_ascii=False, indent=2))
         return
-    if args.asset or args.apply:
-        parser.error("--asset and --apply require --candidate")
     checked = 0
     for edition in editions:
-        count = check_edition(edition, recipes[edition["slug"]]["asset_role"])
+        count = check_edition(edition, recipes[edition["slug"]]["asset_role"], args.verify_downloads)
         print(f"{edition['slug']} {edition['tag']}: {count} official assets and exact SDK digest")
         checked += count
     apps = json.loads((ROOT / "dist" / "integration.json").read_text(encoding="utf-8"))["applications"]
@@ -156,8 +176,11 @@ def main():
         archive = official_assets(edition, app["tag"], {"zip": app["zip"]})["zip"]
         if archive != (app["download_url"], app["sha256"]):
             raise ValueError(f"{app['id']}: pinned app ZIP differs from the official release")
+        if args.verify_downloads:
+            verify_download(*archive)
         print(f"{app['id']} {app['tag']}: exact app ZIP digest")
-    print(f"Verified {checked + len(apps)} asset references across {len(editions) + len(apps)} pinned releases.")
+    scope = "downloaded files" if args.verify_downloads else "asset references"
+    print(f"Verified {checked + len(apps)} {scope} across {len(editions) + len(apps)} pinned releases.")
 
 
 if __name__ == "__main__":
