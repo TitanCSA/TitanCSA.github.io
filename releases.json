@@ -4,8 +4,8 @@
   "editions": [
     {
       "slug": "interceptor",
-      "demo": "1.4.22.0",
-      "tag": "v1.4.22.0-demo",
+      "demo": "1.4.23.0",
+      "tag": "v1.4.23.0-demo",
       "commercial": {
         "package_version": "1.6.1.1",
         "driver_version": "1.6.0.0"
@@ -16,20 +16,20 @@
       "note": "Remove overlapping editions before installation. Check the supported device stack and profile.",
       "demo_files": {
         "installer": "InterceptorSetup.exe",
-        "examples": "Interceptor-Examples-1.4.22.0.zip",
-        "sdk": "Interceptor-SDK-1.4.22.0.zip",
+        "examples": "Interceptor-Examples-1.4.23.0.zip",
+        "sdk": "Interceptor-SDK-1.4.23.0.zip",
         "checksums": "SHA256SUMS.txt",
         "viewer": "InterceptorExampleUI.exe",
         "console_installer": "InterceptorSetupConsole.exe"
       },
-      "sdk_sha256": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f",
+      "sdk_sha256": "734fde1cbe20fd3d99250174432af50ee5690848b92daba0e8a984fb291bceb7",
       "demo_asset_sha256": {
-        "installer": "4c14a3c0eac63c4aab9a76f1760e46b3a152ecbb0966b4556fbe29c445c2173a",
-        "examples": "9e1f7382fb8c9f59c0df56a69295986cbb196ed4c0bb6c9487f951c4c954add4",
-        "sdk": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f",
-        "checksums": "2bda43c4fc97a33e1238324f491946cfa9fb5da40d6531de5f96fb2acb9bc82b",
-        "viewer": "fc87f00a8f90bd3b52994f113253bb6472277bd05bcf3a49b62a09c94b4c077d",
-        "console_installer": "48a06a4ae075b486f9348ae652a866560ec2171398806cea9bb99b8315a76a54"
+        "installer": "688a07b52fb20d359ae0bab36e7734fb53fb1ed2bf7dc11be3626b0ccabb608d",
+        "examples": "2a4b85cd72193ee03fa5f9f26605d2d77ba539750ba84fbf7db9fe572a0d3844",
+        "sdk": "734fde1cbe20fd3d99250174432af50ee5690848b92daba0e8a984fb291bceb7",
+        "checksums": "c40203355e8b73c78d14d84243a464bd67800d5e4abbfcb5633a3da737a74e78",
+        "viewer": "d8c61016f4252c8c5d94e969b77e9841729328e70a623fd5cc211998f7616e10",
+        "console_installer": "d2f0346bfb4e2b2ef06324d5072e2fe7ed55241cc0c93a8c8a4cfa4cd46256fd"
       }
     },
     {
