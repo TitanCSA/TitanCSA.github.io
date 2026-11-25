@@ -1,0 +1,36 @@
+<div class="wrap">
+<section class="hero simple-hero" aria-labelledby="hero-title">
+  <div>
+    <h1 id="hero-title">Trouve ton outil Windows.</h1>
+    <p class="lead">Chaque fiche explique ce que fait le projet et comment l’essayer.</p>
+    <div class="actions"><a class="button primary" href="#projects">Trouver un projet</a><a class="button" href="/" lang="en">Read in English</a></div>
+    <p><a href="/fr/pilotes-entree-windows/#contact-release">Version sans la limite d’une heure · Discord titancsa</a></p>
+  </div>
+</section>
+<section id="projects" class="section" aria-labelledby="projects-title">
+  <div class="section-intro"><div><h2 id="projects-title">Que veux-tu faire ?</h2><p>Recherche par usage ou ouvre une catégorie. Le catalogue contient {{PROJECT_COUNT}} projets.</p></div></div>
+  <form class="catalogue-tools" role="search" onsubmit="return false">
+    <div class="field"><label for="project-search">Rechercher un projet</label><input id="project-search" type="search" placeholder="Clavier, USB, navigateur, stockage…" autocomplete="off" aria-controls="project-results"></div>
+    <div class="field"><label for="category-filter">Catégorie</label><select id="category-filter" aria-controls="project-results"><option value="">Toutes les catégories</option>{{CATEGORY_OPTIONS_FR}}</select></div>
+    <label class="check" for="no-driver-filter"><input id="no-driver-filter" type="checkbox">Essai sans ajouter de pilote</label>
+  </form>
+  <div class="filter-note"><span id="result-count" role="status" aria-live="polite">{{PROJECT_COUNT}} projets affichés</span><button class="reset" type="button" data-reset>Effacer les filtres</button></div>
+  <noscript><p class="notice">Tous les projets et leurs liens sont ci-dessous. Active JavaScript pour rechercher ou filtrer la liste.</p></noscript>
+  <nav class="jump-links" aria-label="Catégories de projets">{{CATEGORY_LINKS_FR}}</nav>
+  <div id="empty-results" class="empty" hidden>Aucun projet trouvé. Essaie un mot plus général ou efface les filtres.</div>
+  <div id="project-results">{{PROJECTS_FR}}</div>
+  <p class="subtle"><a href="https://github.com/TitanCSA/TitanCSA/blob/main/PROJECTS.md">Guide détaillé des projets sur GitHub</a></p>
+</section>
+</div>
+<section class="wrap section">
+  <p><a href="/fr/installeur-et-sdk/">À quoi servent l’installateur, le pilote et le SDK ?</a></p>
+  <details class="more-info">
+    <summary>Guides et résultats des tests</summary>
+    <ul>
+      <li><a href="/fr/pilotes-entree-windows/">Comparer les pilotes d’entrée Windows</a></li>
+      <li><a href="/fr/essayer-sans-pilote/">Essayer un outil sans ajouter de pilote</a></li>
+      <li><a href="https://titancsa.github.io/TitanCSA-Benchmarks/" lang="en">TitanCSA Benchmarks</a></li>
+      <li><a href="/fr/activation-release/">Résoudre un problème d’installation ou d’activation</a></li>
+    </ul>
+  </details>
+</section>

@@ -31,14 +31,17 @@ class Page(HTMLParser):
         if tag=='title':self.in_title=False
         if tag=='script' and self.in_schema:self.schemas.append(json.loads(self.schema_text));self.in_schema=False
 
-data=json.loads((ROOT/'projects.json').read_text());projects=data['projects']
+data=json.loads((ROOT/'projects.json').read_text(encoding='utf8'));projects=data['projects']
+localized=json.loads((OUT/'projects.json').read_text(encoding='utf8'))
+assert [p['url'] for p in localized['projects']] == [p['url'] for p in projects]
+assert all(p['plain_purpose_fr'] and p['plain_first_step_fr'] for p in localized['projects'])
 assert len(projects)==60==len({p['url'].lower() for p in projects})
 assert len({p['category'] for p in projects})==10
 for p in projects:
     assert p['name'] and p['description'] and p['first_step'] and isinstance(p['start_without_adding_driver'],bool)
     assert p['kind'] in ['Application','Driver SDK','SDK sources','Preview','Dataset']
     assert p['url'].startswith(('https://github.com/TitanCSA/','https://github.com/titanfyre/'))
-for name in ['Serial-Device-Simulator','Virtual-COM-Workbench','File-Trace-Studio','RegistryGuard']:
+for name in ['Serial-Device-Simulator','Virtual-COM-Workbench','File-Trace-Studio','Titan-File-Filter','RegistryGuard']:
     assert next(p for p in projects if p['name']==name)['kind']=='Preview'
 parsed={}
 for p in OUT.rglob('*.html'):
@@ -54,6 +57,11 @@ for page in parsed.values():
     publisher=content[0]['publisher']
     assert publisher['@id']==BASE+'#publisher' and publisher['sameAs']==['https://github.com/TitanCSA']
 by_canonical={p.canonical:p for path,p in parsed.items() if path.name!='404.html'}
+for route in ('','fr/'):
+    landing=by_canonical[BASE+route]
+    project_list=next(schema for schema in landing.schemas if schema['@type']=='ItemList')
+    assert {item['url'] for item in project_list['itemListElement']} == {p['url'] for p in projects}
+    assert {p['url'] for p in projects} <= set(landing.links)
 for page in by_canonical.values():
     if page.alternates:
         assert page.alternates[page.language]==page.canonical

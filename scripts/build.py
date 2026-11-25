@@ -1,14 +1,17 @@
 """Build a public, dependency-free static catalogue from curated project evidence."""
 from pathlib import Path
-from collections import OrderedDict
 from html import escape
 from xml.etree import ElementTree as ET
 import json,re,shutil
 from integration import app_cards, make_manifest, sdk_rows, write_starter
+from catalogue import catalogue_sections
 from registry import registry_catalogue, registry_tables
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 data=json.loads((ROOT/'projects.json').read_text(encoding='utf8'));projects=data['projects'];checked=data['checked']
+french_copy=json.loads((ROOT/'projects.fr.json').read_text(encoding='utf8'))
+assert set(french_copy['projects']) == {p['name'] for p in projects}
+assert set(french_copy['categories']) == {p['category'] for p in projects}
 verification_file=ROOT/'site-verification.json'
 verification=json.loads(verification_file.read_text())['google_site_verification'] if verification_file.exists() else None
 if verification:assert re.fullmatch(r'[A-Za-z0-9_=-]{20,200}',verification)
@@ -22,6 +25,7 @@ featured={
     'interception-v2':("Interception-V2","Interception V2 | Windows keyboard and mouse driver for the original Interception C API","Evaluate legacy applications using the original Interception C SDK against TitanCSA’s independently maintained keyboard and mouse driver."),
 }
 featured_paths={repo:f'/projects/{slug}/' for slug,(repo,_,_) in featured.items()}
+featured_paths['Titan-Audio-Link']='/guides/titan-audio-link-first-run/'
 featured_date='2026-11-23'
 contact_path='/about/evidence/#release-contact'
 release_data=json.loads((ROOT/'releases.json').read_text(encoding='utf8'))
@@ -63,26 +67,10 @@ for folder in ['src','assets']:
     target=OUT/('assets' if folder=='src' else folder);target.mkdir(exist_ok=True)
     for p in (ROOT/folder).iterdir():
         if p.is_file():shutil.copyfile(p,target/p.name)
-groups=OrderedDict()
-for project in projects:groups.setdefault((project['category'],project['category_title']),[]).append(project)
-cards=[]
-for (key,title),entries in groups.items():
-    items=[]
-    for p in entries:
-        search=escape(' '.join(str(p[k]) for k in ['name','description','first_step','plain_purpose','plain_first_step','kind','category_title']),quote=True)
-        tag='tag preview' if p['kind']=='Preview' else 'tag'
-        kind=escape(p['kind']);note=f'<span class="start-tag">{escape(p["start_mode"])}</span>' if p['start_without_adding_driver'] else ''
-        issue=f'<a class="known-issue" href="{escape(p["known_issue_url"])}">WDF-001 status by edition ↗</a>' if p['known_issue_url'] else ''
-        ident='project-'+re.sub(r'[^a-z0-9-]','-',p['name'].lower())
-        overview=featured_paths.get(p['url'].rsplit('/',1)[-1])
-        if p['name']=='Titan-Audio-Link':
-            overview='/guides/titan-audio-link-first-run/'
-        overview_link=f'<p><a href="{overview}">Project overview</a></p>' if overview else ''
-        items.append(f'''<article id="{ident}" class="project" data-project data-category="{escape(key)}" data-no-driver="{str(p['start_without_adding_driver']).lower()}" data-search="{search}">
-<div class="project-title"><h3><a href="{escape(p['url'])}">{escape(p['name'])} <span aria-hidden="true">↗</span></a></h3><span class="{tag}">{kind}</span>{note}</div>
-<div><p>{escape(p['description'])}</p><details><summary>Start and scope</summary><p>{escape(p['first_step'])}</p></details>{issue}{overview_link}</div></article>''')
-    cards.append(f'<section id="{escape(key)}" class="project-group" data-project-group aria-labelledby="heading-{escape(key)}"><div class="group-heading"><h2 id="heading-{escape(key)}">{escape(title)}</h2><span class="group-count" data-group-count>{len(entries)} entries</span></div>'+''.join(items)+'</section>')
-replacements={'PROJECT_COUNT':str(len(projects)),'CHECKED_DATE':checked,'PROJECTS':'\n'.join(cards),'CATEGORY_OPTIONS':''.join(f'<option value="{escape(key)}">{escape(title)}</option>' for key,title in groups),'CATEGORY_LINKS':''.join(f'<a href="#{escape(key)}" data-category-jump>{escape(title)}</a>' for key,title in groups)}
+app_sections={row['repository'].split('/')[-1]:row['id'] for row in integration['applications']}
+replacements={'PROJECT_COUNT':str(len(projects)), 'CHECKED_DATE':checked}
+for french in (False, True):
+    replacements.update(catalogue_sections(projects, french_copy, featured_paths, app_sections, french=french))
 replacements['RELEASE_REVIEW_DATE']=release_date
 replacements['INSTALLER_SDK_ROWS_EN']=sdk_rows(integration)
 replacements['INSTALLER_SDK_ROWS_FR']=sdk_rows(integration,french=True)
@@ -125,6 +113,7 @@ replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
 )
 pages={
  '':('TitanCSA — Windows tools, device SDKs and practical guides','Find Windows input tools, virtual devices, diagnostics and SDKs by workflow. Clear first-run guides, project licences, public evidence and known limits.','index.html'),
+ 'fr/':('TitanCSA — Outils Windows, pilotes et SDK','Trouve ton outil Windows par usage. Chaque fiche explique son rôle et le premier essai, avec les liens vers les démos et les SDK.','index-fr.html'),
  'guides/first-run/':('A first Windows tool run without an input driver — TitanCSA','Start with Browser Control SDK, read-only Driver Readiness Inspector or offline fixture validation. Prerequisites, exact steps and expected results.','guides/first-run.html'),
  'fr/essayer-sans-pilote/':('Essayer un outil Windows sans installer de pilote — TitanCSA','Huit outils à essayer avec des étapes courtes, des captures et le résultat à vérifier.','guides/first-run-fr.html'),
  'guides/choose-input/':('Input interception or virtual devices? Choose the Windows path — TitanCSA','Compare physical-device filters, virtual USB creation and diagnostics. Match the SDK edition, device contract and observation path before a live test.','guides/choose-input.html'),
@@ -154,6 +143,7 @@ updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{sl
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/','guides/vdevice-custom-hid-test/','fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/'}
 release_guides={'guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
 translations=(
+    {'en':'','fr':'fr/'},
     {'en':'guides/installer-and-sdk/','fr':'fr/installeur-et-sdk/'},
     {'en':'guides/first-run/','fr':'fr/essayer-sans-pilote/'},
     {'en':'guides/release-activation-help/','fr':'fr/activation-release/'},
@@ -177,6 +167,7 @@ publisher={
 
 published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/essayer-sans-pilote/')}
 reviewed.update(published_dates)
+reviewed.update({'':'2026-11-25','fr/':'2026-11-25'})
 
 
 def render(title,description,path,body,article=False):
@@ -198,12 +189,14 @@ def render(title,description,path,body,article=False):
             'description':edition['use'],
             'publisher':{'@id':publisher['@id']},
         })
-    if not path:schemas.append({'@context':'https://schema.org','@type':'ItemList','name':'TitanCSA public project catalogue','numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
+    if path in ('','fr/'):
+        name='Catalogue public TitanCSA' if language=='fr' else 'TitanCSA public project catalogue'
+        schemas.append({'@context':'https://schema.org','@type':'ItemList','name':name,'numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
     structured=''.join('<script type="application/ld+json">'+json.dumps(s,ensure_ascii=True).replace('<','\\u003c')+'</script>' for s in schemas)
     for variants in translations:
         if path in variants.values():
             structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in variants.items())
-    if path in ('','guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/first-run/','fr/essayer-sans-pilote/') or path.startswith('projects/'):
+    if path in ('','fr/','guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/first-run/','fr/essayer-sans-pilote/') or path.startswith('projects/'):
         structured+=f'<link rel="alternate" type="application/json" href="{BASE}integration.json" title="SDK integration manifest">'
     if not path:
         structured+=f'<link rel="alternate" type="application/rss+xml" title="TitanCSA guides" href="{BASE}rss.xml">'
@@ -213,14 +206,15 @@ def render(title,description,path,body,article=False):
         if language=='fr' else ('Skip to content','TitanCSA home','Main navigation','Switch color theme')
     )
     nav_links=(
-        '<a href="/#projects">Projets</a><a href="/fr/pilotes-entree-windows/">Comparatif</a>'
+        '<a href="/fr/#projects">Projets</a><a href="/fr/essayer-sans-pilote/">Premiers pas</a><a class="optional" href="/fr/pilotes-entree-windows/">Pilotes</a>'
         if language=='fr' else
-        '<a href="/#projects">Projects</a><a href="/guides/first-run/">Get started</a><a class="optional" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Benchmarks</a><a class="optional" href="/about/evidence/">Evidence &amp; support</a><a href="/fr/pilotes-entree-windows/" lang="fr" aria-label="Comparatif des pilotes en français">FR</a>'
+        '<a href="/#projects">Projects</a><a href="/guides/first-run/">Get started</a><a class="optional" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Benchmarks</a><a class="optional" href="/about/evidence/">Evidence &amp; support</a><a href="/fr/" lang="fr" aria-label="Catalogue en français">FR</a>'
     )
     theme_text='Thème' if language=='fr' else 'Theme'
     footer_lang=' lang="en"' if language=='fr' else ''
+    home_path='/fr/' if language=='fr' else '/'
     main=f'<main id="main" class="wrap article">{body}</main>' if article else f'<main id="main">{body}</main>'
-    return f'''<!doctype html><html lang="{language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title><meta name="description" content="{escape(description,quote=True)}"><link rel="canonical" href="{canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#194fd1"><link rel="icon" type="image/svg+xml" href="/assets/icon.svg"><link rel="stylesheet" href="/assets/site.css"><meta property="og:type" content="{'article' if article else 'website'}"><meta property="og:site_name" content="TitanCSA"><meta property="og:title" content="{escape(title,quote=True)}"><meta property="og:description" content="{escape(description,quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}assets/social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">{structured}<script src="/assets/catalogue.js" defer></script></head><body><a class="skip" href="#main">{skip_label}</a><header class="header"><div class="wrap"><a class="brand" href="/" aria-label="{home_label}"><span class="brand-mark" aria-hidden="true">T</span>TitanCSA</a><nav class="nav" aria-label="{nav_label}">{nav_links}<button type="button" class="theme-toggle" data-theme-toggle aria-label="{theme_label}">{theme_text}</button></nav></div></header>{main}<footer class="footer"{footer_lang}><div class="wrap"><p>© 2026 TitanCSA. Documentation maintained with AI assistance. Individual project licences and tested limits apply. This is a publisher-operated catalogue.</p><nav aria-label="Footer"><a href="/about/evidence/">About &amp; support</a><a href="https://github.com/TitanCSA/TitanCSA">GitHub</a><a href="https://github.com/TitanCSA/sdk-packages">SDK packages</a><a href="https://github.com/TitanCSA/TitanCSA.github.io">Website source</a></nav></div></footer></body></html>'''
+    return f'''<!doctype html><html lang="{language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title><meta name="description" content="{escape(description,quote=True)}"><link rel="canonical" href="{canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#194fd1"><link rel="icon" type="image/svg+xml" href="/assets/icon.svg"><link rel="stylesheet" href="/assets/site.css"><meta property="og:type" content="{'article' if article else 'website'}"><meta property="og:site_name" content="TitanCSA"><meta property="og:title" content="{escape(title,quote=True)}"><meta property="og:description" content="{escape(description,quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}assets/social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">{structured}<script src="/assets/catalogue.js" defer></script></head><body><a class="skip" href="#main">{skip_label}</a><header class="header"><div class="wrap"><a class="brand" href="{home_path}" aria-label="{home_label}"><span class="brand-mark" aria-hidden="true">T</span>TitanCSA</a><nav class="nav" aria-label="{nav_label}">{nav_links}<button type="button" class="theme-toggle" data-theme-toggle aria-label="{theme_label}">{theme_text}</button></nav></div></header>{main}<footer class="footer"{footer_lang}><div class="wrap"><p>© 2026 TitanCSA. Documentation maintained with AI assistance. Individual project licences and tested limits apply. This is a publisher-operated catalogue.</p><nav aria-label="Footer"><a href="/about/evidence/">About &amp; support</a><a href="https://github.com/TitanCSA/TitanCSA">GitHub</a><a href="https://github.com/TitanCSA/sdk-packages">SDK packages</a><a href="https://github.com/TitanCSA/TitanCSA.github.io">Website source</a></nav></div></footer></body></html>'''
 for path,(title,description,source) in pages.items():
     body=(ROOT/'content'/source).read_text(encoding='utf8')
     for key,value in replacements.items():body=body.replace('{{'+key+'}}',value)
@@ -243,7 +237,7 @@ for path,(title,description,source) in pages.items():
         body=body.replace('{{DEMO_DOWNLOAD_URL}}',edition['demo_download_url']).replace('{{DEMO_DOWNLOAD_LABEL}}',label)
         body=body.replace('{{RELEASE_TERMS}}',release_terms).replace('{{RELEASE_DETAILS}}',links)
     assert '{{' not in body
-    target=OUT/path/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(title,description,path,body,bool(path)),encoding='utf8')
+    target=OUT/path/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(title,description,path,body,path not in ('','fr/')),encoding='utf8')
 (OUT/'404.html').write_text(render('Page not found — TitanCSA','Find the TitanCSA project catalogue and first-run guides.','404.html','<h1>Page not found.</h1><p>The address may have changed. <a href="/">Open the project catalogue</a> or <a href="/guides/first-run/">read the first-run guide</a>.</p>',True).replace('index,follow,max-image-preview:large','noindex,follow'),encoding='utf8')
 urls=''.join(f'<url><loc>{BASE+path}</loc><lastmod>{reviewed.get(path,checked)}</lastmod></url>' for path in pages)
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls+'</urlset>',encoding='utf8')
@@ -279,6 +273,7 @@ shutil.copyfile(ROOT/'integration.schema.json', OUT/'integration.schema.json')
 )
 reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documentation from the publisher.', '',
     '## Choose, try and activate',
+    f'- [Catalogue des projets en français]({BASE}fr/)',
     f'- [Installer, driver and SDK]({BASE}guides/installer-and-sdk/)',
     f'- [Installateur, pilote et SDK]({BASE}fr/installeur-et-sdk/)',
     f'- [SDK integration manifest]({BASE}integration.json)',
@@ -307,6 +302,10 @@ reference_links.extend(
 )
 (OUT/'llms.txt').write_text('\n'.join(reference_links)+'\n',encoding='utf8')
 write_starter(OUT,integration)
-(OUT/'projects.json').write_bytes((ROOT/'projects.json').read_bytes())
+public_projects={**data,'source_fr':french_copy['source'],'projects':[]}
+for project in projects:
+    purpose, first_step=french_copy['projects'][project['name']]
+    public_projects['projects'].append({**project,'plain_purpose_fr':purpose,'plain_first_step_fr':first_step})
+(OUT/'projects.json').write_text(json.dumps(public_projects,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
 if indexnow_key:(OUT/f'{indexnow_key}.txt').write_text(indexnow_key+'\n',encoding='utf8')
 print('Built',len(pages),'public pages and',len(projects),'curated project entries')

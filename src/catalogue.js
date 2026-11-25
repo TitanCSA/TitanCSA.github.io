@@ -18,6 +18,8 @@
   const groups = [...document.querySelectorAll('[data-project-group]')];
   const counter = document.querySelector('#result-count');
   const empty = document.querySelector('#empty-results');
+  const french = root.lang === 'fr';
+  const countLabel = count => french ? `${count} ${count === 1 ? 'projet' : 'projets'}` : `${count} ${count === 1 ? 'entry' : 'entries'}`;
   const normalize = value => value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   function filter() {
     const words = normalize(search.value.trim()).split(/\s+/).filter(Boolean);
@@ -30,9 +32,10 @@
     for (const group of groups) {
       const visible = [...group.querySelectorAll('[data-project]')].filter(entry => !entry.hidden).length;
       group.hidden = visible === 0;
-      group.querySelector('[data-group-count]').textContent = `${visible} ${visible === 1 ? 'entry' : 'entries'}`;
+      group.querySelector('[data-group-count]').textContent = countLabel(visible);
     }
-    counter.textContent = `${count} ${count === 1 ? 'entry' : 'entries'} shown`;
+    const suffix = french ? (count === 1 ? 'affiché' : 'affichés') : 'shown';
+    counter.textContent = `${countLabel(count)} ${suffix}`;
     empty.hidden = count !== 0;
   }
   search.addEventListener('input', filter); category.addEventListener('change', filter); noDriver.addEventListener('change', filter);

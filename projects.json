@@ -121,7 +121,7 @@
       "category_title": "SDK integration",
       "description": "Integrate keyboard and mouse input into Node.js or TypeScript.",
       "first_step": "Specialised adapter; live use requires the Interceptor Keyboard & Mouse driver.",
-      "kind": "Application",
+      "kind": "SDK sources",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
       "known_issue_url": null,
@@ -210,7 +210,7 @@
       "start_mode": "Review prerequisites",
       "known_issue_url": null,
       "plain_purpose": "Run an AutoHotkey shortcut on a chosen keyboard or mouse.",
-      "plain_first_step": "Extract the release, open AutoHotInterceptor and install its driver. Start with the included A-to-B example."
+      "plain_first_step": "Extract the app and follow the first example in its guide."
     },
     {
       "name": "Cronus-Interceptor",
@@ -322,7 +322,7 @@
       "start_mode": "Review prerequisites",
       "known_issue_url": null,
       "plain_purpose": "Check whether a gamepad button or stick behaves as expected.",
-      "plain_first_step": "Connect your controller, watch its values as you move it and save a report if needed."
+      "plain_first_step": "Open the preview and look at the sample values before connecting a gamepad."
     },
     {
       "name": "HID-Access-Control",
@@ -364,7 +364,7 @@
       "start_mode": "Offline validation first",
       "known_issue_url": null,
       "plain_purpose": "Check input test files before using them in an automated test.",
-      "plain_first_step": "Run the included sample in offline mode first."
+      "plain_first_step": "Validate Examples/mouse.json offline with the first command in the guide."
     },
     {
       "name": "Input-Replay-Lab",
@@ -681,7 +681,7 @@
       "category_title": "Storage and files",
       "description": "Explore audit/access rules scoped to folders.",
       "first_step": "Engineering preview: altitude, signing and live validation pending. No installable production-protection driver is provided.",
-      "kind": "Application",
+      "kind": "Preview",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
       "known_issue_url": null,
@@ -807,7 +807,7 @@
       "category_title": "Local automation",
       "description": "Control a local WebView2 browser through an application SDK or MCP tools.",
       "first_step": "Navigation, inspection, forms and screenshots; Microsoft Edge WebView2 Runtime is required. This is browser automation, not whole-desktop control.",
-      "kind": "Driver SDK",
+      "kind": "Application",
       "start_without_adding_driver": true,
       "start_mode": "No additional driver",
       "known_issue_url": null,

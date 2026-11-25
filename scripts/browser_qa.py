@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1];out=ROOT/'.local/qa';out.mkdir(parents=True,exist_ok=True)
 base=sys.argv[1].rstrip('/')+'/' if len(sys.argv)>1 else 'http://127.0.0.1:8778/'
 errors=[];checks=[]
-routes=['','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
+routes=['','fr/','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
         'guides/windows-input-release-compare/','guides/release-activation-help/',
         'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','guides/vdevice-custom-hid-test/',
@@ -27,6 +27,8 @@ with sync_playwright() as p:
         assert visible()==60
         page.locator('#project-search').fill('browser')
         assert page.locator('#project-browser-control-sdk').is_visible() and 0<visible()<60
+        page.locator('#project-search').fill('navigateur')
+        assert page.locator('#project-browser-control-sdk').is_visible() and 0<visible()<60
         page.locator('#project-search').fill('zz_no_project_20261118')
         assert visible()==0 and page.locator('#empty-results').is_visible()
         page.locator('[data-reset]').click();assert visible()==60
@@ -41,9 +43,22 @@ with sync_playwright() as p:
         if width==1440:
             page.locator('[data-theme-toggle]').click();assert page.locator('html').get_attribute('data-theme')=='dark'
             page.screenshot(path=str(out/'home-dark.png'),full_page=False)
+        page.goto(base+'fr/',wait_until='domcontentloaded')
+        assert visible()==60 and '60 projets' in page.locator('#result-count').inner_text()
+        page.locator('#project-search').fill('clavier')
+        assert page.locator('#project-interceptor-keyboard-mouse').is_visible() and 0<visible()<60
+        page.locator('[data-reset]').click();assert visible()==60
+        page.locator('#no-driver-filter').check();assert visible()==6
+        page.locator('[data-reset]').click()
+        page.screenshot(path=str(out/f'home-fr-{width}.png'),full_page=False)
         page.close()
     page=browser.new_page(java_script_enabled=False,viewport={'width':390,'height':844})
     page.goto(base,wait_until='networkidle');assert page.locator('[data-project]:visible').count()==60
+    page.locator('main a[href="/fr/"]').click()
+    assert page.locator('html').get_attribute('lang')=='fr' and page.locator('[data-project]:visible').count()==60
+    page.locator('#project-vdevice summary').click()
+    assert 'Create device' in page.locator('#project-vdevice details').inner_text()
+    page.locator('main a[lang="en"][href="/"]').click()
     page.locator('a[href="/guides/first-run/"]').first.click()
     assert page.url.endswith('/guides/first-run/') and page.locator('h1').inner_text().startswith('A useful first run')
     page.locator('main a[lang="fr"]').click()

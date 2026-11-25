@@ -20,7 +20,7 @@ python scripts/validate.py
 python -m http.server 8778 --bind 127.0.0.1 --directory dist
 ```
 
-`projects.json` is curated from the public bilingual selection guide. The builder renders every project into HTML so navigation and documentation work without JavaScript. The browser script adds local search, filters and an optional stored theme preference. It sends no search queries to a server and adds no analytics code.
+`projects.json` is curated from the public selection guide. `projects.fr.json` supplies the French purpose and first step for each entry. Both homepages show the same projects. The published catalogue JSON includes both languages, and local search accepts keywords in either language. All links work with JavaScript disabled.
 
 ## Update a project
 
