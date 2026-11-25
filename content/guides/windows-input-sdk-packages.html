@@ -19,6 +19,14 @@
 <p>Use Node.js 20 or later on Windows x64 for the three npm bindings. The five PowerShell modules require PowerShell 7.4 or later. The SDK package version and the Windows driver version are separate. A registry installation provides the SDK files. Use the matching demo or commercial ZIP for driver installation and activation.</p>
 <p><a href="/guides/windows-input-sdk-java-php-ruby/">Find the Java, PHP and Ruby packages</a>.</p>
 <p>For direct, machine-readable npm version metadata, use the official registry entries for <a href="https://registry.npmjs.org/interceptor-sdk/1.0.0">Interceptor</a>, <a href="https://registry.npmjs.org/interceptor-keyboard-mouse-sdk/1.0.0">Keyboard &amp; Mouse</a> and <a href="https://registry.npmjs.org/interceptor-gamepad-controller/1.0.0">Gamepad &amp; Controller</a>.</p>
+<h2>Use the reviewed Node.js 1.0.1 packages</h2>
+<p>The publisher's <a href="https://github.com/TitanCSA/sdk-packages/releases/tag/node-input-sdk-v1.0.1">GitHub release</a> supplies Windows x64 Node.js 1.0.1 archives and a SHA-256 list. Download your edition and run <code>npm install ./PACKAGE-1.0.1.tgz</code> with the downloaded file name. The npm commands in the table install the registry's 1.0.0 versions.</p>
+<ul>
+<li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-sdk-1.0.1.tgz">interceptor-sdk 1.0.1</a></li>
+<li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-keyboard-mouse-sdk-1.0.1.tgz">interceptor-keyboard-mouse-sdk 1.0.1</a></li>
+<li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-gamepad-controller-1.0.1.tgz">interceptor-gamepad-controller 1.0.1</a></li>
+</ul>
+<p>The three 1.0.1 archives report the matching <code>InterceptorSetup.exe</code> when Windows error <code>2</code> indicates a missing driver. Each archive was installed from its GitHub URL. Node.js 24.21.0 also read driver status for each matching signed demo on Windows 11 build 26100 with Secure Boot. The checks used the read-only <code>info()</code> example.</p>
 <h2>Verify the Python installation first</h2>
 <p>The Python wheel requires Python 3.10 or later on Windows x64. It includes the native bridge for the combined Interceptor 1.4.22.0 driver. For a live test, use that driver and the documented <code>info()</code> read-only query. The following import check works before installing a driver.</p>
 <pre><code>from importlib.metadata import version
