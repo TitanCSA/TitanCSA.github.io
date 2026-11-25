@@ -2,6 +2,10 @@
 
 Static, public project selection and first-run documentation for Windows applications and developer SDKs.
 
+> [!IMPORTANT]
+> **Full driver without the one-hour demo limit**
+> Add **`titancsa`** on [Discord](https://discord.com/app) and send the project name. TitanCSA shares the purchase details privately.
+
 **Website:** https://titancsa.github.io/
 
 The catalogue contains 60 curated project/SDK entries in ten workflows. It distinguishes application prerequisites, SDK-only sources and engineering previews. Known limits, including the open Vdevice controller teardown finding, remain visible. Package mirrors and account forks are not counted as separate finished products.
