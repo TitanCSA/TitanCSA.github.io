@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-25",
+  "project": "vdevice",
+  "scope": "Publisher Windows upgrade and uninstall records for the exact signed installer files. The commercial records cover installation and activation readiness.",
+  "versions": {
+    "demo": {
+      "package_version": "1.0.6.1",
+      "driver_version": "1.0.6.1",
+      "kernel_sha256": "5b8669478581b463b5218c47a274c71107309ec037b2a26ae79c34273f04cee4",
+      "catalogue_signature": "Valid",
+      "installer_qualification": [
+        {
+          "windows_build": 19045,
+          "installer": "console",
+          "installer_file": "VdeviceSetupConsole.exe",
+          "installer_sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848",
+          "from_driver_version": "1.0.6.0",
+          "from_kernel_sha256": "74056f7fa1fc00b4833b3ada989f78ecdfcf56a002fe2af92c118072a5f70f39",
+          "install_exit_code": 3010,
+          "running_kernel_sha256": "5b8669478581b463b5218c47a274c71107309ec037b2a26ae79c34273f04cee4",
+          "root_controller_bound": true,
+          "uninstall_exit_code": 0,
+          "kernel_service_present_after_uninstall": false,
+          "restart_after_install_verified": true
+        },
+        {
+          "windows_build": 26100,
+          "installer": "graphical",
+          "installer_file": "VdeviceSetup.exe",
+          "installer_sha256": "b5a3969cad34066bff9bba42fa7913d06afbfef87461617d45bc4b4a54e40311",
+          "from_driver_version": "1.0.6.0",
+          "from_kernel_sha256": "74056f7fa1fc00b4833b3ada989f78ecdfcf56a002fe2af92c118072a5f70f39",
+          "install_exit_code": 0,
+          "running_kernel_sha256": "5b8669478581b463b5218c47a274c71107309ec037b2a26ae79c34273f04cee4",
+          "root_controller_bound": true,
+          "uninstall_exit_code": 0,
+          "kernel_service_present_after_uninstall": false
+        }
+      ],
+      "public_notes_url": "https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo",
+      "signed_driver_archive_sha256": "457382cebc76d78a2b0769b81d5b395df28d171bd5f1cb5405261ce70c5bd8ad",
+      "secure_boot_read_only_lab": {
+        "windows_build": 26100,
+        "secure_boot": true,
+        "installer_sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848",
+        "sdk_archive_sha256": "b0c8ceec0f872a8eb05e0281c87b6f30b3da23d35d94899fc220cce78efe5236",
+        "compiled_sample_sha256": "53bf03e7848ca68e382f604105b29c86e0861cbc10dc15cc612941996d1d2aec",
+        "status_before_install_windows_error": 2,
+        "status_after_install_and_restart": "Driver answered. Info ABI version 1, device limit 16",
+        "status_after_uninstall_and_restart_windows_error": 2,
+        "kernel_service_present_after_uninstall": false
+      }
+    },
+    "release": {
+      "package_version": "1.0.4.1",
+      "driver_version": "1.0.4.1",
+      "kernel_sha256": "521dac6c4f7ee110bd1c74ee2e0a883f3bda6c23a5266b54d93bb9ac9e4f42a0",
+      "catalogue_signature": "Valid",
+      "installer_qualification": [
+        {
+          "windows_build": 19045,
+          "installer": "console",
+          "installer_file": "VdeviceReleaseSetupConsole.exe",
+          "installer_sha256": "874831ce4701db666aba9e3d120422457b60809f86d413a15cb0c1a544bf2fa7",
+          "from_driver_version": "1.0.3.0",
+          "from_kernel_sha256": "b759735e01a59003e0c3195f317493e862eec3f10487da3b37ffb2169e62402e",
+          "install_exit_code": 3010,
+          "running_kernel_sha256": "521dac6c4f7ee110bd1c74ee2e0a883f3bda6c23a5266b54d93bb9ac9e4f42a0",
+          "root_controller_bound": true,
+          "uninstall_exit_code": 0,
+          "kernel_service_present_after_uninstall": false,
+          "restart_after_install_verified": true
+        },
+        {
+          "windows_build": 26100,
+          "installer": "graphical",
+          "installer_file": "VdeviceReleaseSetup.exe",
+          "installer_sha256": "0345c06070194426d289d8f30e1870ae67b5d6439f91ac83ba4fd64897d39ee9",
+          "from_driver_version": "1.0.3.0",
+          "from_kernel_sha256": "b759735e01a59003e0c3195f317493e862eec3f10487da3b37ffb2169e62402e",
+          "install_exit_code": 0,
+          "running_kernel_sha256": "521dac6c4f7ee110bd1c74ee2e0a883f3bda6c23a5266b54d93bb9ac9e4f42a0",
+          "root_controller_bound": true,
+          "uninstall_exit_code": 0,
+          "kernel_service_present_after_uninstall": false,
+          "activation_interface_ready": true
+        }
+      ],
+      "company_archive_sha256": "c135429fe7467f2356d7673d0539e768ced680feb22c71a5c5bd86525aa3292a",
+      "signature_return_sha256": "465e09ed1bdb68bcdaec7fa82cfecc3d2ac6b49e9182989b9b34382d9dc09936",
+      "candidate_program_and_inf_match": true,
+      "verified_company_members": 9,
+      "private_delivery": {
+        "configured_version": "1.0.4.1",
+        "configured_archive_sha256": "c135429fe7467f2356d7673d0539e768ced680feb22c71a5c5bd86525aa3292a",
+        "health_http_status": 200,
+        "anonymous_http_status": 404
+      },
+      "secure_boot_memory_integrity_lab": {
+        "windows_build": 26100,
+        "secure_boot": true,
+        "memory_integrity_running": true,
+        "install_kind": "upgrade",
+        "previous_driver_version": "1.0.3.0",
+        "sdk_status_after_restart": "ABI 1, 16 maximum devices, licensed=no, owned devices=0",
+        "driver_signature": "Valid",
+        "activation_interface_ready": true,
+        "key_used": false,
+        "windows_error_after_uninstall_and_restart": 2
+      }
+    }
+  }
+}

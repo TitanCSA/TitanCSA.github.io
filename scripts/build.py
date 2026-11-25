@@ -100,6 +100,7 @@ for slug, edition in editions.items():
     key=slug.upper().replace('-','_')
     replacements[f'{key}_DEMO_URL']=escape(edition['demo_download_url'],quote=True)
     replacements[f'{key}_DEMO_VERSION']=escape(edition['demo'])
+    replacements[f'{key}_DEMO_TAG']=escape(edition['tag'],quote=True)
     for role, url in edition['demo_assets'].items():
         replacements[f'{key}_{role.upper()}_URL']=escape(url,quote=True)
 plain_by_slug={p['url'].split('#')[0].rsplit('/',1)[-1].lower():p['plain_purpose'] for p in projects}
@@ -224,7 +225,8 @@ for path,(title,description,source) in pages.items():
         edition=editions[slug]
         demo_assets=edition['demo_assets']
         downloads=' · '.join(f'<a href="{demo_assets[role]}">{label}</a>'
-                             for role,label in [('examples','Examples ZIP'),('sdk','SDK source ZIP'),('checksums','SHA-256 checksums')]
+                             for role,label in [('console_installer','Console installer'),('driver','Signed driver ZIP'),
+                                                ('examples','Examples ZIP'),('sdk','SDK source ZIP'),('checksums','SHA-256 checksums')]
                              if role in demo_assets)
         links=(
             f'<p>Commercial package <strong>{escape(edition["commercial"]["package_version"])}</strong> contains signed driver '
@@ -279,6 +281,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Installateur, pilote et SDK]({BASE}fr/installeur-et-sdk/)',
     f'- [SDK integration manifest]({BASE}integration.json)',
     f'- [Integration JSON schema]({BASE}integration.schema.json)',
+    f'- [Vdevice signed Demo and Release validation]({BASE}assets/vdevice-signed-versions-2026-11-25.json)',
     f'- [First Windows app runs without a driver]({BASE}guides/first-run/)',
     f'- [Essayer un outil sans ajouter de pilote]({BASE}fr/essayer-sans-pilote/)',
     f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',

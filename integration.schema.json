@@ -68,6 +68,15 @@
         "name": { "type": "string", "minLength": 1 },
         "source": { "$ref": "#/$defs/url" },
         "overview_url": { "$ref": "#/$defs/url" },
+        "commercial_install_verification": {
+          "type": "object",
+          "required": ["url", "package_version", "driver_version"],
+          "properties": {
+            "url": { "$ref": "#/$defs/url" },
+            "package_version": { "type": "string" },
+            "driver_version": { "type": "string" }
+          }
+        },
         "demo": {
           "type": "object",
           "required": ["version", "tag", "notes_url", "setup_download_url", "setup_download_sha256", "setup_format", "setup_member", "supported_driver_architecture", "trial_starts_on", "assets"],
@@ -81,6 +90,7 @@
             "setup_member": { "type": ["string", "null"] },
             "supported_driver_architecture": { "enum": ["x64", "x86", "arm64"] },
             "trial_starts_on": { "type": "string", "minLength": 1 },
+            "installer_verification_url": { "$ref": "#/$defs/url" },
             "live_inventory_verification": {
               "type": "object",
               "required": ["url", "sample_source_url", "app_architectures", "opens_input_context"],

@@ -26,6 +26,8 @@ def make_manifest(base, editions):
     installed_evidence = json.loads((ROOT / proof_file).read_text(encoding="utf-8"))["editions"]
     inventory_file = "assets/interception-v2-install-verification-2026-11-25.json"
     inventory = json.loads((ROOT / inventory_file).read_text(encoding="utf-8"))
+    vdevice_proof_file = "assets/vdevice-signed-versions-2026-11-25.json"
+    vdevice_proof = json.loads((ROOT / vdevice_proof_file).read_text(encoding="utf-8"))
 
     rows = []
     for slug, edition in editions.items():
@@ -104,6 +106,16 @@ def make_manifest(base, editions):
                 "app_architectures": app_architectures,
                 "opens_input_context": True,
             }
+        if slug == vdevice_proof["project"]:
+            demo_version = vdevice_proof["versions"]["demo"]["driver_version"]
+            if demo_version == edition["demo"]:
+                row["demo"]["installer_verification_url"] = base + vdevice_proof_file
+                if "secure_boot_read_only_lab" in vdevice_proof["versions"]["demo"]:
+                    row["sdk_check"]["tested_account"] = "Administrator on Windows 11 x64"
+            commercial = edition["commercial"]
+            verified_release = vdevice_proof["versions"]["release"]
+            if all(verified_release[key] == commercial[key] for key in ("package_version", "driver_version")):
+                row["commercial_install_verification"] = {"url": base + vdevice_proof_file, **commercial}
         rows.append(row)
     applications = json.loads((ROOT / "starter-apps.json").read_text(encoding="utf-8"))
     for app in applications:

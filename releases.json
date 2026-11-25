@@ -1,5 +1,5 @@
 {
-  "reviewed": "2026-11-24",
+  "reviewed": "2026-11-25",
   "commercial_checked": "2026-11-25",
   "editions": [
     {
@@ -88,11 +88,11 @@
     },
     {
       "slug": "vdevice",
-      "demo": "1.0.6.0",
-      "tag": "v1.0.6.0-demo",
+      "demo": "1.0.6.1",
+      "tag": "v1.0.6.1-demo",
       "commercial": {
-        "package_version": "1.0.3.3",
-        "driver_version": "1.0.3.0"
+        "package_version": "1.0.4.1",
+        "driver_version": "1.0.4.1"
       },
       "use": "Create a new virtual USB keyboard, mouse, controller or supported custom device.",
       "api": "Raw USB/HID C++17 SDK",
@@ -100,16 +100,20 @@
       "note": "Start with the signed virtual USB mouse demo. The signed demo includes the WDF-001 teardown fix.",
       "demo_files": {
         "installer": "VdeviceSetup.exe",
-        "examples": "Vdevice-Examples-1.0.6.0.zip",
-        "sdk": "Vdevice-SDK-1.0.6.0.zip",
-        "checksums": "SHA256SUMS.txt"
+        "examples": "Vdevice-Examples-1.0.6.1.zip",
+        "sdk": "Vdevice-SDK-1.0.6.1.zip",
+        "checksums": "SHA256SUMS.txt",
+        "console_installer": "VdeviceSetupConsole.exe",
+        "driver": "Vdevice-Driver-1.0.6.1.zip"
       },
-      "sdk_sha256": "eaa3b92c5da10cdb551d0877264369abf618fac32e379a5249d2f82218f019e2",
+      "sdk_sha256": "b0c8ceec0f872a8eb05e0281c87b6f30b3da23d35d94899fc220cce78efe5236",
       "demo_asset_sha256": {
-        "installer": "7feea3a24ee129a39a919bc975fdfbc3ecc7a6733a92af290c0a2661591e5cbb",
-        "examples": "603ad8e6192f9cba5efd75a0517f6cbf69a51831cd61b05d71c82de87f97ca32",
-        "sdk": "eaa3b92c5da10cdb551d0877264369abf618fac32e379a5249d2f82218f019e2",
-        "checksums": "d48e9e53a540fccc01e2dfe991a9f083601cf22b38ec531fc8041445d60cfb02"
+        "installer": "b5a3969cad34066bff9bba42fa7913d06afbfef87461617d45bc4b4a54e40311",
+        "examples": "f118dc2971e1583bb03bd341dae159873dbade2076c2636df9e6b994133021c0",
+        "sdk": "b0c8ceec0f872a8eb05e0281c87b6f30b3da23d35d94899fc220cce78efe5236",
+        "checksums": "264850eb25b3ba83bb5a9d8d424c2bc1186b09480099bac54189a5fe324d94cb",
+        "console_installer": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848",
+        "driver": "457382cebc76d78a2b0769b81d5b395df28d171bd5f1cb5405261ce70c5bd8ad"
       }
     },
     {

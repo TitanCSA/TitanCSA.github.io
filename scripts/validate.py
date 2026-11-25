@@ -275,6 +275,25 @@ for row in manifest['products']:
             phase=proof['sample']['architectures'][arch]
             assert phase['before_installation_exit_code']==phase['after_uninstall_and_reboot_exit_code']==1
             assert phase['after_installation_and_reboot']['exit_code']==0
+    if installer_evidence := demo.get('installer_verification_url'):
+        proof=json.loads((OUT/installer_evidence.removeprefix(BASE)).read_text(encoding='utf8'))
+        assert proof['project']==row['id']
+        verified=proof['versions']['demo']
+        assert verified['driver_version']==verified['package_version']==demo['version']
+        assert verified['signed_driver_archive_sha256']==demo['assets']['driver']['sha256']
+        assert verified['public_notes_url']==demo['notes_url']
+        assert {record['windows_build'] for record in verified['installer_qualification']}=={19045,26100}
+    if release_evidence := row.get('commercial_install_verification'):
+        proof=json.loads((OUT/release_evidence['url'].removeprefix(BASE)).read_text(encoding='utf8'))
+        assert proof['project']==row['id']
+        verified=proof['versions']['release']
+        assert {key:verified[key] for key in ('package_version','driver_version')}==edition['commercial']
+        assert verified['private_delivery']['configured_archive_sha256']==verified['company_archive_sha256']
+        assert verified['private_delivery']['anonymous_http_status'] in (401,403,404)
+        assert {record['windows_build'] for record in verified['installer_qualification']}=={19045,26100}
+        protection=verified['secure_boot_memory_integrity_lab']
+        assert protection['secure_boot'] is protection['memory_integrity_running'] is protection['activation_interface_ready'] is True
+        assert protection['key_used'] is False
     assert check['archive_url'] in edition['demo_assets'].values()
     assert re.fullmatch(r'[a-f0-9]{64}', check['archive_sha256'])
     assert check['source_url'] == BASE+'assets/'+check['source_file']
