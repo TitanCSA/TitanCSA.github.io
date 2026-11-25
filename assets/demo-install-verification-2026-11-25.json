@@ -20,7 +20,19 @@
       "catalogue_signature": "Valid",
       "compiled_sample_sha256": "033d819bf57549e9b4831002a82912e5da84272c2a0087f23242b59bba333f50",
       "sample_exit_code": 0,
-      "sample_output": "Driver answered. Status ABI version 4"
+      "sample_output": "Driver answered. Status ABI version 4",
+      "installer_url": "https://github.com/TitanCSA/Interceptor/releases/download/v1.4.22.0-demo/InterceptorSetupConsole.exe",
+      "reboot_and_uninstall": {
+        "status_exit_before_install": 2,
+        "installation_exit": 0,
+        "restart_after_install_verified": true,
+        "status_exit_after_install_and_restart": 0,
+        "uninstallation_exit": 0,
+        "restart_after_uninstall_verified": true,
+        "status_exit_after_uninstall_and_restart": 2,
+        "kernel_service_registered_after_uninstall": false,
+        "secure_boot_after_uninstall": true
+      }
     },
     "interceptor-gamepad-controller": {
       "test_date": "2026-11-25",
@@ -38,7 +50,19 @@
       "catalogue_signature": "Valid",
       "compiled_sample_sha256": "586e1107f46b6ab63b21813f0f46f0b11bbad91dd96fed9267cb000770c18970",
       "sample_exit_code": 0,
-      "sample_output": "Driver answered. Status ABI version 4"
+      "sample_output": "Driver answered. Status ABI version 4",
+      "installer_url": "https://github.com/TitanCSA/Interceptor-Gamepad-Controller/releases/download/v1.0.13.0-demo/InterceptorSetupConsole.exe",
+      "reboot_and_uninstall": {
+        "status_exit_before_install": 2,
+        "installation_exit": 0,
+        "restart_after_install_verified": true,
+        "status_exit_after_install_and_restart": 0,
+        "uninstallation_exit": 0,
+        "restart_after_uninstall_verified": true,
+        "status_exit_after_uninstall_and_restart": 2,
+        "kernel_service_registered_after_uninstall": false,
+        "secure_boot_after_uninstall": true
+      }
     },
     "interceptor-keyboard-mouse": {
       "test_date": "2026-11-25",
@@ -56,7 +80,19 @@
       "catalogue_signature": "Valid",
       "compiled_sample_sha256": "956a27c077ddc3b35bb65877e171fd04530fc83fd6638ef58d1f77f6694717dd",
       "sample_exit_code": 0,
-      "sample_output": "Driver answered. Status ABI version 4"
+      "sample_output": "Driver answered. Status ABI version 4",
+      "installer_url": "https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/releases/download/v1.0.5.0-demo/InterceptorSetupConsole.exe",
+      "reboot_and_uninstall": {
+        "status_exit_before_install": 2,
+        "installation_exit": 0,
+        "restart_after_install_verified": true,
+        "status_exit_after_install_and_restart": 0,
+        "uninstallation_exit": 0,
+        "restart_after_uninstall_verified": true,
+        "status_exit_after_uninstall_and_restart": 2,
+        "kernel_service_registered_after_uninstall": false,
+        "secure_boot_after_uninstall": true
+      }
     },
     "vdevice": {
       "test_date": "2026-11-25",
@@ -74,7 +110,19 @@
       "catalogue_signature": "Valid",
       "compiled_sample_sha256": "ed9ba16249e2bb26af3b101a5edc43126fc3ee3e15bec7a69409bc6b796feba3",
       "sample_exit_code": 0,
-      "sample_output": "Driver answered. Info ABI version 1, device limit 16"
+      "sample_output": "Driver answered. Info ABI version 1, device limit 16",
+      "installer_url": "https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/VdeviceSetupConsole.exe",
+      "reboot_and_uninstall": {
+        "status_exit_before_install": 2,
+        "installation_exit": 0,
+        "restart_after_install_verified": true,
+        "status_exit_after_install_and_restart": 0,
+        "uninstallation_exit": 0,
+        "restart_after_uninstall_verified": true,
+        "status_exit_after_uninstall_and_restart": 2,
+        "kernel_service_registered_after_uninstall": false,
+        "secure_boot_after_uninstall": true
+      }
     }
   },
   "setup_preview": {

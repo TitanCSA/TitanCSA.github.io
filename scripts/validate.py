@@ -252,6 +252,14 @@ for row in manifest['products']:
         assert proof['sdk_archive_sha256'] == check['archive_sha256']
         assert proof['environment']['secure_boot'] is True and proof['sample_exit_code'] == 0
         assert proof['catalogue_signature'] == 'Valid' and proof['installer_exit_code'] in (0, 3010)
+        assert proof['installer_url'].startswith(edition['demo_url'].replace('/releases/tag/','/releases/download/')+'/')
+        assert proof['installer_url'].endswith('SetupConsole.exe')
+        lifecycle=proof['reboot_and_uninstall']
+        assert lifecycle['restart_after_install_verified'] is lifecycle['restart_after_uninstall_verified'] is True
+        assert lifecycle['status_exit_before_install']==lifecycle['status_exit_after_uninstall_and_restart']==2
+        assert lifecycle['status_exit_after_install_and_restart']==0
+        assert lifecycle['uninstallation_exit'] in (0,3010)
+        assert lifecycle['kernel_service_registered_after_uninstall'] is False
     assert check['archive_url'] in edition['demo_assets'].values()
     assert re.fullmatch(r'[a-f0-9]{64}', check['archive_sha256'])
     assert check['source_url'] == BASE+'assets/'+check['source_file']

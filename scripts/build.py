@@ -168,7 +168,8 @@ publisher={
 
 published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/essayer-sans-pilote/','fr/sdk-java-php-ruby/')}
 reviewed.update(published_dates)
-reviewed.update({'':'2026-11-25','fr/':'2026-11-25'})
+reviewed.update(dict.fromkeys(('', 'fr/', 'guides/vdevice-virtual-usb-mouse/',
+                               'fr/souris-usb-virtuelle-vdevice/'), '2026-11-25'))
 
 
 def render(title,description,path,body,article=False):
