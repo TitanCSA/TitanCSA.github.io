@@ -24,6 +24,10 @@ with sync_playwright() as p:
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'),(route,width,'overflow')
             checks.append({'route':route,'width':width,'status':response.status,'title':page.title()})
         page.goto(base,wait_until='networkidle')
+        page.keyboard.press('Tab')
+        assert page.locator('.skip').evaluate('link => link === document.activeElement')
+        page.keyboard.press('Enter')
+        assert page.locator('main').evaluate('main => main === document.activeElement')
         visible=lambda:page.locator('[data-project]:not([hidden])').count()
         assert visible()==60
         page.locator('#project-search').fill('browser')
@@ -42,7 +46,11 @@ with sync_playwright() as p:
         page.goto(base,wait_until='networkidle')
         page.screenshot(path=str(out/f'home-{width}.png'),full_page=False)
         if width==1440:
-            page.locator('[data-theme-toggle]').click();assert page.locator('html').get_attribute('data-theme')=='dark'
+            theme=page.get_by_role('button',name='Dark mode',exact=True)
+            assert theme.get_attribute('aria-pressed')=='false'
+            theme.press('Space')
+            assert page.locator('html').get_attribute('data-theme')=='dark'
+            assert theme.get_attribute('aria-pressed')=='true'
             page.screenshot(path=str(out/'home-dark.png'),full_page=False)
         page.goto(base+'fr/',wait_until='domcontentloaded')
         assert visible()==60 and '60 projets' in page.locator('#result-count').inner_text()
@@ -55,6 +63,7 @@ with sync_playwright() as p:
         page.close()
     page=browser.new_page(java_script_enabled=False,viewport={'width':390,'height':844})
     page.goto(base,wait_until='networkidle');assert page.locator('[data-project]:visible').count()==60
+    assert not page.locator('[data-theme-toggle]').is_visible()
     page.locator('main a[href="/fr/"]').click()
     assert page.locator('html').get_attribute('lang')=='fr' and page.locator('[data-project]:visible').count()==60
     page.locator('#project-vdevice summary').click()

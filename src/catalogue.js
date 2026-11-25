@@ -3,12 +3,20 @@
   const root = document.documentElement;
   const toggle = document.querySelector('[data-theme-toggle]');
   try { const saved = localStorage.getItem('titancsa-theme'); if (saved === 'light' || saved === 'dark') root.dataset.theme = saved; } catch (_) {}
-  const dark = () => root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
-  const updateThemeLabel = () => {
-    if (toggle) toggle.textContent = root.lang === 'fr' ? (dark() ? 'Clair' : 'Sombre') : (dark() ? 'Light' : 'Dark');
-  };
-  if (toggle) toggle.addEventListener('click', () => { const value = dark() ? 'light' : 'dark'; root.dataset.theme = value; try { localStorage.setItem('titancsa-theme', value); } catch (_) {} updateThemeLabel(); });
-  updateThemeLabel();
+  const systemTheme = matchMedia('(prefers-color-scheme: dark)');
+  const dark = () => root.dataset.theme === 'dark' || (!root.dataset.theme && systemTheme.matches);
+  if (toggle) {
+    const updateThemeState = () => toggle.setAttribute('aria-pressed', String(dark()));
+    toggle.addEventListener('click', () => {
+      const theme = dark() ? 'light' : 'dark';
+      root.dataset.theme = theme;
+      try { localStorage.setItem('titancsa-theme', theme); } catch (_) {}
+      updateThemeState();
+    });
+    systemTheme.addEventListener('change', updateThemeState);
+    updateThemeState();
+    toggle.hidden = false;
+  }
   const search = document.querySelector('#project-search');
   if (!search) return;
   const category = document.querySelector('#category-filter');
