@@ -1,10 +1,11 @@
 <h1>Install TitanCSA Windows input SDK packages</h1>
-<p class="article-lead">Find published packages for Python, Node.js, PowerShell and native C++. Then install the matching Windows driver from the product's release.</p>
+<p class="article-lead">Find published packages for Python, Node.js, .NET, PowerShell and native C++. Then install the matching Windows driver from the product's release.</p>
 <p class="byline">Publisher documentation · Registry artifacts checked 24–25 November 2026</p>
 <h2>Choose the binding for your project</h2>
 <div class="table-scroll"><table><thead><tr><th scope="col">Project</th><th scope="col">Published package</th><th scope="col">Install in your development environment</th></tr></thead><tbody>
 <tr><th scope="row"><a href="/projects/interceptor/">Interceptor</a></th><td><a href="https://www.npmjs.com/package/interceptor-sdk/v/1.0.0">interceptor-sdk 1.0.0</a></td><td><code>npm install interceptor-sdk@1.0.0</code></td></tr>
 <tr><th scope="row">Interceptor Python</th><td><a href="https://pypi.org/project/interceptor-multilang/1.0.2/">interceptor-multilang 1.0.2</a></td><td><code>python -m pip install interceptor-multilang==1.0.2</code></td></tr>
+<tr><th scope="row">Interceptor .NET</th><td><a href="https://www.nuget.org/packages/Interceptor.MultiLang/1.0.2">Interceptor.MultiLang 1.0.2</a></td><td><code>dotnet add package Interceptor.MultiLang --version 1.0.2</code></td></tr>
 <tr><th scope="row">Interceptor PowerShell</th><td><a href="https://www.powershellgallery.com/packages/Interceptor/1.0.0">Interceptor module 1.0.0</a></td><td><code>Install-Module Interceptor -RequiredVersion 1.0.0 -Scope CurrentUser</code></td></tr>
 <tr><th scope="row"><a href="/projects/interceptor-keyboard-mouse/">Interceptor Keyboard &amp; Mouse</a></th><td><a href="https://www.npmjs.com/package/interceptor-keyboard-mouse-sdk/v/1.0.0">interceptor-keyboard-mouse-sdk 1.0.0</a></td><td><code>npm install interceptor-keyboard-mouse-sdk@1.0.0</code></td></tr>
 <tr><th scope="row">Keyboard &amp; Mouse PowerShell</th><td><a href="https://www.powershellgallery.com/packages/InterceptorKeyboardMouse/1.0.0">InterceptorKeyboardMouse module 1.0.0</a></td><td><code>Install-Module InterceptorKeyboardMouse -RequiredVersion 1.0.0 -Scope CurrentUser</code></td></tr>
@@ -26,6 +27,7 @@ from interceptor import Interceptor
 print(version('interceptor-multilang'))</code></pre>
 <p>The exact Windows wheel installed into a temporary Python directory and reported <code>1.0.2</code>. Its wheel and source archive both matched the SHA-256 published on PyPI. <a href="https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md">Read the Python API and driver requirements</a>.</p>
 <p>After setup, <code>with Interceptor() as io: print(io.info())</code> reads driver status. In a test without the combined driver, the wheel loaded its native bridge and returned Windows error <code>2</code> with the corrected setup instructions. Use the <a href="https://github.com/TitanCSA/Interceptor/releases/tag/v1.4.22.0-demo">matching combined demo’s InterceptorSetup.exe</a>, then restart if requested. <code>Install.cmd</code> is available in the full MultiLang ZIP.</p>
+<p>The NuGet wrapper requires .NET 8 or later on Windows x64. It includes the same native bridge as the Python wheel. After setup, <code>Interceptor.GetInfo()</code> queries the matching driver without starting input capture. The exact public 1.0.2 package returned the corrected one-line setup message on a machine without that driver.</p>
 <h2>Start with a known result</h2>
 <ul>
 <li><a href="/guides/vdevice-virtual-usb-mouse/">Try the Vdevice mouse example</a> to confirm the Windows device path.</li>
