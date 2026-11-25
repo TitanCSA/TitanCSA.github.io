@@ -1,0 +1,20 @@
+<h1>Utiliser les SDK TitanCSA avec Java, PHP ou Ruby</h1>
+<p class="article-lead">Choisis ton édition et ton langage. Le paquet installe le SDK de ton projet. Le pilote Windows de la même édition s’installe séparément.</p>
+<p><a href="/guides/windows-input-sdk-java-php-ruby/" lang="en">Read in English</a></p>
+<h2>Choisis le bon paquet</h2>
+<div class="table-scroll"><table><thead><tr><th scope="col">Édition</th><th scope="col">Maven Central</th><th scope="col">Packagist</th><th scope="col">RubyGems</th></tr></thead><tbody>{{OTHER_SDK_REGISTRY_ROWS}}</tbody></table></div>
+<details class="more-info">
+  <summary>Voir les commandes pour Vdevice</summary>
+  <h3>Java ou Kotlin</h3>
+  <p>Sous Windows x64, prends le JDK 22 ou plus récent. Pour Maven, ajoute cette dépendance à ton fichier <code>pom.xml</code>.</p>
+  <pre><code>{{VDEVICE_MAVEN_COMMAND}}</code></pre>
+  <h3>PHP</h3>
+  <p>Utilise PHP 8.2 ou plus récent sous Windows x64, avec <code>ext-ffi</code> et le <a href="https://www.php.net/manual/fr/install.windows.manual.php">runtime Visual C++ v14</a> requis par PHP. Lance Composer dans ton projet.</p>
+  <pre><code>{{VDEVICE_PACKAGIST_COMMAND}}</code></pre>
+  <h3>Ruby</h3>
+  <p>Utilise Ruby 3.1 ou plus récent sous Windows x64.</p>
+  <pre><code>{{VDEVICE_RUBYGEMS_COMMAND}}</code></pre>
+</details>
+<p>Pour l’édition Java Interceptor combinée, importe <code>{{COMBINED_JAVA_TYPE}}</code>. Le <a href="/integration.json">fichier d’intégration</a> donne le type exact et le premier appel pour chaque paquet.</p>
+<p>Sous Windows 11 x64, les trois langages ont lu l’état de Vdevice et des trois éditions Interceptor après installation de chaque démo. Les 12 appels ont laissé le compteur de démo à l’arrêt. Les 15 paquets ont aussi passé le contrôle sans pilote, dont le contrôle de numéro de périphérique de V2. <a href="/assets/sdk-registry-runtime-2026-11-25.json">Versions et résultats détaillés</a></p>
+<div class="related"><a href="/fr/installer-sdk-windows/">Autres langages</a><a href="/fr/pilotes-entree-windows/">Choisir son pilote</a></div>

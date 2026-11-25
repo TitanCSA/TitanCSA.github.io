@@ -1,22 +1,20 @@
 <h1>Use TitanCSA Windows input SDKs from Java, PHP or Ruby</h1>
 <p class="article-lead">Find the published language packages, their Windows requirements and the matching driver edition.</p>
 <p class="byline">Registry archives checked 24–25 November 2026</p>
+<p><a href="/fr/sdk-java-php-ruby/" lang="fr">Lire en français</a></p>
 <h2>Choose the package for your edition</h2>
 <div class="table-scroll"><table><thead><tr><th scope="col">Driver edition</th><th scope="col">Maven Central</th><th scope="col">Packagist</th><th scope="col">RubyGems</th></tr></thead><tbody>{{OTHER_SDK_REGISTRY_ROWS}}</tbody></table></div>
 <p>Each inspected archive supplies a native Windows user-mode library and language binding. Install the matching Windows x64 driver separately from its demo or commercial package. Check that edition’s support for the profiles and features your application needs.</p>
 <h2>Java and Kotlin</h2>
 <p>The Maven Central bindings use the Java 22 Foreign Function &amp; Memory API and require JDK 22 or later on Windows x64. Use the dependency coordinate for your driver. This is the Vdevice dependency for a Maven project.</p>
-<pre><code>&lt;dependency&gt;
-    &lt;groupId&gt;io.github.titancsa&lt;/groupId&gt;
-    &lt;artifactId&gt;vdevice&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0&lt;/version&gt;
-&lt;/dependency&gt;</code></pre>
+<pre><code>{{VDEVICE_MAVEN_COMMAND}}</code></pre>
+<p>The combined Java Interceptor package uses <code>{{COMBINED_JAVA_TYPE}}</code>. Use the class type for your exact edition from the <a href="/integration.json">integration manifest</a>.</p>
 <h2>PHP</h2>
-<p>The five Composer packages require PHP 8.2 or later and <code>ext-ffi</code>. Install the selected package in your development project. For Vdevice, use the following command.</p>
-<pre><code>composer require titancsa/vdevice:1.0.0</code></pre>
+<p>Use PHP 8.2 or later on Windows x64 with <code>ext-ffi</code>. PHP for Windows also requires the <a href="https://www.php.net/manual/en/install.windows.manual.php">Visual C++ v14 runtime</a>. Run Composer from your project directory.</p>
+<pre><code>{{VDEVICE_PACKAGIST_COMMAND}}</code></pre>
 <h2>Ruby</h2>
 <p>The checked gems require Ruby 3.1 or later. Use the package matching the installed Windows driver. For Vdevice, use the following command.</p>
-<pre><code>gem install vdevice -v 1.0.0</code></pre>
+<pre><code>{{VDEVICE_RUBYGEMS_COMMAND}}</code></pre>
 <h2>What was verified</h2>
-<p>The five Maven JARs matched their published checksums and contained Windows DLLs. The five RubyGems files matched their published SHA-256 digests. The five Packagist packages resolved to TitanCSA versioned source and contained the matching Composer manifests and Windows DLLs. PHP’s syntax check passed for the ten PHP files in those archives. Live calls from these bindings remain a test for the installed driver and your application.</p>
+<p>All 15 published bindings passed a first run with the matching driver absent. After installing the matching signed demo in Windows 11 x64 with Secure Boot, the three languages read status for Vdevice and the three Interceptor editions. All 12 installed-driver checks left the demo timer idle. For Interception V2, the check only classifies a device slot and requires no driver. <a href="/assets/sdk-registry-runtime-2026-11-25.json">Runtime versions and exact package evidence</a></p>
 <div class="related"><a href="/guides/windows-input-sdk-packages/">Python, Node.js, PowerShell and native packages</a><a href="/guides/windows-input-release-compare/">Compare the signed demos and Release editions</a></div>

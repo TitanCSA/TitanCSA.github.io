@@ -164,7 +164,7 @@
       "required": ["edition", "ecosystem", "name", "version", "package_url", "metadata_url", "install_command", "install_context", "runtime", "architectures", "install_includes_driver_or_application", "first_check"],
       "properties": {
         "edition": { "$ref": "#/$defs/id" },
-        "ecosystem": { "enum": ["npm", "pypi", "nuget-managed", "nuget-native", "powershell"] },
+        "ecosystem": { "enum": ["npm", "pypi", "nuget-managed", "nuget-native", "powershell", "maven", "packagist", "rubygems"] },
         "name": { "type": "string", "minLength": 1 },
         "version": { "type": "string", "minLength": 1 },
         "package_url": { "$ref": "#/$defs/url" },

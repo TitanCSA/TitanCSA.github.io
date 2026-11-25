@@ -5,7 +5,7 @@ from xml.etree import ElementTree as ET
 import json,re,shutil
 from integration import app_cards, make_manifest, sdk_rows, write_starter
 from catalogue import catalogue_sections
-from registry import registry_catalogue, registry_tables
+from registry import registry_catalogue, registry_tables, secondary_registry_rows
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 data=json.loads((ROOT/'projects.json').read_text(encoding='utf8'));projects=data['projects'];checked=data['checked']
@@ -87,16 +87,13 @@ replacements['SUPPORT_ISSUE_FORMS']=''.join(
     f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'
     for e in input_editions.values()
 )
-language_package_rows=[]
-for slug,edition in input_editions.items():
-    java_version,gem=('1.0.1','interceptor-multilang') if slug=='interceptor' else ('1.0.0',slug)
-    language_package_rows.append(
-        f'<tr><th scope="row"><a href="{edition["overview_url"]}">{escape(edition["name"])}</a></th>'
-        f'<td><a href="https://central.sonatype.com/artifact/io.github.titancsa/{slug}/{java_version}"><code>io.github.titancsa:{slug}:{java_version}</code></a></td>'
-        f'<td><a href="https://packagist.org/packages/titancsa/{slug}"><code>titancsa/{slug}</code></a> 1.0.0</td>'
-        f'<td><a href="https://rubygems.org/gems/{gem}/versions/1.0.0"><code>{gem}</code></a> 1.0.0</td></tr>'
-    )
-replacements['OTHER_SDK_REGISTRY_ROWS']='\n'.join(language_package_rows)
+replacements['OTHER_SDK_REGISTRY_ROWS']=secondary_registry_rows(integration['sdk_registry'],input_editions)
+for row in integration['sdk_registry']:
+    if row['edition']=='vdevice' and row['ecosystem'] in ('maven','packagist','rubygems'):
+        key='VDEVICE_'+row['ecosystem'].upper()+'_COMMAND'
+        replacements[key]=escape(row.get('dependency_xml',row['install_command']))
+    if row['edition']=='interceptor' and row['ecosystem']=='maven':
+        replacements['COMBINED_JAVA_TYPE']=escape(row['first_check']['sdk_type'])
 for slug, edition in editions.items():
     key=slug.upper().replace('-','_')
     replacements[f'{key}_DEMO_URL']=escape(edition['demo_download_url'],quote=True)
@@ -127,6 +124,7 @@ pages={
  'fr/installeur-et-sdk/':('Installateur, pilote et SDK sous Windows — TitanCSA','Choisis le bon téléchargement Windows. Essaie la démo ou compile un premier test SDK.','guides/installer-and-sdk-fr.html'),
  'guides/windows-input-sdk-packages/':('Install Windows input SDK packages for Python, Node.js, .NET, PowerShell and C++ — TitanCSA','Find verified packages for Interceptor, Vdevice and Interception V2 in PyPI, npm, PowerShell Gallery and NuGet. Match the SDK to the installed Windows driver.','guides/windows-input-sdk-packages.html'),
  'guides/windows-input-sdk-java-php-ruby/':('Java, PHP and Ruby SDKs for Windows input drivers — TitanCSA','Find the verified Maven Central, Packagist and RubyGems bindings for Interceptor, Vdevice and Interception V2, with Windows and runtime prerequisites.','guides/windows-input-sdk-java-php-ruby.html'),
+ 'fr/sdk-java-php-ruby/':('SDK TitanCSA pour Java, PHP et Ruby sous Windows','Choisis le paquet et le pilote Windows de la même édition. Retrouve les versions, les commandes et les premiers appels.','guides/windows-input-sdk-java-php-ruby-fr.html'),
  'guides/gamepad-controller-first-run/':('Test and remap a physical gamepad on Windows — TitanCSA','Identify HID, XUSB, XInputHID or GIP input, use the signed controller demo and try the C++ stick deadzone example.','guides/gamepad-controller-first-run.html'),
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Download the signed Titan Audio Link demo, verify a stereo virtual audio pair on Windows 11, and find the matching commercial package.','guides/titan-audio-link-first-run.html'),
  'guides/verify-windows-driver-package/':('Verify a signed Windows driver package before installation — TitanCSA','Compare the published SHA-256, verify the Microsoft-signed driver catalog and check the INF package version with PowerShell and SignTool.','guides/verify-windows-driver-package.html'),
@@ -148,6 +146,7 @@ translations=(
     {'en':'guides/first-run/','fr':'fr/essayer-sans-pilote/'},
     {'en':'guides/release-activation-help/','fr':'fr/activation-release/'},
     {'en':'guides/windows-input-sdk-packages/','fr':'fr/installer-sdk-windows/'},
+    {'en':'guides/windows-input-sdk-java-php-ruby/','fr':'fr/sdk-java-php-ruby/'},
     {'en':'guides/windows-input-release-compare/','fr':'fr/pilotes-entree-windows/'},
     {'en':'guides/vdevice-virtual-usb-mouse/','fr':'fr/souris-usb-virtuelle-vdevice/'},
     {'en':'guides/autohotkey-remap-second-keyboard/','fr':'fr/remapper-deuxieme-clavier-autohotkey/'},
@@ -165,7 +164,7 @@ publisher={
     'sameAs':['https://github.com/TitanCSA'],
 }
 
-published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/essayer-sans-pilote/')}
+published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/essayer-sans-pilote/','fr/sdk-java-php-ruby/')}
 reviewed.update(published_dates)
 reviewed.update({'':'2026-11-25','fr/':'2026-11-25'})
 
@@ -287,6 +286,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
     f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
     f'- [Java, PHP and Ruby SDK packages]({BASE}guides/windows-input-sdk-java-php-ruby/)',
+    f'- [Paquets Java, PHP et Ruby]({BASE}fr/sdk-java-php-ruby/)',
     f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
     f'- [Physical gamepad quickstart]({BASE}guides/gamepad-controller-first-run/)',
     f'- [Titan Audio Link virtual microphone]({BASE}guides/titan-audio-link-first-run/)',

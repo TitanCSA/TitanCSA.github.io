@@ -160,13 +160,30 @@ preview = json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').re
 assert preview['preview_exit_code'] == 0 and preview['secure_boot'] is True
 assert sha256((OUT/preview['screenshot_url'].removeprefix(BASE)).read_bytes()).hexdigest() == preview['screenshot_sha256']
 rows = manifest['sdk_registry']
-assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell'}
+other_registries={'maven','packagist','rubygems'}
+language_guide=by_canonical[BASE+'guides/windows-input-sdk-java-php-ruby/']
+language_guide_fr=by_canonical[BASE+'fr/sdk-java-php-ruby/']
+assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell'} | other_registries
 runtime_path='assets/sdk-registry-runtime-2026-11-25.json'
-runtime_checks=json.loads((OUT/runtime_path).read_text(encoding='utf8'))['checks']
+runtime_proof=json.loads((OUT/runtime_path).read_text(encoding='utf8'))
+runtime_checks=runtime_proof['checks']
 runtime_results={(item['ecosystem'],item['name'],item['version']):item for item in runtime_checks}
 assert len(runtime_results) == len(runtime_checks)
+clean_results={(item['ecosystem'],item['name'],item['version']):item
+               for item in runtime_proof['without_driver']['checks']}
+assert len(clean_results) == len(runtime_proof['without_driver']['checks'])
+installed_driver_checks=json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').read_text(encoding='utf8'))['editions']
 for row in rows:
-    assert row['package_url'] in packages_en.links and row['package_url'] in packages_fr.links
+    if row['ecosystem'] in other_registries:
+        assert row['package_url'] in language_guide.links and row['package_url'] in language_guide_fr.links
+        assert row['first_check']['sdk_type']
+        if clean := clean_results.get((row['ecosystem'],row['name'],row['version'])):
+            assert clean['edition']==row['edition']
+            expected = ({'windows_error':2} if row['first_check']['requires_installed_driver']
+                        else {'valid':True,'keyboard':True,'mouse':False})
+            assert clean['result']==expected
+    else:
+        assert row['package_url'] in packages_en.links and row['package_url'] in packages_fr.links
     assert row['install_includes_driver_or_application'] is False
     assert row['first_check']['opens_input_context'] is False
     assert isinstance(row['first_check']['requires_installed_driver'], bool)
@@ -181,12 +198,24 @@ for row in rows:
         assert observed['edition']==row['edition'] and observed['demo_timer_started'] is False
         if 'verified_archive' in row:
             assert observed['package_sha256']==row['verified_archive']['sha256']
+        if row['ecosystem']=='packagist':
+            assert observed['package_source_reference']==row['source_reference']
+            assert re.fullmatch(r'[a-f0-9]{64}', observed['inspected_source_archive_sha256'])
+        installation=installed_driver_checks[row['edition']]
+        assert re.fullmatch(r'[a-f0-9]{64}', observed['driver_sha256'])
+        if observed['driver_version']==installation['version']:
+            assert observed['driver_sha256']==installation['installed_kernel_sha256']
     if archive := row.get('verified_archive'):
         assert re.fullmatch(r'[a-f0-9]{64}', archive['sha256'])
         if row['ecosystem'].startswith('nuget-'):
             assert urlparse(archive['url']).netloc == 'api.nuget.org'
         if row['ecosystem'] == 'npm':
             assert urlparse(archive['url']).netloc == 'registry.npmjs.org'
+        if row['ecosystem'] == 'maven':
+            assert urlparse(archive['url']).netloc == 'repo.maven.apache.org'
+            assert row['dependency_xml'].startswith('<dependency>')
+        if row['ecosystem'] == 'rubygems':
+            assert urlparse(archive['url']).netloc == 'rubygems.org'
 assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]

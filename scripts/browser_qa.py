@@ -9,7 +9,7 @@ base=sys.argv[1].rstrip('/')+'/' if len(sys.argv)>1 else 'http://127.0.0.1:8778/
 errors=[];checks=[]
 routes=['','fr/','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
         'guides/windows-input-release-compare/','guides/release-activation-help/',
-        'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/',
+        'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/','fr/sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','guides/vdevice-custom-hid-test/',
         'fr/activation-release/','fr/pilotes-entree-windows/',
         'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/']
@@ -80,6 +80,11 @@ with sync_playwright() as p:
     native_packages.locator('summary').click()
     assert native_packages.get_by_text('Install-Package Vdevice.Native -Version 1.0.6',exact=True).is_visible()
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Registry table causes horizontal page scrolling'
+    page.goto(base+'fr/sdk-java-php-ruby/',wait_until='domcontentloaded')
+    page.get_by_text('Voir les commandes pour Vdevice',exact=True).click()
+    assert page.get_by_text('composer require titancsa/vdevice:1.0.0',exact=True).is_visible()
+    assert page.get_by_text('gem install vdevice -v 1.0.0',exact=True).is_visible()
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'SDK commands cause horizontal page scrolling'
     page.goto(base+'guides/windows-input-release-compare/',wait_until='domcontentloaded')
     contacts=page.locator('main a[href="/about/evidence/#release-contact"]')
     assert contacts.first.is_visible()

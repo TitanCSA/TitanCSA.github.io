@@ -3,18 +3,30 @@
 from concurrent.futures import ThreadPoolExecutor
 from hashlib import sha256
 from pathlib import Path
+from time import sleep
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree as ET
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
 GALLERY = "{http://schemas.microsoft.com/ado/2007/08/dataservices}"
+POM = "{http://maven.apache.org/POM/4.0.0}"
 
 
 def read(url):
     request = Request(url, headers={"User-Agent": "TitanCSA-SDK-Registry-Check"})
-    with urlopen(request, timeout=20) as response:
-        return response.read()
+    for attempt in range(3):
+        try:
+            with urlopen(request, timeout=20) as response:
+                return response.read()
+        except HTTPError as error:
+            if attempt == 2 or error.code not in {429, 500, 502, 503, 504}:
+                raise
+        except URLError:
+            if attempt == 2:
+                raise
+        sleep(1 + attempt)
 
 
 def verify(row):
@@ -26,6 +38,11 @@ def verify(row):
         entry = ET.fromstring(metadata)
         available = (entry.findtext(f".//{GALLERY}Id") == name
                      and entry.findtext(f".//{GALLERY}Version") == version)
+    elif registry == "maven":
+        entry = ET.fromstring(metadata)
+        coordinate = entry.findtext(POM + "groupId", "") + ":" + entry.findtext(POM + "artifactId", "")
+        available = coordinate == name and entry.findtext(POM + "version") == version
+        available = available and sha256(read(archive["url"])).hexdigest() == archive["sha256"]
     else:
         document = json.loads(metadata)
         if registry == "pypi":
@@ -42,6 +59,13 @@ def verify(row):
             if archive:
                 available = (available and document["dist"]["tarball"] == archive["url"]
                              and sha256(read(archive["url"])).hexdigest() == archive["sha256"])
+        elif registry == "packagist":
+            available = any(entry["version"].removeprefix("v") == version
+                            and entry["source"]["reference"] == row["source_reference"]
+                            for entry in document["packages"][name])
+        elif registry == "rubygems":
+            available = (document["name"] == name and document["version"] == version
+                         and document["gem_uri"] == archive["url"] and document["sha"] == archive["sha256"])
         else:
             available = version in document["versions"]
             if archive:

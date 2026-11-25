@@ -301,5 +301,280 @@
       "filename": "browser_control_sdk-0.2.1-py3-none-any.whl",
       "sha256": "1167ad3f817ed164b32ef490ab196e4b6c5c06b28e4cb8f0a685d804d2056fca"
     }
+  },
+  {
+    "edition": "interceptor",
+    "ecosystem": "maven",
+    "name": "io.github.titancsa:interceptor",
+    "version": "1.0.1",
+    "first_check": {
+      "call": "client.info()",
+      "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "titancsa.interceptor.Interceptor",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/Interceptor-MultiLang",
+    "verified_archive": {
+      "url": "https://repo.maven.apache.org/maven2/io/github/titancsa/interceptor/1.0.1/interceptor-1.0.1.jar",
+      "sha256": "25f14645a5a218efb20e3fb095997c2b8c8c8aca034859cec0cea8910126ef5c"
+    }
+  },
+  {
+    "edition": "interceptor",
+    "ecosystem": "packagist",
+    "name": "titancsa/interceptor",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "$client->info()",
+      "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "TitanCSA\\Products\\Interceptor\\Interceptor",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor/Interceptor-PHP-packagist#readme",
+    "source_reference": "e7cd0abe444c59eecc24363efc6d7979fc2f5244"
+  },
+  {
+    "edition": "interceptor",
+    "ecosystem": "rubygems",
+    "name": "interceptor-multilang",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.info",
+      "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "InterceptorMultiLang::Interceptor",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false,
+      "import": "interceptor_multilang"
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor/Interceptor-Ruby-rubygems#readme",
+    "verified_archive": {
+      "url": "https://rubygems.org/gems/interceptor-multilang-1.0.0.gem",
+      "sha256": "3fffb0b08ba7253f7ff9401966f3c8d70d91c973b48e1f976c906ba81645deea"
+    }
+  },
+  {
+    "edition": "interceptor-keyboard-mouse",
+    "ecosystem": "maven",
+    "name": "io.github.titancsa:interceptor-keyboard-mouse",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.info()",
+      "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "titancsa.products.interceptor_keyboard_mouse.Interceptor",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-Java-maven#readme",
+    "verified_archive": {
+      "url": "https://repo.maven.apache.org/maven2/io/github/titancsa/interceptor-keyboard-mouse/1.0.0/interceptor-keyboard-mouse-1.0.0.jar",
+      "sha256": "e2b8f81328de7ab753e27def82286c0142937b28fa077c351aead2c2264725d3"
+    }
+  },
+  {
+    "edition": "interceptor-keyboard-mouse",
+    "ecosystem": "packagist",
+    "name": "titancsa/interceptor-keyboard-mouse",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "$client->info()",
+      "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "TitanCSA\\Products\\InterceptorKeyboardMouse\\Interceptor",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-PHP-packagist#readme",
+    "source_reference": "fc1114c561ea460bcbcf5710f4896e9e814fde8d"
+  },
+  {
+    "edition": "interceptor-keyboard-mouse",
+    "ecosystem": "rubygems",
+    "name": "interceptor-keyboard-mouse",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.info",
+      "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "InterceptorKeyboardMouse::Interceptor",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false,
+      "import": "interceptor_keyboard_mouse"
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-Ruby-rubygems#readme",
+    "verified_archive": {
+      "url": "https://rubygems.org/gems/interceptor-keyboard-mouse-1.0.0.gem",
+      "sha256": "f06122390129745891cf8436dbdcb982ea6a62a427718a4f3716e8e0f62c5c43"
+    }
+  },
+  {
+    "edition": "interceptor-gamepad-controller",
+    "ecosystem": "maven",
+    "name": "io.github.titancsa:interceptor-gamepad-controller",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.info()",
+      "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "titancsa.products.interceptor_gamepad_controller.Interceptor",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-Java-maven#readme",
+    "verified_archive": {
+      "url": "https://repo.maven.apache.org/maven2/io/github/titancsa/interceptor-gamepad-controller/1.0.0/interceptor-gamepad-controller-1.0.0.jar",
+      "sha256": "19fca0ae829a5cac9182098c74ea2bbafbc337e84847ea41c1e9274c61b92a11"
+    }
+  },
+  {
+    "edition": "interceptor-gamepad-controller",
+    "ecosystem": "packagist",
+    "name": "titancsa/interceptor-gamepad-controller",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "$client->info()",
+      "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "TitanCSA\\Products\\InterceptorGamepadController\\Interceptor",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-PHP-packagist#readme",
+    "source_reference": "aab5d57bb546257ee88a9c3772f692c89161f314"
+  },
+  {
+    "edition": "interceptor-gamepad-controller",
+    "ecosystem": "rubygems",
+    "name": "interceptor-gamepad-controller",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.info",
+      "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "InterceptorGamepadController::Interceptor",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false,
+      "import": "interceptor_gamepad_controller"
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-Ruby-rubygems#readme",
+    "verified_archive": {
+      "url": "https://rubygems.org/gems/interceptor-gamepad-controller-1.0.0.gem",
+      "sha256": "f1b8f9d9a065a57a405e497339a3c06a3b7909b65f2caa4fe098d9199629ab1b"
+    }
+  },
+  {
+    "edition": "vdevice",
+    "ecosystem": "maven",
+    "name": "io.github.titancsa:vdevice",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.call(\"status\")",
+      "expected": "Driver status with Vdevice installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "titancsa.products.vdevice.Client",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Vdevice/Vdevice-Java-maven#readme",
+    "verified_archive": {
+      "url": "https://repo.maven.apache.org/maven2/io/github/titancsa/vdevice/1.0.0/vdevice-1.0.0.jar",
+      "sha256": "e6b37c5ed2ab03dcb5bbcc018fe1bcf1b4084d965708ba208ac35f49c1490fcf"
+    }
+  },
+  {
+    "edition": "vdevice",
+    "ecosystem": "packagist",
+    "name": "titancsa/vdevice",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "$client->call('status')",
+      "expected": "Driver status with Vdevice installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "TitanCSA\\Products\\Vdevice\\Client",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Vdevice/Vdevice-PHP-packagist#readme",
+    "source_reference": "fcab72c2ed4a20727c85eb040bf954d9bd22c3bd"
+  },
+  {
+    "edition": "vdevice",
+    "ecosystem": "rubygems",
+    "name": "vdevice",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.call('status')",
+      "expected": "Driver status with Vdevice installed, or Windows 2 when its interface is absent.",
+      "sdk_type": "VdeviceSDK::Client",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false,
+      "import": "vdevice"
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Vdevice/Vdevice-Ruby-rubygems#readme",
+    "verified_archive": {
+      "url": "https://rubygems.org/gems/vdevice-1.0.0.gem",
+      "sha256": "61a611c1571deeaa174b17b6b4a916595ae6f1b53dfd8e67507f706c01c5a88c"
+    }
+  },
+  {
+    "edition": "interception-v2",
+    "ecosystem": "maven",
+    "name": "io.github.titancsa:interception-v2",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.call(\"check\", \"{\\\"device\\\":1}\")",
+      "expected": "Device number 1 is the first keyboard slot.",
+      "sdk_type": "titancsa.products.interception_v2.Client",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interception-V2/Interception-V2-Java-maven#readme",
+    "verified_archive": {
+      "url": "https://repo.maven.apache.org/maven2/io/github/titancsa/interception-v2/1.0.0/interception-v2-1.0.0.jar",
+      "sha256": "65d2c53f9d4b079dac3e550eb565b4cae18ba8ceb86ba1aeb1134b24e43b98fe"
+    }
+  },
+  {
+    "edition": "interception-v2",
+    "ecosystem": "packagist",
+    "name": "titancsa/interception-v2",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "$client->call('check', ['device' => 1])",
+      "expected": "Device number 1 is the first keyboard slot.",
+      "sdk_type": "TitanCSA\\Products\\InterceptionV2\\Client",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interception-V2/Interception-V2-PHP-packagist#readme",
+    "source_reference": "1e4433f2204c91d71f2cc9cb0c19793e3da7dd09"
+  },
+  {
+    "edition": "interception-v2",
+    "ecosystem": "rubygems",
+    "name": "interception-v2",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.call('check', {device: 1})",
+      "expected": "Device number 1 is the first keyboard slot.",
+      "sdk_type": "InterceptionV2SDK::Client",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false,
+      "import": "interception_v2"
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interception-V2/Interception-V2-Ruby-rubygems#readme",
+    "verified_archive": {
+      "url": "https://rubygems.org/gems/interception-v2-1.0.0.gem",
+      "sha256": "bbe64d6b0aca40ce80ea5b0d90f8e8f8645b9feddaaaae7489a8e5367f58f618"
+    }
   }
 ]
