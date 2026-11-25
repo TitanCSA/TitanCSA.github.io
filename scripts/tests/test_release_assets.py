@@ -1,6 +1,8 @@
+import json
 import sys
 import unittest
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -78,6 +80,24 @@ class ReleaseAssetChecks(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "existing role and a filename"):
                     checker.candidate(self.edition, self.tag, self.version, self.role, [override])
                 fetch.assert_not_called()
+
+    def test_apply_updates_one_pin_and_refuses_a_stale_build(self):
+        row = {"slug": "example", "tag": self.tag, "demo": self.version, "note": "Preserve this"}
+        other = {"slug": "other", "tag": "v9.0.0"}
+        source = {"reviewed": "2026-11-24", "editions": [row, other]}
+        reviewed = {"slug": "example", "tag": "v1.0.1.0-demo", "demo": "1.0.1.0"}
+        with TemporaryDirectory() as scratch:
+            path = Path(scratch) / "releases.json"
+            path.write_text(json.dumps(source), encoding="utf-8")
+            self.assertFalse(checker.update_pin(path, row, row))
+            self.assertTrue(checker.update_pin(path, row, reviewed))
+            saved = path.read_bytes()
+            updated = json.loads(saved)
+            self.assertEqual(updated["editions"], [{**row, **reviewed}, other])
+            with self.assertRaisesRegex(ValueError, "source changed"):
+                checker.update_pin(path, row, reviewed)
+            self.assertEqual(path.read_bytes(), saved)
+            self.assertEqual(list(Path(scratch).iterdir()), [path])
 
 
 if __name__ == "__main__":

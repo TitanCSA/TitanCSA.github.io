@@ -42,6 +42,8 @@ To preview a proposed update, run the release checker with the edition ID, publi
 
 Use --asset role=filename when the new release changes a filename's pattern. The pipeline checks the URL and pinned SHA-256 of each asset against GitHub. Its Windows job builds and runs every listed architecture.
 
+Add `--apply` to save the verified candidate to `releases.json`. The command leaves the other editions and commercial metadata in place. Rebuild and run the validation commands below before submitting the change.
+
 ```text
 python scripts/build.py
 python scripts/validate.py

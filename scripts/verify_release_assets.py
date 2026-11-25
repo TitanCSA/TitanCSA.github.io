@@ -1,11 +1,13 @@
 """Check pinned GitHub assets or preview the metadata for a candidate tag."""
 
 from argparse import ArgumentParser
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
 import re
 import time
+from tempfile import NamedTemporaryFile
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlparse
 from urllib.request import Request, urlopen
@@ -13,6 +15,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOGUE = ROOT / "dist" / "releases.json"
+SOURCE = ROOT / "releases.json"
 RETRYABLE_STATUS = {429, 500, 502, 503, 504}
 SHA256_TAG = re.compile(r"sha256:([0-9a-f]{64})")
 
@@ -93,10 +96,40 @@ def candidate(edition, tag, version, sdk_role, overrides):
     return row
 
 
+def update_pin(path, previous, reviewed):
+    original = path.read_bytes()
+    source = json.loads(original)
+    for index, row in enumerate(source["editions"]):
+        if row["slug"] != reviewed["slug"]:
+            continue
+        if any(previous.get(key) != value for key, value in row.items()):
+            raise ValueError("The source changed since the build. Rebuild before updating a release pin.")
+        replacement = {**row, **reviewed}
+        if replacement == row:
+            return False
+        source["editions"][index] = replacement
+        source["reviewed"] = datetime.now(timezone.utc).date().isoformat()
+        output = NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n", dir=path.parent,
+                                    prefix=path.stem + "-", suffix=".tmp", delete=False)
+        temporary = Path(output.name)
+        try:
+            with output:
+                json.dump(source, output, ensure_ascii=False, indent=2)
+                output.write("\n")
+            if path.read_bytes() != original:
+                raise ValueError("The catalogue changed during the update. Rebuild and retry.")
+            temporary.replace(path)
+        finally:
+            temporary.unlink(missing_ok=True)
+        return True
+    raise ValueError(f"No source release entry for {reviewed['slug']}")
+
+
 def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--candidate", nargs=3, metavar=("EDITION", "TAG", "VERSION"))
     parser.add_argument("--asset", action="append", default=[], metavar="ROLE=FILENAME")
+    parser.add_argument("--apply", action="store_true", help="Write the checked candidate revision to releases.json")
     args = parser.parse_args()
     editions = json.loads(CATALOGUE.read_text(encoding="utf-8"))["editions"]
     recipes = json.loads((ROOT / "sdk-checks.json").read_text(encoding="utf-8"))
@@ -105,11 +138,13 @@ def main():
         edition = next((row for row in editions if row["slug"] == name), None)
         if edition is None:
             parser.error(f"Unknown edition {name}")
-        print(json.dumps(candidate(edition, tag, version, recipes[name]["asset_role"], args.asset),
-                         ensure_ascii=False, indent=2))
+        reviewed = candidate(edition, tag, version, recipes[name]["asset_role"], args.asset)
+        if args.apply:
+            update_pin(SOURCE, edition, reviewed)
+        print(json.dumps(reviewed, ensure_ascii=False, indent=2))
         return
-    if args.asset:
-        parser.error("--asset requires --candidate")
+    if args.asset or args.apply:
+        parser.error("--asset and --apply require --candidate")
     checked = 0
     for edition in editions:
         count = check_edition(edition, recipes[edition["slug"]]["asset_role"])
