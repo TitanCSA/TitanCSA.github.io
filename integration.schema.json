@@ -129,6 +129,7 @@
             "header_file": { "type": "string", "minLength": 1 },
             "implementation_file": { "type": ["string", "null"] },
             "link_libraries": { "type": "array", "items": { "type": "string" } },
+            "compile_definitions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true, "description": "Pass these names to target_compile_definitions for the published first check." },
             "import_library_by_architecture": { "type": "object", "additionalProperties": { "type": "string" } },
             "runtime_file_by_architecture": { "type": "object", "additionalProperties": { "type": "string" } },
             "app_architectures": { "$ref": "#/$defs/architectures" },

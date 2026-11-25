@@ -8,6 +8,7 @@ from zipfile import ZIP_STORED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 REVIEW_DATE = "2026-11-25"
+WINDOWS_CXX_DEFINITIONS = ("UNICODE", "_UNICODE", "NOMINMAX")
 
 
 def sdk_folder(edition, recipe):
@@ -70,6 +71,7 @@ def make_manifest(base, editions):
                 "header_file": header,
                 "implementation_file": implementation,
                 "link_libraries": desktop_libraries,
+                "compile_definitions": list(WINDOWS_CXX_DEFINITIONS) if implementation else [],
                 "import_library_by_architecture": ({} if implementation else
                     {arch: f"{arch}/interception.lib" for arch in app_architectures}),
                 "runtime_file_by_architecture": ({} if implementation else

@@ -12,7 +12,7 @@ from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 from zipfile import ZipFile
 
-from integration import sdk_folder
+from integration import WINDOWS_CXX_DEFINITIONS, sdk_folder
 
 ROOT = Path(__file__).resolve().parents[1]
 GENERATORS = {"x86": "Win32", "x64": "x64"}
@@ -66,7 +66,7 @@ def make_project(directory, sdk, recipe, arch):
             f'target_sources(first-sdk-check PRIVATE "{(sdk / impl).as_posix()}")',
             "target_compile_features(first-sdk-check PRIVATE cxx_std_17)",
             "target_compile_options(first-sdk-check PRIVATE /EHsc /permissive-)",
-            "target_compile_definitions(first-sdk-check PRIVATE UNICODE _UNICODE NOMINMAX)",
+            "target_compile_definitions(first-sdk-check PRIVATE " + " ".join(WINDOWS_CXX_DEFINITIONS) + ")",
         ]
     else:
         library = sdk / arch / "interception.lib"

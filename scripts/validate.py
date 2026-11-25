@@ -301,6 +301,8 @@ for row in manifest['products']:
     assert sha256((OUT/'assets'/check['source_file']).read_bytes()).hexdigest() == check['source_sha256']
     assert check['opens_input_context'] is check['starts_demo_timer'] is False
     assert check['header_file'].endswith('.h')
+    expected_definitions=['UNICODE','_UNICODE','NOMINMAX'] if check['implementation_file'] else []
+    assert check['compile_definitions']==expected_definitions
     if check['implementation_file']:
         assert not check['runtime_file_by_architecture']
     else:
