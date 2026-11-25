@@ -49,6 +49,7 @@ with sync_playwright() as p:
     page.goto(base+'guides/windows-input-release-compare/',wait_until='domcontentloaded')
     checkout=page.locator('tbody a[href^="https://licences.configcsa.com/"]')
     assert checkout.count()==5 and checkout.first.is_visible()
+    assert page.locator('tbody a[href*="/releases/download/"]').count()==5
     assert page.locator('tbody').inner_text().count('€400 Lifetime')==5
     assert page.get_by_role('table',name='Windows input driver editions').get_by_role('rowheader').count()==5
     for link in checkout.all():

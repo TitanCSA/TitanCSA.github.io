@@ -6,51 +6,94 @@
       "slug": "interceptor",
       "demo": "1.4.22.0",
       "tag": "v1.4.22.0-demo",
-      "commercial": {"package_version": "1.6.1.1", "driver_version": "1.6.0.0"},
+      "commercial": {
+        "package_version": "1.6.1.1",
+        "driver_version": "1.6.0.0"
+      },
       "use": "Remap supported physical keyboards, mice and controllers in one C++17 integration.",
       "api": "Combined C++17 SDK",
       "trial_starts": "first capture, controller monitor subscription or raw GIP diagnostic access",
-      "note": "Remove overlapping editions before installation. Check the supported device stack and profile."
+      "note": "Remove overlapping editions before installation. Check the supported device stack and profile.",
+      "demo_files": {
+        "installer": "InterceptorSetup.exe",
+        "examples": "Interceptor-Examples-1.4.22.0.zip",
+        "sdk": "Interceptor-SDK-1.4.22.0.zip",
+        "checksums": "SHA256SUMS.txt"
+      }
     },
     {
       "slug": "interceptor-keyboard-mouse",
       "demo": "1.0.5.0",
       "tag": "v1.0.5.0-demo",
-      "commercial": {"package_version": "1.0.2.2", "driver_version": "1.0.2.2"},
+      "commercial": {
+        "package_version": "1.0.2.2",
+        "driver_version": "1.0.2.2"
+      },
       "use": "Distinguish physical keyboards and mice and remap input from selected devices.",
       "api": "C++17 SDK and optional AutoHotInterceptor integration",
       "trial_starts": "first successful capture",
-      "note": "Try the per-keyboard AutoHotkey v2 guide with two keyboards."
+      "note": "Try the per-keyboard AutoHotkey v2 guide with two keyboards.",
+      "demo_files": {
+        "installer": "InterceptorSetup.exe",
+        "examples": "Interceptor-Keyboard-Mouse-Examples-1.0.5.0.zip",
+        "sdk": "Interceptor-Keyboard-Mouse-SDK-1.0.5.0.zip",
+        "checksums": "SHA256SUMS.txt"
+      }
     },
     {
       "slug": "interceptor-gamepad-controller",
       "demo": "1.0.13.0",
       "tag": "v1.0.13.0-demo",
-      "commercial": {"package_version": "1.0.1.1", "driver_version": "1.0.0.0"},
+      "commercial": {
+        "package_version": "1.0.1.1",
+        "driver_version": "1.0.0.0"
+      },
       "use": "Inspect and remap supported physical gamepad input, including stick curves and button mappings.",
       "api": "Controller-focused C++17 SDK",
       "trial_starts": "first capture or monitor subscription",
-      "note": "Compatibility varies by controller profile and transport. Check the matching HID, XUSB, XInputHID or GIP documentation."
+      "note": "Compatibility varies by controller profile and transport. Check the matching HID, XUSB, XInputHID or GIP documentation.",
+      "demo_files": {
+        "installer": "InterceptorSetup.exe",
+        "examples": "Interceptor-Gamepad-Controller-1.0.13.0-Examples.zip",
+        "sdk": "Interceptor-Gamepad-Controller-SDK-1.0.13.0.zip",
+        "checksums": "SHA256SUMS.txt"
+      }
     },
     {
       "slug": "vdevice",
       "demo": "1.0.6.0",
       "tag": "v1.0.6.0-demo",
-      "commercial": {"package_version": "1.0.3.3", "driver_version": "1.0.3.0"},
+      "commercial": {
+        "package_version": "1.0.3.3",
+        "driver_version": "1.0.3.0"
+      },
       "use": "Create a new virtual USB keyboard, mouse, controller or supported custom device.",
       "api": "Raw USB/HID C++17 SDK",
       "trial_starts": "first successful virtual device creation",
-      "note": "Start with the signed virtual USB mouse demo. The signed demo includes the WDF-001 teardown fix."
+      "note": "Start with the signed virtual USB mouse demo. The signed demo includes the WDF-001 teardown fix.",
+      "demo_files": {
+        "installer": "VdeviceSetup.exe",
+        "examples": "Vdevice-Examples-1.0.6.0.zip",
+        "sdk": "Vdevice-SDK-1.0.6.0.zip",
+        "checksums": "SHA256SUMS.txt"
+      }
     },
     {
       "slug": "interception-v2",
       "demo": "2.0.0.0",
       "tag": "v2.0.0",
-      "commercial": {"package_version": "2.0.0.1", "driver_version": "2.0.0.0"},
+      "commercial": {
+        "package_version": "2.0.0.1",
+        "driver_version": "2.0.0.0"
+      },
       "use": "Run applications built against the original Interception C API for keyboard and mouse input.",
       "api": "Original interception_* C API with x86/x64 user-mode libraries",
       "trial_starts": "first successful context creation",
-      "note": "Match the library architecture to your application. Remove overlapping Interception editions before installing."
+      "note": "Match the library architecture to your application. Remove overlapping Interception editions before installing.",
+      "demo_files": {
+        "archive": "Interception-V2.zip",
+        "checksums": "SHA256SUMS.txt"
+      }
     }
   ]
 }

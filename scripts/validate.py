@@ -111,7 +111,12 @@ for path in project_pages:
     assert page.canonical==edition['overview_url']
     assert edition['demo_url'] in page.links and edition['demo_url'] in comparison.links
     assert edition['purchase_url'] in page.links and edition['purchase_url'] in comparison.links
-    assert edition['demo_url'] in french_comparison.links and edition['purchase_url'] in french_comparison.links
+    assert edition['demo_download_url'] in page.links and edition['demo_download_url'] in comparison.links
+    assert edition['demo_download_url'] in french_comparison.links and edition['purchase_url'] in french_comparison.links
+    assert set(edition['demo_assets'].values()) <= set(page.links)
+    for role, filename in edition['demo_files'].items():
+        assert re.fullmatch(r'[A-Za-z0-9._-]+',filename)
+        assert edition['demo_assets'][role] == f'{edition["repository"]}/releases/download/{edition["tag"]}/{filename}'
     assert edition['overview_url'] in reference and edition['demo_url'] in reference
     app,=[item for item in page.schemas if item.get('@type')=='SoftwareApplication']
     assert app['softwareVersion']==edition['commercial']['package_version']

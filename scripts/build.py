@@ -29,11 +29,16 @@ editions={}
 for edition in release_data['editions']:
     slug=edition['slug']
     repo,title,_=featured[slug]
+    repo_url=f'https://github.com/TitanCSA/{repo}'
+    assets={role:f'{repo_url}/releases/download/{edition["tag"]}/{filename}' for role,filename in edition['demo_files'].items()}
+    primary=assets.get('installer') or assets['archive']
     editions[slug]={
         **edition,
         'name':title.split(' | ',1)[0],
-        'repository':f'https://github.com/TitanCSA/{repo}',
-        'demo_url':f'https://github.com/TitanCSA/{repo}/releases/tag/{edition["tag"]}',
+        'repository':repo_url,
+        'demo_url':f'{repo_url}/releases/tag/{edition["tag"]}',
+        'demo_download_url':primary,
+        'demo_assets':assets,
         'overview_url':f'{BASE}projects/{slug}/',
         'purchase_url':shop+slug,
         'price_eur':400,
@@ -84,14 +89,15 @@ for slug,edition in editions.items():
 replacements['OTHER_SDK_REGISTRY_ROWS']='\n'.join(language_package_rows)
 for slug, edition in editions.items():
     key=slug.upper().replace('-','_')
-    replacements[f'{key}_DEMO_URL']=escape(edition['demo_url'],quote=True)
+    replacements[f'{key}_DEMO_URL']=escape(edition['demo_download_url'],quote=True)
     replacements[f'{key}_DEMO_VERSION']=escape(edition['demo'])
     replacements[f'{key}_PURCHASE_URL']=escape(edition['purchase_url'],quote=True)
     replacements[f'{key}_COMMERCIAL_VERSION']=escape(edition['commercial']['package_version'])
 replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
     f'<tr role="row"><th scope="row" role="rowheader"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
     f'<td role="cell">{escape(e["use"])} <strong>{escape(e["api"])}</strong> {escape(e["note"])}</td>'
-    f'<td role="cell"><a href="{e["demo_url"]}">{escape(e["name"])} demo {e["demo"]}</a><br>Starts on {escape(e["trial_starts"])}.</td>'
+    f'<td role="cell"><a href="{e["demo_download_url"]}">Download {escape(e["name"])} demo {e["demo"]}</a><br>'
+    f'<a href="{e["demo_url"]}">Release notes</a> · Starts on {escape(e["trial_starts"])}.</td>'
     f'<td role="cell"><a href="{e["purchase_url"]}">Buy {escape(e["name"])} Release</a><br><strong>€{e["price_eur"]} Lifetime</strong>'
     f'<br>ZIP {escape(e["commercial"]["package_version"])} · driver {escape(e["commercial"]["driver_version"])}</td></tr>'
     for e in editions.values()
@@ -188,14 +194,20 @@ for path,(title,description,source) in pages.items():
     if path.startswith('projects/'):
         slug=path.split('/')[1]
         edition=editions[slug]
+        demo_assets=edition['demo_assets']
+        downloads=' · '.join(f'<a href="{demo_assets[role]}">{label}</a>'
+                             for role,label in [('examples','Examples ZIP'),('sdk','SDK source ZIP'),('checksums','SHA-256 checksums')]
+                             if role in demo_assets)
         links=(
             f'<p>Commercial package <strong>{escape(edition["commercial"]["package_version"])}</strong> contains signed driver '
             f'<strong>{escape(edition["commercial"]["driver_version"])}</strong>. Delivery verified {commercial_checked}.</p>'
-            f'<p>Signed demo <a href="{edition["demo_url"]}">{edition["demo"]}</a>. '
+            f'<p>Signed demo <a href="{edition["demo_url"]}">{edition["demo"]} release notes</a> · {downloads}.</p><p>'
             '<a href="/guides/windows-input-release-compare/">Compare editions</a> · '
             '<a href="/guides/release-activation-help/">Installation and activation help</a> · '
             '<a href="/guides/windows-input-sdk-packages/">SDK packages</a>.</p>'
         )
+        label='Download demo installer' if 'installer' in demo_assets else 'Download demo ZIP'
+        body=body.replace('{{DEMO_DOWNLOAD_URL}}',edition['demo_download_url']).replace('{{DEMO_DOWNLOAD_LABEL}}',label)
         body=body.replace('{{PURCHASE_URL}}',edition['purchase_url']).replace('{{PURCHASE_TERMS}}',purchase_terms+links)
     assert '{{' not in body
     target=OUT/path/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(title,description,path,body,bool(path)),encoding='utf8')
@@ -248,7 +260,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Deuxième clavier avec AutoHotkey v2]({BASE}fr/remapper-deuxieme-clavier-autohotkey/)',
     f'- [Benchmark results and scope]({BASE}TitanCSA-Benchmarks/)', '', '## Products']
 reference_links.extend(
-    f'- [{e["name"]}]({e["overview_url"]}): {e["use"]} Signed demo: {e["demo_url"]}. Release checkout: {e["purchase_url"]}.'
+    f'- [{e["name"]}]({e["overview_url"]}): {e["use"]} Signed demo notes: {e["demo_url"]}. Demo download: {e["demo_download_url"]}. Release checkout: {e["purchase_url"]}.'
     for e in editions.values()
 )
 (OUT/'llms.txt').write_text('\n'.join(reference_links)+'\n',encoding='utf8')
