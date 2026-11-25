@@ -23,6 +23,8 @@ on:
       - 'assets/gallery-sdk-status.ps1'
       - 'assets/sdk-registry-runtime-2026-11-25.json'
       - 'scripts/test_first_sdk.py'
+      - 'scripts/compile_documented_samples.py'
+      - 'scripts/build.py'
       - 'scripts/integration.py'
       - 'releases.json'
       - 'scripts/verify_release_assets.py'
@@ -48,6 +50,8 @@ on:
       - 'assets/gallery-sdk-status.ps1'
       - 'assets/sdk-registry-runtime-2026-11-25.json'
       - 'scripts/test_first_sdk.py'
+      - 'scripts/compile_documented_samples.py'
+      - 'scripts/build.py'
       - 'scripts/integration.py'
       - 'releases.json'
       - 'scripts/verify_release_assets.py'
@@ -74,76 +78,16 @@ jobs:
       - run: python3 -m pip install jsonschema==4.26.0 rfc3986-validator==0.1.1
       - run: python3 scripts/verify_integration_schema.py
       - run: python3 -m unittest discover -s scripts/tests
-  inventory:
-    runs-on: windows-2022
-    timeout-minutes: 12
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - abi: x86
-            generator_platform: Win32
-          - abi: x64
-            generator_platform: x64
-    env:
-      V2_ABI: ${{ matrix.abi }}
-      V2_GENERATOR_PLATFORM: ${{ matrix.generator_platform }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Compile against the published SDK ZIP
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $release = 'https://github.com/TitanCSA/Interception-V2/releases/download/v2.0.0'
-          $work = Join-Path $env:RUNNER_TEMP 'interception-v2-sample'
-          New-Item -ItemType Directory -Path $work | Out-Null
-          $zip = Join-Path $work 'Interception-V2.zip'
-          $sums = Join-Path $work 'SHA256SUMS.txt'
-          Invoke-WebRequest "$release/Interception-V2.zip" -OutFile $zip
-          Invoke-WebRequest "$release/SHA256SUMS.txt" -OutFile $sums
-          $expected = (Get-Content $sums | Where-Object { $_ -match 'Interception-V2\.zip$' }) -split '\s+'
-          if ($expected[0] -ne (Get-FileHash $zip).Hash) { throw 'Release ZIP checksum mismatch' }
-          Expand-Archive -LiteralPath $zip -DestinationPath $work
-          Copy-Item -LiteralPath assets/interception-device-inventory.c -Destination $work
-          @'
-          cmake_minimum_required(VERSION 3.20)
-          project(InterceptionInventory C)
-          add_executable(inventory interception-device-inventory.c)
-          set_property(TARGET inventory PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded)
-          target_compile_options(inventory PRIVATE /W4 /WX)
-          target_include_directories(inventory PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Interception/library")
-          target_link_libraries(inventory PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Interception/library/${ABI}/interception.lib")
-          '@ | Set-Content -LiteralPath (Join-Path $work 'CMakeLists.txt') -Encoding ascii
-          $build = Join-Path $work 'build'
-          cmake -S $work -B $build -G 'Visual Studio 17 2022' -A $env:V2_GENERATOR_PLATFORM "-DABI=$env:V2_ABI"
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          cmake --build $build --config Release
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
-  vdevice-hid:
+  documented-examples:
     runs-on: windows-2022
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
-      - name: Compile the HID fixture against the pinned Vdevice demo SDK
-        shell: pwsh
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $work = Join-Path $env:RUNNER_TEMP 'vdevice-hid-sample'
-          New-Item -ItemType Directory -Path $work | Out-Null
-          $zip = Join-Path $work 'Vdevice-SDK-1.0.6.0.zip'
-          $release = 'https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo'
-          Invoke-WebRequest "$release/Vdevice-SDK-1.0.6.0.zip" -OutFile $zip
-          $proof = Get-Content -LiteralPath assets/vdevice-hid-test-20261124.json -Raw | ConvertFrom-Json
-          if ((Get-FileHash -LiteralPath $zip).Hash -ne $proof.sdk_zip_sha256) { throw 'Demo SDK checksum mismatch' }
-          Expand-Archive -LiteralPath $zip -DestinationPath $work
-          Copy-Item -LiteralPath assets/vdevice-hid-test.cpp -Destination $work
-          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'
-          $studio = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
-          if (!$studio) { throw 'Visual Studio C++ desktop tools are required' }
-          & (Join-Path $studio 'Common7/Tools/Launch-VsDevShell.ps1') -Arch amd64 -HostArch amd64 -SkipAutomaticLocation
-          Set-Location -LiteralPath $work
-          cl /nologo /W4 /WX /MT /std:c++17 /EHsc /utf-8 /permissive- /DUNICODE /D_UNICODE /I Vdevice-SDK-1.0.6.0\Vdevice vdevice-hid-test.cpp Vdevice-SDK-1.0.6.0\Vdevice\Vdevice.cpp /Fe:vdevice-hid-test.exe
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/build.py
+      - run: python scripts/compile_documented_samples.py
   first-sdk-checks:
     runs-on: windows-2022
     timeout-minutes: 12

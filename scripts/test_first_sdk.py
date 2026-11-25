@@ -88,10 +88,14 @@ def cmake(command, verbose):
         completed.check_returncode()
 
 
-def run_check(slug, arch, run, expect_clean, cached_archive, verbose):
+def run_check(slug, arch, run, expect_clean, cached_archive, verbose, *, compile_sample=None):
     rows = json.loads((ROOT / "dist/releases.json").read_text(encoding="utf-8"))["editions"]
     edition = next(row for row in rows if row["slug"] == slug)
     recipe = json.loads((ROOT / "sdk-checks.json").read_text(encoding="utf-8"))[slug]
+    if compile_sample is not None:
+        if run:
+            raise ValueError("Documented samples are compile-only in this check")
+        recipe["sample"] = compile_sample
     if arch not in recipe["app_architectures"]:
         raise ValueError(f"{slug} does not publish this example for {arch}")
     url = edition["demo_assets"][recipe["asset_role"]]

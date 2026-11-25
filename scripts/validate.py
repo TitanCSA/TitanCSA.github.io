@@ -130,6 +130,7 @@ assert {row['slug'] for row in editions.values() if '/projects/' in row['overvie
 comparison=parsed[(OUT/'guides/windows-input-release-compare/index.html').resolve()]
 french_comparison=by_canonical[BASE+'fr/pilotes-entree-windows/']
 assert comparison.alternates=={'en':comparison.canonical,'fr':french_comparison.canonical}
+assert editions['vdevice']['demo_assets']['examples'] in french_comparison.links
 reference=(OUT/'llms.txt').read_text(encoding='utf8')
 for path in project_pages:
     edition=editions[path.parent.name]

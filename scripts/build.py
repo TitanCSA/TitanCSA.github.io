@@ -98,8 +98,8 @@ for slug, edition in editions.items():
     key=slug.upper().replace('-','_')
     replacements[f'{key}_DEMO_URL']=escape(edition['demo_download_url'],quote=True)
     replacements[f'{key}_DEMO_VERSION']=escape(edition['demo'])
-    if 'viewer' in edition['demo_assets']:
-        replacements[f'{key}_VIEWER_URL']=escape(edition['demo_assets']['viewer'],quote=True)
+    for role, url in edition['demo_assets'].items():
+        replacements[f'{key}_{role.upper()}_URL']=escape(url,quote=True)
 plain_by_slug={p['url'].split('#')[0].rsplit('/',1)[-1].lower():p['plain_purpose'] for p in projects}
 replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
     f'<tr role="row"><th scope="row" role="rowheader"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
