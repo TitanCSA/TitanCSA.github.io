@@ -59,6 +59,14 @@ for page in by_canonical.values():
         for language,url in page.alternates.items():
             target=by_canonical[url]
             assert target.language==language and target.alternates==page.alternates
+packages_en=by_canonical[BASE+'guides/windows-input-sdk-packages/']
+packages_fr=by_canonical[BASE+'fr/installer-sdk-windows/']
+package_hosts={'www.npmjs.com','pypi.org','www.nuget.org','www.powershellgallery.com'}
+for host in package_hosts:
+    refs_en={link for link in packages_en.links if urlparse(link).netloc==host}
+    refs_fr={link for link in packages_fr.links if urlparse(link).netloc==host}
+    assert refs_en and refs_en==refs_fr, ('Mismatch in bilingual SDK package URLs',host)
+assert packages_en.alternates['fr']==packages_fr.canonical
 if (ROOT/'site-verification.json').exists():
     verification=json.loads((ROOT/'site-verification.json').read_text())
     assert parsed[(OUT/'index.html').resolve()].google_verification==verification['google_site_verification']

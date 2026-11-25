@@ -118,6 +118,7 @@ pages={
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Download the signed Titan Audio Link demo, verify a stereo virtual audio pair on Windows 11, and find the matching commercial package.','guides/titan-audio-link-first-run.html'),
  'guides/verify-windows-driver-package/':('Verify a signed Windows driver package before installation — TitanCSA','Compare the published SHA-256, verify the Microsoft-signed driver catalog and check the INF package version with PowerShell and SignTool.','guides/verify-windows-driver-package.html'),
  'guides/vdevice-custom-hid-test/':('Test a custom virtual USB HID with Vdevice and hidapitester — TitanCSA','Create a vendor-defined virtual USB HID, read and return exact report bytes with hidapitester, and verify device removal on Windows.','guides/vdevice-custom-hid-test.html'),
+ 'fr/installer-sdk-windows/':('Installer les SDK d’entrée Windows · Python, Node.js, C++, .NET et PowerShell','Retrouvez les paquets vérifiés pour Interceptor, Vdevice et Interception V2. Commandes d’installation, versions et pilote Windows signé à associer.','guides/windows-input-sdk-packages-fr.html'),
  'fr/activation-release/':('Installer et activer une édition Release TitanCSA sous Windows','Résoudre les erreurs d’activation de Vdevice et Interceptor, vérifier les versions du pilote et du SDK et préparer un rapport de support.','guides/release-activation-fr.html'),
  'fr/souris-usb-virtuelle-vdevice/':('Créer une souris USB virtuelle sous Windows avec Vdevice','Installez la démo Vdevice signée, créez la souris USB virtuelle et testez le déplacement relatif avec le panneau et l’exemple C++.','guides/vdevice-virtual-usb-mouse-fr.html'),
  'fr/remapper-deuxieme-clavier-autohotkey/':('Remapper un deuxième clavier avec AutoHotkey v2 sous Windows','Téléchargez AutoHotInterceptor et un script AutoHotkey v2 pour remapper A vers B sur un seul des deux claviers.','guides/autohotkey-remap-second-keyboard-fr.html'),
@@ -127,9 +128,10 @@ for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/','guides/vdevice-custom-hid-test/','fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/'}
-release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/'}
+release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
 translations=(
     {'en':'guides/release-activation-help/','fr':'fr/activation-release/'},
+    {'en':'guides/windows-input-sdk-packages/','fr':'fr/installer-sdk-windows/'},
     {'en':'guides/windows-input-release-compare/','fr':'fr/pilotes-entree-windows/'},
     {'en':'guides/vdevice-virtual-usb-mouse/','fr':'fr/souris-usb-virtuelle-vdevice/'},
     {'en':'guides/autohotkey-remap-second-keyboard/','fr':'fr/remapper-deuxieme-clavier-autohotkey/'},
@@ -138,7 +140,7 @@ reviewed={
     **dict.fromkeys(updated,featured_date),
     **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
     **dict.fromkeys(release_guides | {'','guides/choose-input/','about/evidence/',*(f'projects/{slug}/' for slug in editions)},release_date),
-    **dict.fromkeys({'guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','about/evidence/'},'2026-11-25'),
+    **dict.fromkeys({'guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','about/evidence/','fr/installer-sdk-windows/'},'2026-11-25'),
     **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},commercial_checked),
 }
 purchase_terms='<p class="subtle">Licensed Release at €400 per edition, paid once. Online activation is required after installation and again after a driver reload or Windows restart.</p>'
@@ -147,6 +149,9 @@ publisher={
     'sameAs':['https://github.com/TitanCSA'],
 }
 
+published_dates={'fr/installer-sdk-windows/':'2026-11-25'}
+
+
 def render(title,description,path,body,article=False):
     canonical=BASE+path
     language='fr' if path.startswith('fr/') else 'en'
@@ -154,7 +159,7 @@ def render(title,description,path,body,article=False):
     if article:
         published='2026-11-24' if path in demo_guides | release_guides else featured_date if path.startswith(('projects/','fr/')) else '2026-11-18'
         modified=reviewed.get(path,checked)
-        schema.update(datePublished=published,dateModified=modified,author={'@id':publisher['@id']})
+        schema.update(datePublished=published_dates.get(path,published),dateModified=modified,author={'@id':publisher['@id']})
     schemas=[schema]
     if path.startswith('projects/'):
         edition=editions[path.split('/')[1]]
@@ -247,6 +252,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',
     f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
+    f'- [Installation des SDK Windows en français]({BASE}fr/installer-sdk-windows/)',
     f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
     f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
     f'- [Java, PHP and Ruby SDK packages]({BASE}guides/windows-input-sdk-java-php-ruby/)',

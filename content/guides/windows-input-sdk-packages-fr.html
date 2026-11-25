@@ -1,0 +1,38 @@
+<h1>Installer les SDK d’entrée Windows de TitanCSA</h1>
+<p class="article-lead">Choisissez un paquet pour votre langage, puis installez le pilote Windows de la même édition pour passer aux essais sur un périphérique.</p>
+<p class="byline">Documentation de l’éditeur · Paquets et commandes vérifiés le 25 novembre 2026</p>
+<p><a href="/guides/windows-input-sdk-packages/" hreflang="en" lang="en">English guide</a></p>
+<h2>Paquets pour Windows x64</h2>
+<div class="table-scroll"><table><thead><tr><th scope="col">Projet</th><th scope="col">Paquet</th><th scope="col">Installation</th></tr></thead><tbody>
+<tr><th scope="row"><a href="/projects/interceptor/">Interceptor</a> · Node.js</th><td><a href="https://www.npmjs.com/package/interceptor-sdk/v/1.0.0">interceptor-sdk 1.0.0</a></td><td><code>npm install interceptor-sdk@1.0.0</code></td></tr>
+<tr><th scope="row">Interceptor · Python</th><td><a href="https://pypi.org/project/interceptor-multilang/1.0.2/">interceptor-multilang 1.0.2</a></td><td><code>python -m pip install interceptor-multilang==1.0.2</code></td></tr>
+<tr><th scope="row">Interceptor · .NET</th><td><a href="https://www.nuget.org/packages/Interceptor.MultiLang/1.0.2">Interceptor.MultiLang 1.0.2</a></td><td><code>dotnet add package Interceptor.MultiLang --version 1.0.2</code></td></tr>
+<tr><th scope="row">Interceptor · PowerShell</th><td><a href="https://www.powershellgallery.com/packages/Interceptor/1.0.0">Interceptor 1.0.0</a></td><td><code>Install-Module Interceptor -RequiredVersion 1.0.0 -Scope CurrentUser</code></td></tr>
+<tr><th scope="row"><a href="/projects/interceptor-keyboard-mouse/">Interceptor Keyboard &amp; Mouse</a> · Node.js</th><td><a href="https://www.npmjs.com/package/interceptor-keyboard-mouse-sdk/v/1.0.0">interceptor-keyboard-mouse-sdk 1.0.0</a></td><td><code>npm install interceptor-keyboard-mouse-sdk@1.0.0</code></td></tr>
+<tr><th scope="row">Keyboard &amp; Mouse · PowerShell</th><td><a href="https://www.powershellgallery.com/packages/InterceptorKeyboardMouse/1.0.0">InterceptorKeyboardMouse 1.0.0</a></td><td><code>Install-Module InterceptorKeyboardMouse -RequiredVersion 1.0.0 -Scope CurrentUser</code></td></tr>
+<tr><th scope="row"><a href="/projects/interceptor-gamepad-controller/">Interceptor Gamepad &amp; Controller</a> · Node.js</th><td><a href="https://www.npmjs.com/package/interceptor-gamepad-controller/v/1.0.0">interceptor-gamepad-controller 1.0.0</a></td><td><code>npm install interceptor-gamepad-controller@1.0.0</code></td></tr>
+<tr><th scope="row">Gamepad &amp; Controller · PowerShell</th><td><a href="https://www.powershellgallery.com/packages/InterceptorGamepadController/1.0.0">InterceptorGamepadController 1.0.0</a></td><td><code>Install-Module InterceptorGamepadController -RequiredVersion 1.0.0 -Scope CurrentUser</code></td></tr>
+<tr><th scope="row"><a href="/projects/vdevice/">Vdevice</a> · PowerShell</th><td><a href="https://www.powershellgallery.com/packages/Vdevice/1.0.0">Vdevice 1.0.0</a></td><td><code>Install-Module Vdevice -RequiredVersion 1.0.0 -Scope CurrentUser</code></td></tr>
+<tr><th scope="row">Vdevice · C++</th><td><a href="https://www.nuget.org/packages/Vdevice.Native/1.0.6">Vdevice.Native 1.0.6</a></td><td><code>Install-Package Vdevice.Native -Version 1.0.6</code> dans la console NuGet de Visual Studio pour un projet C++ x64. <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Démo signée correspondante</a>.</td></tr>
+<tr><th scope="row"><a href="/projects/interception-v2/">Interception V2</a> · PowerShell</th><td><a href="https://www.powershellgallery.com/packages/InterceptionV2/1.0.0">InterceptionV2 1.0.0</a></td><td><code>Install-Module InterceptionV2 -RequiredVersion 1.0.0 -Scope CurrentUser</code></td></tr>
+<tr><th scope="row">Interception V2 · C</th><td><a href="https://www.nuget.org/packages/Interception-V2.Native/2.0.0">Interception-V2.Native 2.0.0</a></td><td>Choisissez la bibliothèque x86 ou x64 selon l’architecture de votre application et utilisez l’API <code>interception_*</code>.</td></tr>
+</tbody></table></div>
+<p>Les paquets nécessitent Node.js 20+, Python 3.10+, .NET 8+ ou PowerShell 7.4+ selon le langage. Pour Java, PHP et Ruby, utilisez les <a href="/guides/windows-input-sdk-java-php-ruby/">références Maven Central, Packagist et RubyGems</a>. La version du SDK et celle du pilote sont indiquées séparément dans le <a href="/fr/pilotes-entree-windows/">comparatif des éditions</a>.</p>
+<h2>Télécharger les paquets Node.js 1.0.1 corrigés</h2>
+<p>La <a href="https://github.com/TitanCSA/sdk-packages/releases/tag/node-input-sdk-v1.0.1">publication GitHub 1.0.1</a> contient les trois archives et leurs sommes SHA-256. Après téléchargement, lancez <code>npm install ./NOM-DU-FICHIER.tgz</code> avec le nom du fichier correspondant. Les commandes du tableau installent les versions 1.0.0 du registre npm.</p>
+<ul>
+<li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-sdk-1.0.1.tgz">interceptor-sdk 1.0.1</a></li>
+<li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-keyboard-mouse-sdk-1.0.1.tgz">interceptor-keyboard-mouse-sdk 1.0.1</a></li>
+<li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-gamepad-controller-1.0.1.tgz">interceptor-gamepad-controller 1.0.1</a></li>
+</ul>
+<p>Les archives 1.0.1 indiquent l’installeur <code>InterceptorSetup.exe</code> de la bonne édition quand Windows renvoie l’erreur <code>2</code>. Chaque paquet est passé par une installation depuis GitHub et une lecture d’état avec Node.js 24.21.0 sur Windows 11 build 26100 avec Secure Boot et le pilote de démo correspondant.</p>
+<h2>Vérifier l’installation du SDK</h2>
+<p>Avec Python, vérifiez l’import et la version avant d’installer un pilote.</p>
+<pre><code>from importlib.metadata import version
+from interceptor import Interceptor
+
+print(version("interceptor-multilang"))</code></pre>
+<p>Avec Python ou .NET, installez la <a href="https://github.com/TitanCSA/Interceptor/releases/tag/v1.4.22.0-demo">démo combinée Interceptor 1.4.22.0</a> pour le premier essai. Python <code>info()</code> et .NET <code>GetInfo()</code> interrogent le pilote en lecture seule. Les deux paquets 1.0.2 affichent le nom de l’installeur si le pilote manque.</p>
+<p>Les cinq modules Gallery 1.0.0 ont été importés sous PowerShell 7.6.6. Si un module Interceptor affiche l’erreur <code>2</code> et mentionne <code>Install.cmd</code>, lancez <code>InterceptorSetup.exe</code> depuis la démo de votre édition ou utilisez l’installeur de votre ZIP commercial. Pour Vdevice, utilisez <code>VdeviceSetup.exe</code> avec la démo. Redémarrez Windows si l’installeur le demande.</p>
+<p>L’opération <code>check</code> du module InterceptionV2 classe un numéro de périphérique selon l’API C. L’<a href="/guides/interception-v2-migration/">inventaire des identifiants matériels</a> permet de vérifier les périphériques disponibles avec le pilote.</p>
+<div class="related"><a href="/fr/pilotes-entree-windows/">Comparer les démos et les éditions Lifetime</a><a href="/fr/activation-release/">Dépanner l’installation ou l’activation</a></div>
