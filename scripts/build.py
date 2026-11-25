@@ -21,7 +21,7 @@ featured={
 }
 featured_paths={repo:f'/projects/{slug}/' for slug,(repo,_,_) in featured.items()}
 featured_date='2026-11-23'
-shop='https://licences.configcsa.com/'
+contact_path='/about/evidence/#release-contact'
 release_data=json.loads((ROOT/'releases.json').read_text(encoding='utf8'))
 release_date=release_data['reviewed']
 commercial_checked=release_data['commercial_checked']
@@ -40,8 +40,7 @@ for edition in release_data['editions']:
         'demo_download_url':primary,
         'demo_assets':assets,
         'overview_url':f'{BASE}projects/{slug}/',
-        'purchase_url':shop+slug,
-        'price_eur':400,
+        'release_contact':{'platform':'Discord','username':'titancsa','instructions_url':BASE.rstrip('/')+contact_path},
     }
 assert set(editions)==set(featured) and len(editions)==len(release_data['editions'])
 assert len(projects)==60 and len({p['url'].lower() for p in projects})==60
@@ -91,14 +90,14 @@ for slug, edition in editions.items():
     key=slug.upper().replace('-','_')
     replacements[f'{key}_DEMO_URL']=escape(edition['demo_download_url'],quote=True)
     replacements[f'{key}_DEMO_VERSION']=escape(edition['demo'])
-    replacements[f'{key}_PURCHASE_URL']=escape(edition['purchase_url'],quote=True)
     replacements[f'{key}_COMMERCIAL_VERSION']=escape(edition['commercial']['package_version'])
+replacements['RELEASE_CONTACT_URL']=contact_path
 replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
     f'<tr role="row"><th scope="row" role="rowheader"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
     f'<td role="cell">{escape(e["use"])} <strong>{escape(e["api"])}</strong> {escape(e["note"])}</td>'
     f'<td role="cell"><a href="{e["demo_download_url"]}">Download {escape(e["name"])} demo {e["demo"]}</a><br>'
     f'<a href="{e["demo_url"]}">Release notes</a> · Starts on {escape(e["trial_starts"])}.</td>'
-    f'<td role="cell"><a href="{e["purchase_url"]}">Buy {escape(e["name"])} Release</a><br><strong>€{e["price_eur"]} Lifetime</strong>'
+    f'<td role="cell"><a href="{contact_path}">Ask titancsa on Discord</a><br><strong>No one-hour demo limit</strong>'
     f'<br>ZIP {escape(e["commercial"]["package_version"])} · driver {escape(e["commercial"]["driver_version"])}</td></tr>'
     for e in editions.values()
 )
@@ -123,7 +122,7 @@ pages={
  'fr/souris-usb-virtuelle-vdevice/':('Créer une souris USB virtuelle sous Windows avec Vdevice','Installez la démo Vdevice signée, créez la souris USB virtuelle et testez le déplacement relatif avec le panneau et l’exemple C++.','guides/vdevice-virtual-usb-mouse-fr.html'),
  'fr/remapper-deuxieme-clavier-autohotkey/':('Remapper un deuxième clavier avec AutoHotkey v2 sous Windows','Téléchargez AutoHotInterceptor et un script AutoHotkey v2 pour remapper A vers B sur un seul des deux claviers.','guides/autohotkey-remap-second-keyboard-fr.html'),
  'about/evidence/':('About TitanCSA projects, evidence and support','Understand TitanCSA project evidence, separate SDK and driver licences, engineering previews, known issues, support and private vulnerability reporting.','about/evidence.html'),
- 'fr/pilotes-entree-windows/':('Pilotes d’entrée Windows · Choisir, essayer et acheter | TitanCSA','Comparez Interceptor, Interceptor Keyboard & Mouse, Interceptor Gamepad & Controller, Vdevice et Interception V2. Démonstrations, compatibilité et licences.','guides/windows-input-fr.html')}
+ 'fr/pilotes-entree-windows/':('Pilotes d’entrée Windows · Choisir une édition et l’essayer | TitanCSA','Comparez Interceptor, Interceptor Keyboard & Mouse, Interceptor Gamepad & Controller, Vdevice et Interception V2. Démonstrations, compatibilité et licences.','guides/windows-input-fr.html')}
 for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
@@ -143,7 +142,7 @@ reviewed={
     **dict.fromkeys({'guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/release-activation-help/','fr/activation-release/','about/evidence/','fr/installer-sdk-windows/'},'2026-11-25'),
     **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},commercial_checked),
 }
-purchase_terms='<p class="subtle">Licensed Release at €400 per edition, paid once. Online activation is required after installation and again after a driver reload or Windows restart.</p>'
+release_terms='<p><strong>Want the version without the one-hour demo limit?</strong> Add <strong>titancsa</strong> on Discord and send a message with this project’s name. TitanCSA shares the licence and private purchase details directly.</p><p class="subtle">Online activation is required after installation and again after a driver reload or Windows restart.</p>'
 publisher={
     '@type':'Organization', '@id':BASE+'#publisher', 'name':'TitanCSA', 'url':BASE,
     'sameAs':['https://github.com/TitanCSA'],
@@ -169,7 +168,6 @@ def render(title,description,path,body,article=False):
             'applicationCategory':'DeveloperApplication','operatingSystem':'Microsoft Windows x64',
             'softwareVersion':edition['commercial']['package_version'],
             'description':edition['use'],
-            'offers':{'@type':'Offer','url':edition['purchase_url'],'price':edition['price_eur'],'priceCurrency':'EUR'},
             'publisher':{'@id':publisher['@id']},
         })
     if not path:schemas.append({'@context':'https://schema.org','@type':'ItemList','name':'TitanCSA public project catalogue','numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
@@ -213,7 +211,7 @@ for path,(title,description,source) in pages.items():
         )
         label='Download demo installer' if 'installer' in demo_assets else 'Download demo ZIP'
         body=body.replace('{{DEMO_DOWNLOAD_URL}}',edition['demo_download_url']).replace('{{DEMO_DOWNLOAD_LABEL}}',label)
-        body=body.replace('{{PURCHASE_URL}}',edition['purchase_url']).replace('{{PURCHASE_TERMS}}',purchase_terms+links)
+        body=body.replace('{{RELEASE_TERMS}}',release_terms+links)
     assert '{{' not in body
     target=OUT/path/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(title,description,path,body,bool(path)),encoding='utf8')
 (OUT/'404.html').write_text(render('Page not found — TitanCSA','Find the TitanCSA project catalogue and first-run guides.','404.html','<h1>Page not found.</h1><p>The address may have changed. <a href="/">Open the project catalogue</a> or <a href="/guides/first-run/">read the first-run guide</a>.</p>',True).replace('index,follow,max-image-preview:large','noindex,follow'),encoding='utf8')
@@ -266,7 +264,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Deuxième clavier avec AutoHotkey v2]({BASE}fr/remapper-deuxieme-clavier-autohotkey/)',
     f'- [Benchmark results and scope]({BASE}TitanCSA-Benchmarks/)', '', '## Products']
 reference_links.extend(
-    f'- [{e["name"]}]({e["overview_url"]}): {e["use"]} Signed demo notes: {e["demo_url"]}. Demo download: {e["demo_download_url"]}. Release checkout: {e["purchase_url"]}.'
+    f'- [{e["name"]}]({e["overview_url"]}): {e["use"]} Signed demo notes: {e["demo_url"]}. Demo download: {e["demo_download_url"]}. Release without the one-hour demo limit: contact titancsa on Discord. {e["release_contact"]["instructions_url"]}'
     for e in editions.values()
 )
 (OUT/'llms.txt').write_text('\n'.join(reference_links)+'\n',encoding='utf8')

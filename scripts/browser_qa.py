@@ -47,19 +47,19 @@ with sync_playwright() as p:
     page.locator('a[href="/guides/first-run/"]').first.click()
     assert page.url.endswith('/guides/first-run/') and page.locator('h1').inner_text().startswith('A useful first run')
     page.goto(base+'guides/windows-input-release-compare/',wait_until='domcontentloaded')
-    checkout=page.locator('tbody a[href^="https://licences.configcsa.com/"]')
-    assert checkout.count()==5 and checkout.first.is_visible()
+    contacts=page.locator('tbody a[href="/about/evidence/#release-contact"]')
+    assert contacts.count()==5 and contacts.first.is_visible()
     assert page.locator('tbody a[href*="/releases/download/"]').count()==5
-    assert page.locator('tbody').inner_text().count('€400 Lifetime')==5
+    assert page.locator('tbody').inner_text().count('Ask titancsa on Discord')==5
     assert page.get_by_role('table',name='Windows input driver editions').get_by_role('rowheader').count()==5
-    for link in checkout.all():
+    for link in contacts.all():
         box=link.bounding_box()
-        assert box and box['x']>=0 and box['x']+box['width']<=390, 'Checkout link is clipped on mobile'
+        assert box and box['x']>=0 and box['x']+box['width']<=390, 'Contact link is clipped on mobile'
     assert page.locator('a[href="/guides/release-activation-help/"]').is_visible()
     page.locator('main a[lang="fr"]').click()
     assert page.url.endswith('/fr/pilotes-entree-windows/') and page.locator('html').get_attribute('lang')=='fr'
-    assert page.locator('main a[href^="https://licences.configcsa.com/"]').count()==5
-    assert '400 €' in page.locator('main').inner_text() and 'Lifetime' in page.locator('main').inner_text()
+    assert page.locator('main .guide-card a[href="#contact-release"]').count()==5
+    assert 'titancsa' in page.locator('main').inner_text()
     page.close();browser.close()
 assert not errors,errors
 report={'verified_utc':datetime.now(timezone.utc).isoformat(),'base':base,'pages':checks,'search_filter_reset':'passed desktop/mobile','preview_scope':'passed','dark_mode':'passed','javascript_disabled':'all 60 entries and guides accessible','page_errors':errors,'limits':'Layout/interaction QA in existing headless Chrome; not product, driver, search indexing or real-user performance qualification'}

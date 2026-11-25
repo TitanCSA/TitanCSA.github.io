@@ -126,9 +126,9 @@ for path in project_pages:
     page=parsed[path]
     assert page.canonical==edition['overview_url']
     assert edition['demo_url'] in page.links and edition['demo_url'] in comparison.links
-    assert edition['purchase_url'] in page.links and edition['purchase_url'] in comparison.links
+    assert '/about/evidence/#release-contact' in page.links and '/about/evidence/#release-contact' in comparison.links
     assert edition['demo_download_url'] in page.links and edition['demo_download_url'] in comparison.links
-    assert edition['demo_download_url'] in french_comparison.links and edition['purchase_url'] in french_comparison.links
+    assert edition['demo_download_url'] in french_comparison.links and '#contact-release' in french_comparison.links
     assert set(edition['demo_assets'].values()) <= set(page.links)
     for role, filename in edition['demo_files'].items():
         assert re.fullmatch(r'[A-Za-z0-9._-]+',filename)
@@ -137,6 +137,7 @@ for path in project_pages:
     app,=[item for item in page.schemas if item.get('@type')=='SoftwareApplication']
     assert app['softwareVersion']==edition['commercial']['package_version']
     assert all(re.fullmatch(r'\d+\.\d+\.\d+\.\d+', value) for value in edition['commercial'].values())
-    assert app['offers']['url']==edition['purchase_url'] and app['offers']['price']==edition['price_eur']
-    assert app['offers']['priceCurrency']=='EUR' and f'€{edition["price_eur"]}' in path.read_text(encoding='utf8')
+    assert 'offers' not in app
+for public_text in [*OUT.rglob('*.html'), OUT/'llms.txt', OUT/'releases.json', OUT/'projects.json']:
+    assert 'licences.configcsa.com' not in public_text.read_text(encoding='utf8').lower(), public_text
 print('Validated',len(parsed),'HTML files, 60 entries, 10 workflows, metadata, JSON-LD, anchors and asset budgets')
