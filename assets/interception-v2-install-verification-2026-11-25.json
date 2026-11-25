@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-25",
+  "edition": "interception-v2",
+  "demo_version": "2.0.0.0",
+  "environment": {
+    "windows_build": 26100,
+    "architecture": "x64",
+    "secure_boot": true,
+    "account": "administrator",
+    "virtual_machine": "Hyper-V"
+  },
+  "demo_archive": {
+    "url": "https://github.com/TitanCSA/Interception-V2/releases/download/v2.0.0/Interception-V2.zip",
+    "sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
+    "bundled_installer_sha256": "3a9edeb9deee0ed59fafaa885cf31b8b166ebbb8f22f059b7d5c5665c4738924"
+  },
+  "driver": {
+    "installation_exit_code": 0,
+    "restart_after_install_verified": true,
+    "kernel_sha256": "0c9a06fb336d3e1a375d182f312c4c86680a5bf1005fdfbd637602521c82e0af",
+    "signature": "Valid",
+    "matching_inf_packages": 3,
+    "uninstallation_exit_code": 0,
+    "restart_after_uninstall_verified": true,
+    "kernel_service_registered_after_uninstall": false
+  },
+  "sample": {
+    "source_url": "https://titancsa.github.io/assets/interception-device-inventory.c",
+    "source_sha256": "0db908d022bc694e8842857c266c0944c225a4d05f7c7b31a1d47a6362e20878",
+    "opens_input_context": true,
+    "first_context_starts_demo_allowance": true,
+    "sets_input_filter": false,
+    "architectures": {
+      "x86": {
+        "sdk_dll_sha256": "08024501a952e64c25489bffb9277503d03189e63ec9124299b7bacf925a6271",
+        "compiled_inventory_sha256": "851faa3308fb25ff3c67df763eeb57c7107775e959b5433e8216dd1f8f38169e",
+        "before_installation_exit_code": 1,
+        "after_installation_and_reboot": {
+          "exit_code": 0,
+          "mouse_ids": 1,
+          "keyboard_ids": 0
+        },
+        "after_uninstall_and_reboot_exit_code": 1
+      },
+      "x64": {
+        "sdk_dll_sha256": "0e54e31e0e25ce7f710bcc72aee3e1ed7d8bffbf992ea16d68155c37d001d6b9",
+        "compiled_inventory_sha256": "2767bcbf02edeef34cc99f174caf099969a987e1553c5685e52bf9b2597aa30f",
+        "before_installation_exit_code": 1,
+        "after_installation_and_reboot": {
+          "exit_code": 0,
+          "mouse_ids": 1,
+          "keyboard_ids": 0
+        },
+        "after_uninstall_and_reboot_exit_code": 1
+      }
+    }
+  },
+  "scope": "Installation, live hardware-ID enumeration and removal on one Windows 11 guest."
+}

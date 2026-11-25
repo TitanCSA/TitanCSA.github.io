@@ -260,6 +260,21 @@ for row in manifest['products']:
         assert lifecycle['status_exit_after_install_and_restart']==0
         assert lifecycle['uninstallation_exit'] in (0,3010)
         assert lifecycle['kernel_service_registered_after_uninstall'] is False
+    if live := demo.get('live_inventory_verification'):
+        proof = json.loads((OUT/live['url'].removeprefix(BASE)).read_text(encoding='utf8'))
+        assert proof['edition']==row['id'] and proof['demo_version']==demo['version']
+        assert proof['demo_archive']['sha256']==demo['setup_download_sha256']
+        assert live['app_architectures']==check['app_architectures']
+        assert live['opens_input_context'] is proof['sample']['opens_input_context'] is True
+        assert check['opens_input_context'] is False
+        assert live['sample_source_url']==proof['sample']['source_url']
+        assert sha256((OUT/live['sample_source_url'].removeprefix(BASE)).read_bytes()).hexdigest()==proof['sample']['source_sha256']
+        assert proof['environment']['secure_boot'] is True and proof['driver']['signature']=='Valid'
+        assert proof['driver']['kernel_service_registered_after_uninstall'] is False
+        for arch in live['app_architectures']:
+            phase=proof['sample']['architectures'][arch]
+            assert phase['before_installation_exit_code']==phase['after_uninstall_and_reboot_exit_code']==1
+            assert phase['after_installation_and_reboot']['exit_code']==0
     assert check['archive_url'] in edition['demo_assets'].values()
     assert re.fullmatch(r'[a-f0-9]{64}', check['archive_sha256'])
     assert check['source_url'] == BASE+'assets/'+check['source_file']

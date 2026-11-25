@@ -24,6 +24,8 @@ def make_manifest(base, editions):
         raise ValueError("Every driver edition needs one SDK check recipe")
     proof_file = "assets/demo-install-verification-2026-11-25.json"
     installed_evidence = json.loads((ROOT / proof_file).read_text(encoding="utf-8"))["editions"]
+    inventory_file = "assets/interception-v2-install-verification-2026-11-25.json"
+    inventory = json.loads((ROOT / inventory_file).read_text(encoding="utf-8"))
 
     rows = []
     for slug, edition in editions.items():
@@ -94,6 +96,14 @@ def make_manifest(base, editions):
         if proof and proof["version"] == edition["demo"] and proof["sdk_archive_sha256"] == edition["sdk_sha256"]:
             row["demo"]["read_only_install_verification"] = {"url": base + proof_file, "edition": slug}
             row["sdk_check"]["tested_account"] = "Administrator on Windows 11 x64"
+        if (inventory["edition"] == slug and inventory["demo_version"] == edition["demo"]
+                and inventory["demo_archive"]["sha256"] == digests[setup_role]):
+            row["demo"]["live_inventory_verification"] = {
+                "url": base + inventory_file,
+                "sample_source_url": inventory["sample"]["source_url"],
+                "app_architectures": app_architectures,
+                "opens_input_context": True,
+            }
         rows.append(row)
     applications = json.loads((ROOT / "starter-apps.json").read_text(encoding="utf-8"))
     for app in applications:

@@ -81,6 +81,16 @@
             "setup_member": { "type": ["string", "null"] },
             "supported_driver_architecture": { "enum": ["x64", "x86", "arm64"] },
             "trial_starts_on": { "type": "string", "minLength": 1 },
+            "live_inventory_verification": {
+              "type": "object",
+              "required": ["url", "sample_source_url", "app_architectures", "opens_input_context"],
+              "properties": {
+                "url": { "$ref": "#/$defs/url" },
+                "sample_source_url": { "$ref": "#/$defs/url" },
+                "app_architectures": { "$ref": "#/$defs/architectures" },
+                "opens_input_context": { "const": true }
+              }
+            },
             "assets": {
               "type": "object",
               "minProperties": 1,

@@ -1,7 +1,7 @@
 <h1>Migrate an original Interception application to Interception V2</h1>
 <p class="article-lead">Check the driver, DLL architecture and input sources before trying your existing Windows application.</p>
-<p class="byline">Publisher documentation · Demo ZIP checked 24 November 2026</p>
-<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Interception-V2/releases/download/v2.0.0/Interception-V2.zip">Download Interception V2 demo 2.0.0.0</a><a class="button" href="/assets/interception-device-inventory.c" download>Download C hardware-ID example</a></div>
+<p class="byline">Publisher documentation · Demo ZIP and inventory checked 25 November 2026</p>
+<div class="actions"><a class="button primary" href="{{INTERCEPTION_V2_DEMO_URL}}">Download Interception V2 demo {{INTERCEPTION_V2_DEMO_VERSION}}</a><a class="button" href="/assets/interception-device-inventory.c" download>Download C hardware-ID example</a></div>
 <p>Interception V2 is TitanCSA’s Windows compatibility driver for applications built with the C SDK from <a href="https://github.com/oblitum/Interception">Francisco Lopes’s original Interception project</a>. V2 packages that SDK and the original examples with its own driver.</p>
 <h2 id="install-the-demo">Check requirements and install the demo</h2>
 <p>The package targets Windows 10 version 1709 or later and Windows 11 x64. It supports compatible keyboard and mouse HID paths. For an existing application built with the original C SDK, start with its current <code>interception.dll</code>. For a new build, use the matching x86 or x64 import library and DLL from the demo archive.</p>
@@ -19,4 +19,5 @@
 copy /y library\x64\interception.dll .</code></pre>
 <p>The <code>/MT</code> option builds the example with a static C runtime so it can start on a clean VM with the matching <code>interception.dll</code>.</p>
 <p>Run the sample as administrator after installing the demo. A supported fixture should produce a line with its device class, number and hardware ID. The sample compiled against both import libraries in the signed-demo ZIP. Compatibility with a specific application still needs a live test with that application's devices and filters.</p>
+<p>In Windows 11 build 26100 with Secure Boot, the signed 2.0.0.0 demo installed and restarted successfully. Both x86 and x64 builds of this sample listed one mouse after setup. After uninstall and restart, the driver service was gone and both samples returned their expected context-open error. <a href="/assets/interception-v2-install-verification-2026-11-25.json">See the exact archive, DLLs and test results</a></p>
 <div class="related"><a href="/projects/interception-v2/">Interception V2 overview</a><a href="/about/evidence/#release-contact">Ask titancsa for the version without the demo limit</a><a href="/guides/windows-input-release-compare/">Compare driver editions</a></div>
