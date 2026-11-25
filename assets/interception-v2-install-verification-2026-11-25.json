@@ -12,8 +12,8 @@
   },
   "demo_archive": {
     "url": "https://github.com/TitanCSA/Interception-V2/releases/download/v2.0.0/Interception-V2.zip",
-    "sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
-    "bundled_installer_sha256": "3a9edeb9deee0ed59fafaa885cf31b8b166ebbb8f22f059b7d5c5665c4738924"
+    "sha256": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9",
+    "bundled_installer_sha256": "102dea2e28907d0a6bb92db7a8aefbfac8277d488201d89f9f3560870f7de3d3"
   },
   "driver": {
     "installation_exit_code": 0,

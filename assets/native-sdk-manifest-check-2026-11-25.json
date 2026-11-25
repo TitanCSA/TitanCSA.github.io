@@ -2,7 +2,7 @@
   "schema_version": 1,
   "checked": "2026-11-25",
   "manifest_url": "https://titancsa.github.io/integration.json",
-  "manifest_sha256": "57b75fe51a472f91ddf60a44dddbe8e47f4965400c476422a4ce610d5ff0465b",
+  "manifest_sha256": "7f7dc2d1c6232cf42541a724a046a8dfa29e2eb11e53ddef1ab24f6363bd57be",
   "environment": "Windows x64, Visual Studio 2022 and CMake, build directory containing spaces",
   "scope": "A separate consumer used the live integration JSON and downloaded the exact SDK archives and sample sources it specifies. It built and ran the read-only first check for each listed app architecture.",
   "configuration_count": 7,
@@ -20,7 +20,7 @@
       "architecture": "x64",
       "exit": 2,
       "output": "Driver status unavailable (Windows 2). Use the installer for your Interceptor edition.",
-      "sdk_archive_sha256": "31789cca1f20b10a1184b0234e8ebe699e31a191c20b80092075efa19d856328",
+      "sdk_archive_sha256": "ef0515b2ca1240dd5d2cdea781eb60dbe177e84cfd868bbfe5933db1f3484834",
       "sample_source_sha256": "18e82f2853d4cb8a6c26bc5a5ce0aa3ab19c6fc285368240ec400e70029ec5ea"
     },
     {
@@ -44,7 +44,7 @@
       "architecture": "x86",
       "exit": 0,
       "output": "Library loaded. Keyboard slots: 10; mouse slots: 10.",
-      "sdk_archive_sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
+      "sdk_archive_sha256": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9",
       "sample_source_sha256": "af05e475696857319c682a3a84b7adea69c3d09e01fac4be6f1fab9b9118be28"
     },
     {
@@ -52,7 +52,7 @@
       "architecture": "x64",
       "exit": 0,
       "output": "Library loaded. Keyboard slots: 10; mouse slots: 10.",
-      "sdk_archive_sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
+      "sdk_archive_sha256": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9",
       "sample_source_sha256": "af05e475696857319c682a3a84b7adea69c3d09e01fac4be6f1fab9b9118be28"
     },
     {
@@ -60,7 +60,7 @@
       "architecture": "x64",
       "exit": 0,
       "output": "Audio inventory read. Titan endpoints: 0.",
-      "sdk_archive_sha256": "3b828ffb415c327d5311c7124b1c14dad8f3166c077b3eadfb006124a8f18e19",
+      "sdk_archive_sha256": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37",
       "sample_source_sha256": "37ada76dd87a96b3c5d8c20685fb2b6a80a36ea590dfe76091a3e4d82c7863f2"
     }
   ]

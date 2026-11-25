@@ -32,6 +32,8 @@ Guides are in `content/`; presentation and local interactions are in `src/`. The
 
 The [public integration manifest](https://titancsa.github.io/integration.json) lists the setup download, SDK archive, app architectures, exact first check and expected output. Its bilingual download table and JSON use the same source data.
 
+When a version has a verified console setup, `demo.console_setup` gives the asset role, any path inside its ZIP, the executable SHA-256, install and uninstall arguments, restart handling and the test record. Run setup with administrator approval in a separate test environment before querying the installed driver.
+
 The [JSON schema](https://titancsa.github.io/integration.schema.json) defines the fields used by tools consuming the manifest. Both files also ship in the portable starter ZIP. Keep existing fields compatible when adding an optional detail.
 
 Update the approved tag, demo version, asset filenames and SHA-256 values in releases.json. The build derives the native SDK folder from the archive's filename. The file sdk-checks.json holds the sample layout and supported app architectures, which only change when the integration changes.

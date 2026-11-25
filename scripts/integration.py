@@ -19,6 +19,21 @@ def sdk_folder(edition, recipe):
     return f"{Path(archive_name).stem}/{subdirectory}"
 
 
+def console_setup(asset_role, archive_member, installer_sha256, evidence_url):
+    return {
+        "asset_role": asset_role,
+        "archive_member": archive_member,
+        "installer_sha256": installer_sha256,
+        "requires_administrator": True,
+        "install_arguments": ["/install"],
+        "uninstall_arguments": ["/uninstall"],
+        "success_exit_codes": [0, 3010],
+        "restart_required_exit_code": 3010,
+        "restart_before_check": True,
+        "evidence_url": evidence_url,
+    }
+
+
 def make_manifest(base, editions):
     recipes = json.loads((ROOT / "sdk-checks.json").read_text(encoding="utf-8"))
     if recipes.keys() != editions.keys():
@@ -27,6 +42,8 @@ def make_manifest(base, editions):
     installed_evidence = json.loads((ROOT / proof_file).read_text(encoding="utf-8"))["editions"]
     inventory_file = "assets/interception-v2-install-verification-2026-11-25.json"
     inventory = json.loads((ROOT / inventory_file).read_text(encoding="utf-8"))
+    audio_file = "assets/titan-audio-link-install-verification-2026-11-25.json"
+    audio = json.loads((ROOT / audio_file).read_text(encoding="utf-8"))
     vdevice_proof_file = "assets/vdevice-signed-versions-2026-11-25.json"
     vdevice_proof = json.loads((ROOT / vdevice_proof_file).read_text(encoding="utf-8"))
 
@@ -102,15 +119,26 @@ def make_manifest(base, editions):
                 and proof["installer_url"] == edition["demo_assets"].get("console_installer")
                 and proof["installer_sha256"] == digests.get("console_installer")):
             row["demo"]["read_only_install_verification"] = {"url": base + proof_file, "edition": slug}
+            row["demo"]["console_setup"] = console_setup(
+                "console_installer", None, proof["installer_sha256"], base + proof_file)
             row["sdk_check"]["tested_account"] = "Administrator on Windows 11 x64"
         if (inventory["edition"] == slug and inventory["demo_version"] == edition["demo"]
                 and inventory["demo_archive"]["sha256"] == digests[setup_role]):
+            row["demo"]["console_setup"] = console_setup(
+                "archive", edition["setup_member"], inventory["demo_archive"]["bundled_installer_sha256"],
+                base + inventory_file)
             row["demo"]["live_inventory_verification"] = {
                 "url": base + inventory_file,
                 "sample_source_url": inventory["sample"]["source_url"],
                 "app_architectures": app_architectures,
                 "opens_input_context": True,
             }
+        audio_archive = audio["demo_archive"]
+        if (audio["edition"] == slug and audio["demo_version"] == edition["demo"]
+                and audio_archive["sha256"] == digests[setup_role]):
+            row["demo"]["console_setup"] = console_setup(
+                "archive", audio_archive["bundled_installer_member"], audio_archive["bundled_installer_sha256"],
+                base + audio_file)
         if slug == vdevice_proof["project"]:
             demo_version = vdevice_proof["versions"]["demo"]["driver_version"]
             if demo_version == edition["demo"]:

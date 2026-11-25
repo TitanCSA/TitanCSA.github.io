@@ -253,6 +253,25 @@ for row in manifest['products']:
         assert re.fullmatch(r'[a-f0-9]{64}', asset['sha256'])
     assert {'url':demo['setup_download_url'],'sha256':demo['setup_download_sha256']} in demo['assets'].values()
     assert {'url':check['archive_url'],'sha256':check['archive_sha256']} in demo['assets'].values()
+    if console := demo.get('console_setup'):
+        role = console['asset_role']
+        assert role in demo['assets']
+        assert console['requires_administrator'] and console['restart_before_check']
+        assert console['install_arguments']==['/install'] and console['uninstall_arguments']==['/uninstall']
+        assert console['success_exit_codes']==[0,3010] and console['restart_required_exit_code']==3010
+        evidence = OUT/console['evidence_url'].removeprefix(BASE)
+        assert console['evidence_url'].startswith(BASE) and evidence.is_file()
+        if role == 'console_installer':
+            assert console['archive_member'] is None
+            assert console['installer_sha256']==demo['assets'][role]['sha256']
+        else:
+            member = console['archive_member']
+            assert member and member.endswith('.exe') and not member.startswith('/')
+            assert all(part not in ('', '.', '..') and not any(char in part for char in '\\:') for part in member.split('/'))
+            archive_proof = json.loads(evidence.read_text(encoding='utf8'))['demo_archive']
+            assert archive_proof['sha256']==demo['assets'][role]['sha256']
+            assert archive_proof['bundled_installer_sha256']==console['installer_sha256']
+            assert member==(archive_proof.get('bundled_installer_member') or demo['setup_member'])
     if evidence := demo.get('read_only_install_verification'):
         evidence_file = OUT/evidence['url'].removeprefix(BASE)
         proof = json.loads(evidence_file.read_text(encoding='utf8'))['editions'][row['id']]

@@ -60,6 +60,22 @@
       "required": ["en", "fr"],
       "additionalProperties": { "type": "string", "minLength": 1 }
     },
+    "consoleSetup": {
+      "type": "object",
+      "required": ["asset_role", "archive_member", "installer_sha256", "requires_administrator", "install_arguments", "uninstall_arguments", "success_exit_codes", "restart_required_exit_code", "restart_before_check", "evidence_url"],
+      "properties": {
+        "asset_role": { "enum": ["console_installer", "archive"] },
+        "archive_member": { "type": ["string", "null"] },
+        "installer_sha256": { "$ref": "#/$defs/sha256" },
+        "requires_administrator": { "const": true },
+        "install_arguments": { "const": ["/install"] },
+        "uninstall_arguments": { "const": ["/uninstall"] },
+        "success_exit_codes": { "const": [0, 3010] },
+        "restart_required_exit_code": { "const": 3010 },
+        "restart_before_check": { "const": true },
+        "evidence_url": { "$ref": "#/$defs/url" }
+      }
+    },
     "driverProduct": {
       "type": "object",
       "required": ["id", "name", "source", "overview_url", "demo", "sdk_check"],
@@ -91,6 +107,7 @@
             "supported_driver_architecture": { "enum": ["x64", "x86", "arm64"] },
             "trial_starts_on": { "type": "string", "minLength": 1 },
             "installer_verification_url": { "$ref": "#/$defs/url" },
+            "console_setup": { "$ref": "#/$defs/consoleSetup" },
             "live_inventory_verification": {
               "type": "object",
               "required": ["url", "sample_source_url", "app_architectures", "opens_input_context"],
