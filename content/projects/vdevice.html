@@ -16,7 +16,7 @@
   <li><a href="https://github.com/TitanCSA/Vdevice/blob/main/licenses/BINARY-LICENSE.txt">Driver licence terms</a></li>
 </ul>
 <h2>Scope and evidence</h2>
-<p>In a Windows 11 build 26100 guest with Secure Boot, the commercial ZIP installed successfully and reported the SDK and installed driver versions when device creation required activation. <a href="/guides/release-activation-help/">See the message and activation steps</a>.</p>
+<p>Vdevice Release ZIP and SDK 1.0.3.3 installed signed driver 1.0.3.0 in a Windows 11 build 26100 guest with Secure Boot and Memory Integrity active. The activation interface answered and the SDK read driver state before activation. A separate no-key device-creation test reported the SDK and installed driver versions. <a href="/guides/release-activation-help/">See the message and activation steps</a>.</p>
 <p>The WDF-001 issue tracks two guest crashes during repeated virtual controller/filter teardown. Review the tested scope before using repeated controller removal in a lab workflow. The examples and compatibility notes describe which device paths were exercised. <a href="https://github.com/TitanCSA/Vdevice/issues/1">Read WDF-001</a>.</p>
 <p>The <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Microsoft-signed 1.0.6.0 demo</a> includes the fix. It passed repeated teardown and ten rounds of the five device examples in an isolated Windows 11 guest with Secure Boot enabled. The signed commercial update is still pending. <a href="https://github.com/TitanCSA/Vdevice/issues/1">Read the test results and status</a>.</p>
 <p><a href="https://titancsa.github.io/TitanCSA-Benchmarks/">Windows input benchmark methods and data</a></p>

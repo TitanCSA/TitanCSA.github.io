@@ -14,6 +14,7 @@
 </tbody></table></div>
 <h2>What the Vdevice Release driver service is</h2>
 <p><code>VdeviceRelease</code> is the Windows kernel driver service for <code>VdeviceRelease.sys</code>. The installer stages and registers the signed driver package. Windows loads the driver and exposes its activation interface. A running service and a responding interface are two separate checks in <code>VdeviceReleaseSetupConsole.exe /diagnose</code>.</p>
+<p>Vdevice Release ZIP and SDK 1.0.3.3 installed signed driver 1.0.3.0 in a Windows 11 build 26100 guest with Secure Boot and Memory Integrity running. Setup reported its activation interface ready, and a read-only SDK query returned driver status before a key was applied.</p>
 <h2>Send a report support can reproduce</h2>
 <p>Include the project and edition, ZIP name, Windows version and build, installed driver version, SDK version and complete error stage, reason and Windows code. For Vdevice, the bundled console installer supports <code>VdeviceReleaseSetupConsole.exe /diagnose</code>. Share the diagnostic report after removing personal details and the activation key.</p>
 <p><a href="/about/evidence/">Find official support</a> · <a href="/guides/windows-input-release-compare/">Compare editions and open the matching checkout</a></p>
