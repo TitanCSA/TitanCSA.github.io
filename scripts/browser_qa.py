@@ -129,6 +129,12 @@ with sync_playwright() as p:
     first_trial.locator('summary').click()
     assert first_trial.locator('p').is_visible()
     assert 'titancsa' in page.locator('main').inner_text()
+    page.goto(base+'fr/installeur-et-sdk/',wait_until='domcontentloaded')
+    page.locator('a[href="/fr/pilotes-entree-windows/#installer-interception-v2"]').click()
+    v2_setup=page.locator('#installer-interception-v2')
+    assert v2_setup.is_visible()
+    assert v2_setup.locator('pre code').inner_text().endswith(' /install')
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'V2 setup causes horizontal page scrolling'
     page.close();browser.close()
 assert not errors,errors
 report={'verified_utc':datetime.now(timezone.utc).isoformat(),'base':base,'pages':checks,'search_filter_reset':'passed desktop/mobile','preview_scope':'passed','dark_mode':'passed','javascript_disabled':f'all {project_count} entries and guides accessible','page_errors':errors,'limits':'Layout/interaction QA in existing headless Chrome; not product, driver, search indexing or real-user performance qualification'}
