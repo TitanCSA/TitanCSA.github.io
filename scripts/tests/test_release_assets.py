@@ -46,7 +46,7 @@ class ReleaseAssetChecks(unittest.TestCase):
             self.assertEqual(checker.check_edition(self.edition, self.role), 1)
         different = self.public_release(self.tag, self.name, "b" * 64)
         with patch.object(checker, "fetch_release", return_value=different):
-            with self.assertRaisesRegex(ValueError, "pinned SDK SHA-256"):
+            with self.assertRaisesRegex(ValueError, "pinned SHA-256 differs for Example-SDK"):
                 checker.check_edition(self.edition, self.role)
 
     def test_candidate_supplies_replacement_without_mutating_the_current_edition(self):
@@ -71,7 +71,7 @@ class ReleaseAssetChecks(unittest.TestCase):
         self.edition["demo_assets"]["installer"] = changed_setup["browser_download_url"]
         self.edition["demo_asset_sha256"]["installer"] = self.hash
         with patch.object(checker, "fetch_release", return_value=release):
-            with self.assertRaisesRegex(ValueError, "pinned asset SHA-256"):
+            with self.assertRaisesRegex(ValueError, "pinned SHA-256 differs for ExampleSetup"):
                 checker.check_edition(self.edition, self.role)
 
     def test_candidate_rejects_an_unknown_or_non_file_asset(self):

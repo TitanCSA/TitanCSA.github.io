@@ -83,10 +83,16 @@ def check_edition(edition, sdk_role, verify_bytes=False):
     assets = official_assets(edition, edition["tag"], edition["demo_files"])
     if edition["demo_assets"] != {role: url for role, (url, _) in assets.items()}:
         raise ValueError(f"{edition['slug']}: generated asset URLs differ from the official URLs")
-    if assets[sdk_role][1] != edition["sdk_sha256"]:
-        raise ValueError(f"{edition['slug']}: pinned SDK SHA-256 differs from the official digest")
-    if edition["demo_asset_sha256"] != {role: digest for role, (_, digest) in assets.items()}:
-        raise ValueError(f"{edition['slug']}: pinned asset SHA-256 differs from the official digest")
+    pinned = edition["demo_asset_sha256"]
+    changed = [filename for role, filename in edition["demo_files"].items()
+               if pinned.get(role) != assets[role][1]]
+    sdk_file = edition["demo_files"][sdk_role]
+    if assets[sdk_role][1] != edition["sdk_sha256"] and sdk_file not in changed:
+        changed.append(sdk_file)
+    if changed:
+        raise ValueError(f"{edition['slug']} {edition['tag']}: pinned SHA-256 differs for {', '.join(changed)}")
+    if pinned.keys() != assets.keys():
+        raise ValueError(f"{edition['slug']} {edition['tag']}: unexpected pinned asset roles")
     if verify_bytes:
         for url, digest in assets.values():
             verify_download(url, digest)

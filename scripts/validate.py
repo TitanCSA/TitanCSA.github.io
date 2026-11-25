@@ -260,8 +260,8 @@ for row in manifest['products']:
         assert proof['sdk_archive_sha256'] == check['archive_sha256']
         assert proof['environment']['secure_boot'] is True and proof['sample_exit_code'] == 0
         assert proof['catalogue_signature'] == 'Valid' and proof['installer_exit_code'] in (0, 3010)
-        assert proof['installer_url'].startswith(edition['demo_url'].replace('/releases/tag/','/releases/download/')+'/')
-        assert proof['installer_url'].endswith('SetupConsole.exe')
+        assert demo['assets']['console_installer'] == {
+            'url': proof['installer_url'], 'sha256': proof['installer_sha256']}
         lifecycle=proof['reboot_and_uninstall']
         assert lifecycle['restart_after_install_verified'] is lifecycle['restart_after_uninstall_verified'] is True
         assert lifecycle['status_exit_before_install']==lifecycle['status_exit_after_uninstall_and_restart']==2

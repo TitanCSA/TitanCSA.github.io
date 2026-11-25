@@ -97,7 +97,10 @@ def make_manifest(base, editions):
             },
         }
         proof = installed_evidence.get(slug)
-        if proof and proof["version"] == edition["demo"] and proof["sdk_archive_sha256"] == edition["sdk_sha256"]:
+        if (proof and proof["version"] == edition["demo"]
+                and proof["sdk_archive_sha256"] == edition["sdk_sha256"]
+                and proof["installer_url"] == edition["demo_assets"].get("console_installer")
+                and proof["installer_sha256"] == digests.get("console_installer")):
             row["demo"]["read_only_install_verification"] = {"url": base + proof_file, "edition": slug}
             row["sdk_check"]["tested_account"] = "Administrator on Windows 11 x64"
         if (inventory["edition"] == slug and inventory["demo_version"] == edition["demo"]

@@ -46,6 +46,8 @@ Add `--apply` to save the verified candidate to `releases.json`. The command lea
 
 Add `--verify-downloads` to fetch the public files and hash their actual bytes. Without a candidate, this checks the entire driver and application catalogue.
 
+If an existing release replaces a file, the check reports the filename and leaves the pin in place. Compare the new download with the previously verified package before applying the candidate. For an installer, verify the signed driver files and repeat the install and removal checks. The integration manifest links to console installer evidence only while its exact SHA-256 and SDK match the catalogue.
+
 ```text
 python scripts/build.py
 python scripts/validate.py

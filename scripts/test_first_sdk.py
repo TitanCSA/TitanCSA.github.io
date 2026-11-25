@@ -23,12 +23,12 @@ def checked_archive(url, expected, destination):
     if parsed.scheme != "https" or parsed.netloc != "github.com" or not parsed.path.startswith(("/TitanCSA/", "/titanfyre/")):
         raise ValueError(f"Expected an official GitHub SDK asset: {url}")
     if not re.fullmatch(r"[a-f0-9]{64}", expected):
-        raise ValueError("Missing SHA-256 for the SDK archive")
+        raise ValueError(f"Missing SHA-256 for SDK archive {url}")
     request = Request(url, headers={"User-Agent": "TitanCSA SDK example check"})
     with urlopen(request, timeout=40) as response:
         data = response.read(32 * 1024 * 1024 + 1)
     if len(data) > 32 * 1024 * 1024 or sha256(data).hexdigest() != expected:
-        raise ValueError("SDK archive size or SHA-256 did not match")
+        raise ValueError(f"SDK archive size or SHA-256 did not match for {url}")
     destination.write_bytes(data)
 
 

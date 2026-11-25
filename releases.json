@@ -19,15 +19,17 @@
         "examples": "Interceptor-Examples-1.4.22.0.zip",
         "sdk": "Interceptor-SDK-1.4.22.0.zip",
         "checksums": "SHA256SUMS.txt",
-        "viewer": "InterceptorExampleUI.exe"
+        "viewer": "InterceptorExampleUI.exe",
+        "console_installer": "InterceptorSetupConsole.exe"
       },
       "sdk_sha256": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f",
       "demo_asset_sha256": {
-        "installer": "fd9c449fa35ba40174176e1ad2f34e682fb8977730f9238c7c976e355f0b083f",
+        "installer": "4c14a3c0eac63c4aab9a76f1760e46b3a152ecbb0966b4556fbe29c445c2173a",
         "examples": "9e1f7382fb8c9f59c0df56a69295986cbb196ed4c0bb6c9487f951c4c954add4",
         "sdk": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f",
-        "checksums": "626d121153a0311ad22a4a12755a9a3655248d70376e9a0608933df6fdbef274",
-        "viewer": "fc87f00a8f90bd3b52994f113253bb6472277bd05bcf3a49b62a09c94b4c077d"
+        "checksums": "2bda43c4fc97a33e1238324f491946cfa9fb5da40d6531de5f96fb2acb9bc82b",
+        "viewer": "fc87f00a8f90bd3b52994f113253bb6472277bd05bcf3a49b62a09c94b4c077d",
+        "console_installer": "48a06a4ae075b486f9348ae652a866560ec2171398806cea9bb99b8315a76a54"
       }
     },
     {
@@ -47,7 +49,8 @@
         "examples": "Interceptor-Keyboard-Mouse-Examples-1.0.5.4.zip",
         "sdk": "Interceptor-Keyboard-Mouse-SDK-1.0.5.4.zip",
         "checksums": "SHA256SUMS.txt",
-        "viewer": "InterceptorExampleUI.exe"
+        "viewer": "InterceptorExampleUI.exe",
+        "console_installer": "InterceptorSetupConsole.exe"
       },
       "sdk_sha256": "ef0515b2ca1240dd5d2cdea781eb60dbe177e84cfd868bbfe5933db1f3484834",
       "demo_asset_sha256": {
@@ -55,7 +58,8 @@
         "examples": "5048d2827a93ea807746be9cd6c7568c306ebaa90c1380bac103e4c8a7a89134",
         "sdk": "ef0515b2ca1240dd5d2cdea781eb60dbe177e84cfd868bbfe5933db1f3484834",
         "checksums": "91d901a9ee57ebb67417aa9e7deb6f8c4ccc1d54ddc144af6b9f2ab1fe81e13e",
-        "viewer": "88464e8b6668f4da96edbd6c99aa79f73c05b8802c4f703e862276941d3312d9"
+        "viewer": "88464e8b6668f4da96edbd6c99aa79f73c05b8802c4f703e862276941d3312d9",
+        "console_installer": "f7650e55e45d1a60f74a464e7be194a2772829711c2433fb992969d693856009"
       }
     },
     {
@@ -75,15 +79,17 @@
         "examples": "Interceptor-Gamepad-Controller-1.0.13.0-Examples.zip",
         "sdk": "Interceptor-Gamepad-Controller-SDK-1.0.13.0.zip",
         "checksums": "SHA256SUMS.txt",
-        "viewer": "InterceptorExampleUI.exe"
+        "viewer": "InterceptorExampleUI.exe",
+        "console_installer": "InterceptorSetupConsole.exe"
       },
       "sdk_sha256": "f50d10483bdb4875c63a822c8d333768d6da4d54316b60a433b0d5670373ea02",
       "demo_asset_sha256": {
-        "installer": "64b451334c3eca1b2a8c2941e72bf84983675098defd0b0269f4d945dbb2c75e",
+        "installer": "229838fd7b613fde86cedb53b05dbb991c84b406ca7a224a583c105b4fcba48d",
         "examples": "8a40d0764eb44ad4c816e2f340a2d07be573f43a5a408c55093c79b8c41d881b",
         "sdk": "f50d10483bdb4875c63a822c8d333768d6da4d54316b60a433b0d5670373ea02",
-        "checksums": "0544db49df71ff8875b82e814ce6befa1b4c779c80be11355117e6dc15a2b71d",
-        "viewer": "5e7b4441f79fd32888e5f0d0efcc5e034243e744eab84cd84f5117ef81daa2c9"
+        "checksums": "171d7c6f15c655cb59aace4ded72c06d4bc08c8853bddf1ac04c679a469f0eb7",
+        "viewer": "5e7b4441f79fd32888e5f0d0efcc5e034243e744eab84cd84f5117ef81daa2c9",
+        "console_installer": "bd07d14597b33fdd1255bd43476d84171b9c86819100d7d925ab6a82785d1e13"
       }
     },
     {
@@ -132,11 +138,11 @@
         "archive": "Interception-V2.zip",
         "checksums": "SHA256SUMS.txt"
       },
-      "sdk_sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
+      "sdk_sha256": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9",
       "setup_member": "Interception/command line installer/install-interception.exe",
       "demo_asset_sha256": {
-        "archive": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
-        "checksums": "724733c7c5bf5e7ccd13cbf5a5916a5d4e462a3e3e1259d0c94c6c2a741ec770"
+        "archive": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9",
+        "checksums": "c9ed25c44fbedbca3323cba3588e0183c87ef1f8a70180b7bc807875e0b011b9"
       }
     },
     {
@@ -154,10 +160,10 @@
       "demo_files": {
         "archive": "Titan-Audio-Link-0.2.0-Demo-Windows-x64.zip"
       },
-      "sdk_sha256": "3b828ffb415c327d5311c7124b1c14dad8f3166c077b3eadfb006124a8f18e19",
+      "sdk_sha256": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37",
       "setup_member": "Installers/TitanAudioLinkSetup.exe",
       "demo_asset_sha256": {
-        "archive": "3b828ffb415c327d5311c7124b1c14dad8f3166c077b3eadfb006124a8f18e19"
+        "archive": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37"
       }
     }
   ]
