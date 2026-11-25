@@ -60,7 +60,7 @@ assert set(editions)==set(featured)|{'titan-audio-link'} and len(editions)==len(
 input_editions={slug:editions[slug] for slug in featured}
 integration=make_manifest(BASE,editions)
 integration['sdk_registry']=registry_catalogue(integration,BASE)
-assert len(projects)==60 and len({p['url'].lower() for p in projects})==60
+assert projects and len({p['url'].lower() for p in projects})==len(projects)
 assert all(p['url'].startswith(('https://github.com/TitanCSA/','https://github.com/titanfyre/')) for p in projects)
 OUT.mkdir(exist_ok=True)
 for folder in ['src','assets']:

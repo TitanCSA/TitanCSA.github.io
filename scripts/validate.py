@@ -36,8 +36,8 @@ data=json.loads((ROOT/'projects.json').read_text(encoding='utf8'));projects=data
 localized=json.loads((OUT/'projects.json').read_text(encoding='utf8'))
 assert [p['url'] for p in localized['projects']] == [p['url'] for p in projects]
 assert all(p['plain_purpose_fr'] and p['plain_first_step_fr'] for p in localized['projects'])
-assert len(projects)==60==len({p['url'].lower() for p in projects})
-assert len({p['category'] for p in projects})==10
+assert projects and len(projects)==len({p['url'].lower() for p in projects})
+categories={p['category'] for p in projects}
 for p in projects:
     assert p['name'] and p['description'] and p['first_step'] and isinstance(p['start_without_adding_driver'],bool)
     assert p['kind'] in ['Application','Driver SDK','SDK sources','Preview','Dataset']
@@ -61,7 +61,11 @@ by_canonical={p.canonical:p for path,p in parsed.items() if path.name!='404.html
 for route in ('','fr/'):
     landing=by_canonical[BASE+route]
     project_list=next(schema for schema in landing.schemas if schema['@type']=='ItemList')
-    assert {item['url'] for item in project_list['itemListElement']} == {p['url'] for p in projects}
+    assert project_list['numberOfItems']==len(projects)
+    assert [item['url'] for item in project_list['itemListElement']]==[p['url'] for p in projects]
+    html=(OUT/route/'index.html').read_text(encoding='utf8')
+    assert html.count('data-project data-category=')==len(projects)
+    assert html.count(' data-project-group ')==len(categories)
     assert {p['url'] for p in projects} <= set(landing.links)
 for page in by_canonical.values():
     if page.alternates:
@@ -94,7 +98,6 @@ for path,page in parsed.items():
         target=target.resolve()
         assert target.exists(),(path.name,link)
         if url.fragment and target in parsed:assert unquote(url.fragment) in parsed[target].ids,(path.name,link)
-assert (OUT/'index.html').read_text(encoding='utf8').count('data-project data-category=')==60
 assert (OUT/'assets/social.png').is_file()
 assert (OUT/'assets/site.css').stat().st_size<50_000
 assert (OUT/'assets/catalogue.js').stat().st_size<15_000
@@ -308,4 +311,4 @@ with ZipFile(download) as package:
         assert package.read(name) == original, name
 for route in manifest['guides'].values():
     assert '/downloads/first-sdk-checks.zip' in by_canonical[route].links
-print('Validated',len(parsed),'HTML files, 60 entries, 10 workflows, metadata, JSON-LD, anchors and asset budgets')
+print('Validated',len(parsed),f'HTML files, {len(projects)} entries, {len(categories)} workflows, metadata, JSON-LD, anchors and asset budgets')

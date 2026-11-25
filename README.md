@@ -8,7 +8,7 @@ Static, public project selection and first-run documentation for Windows applica
 
 **Website:** https://titancsa.github.io/
 
-The catalogue contains 60 curated project/SDK entries in ten workflows. It distinguishes application prerequisites, SDK-only sources and engineering previews. Known limits, including the open Vdevice controller teardown finding, remain visible. Package mirrors and account forks are not counted as separate finished products.
+The catalogue groups project and SDK entries by what users want to do. It distinguishes application prerequisites, SDK-only sources and engineering previews. Known limits, including the open Vdevice controller teardown finding, remain visible. Package mirrors and account forks are not counted as separate finished products.
 
 ## Build
 
@@ -20,7 +20,7 @@ python scripts/validate.py
 python -m http.server 8778 --bind 127.0.0.1 --directory dist
 ```
 
-`projects.json` is curated from the public selection guide. `projects.fr.json` supplies the French purpose and first step for each entry. Both homepages show the same projects. The published catalogue JSON includes both languages, and local search accepts keywords in either language. All links work with JavaScript disabled.
+`projects.json` is curated from the public selection guide. `projects.fr.json` supplies the French purpose and first step for each entry. Both homepages show the same projects, and the build calculates the totals from these records. The published catalogue JSON includes both languages, and local search accepts keywords in either language. All links work with JavaScript disabled.
 
 ## Update a project
 
