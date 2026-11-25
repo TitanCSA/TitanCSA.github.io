@@ -12,7 +12,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Keep using a Windows app that needs the original Interception keyboard and mouse library.",
+      "plain_first_step": "Download the demo ZIP and follow its installation steps. Remove any older Interception driver first."
     },
     {
       "name": "Interceptor",
@@ -24,7 +26,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Read or change input from a real keyboard, mouse or supported gamepad.",
+      "plain_first_step": "Download the demo and open the included input viewer to check that your device appears."
     },
     {
       "name": "Interceptor-Keyboard-Mouse",
@@ -36,7 +40,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Read or change input from a particular keyboard or mouse.",
+      "plain_first_step": "Install the demo and open the input viewer. Press a key or move the mouse to check that Windows sees it."
     },
     {
       "name": "Interceptor-Gamepad-Controller",
@@ -48,7 +54,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Read or change buttons and sticks on a supported gamepad.",
+      "plain_first_step": "Install the demo, connect your gamepad and open the included viewer. Move a stick to check that it appears."
     },
     {
       "name": "Windows-Input-Filter",
@@ -60,7 +68,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Use keyboard, mouse and gamepad input in your Windows app.",
+      "plain_first_step": "Open the install instructions and use this project's matching driver and example."
     },
     {
       "name": "Windows-Gamepad-Filter",
@@ -72,7 +82,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Work with physical gamepad buttons and sticks in your Windows app.",
+      "plain_first_step": "Check whether your gamepad is supported, then run the matching example."
     },
     {
       "name": "Windows-Keyboard-Mouse-Filter",
@@ -84,7 +96,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Use input from a physical keyboard or mouse in your Windows app.",
+      "plain_first_step": "Follow the install steps, then try the included example with your device."
     },
     {
       "name": "Interceptor-MultiLang",
@@ -96,7 +110,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Add Interceptor support to an app written in a language such as Python, Java or C#.",
+      "plain_first_step": "Pick your language, install its package and follow the first example. Install the matching Windows driver separately."
     },
     {
       "name": "node-interceptor",
@@ -108,7 +124,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Read keyboard and mouse input in a Node.js app.",
+      "plain_first_step": "Install the Interceptor Keyboard & Mouse driver, then run the package's first example."
     },
     {
       "name": "FyraInput",
@@ -120,7 +138,9 @@
       "kind": "SDK sources",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Find the code packages for using FyraInput in your own app.",
+      "plain_first_step": "Choose your language and check which runtime it requires."
     },
     {
       "name": "FyraInput-Gamepad",
@@ -132,7 +152,9 @@
       "kind": "SDK sources",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Use the FyraInput gamepad library in your own app.",
+      "plain_first_step": "Choose your language and look for its first gamepad example. Install its runtime separately."
     },
     {
       "name": "FyraInput-Keyboard-Mouse",
@@ -144,7 +166,9 @@
       "kind": "SDK sources",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Use the FyraInput keyboard and mouse library in your own app.",
+      "plain_first_step": "Choose an available package and start with its smallest example."
     },
     {
       "name": "FyraDevice",
@@ -156,7 +180,9 @@
       "kind": "SDK sources",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Use virtual devices from your own app with the FyraDevice library.",
+      "plain_first_step": "Choose your language and check which driver your example needs."
     },
     {
       "name": "Windows-Virtual-Devices",
@@ -168,7 +194,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Make Windows see a virtual USB device from your app.",
+      "plain_first_step": "Use the matching driver and try an included device example first."
     },
     {
       "name": "AutoHotInterceptor",
@@ -180,7 +208,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Run an AutoHotkey shortcut on a chosen keyboard or mouse.",
+      "plain_first_step": "Extract the release, open AutoHotInterceptor and install its driver. Start with the included A-to-B example."
     },
     {
       "name": "Cronus-Interceptor",
@@ -192,7 +222,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Open and inspect a GPC gamepad script on Windows.",
+      "plain_first_step": "Start by opening a sample in the editor and checking its compatibility messages."
     },
     {
       "name": "Curve-Controller",
@@ -204,7 +236,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Change how far a joystick moves in response to your hand.",
+      "plain_first_step": "Connect a supported controller and try changing its response curve."
     },
     {
       "name": "GamePad-Remapper",
@@ -216,7 +250,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Change what your gamepad buttons and sticks do.",
+      "plain_first_step": "Install the driver included with the ZIP, then open GamePad Remapper and choose a sample script."
     },
     {
       "name": "Keyboard-Mouse-Remapper",
@@ -228,7 +264,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Change what your keyboard keys or mouse buttons do.",
+      "plain_first_step": "Install the driver included with the ZIP, open the app and try one example from Scripts."
     },
     {
       "name": "MouseControl",
@@ -240,7 +278,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Move the mouse while holding a key or button that you choose.",
+      "plain_first_step": "Open the preview to see the editor before connecting it to the driver."
     },
     {
       "name": "Titan-Input-Tools",
@@ -252,7 +292,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Find the Titan tool that fits what you want to do with input on Windows.",
+      "plain_first_step": "Choose a tool and follow its own first steps."
     },
     {
       "name": "Assistive-Pointer",
@@ -264,7 +306,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Adjust how the mouse pointer moves for one mouse.",
+      "plain_first_step": "Open the app and try the controls in preview. Live changes need the matching keyboard and mouse driver."
     },
     {
       "name": "Controller-Repair-Bench",
@@ -276,7 +320,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Check whether a gamepad button or stick behaves as expected.",
+      "plain_first_step": "Connect your controller, watch its values as you move it and save a report if needed."
     },
     {
       "name": "HID-Access-Control",
@@ -288,7 +334,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Check which apps are allowed to open a selected controller.",
+      "plain_first_step": "Read the setup steps, then test with an app you control."
     },
     {
       "name": "HID-Fixture-Studio",
@@ -300,7 +348,9 @@
       "kind": "Application",
       "start_without_adding_driver": true,
       "start_mode": "Offline validation first",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Build a virtual USB test device and send it sample data.",
+      "plain_first_step": "Open the app and validate a sample offline. Install Vdevice when you are ready for a live test."
     },
     {
       "name": "Input-CI-Runner",
@@ -312,7 +362,9 @@
       "kind": "Application",
       "start_without_adding_driver": true,
       "start_mode": "Offline validation first",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Check input test files before using them in an automated test.",
+      "plain_first_step": "Run the included sample in offline mode first."
     },
     {
       "name": "Input-Replay-Lab",
@@ -324,7 +376,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Record and replay your own keyboard or mouse actions for a test.",
+      "plain_first_step": "Open the app, select a device and try a short recording."
     },
     {
       "name": "TitanCSA-Benchmarks",
@@ -336,7 +390,9 @@
       "kind": "Dataset",
       "start_without_adding_driver": true,
       "start_mode": "Read online",
-      "known_issue_url": "https://titancsa.github.io/TitanCSA-Benchmarks/methodology/incident-wdf-001/"
+      "known_issue_url": "https://titancsa.github.io/TitanCSA-Benchmarks/methodology/incident-wdf-001/",
+      "plain_purpose": "See how Windows input tests were measured and download the results.",
+      "plain_first_step": "Open the results page and pick the device or test you care about."
     },
     {
       "name": "Vdevice",
@@ -348,7 +404,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": "https://titancsa.github.io/TitanCSA-Benchmarks/methodology/incident-wdf-001/"
+      "known_issue_url": "https://titancsa.github.io/TitanCSA-Benchmarks/methodology/incident-wdf-001/",
+      "plain_purpose": "Make Windows see a virtual keyboard, mouse or gamepad.",
+      "plain_first_step": "Install the demo, then open one of the included device demos and choose Create device."
     },
     {
       "name": "Virtual-mouse-input",
@@ -360,7 +418,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Try sending movement from a virtual mouse in Windows.",
+      "plain_first_step": "Read the setup steps and check which driver the example needs."
     },
     {
       "name": "Serial-Device-Simulator",
@@ -372,7 +432,9 @@
       "kind": "Preview",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Explore serial-device simulations without a real device.",
+      "plain_first_step": "Start with the offline examples. A working Windows COM port is still under test."
     },
     {
       "name": "Virtual-COM-Workbench",
@@ -384,7 +446,9 @@
       "kind": "Preview",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Explore how a virtual serial cable would work on Windows.",
+      "plain_first_step": "Start with the offline preview. Real serial transfers still need validation."
     },
     {
       "name": "USB-over-IP-SDK",
@@ -396,7 +460,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Use a supported USB device from another computer over a network.",
+      "plain_first_step": "Check whether your device uses WinUSB before trying the example."
     },
     {
       "name": "Titan-Audio-Link",
@@ -408,7 +474,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Send sound from one Windows app to another through a virtual audio cable.",
+      "plain_first_step": "Install the demo and run Test virtual cable to check that sound reaches the other end."
     },
     {
       "name": "Virtual-Camera-SDK",
@@ -420,7 +488,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Send images from your app to a virtual Windows camera.",
+      "plain_first_step": "Use the included example to try sending a test image."
     },
     {
       "name": "Virtual-Display-Studio",
@@ -432,7 +502,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Add or remove a virtual monitor on a supported Windows computer.",
+      "plain_first_step": "Check the documented Windows version and start with the included monitor example."
     },
     {
       "name": "Remote-Workstation-SDK",
@@ -444,7 +516,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Build a viewer that shows the screen of an authorized Windows computer on your local network.",
+      "plain_first_step": "Follow the setup guide for the host and viewer on two computers you control."
     },
     {
       "name": "Connection-Trace-Studio",
@@ -456,7 +530,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "See which programs make network connections.",
+      "plain_first_step": "Open a test capture and look for the program you want to check."
     },
     {
       "name": "Network-Emulation-SDK",
@@ -468,7 +544,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Test how your app handles delays or lost messages on a UDP network.",
+      "plain_first_step": "Start with a UDP test app you control and follow the lab example."
     },
     {
       "name": "Packet-Capture-SDK",
@@ -480,7 +558,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "See what network traffic passes through an adapter you control.",
+      "plain_first_step": "Pick a test adapter and try the included capture example."
     },
     {
       "name": "Titan-Network-Filter",
@@ -492,7 +572,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Check how network rules affect connections from a Windows app.",
+      "plain_first_step": "Read the setup guide and try one rule against a test app."
     },
     {
       "name": "Virtual-Network-Adapter-SDK",
@@ -504,7 +586,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Give your Windows app a virtual network adapter.",
+      "plain_first_step": "Follow the setup guide and try the included example before writing your own."
     },
     {
       "name": "Remote-Device-Control",
@@ -516,7 +600,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "See and control another Windows computer you are allowed to use.",
+      "plain_first_step": "Follow the setup guide on both PCs and connect the viewer to the host on your network."
     },
     {
       "name": "Advanced-Network-Filtering-SDK",
@@ -528,7 +614,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Apply Windows network rules to a particular app or address.",
+      "plain_first_step": "Try the example with an app and network you control."
     },
     {
       "name": "Changed-Block-Tracking-SDK",
@@ -540,7 +628,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Find which parts of a disk have changed since a saved point.",
+      "plain_first_step": "Start with the lab example on a disposable test disk."
     },
     {
       "name": "Cloud-Files-SDK",
@@ -552,7 +642,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Let Windows fetch a file when someone opens it.",
+      "plain_first_step": "Follow the first example with a test folder and the required runtime."
     },
     {
       "name": "File-Trace-Studio",
@@ -564,7 +656,9 @@
       "kind": "Preview",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Explore which Windows programs read or write files.",
+      "plain_first_step": "Start with the preview. The live driver still needs signing and tests."
     },
     {
       "name": "Storage-IO-Flight-Recorder",
@@ -576,7 +670,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "See when reads and writes finish on a test disk.",
+      "plain_first_step": "Use a disposable lab disk and run the example to collect a report."
     },
     {
       "name": "Titan-File-Filter",
@@ -588,7 +684,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Explore ways to watch or restrict file access in selected folders.",
+      "plain_first_step": "Start with the source preview. The live driver is still in development."
     },
     {
       "name": "User-Backed-Virtual-Disk-SDK",
@@ -600,7 +698,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Make Windows see a virtual disk whose data comes from your app.",
+      "plain_first_step": "Start with the example and read how it supplies the disk data."
     },
     {
       "name": "Virtual-Storage-Fault-Lab",
@@ -612,7 +712,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "See how an app reacts when reads or writes fail.",
+      "plain_first_step": "Follow the lab example on the included disposable memory disk."
     },
     {
       "name": "Driver-Readiness-Inspector",
@@ -624,7 +726,9 @@
       "kind": "Application",
       "start_without_adding_driver": true,
       "start_mode": "No additional driver",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "See which devices and drivers Windows reports, then save a support report.",
+      "plain_first_step": "Download the ZIP, open the app and select a device. No extra driver is needed."
     },
     {
       "name": "Latency-inspector",
@@ -636,7 +740,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "See Windows timing and load measurements.",
+      "plain_first_step": "Open the guide and start with one measurement. Check what that number measures."
     },
     {
       "name": "Process-Trace-Studio",
@@ -648,7 +754,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "See when Windows programs start and stop.",
+      "plain_first_step": "Start with the bundled example and check which events it displays."
     },
     {
       "name": "ProcessGuard-SDK",
@@ -660,7 +768,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Let your app watch or control the programs it starts.",
+      "plain_first_step": "Read the integration guide and try the example with a program you own."
     },
     {
       "name": "RegistryGuard",
@@ -672,7 +782,9 @@
       "kind": "Preview",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Explore rules that control writes to a part of the Windows registry.",
+      "plain_first_step": "Start with the source preview. The live driver is still in development."
     },
     {
       "name": "USB-Trace-SDK",
@@ -684,7 +796,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "See requests sent to a USB device you control.",
+      "plain_first_step": "Select one test device and follow the capture guide."
     },
     {
       "name": "Browser-Control-SDK",
@@ -696,7 +810,9 @@
       "kind": "Driver SDK",
       "start_without_adding_driver": true,
       "start_mode": "No additional driver",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Open a Windows browser that you can use yourself or control from a script.",
+      "plain_first_step": "Extract the release ZIP and launch BrowserControl.exe. Open a page as you would in any browser."
     },
     {
       "name": "Titan-Local-AI",
@@ -708,7 +824,9 @@
       "kind": "Application",
       "start_without_adding_driver": true,
       "start_mode": "No additional driver",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Chat with a local language model on your Windows PC.",
+      "plain_first_step": "Open the app and load a supported GGUF model file."
     },
     {
       "name": "Scanner-Route",
@@ -720,7 +838,9 @@
       "kind": "Application",
       "start_without_adding_driver": false,
       "start_mode": "Review prerequisites",
-      "known_issue_url": null
+      "known_issue_url": null,
+      "plain_purpose": "Check and save barcode scans to a CSV file.",
+      "plain_first_step": "Try the preview, then connect a supported USB scanner for a live test."
     }
   ]
 }

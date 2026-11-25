@@ -134,6 +134,7 @@ for path in project_pages:
         assert re.fullmatch(r'[A-Za-z0-9._-]+',filename)
         assert edition['demo_assets'][role] == f'{edition["repository"]}/releases/download/{edition["tag"]}/{filename}'
     assert edition['overview_url'] in reference and edition['demo_url'] in reference
+    assert '<h2>Try it</h2>' in path.read_text(encoding='utf8')
     app,=[item for item in page.schemas if item.get('@type')=='SoftwareApplication']
     assert app['softwareVersion']==edition['commercial']['package_version']
     assert all(re.fullmatch(r'\d+\.\d+\.\d+\.\d+', value) for value in edition['commercial'].values())

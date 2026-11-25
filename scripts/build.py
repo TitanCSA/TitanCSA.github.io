@@ -56,7 +56,7 @@ cards=[]
 for (key,title),entries in groups.items():
     items=[]
     for p in entries:
-        search=escape(' '.join(str(p[k]) for k in ['name','description','first_step','kind','category_title']),quote=True)
+        search=escape(' '.join(str(p[k]) for k in ['name','description','first_step','plain_purpose','plain_first_step','kind','category_title']),quote=True)
         tag='tag preview' if p['kind']=='Preview' else 'tag'
         kind=escape(p['kind']);note=f'<span class="start-tag">{escape(p["start_mode"])}</span>' if p['start_without_adding_driver'] else ''
         issue=f'<a class="known-issue" href="{escape(p["known_issue_url"])}">WDF-001 status by edition ↗</a>' if p['known_issue_url'] else ''
@@ -92,13 +92,12 @@ for slug, edition in editions.items():
     replacements[f'{key}_DEMO_VERSION']=escape(edition['demo'])
     replacements[f'{key}_COMMERCIAL_VERSION']=escape(edition['commercial']['package_version'])
 replacements['RELEASE_CONTACT_URL']=contact_path
+plain_by_slug={p['url'].split('#')[0].rsplit('/',1)[-1].lower():p['plain_purpose'] for p in projects}
 replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
     f'<tr role="row"><th scope="row" role="rowheader"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
-    f'<td role="cell">{escape(e["use"])} <strong>{escape(e["api"])}</strong> {escape(e["note"])}</td>'
+    f'<td role="cell">{escape(plain_by_slug[e["slug"]])}</td>'
     f'<td role="cell"><a href="{e["demo_download_url"]}">Download {escape(e["name"])} demo {e["demo"]}</a><br>'
-    f'<a href="{e["demo_url"]}">Release notes</a> · Starts on {escape(e["trial_starts"])}.</td>'
-    f'<td role="cell"><a href="{contact_path}">Ask titancsa on Discord</a><br><strong>No one-hour demo limit</strong>'
-    f'<br>ZIP {escape(e["commercial"]["package_version"])} · driver {escape(e["commercial"]["driver_version"])}</td></tr>'
+    f'<a href="{e["demo_url"]}">Release notes</a></td></tr>'
     for e in editions.values()
 )
 pages={
@@ -142,7 +141,7 @@ reviewed={
     **dict.fromkeys({'guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/release-activation-help/','fr/activation-release/','about/evidence/','fr/installer-sdk-windows/'},'2026-11-25'),
     **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},commercial_checked),
 }
-release_terms='<p><strong>Want the version without the one-hour demo limit?</strong> Add <strong>titancsa</strong> on Discord and send a message with this project’s name. TitanCSA shares the licence and private purchase details directly.</p><p class="subtle">Online activation is required after installation and again after a driver reload or Windows restart.</p>'
+release_terms='<p><strong><a href="/about/evidence/#release-contact">Version without the one-hour demo limit</a></strong> · Add <strong>titancsa</strong> on Discord and message the project name.</p>'
 publisher={
     '@type':'Organization', '@id':BASE+'#publisher', 'name':'TitanCSA', 'url':BASE,
     'sameAs':['https://github.com/TitanCSA'],
@@ -211,7 +210,7 @@ for path,(title,description,source) in pages.items():
         )
         label='Download demo installer' if 'installer' in demo_assets else 'Download demo ZIP'
         body=body.replace('{{DEMO_DOWNLOAD_URL}}',edition['demo_download_url']).replace('{{DEMO_DOWNLOAD_LABEL}}',label)
-        body=body.replace('{{RELEASE_TERMS}}',release_terms+links)
+        body=body.replace('{{RELEASE_TERMS}}',release_terms).replace('{{RELEASE_DETAILS}}',links)
     assert '{{' not in body
     target=OUT/path/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(title,description,path,body,bool(path)),encoding='utf8')
 (OUT/'404.html').write_text(render('Page not found — TitanCSA','Find the TitanCSA project catalogue and first-run guides.','404.html','<h1>Page not found.</h1><p>The address may have changed. <a href="/">Open the project catalogue</a> or <a href="/guides/first-run/">read the first-run guide</a>.</p>',True).replace('index,follow,max-image-preview:large','noindex,follow'),encoding='utf8')

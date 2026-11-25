@@ -1,12 +1,21 @@
 <p class="eyebrow">Windows input SDKs</p>
 <h1>Interceptor Keyboard &amp; Mouse</h1>
-<p class="article-lead">Per-device keyboard and mouse remapping on Windows. Distinguish physical keyboards and mice and remap input from selected devices with a Windows filter and C++17 SDK.</p>
-<div class="actions"><a class="button primary" href="{{DEMO_DOWNLOAD_URL}}">{{DEMO_DOWNLOAD_LABEL}}</a><a class="button" href="{{RELEASE_CONTACT_URL}}">Contact titancsa on Discord</a><a class="button" href="https://github.com/TitanCSA/Interceptor-Keyboard-Mouse">GitHub</a></div>
+<p class="article-lead">Read or change input from a particular keyboard or mouse.</p>
+<div class="actions"><a class="button primary" href="{{DEMO_DOWNLOAD_URL}}">{{DEMO_DOWNLOAD_LABEL}}</a></div>
+<p>For 64-bit Windows. Use Windows 10 version 1709 or later, or Windows 11. If another Interceptor edition is installed, follow the <a href="https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/blob/main/docs/INSTALLATION.md">removal steps</a> first.</p>
+<h2>Try it</h2>
+<ol>
+<li>Run the demo installer and choose <strong>Install / reinstall</strong>. Restart Windows if asked.</li>
+<li>Open the <a href="https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/releases/download/v1.0.5.0-demo/InterceptorExampleUI.exe">input viewer</a>.</li>
+<li>Press a key or move the mouse. Check that the device appears. Click <strong>Stop</strong> when you finish.</li>
+</ol>
 {{RELEASE_TERMS}}
+<details class="more-info">
+<summary>Technical details and support</summary>
+{{RELEASE_DETAILS}}
 <h2>When to use it</h2>
 <p>Use a second keyboard for accessibility shortcuts or a macro pad while keeping your main keyboard’s normal behavior. Device attribution lets the same key have a different role on each keyboard.</p>
 <h2>First validation</h2>
-<p><a href="/guides/autohotkey-remap-second-keyboard/">Remap a second keyboard with AutoHotkey v2</a> using the packaged launcher and a downloadable script.</p>
 <p>Use the signed demo on Windows 10 1709+ or Windows 11 x64. In the input viewer, press a key on each keyboard and confirm the source before changing any mapping. Test an ordinary key with a single capture application and use Stop to release capture. The demo allows one hour per Windows kernel boot.</p>
 <ul>
   <li><a href="https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/blob/main/docs/INSTALLATION.md">Installation and removal</a></li>
@@ -17,3 +26,4 @@
 <p>Match your binding to the keyboard and mouse edition. The published compatibility page describes supported input paths. For AutoHotkey scripts, the related AutoHotInterceptor project offers a per-device integration. <a href="https://github.com/TitanCSA/AutoHotInterceptor">AutoHotInterceptor on GitHub</a>.</p>
 <p><a href="https://titancsa.github.io/TitanCSA-Benchmarks/">Windows input benchmark methods and data</a></p>
 <div class="related"><a href="/guides/choose-input/">Compare Windows input SDKs</a><a href="/about/evidence/">Evidence and project support</a></div>
+</details>

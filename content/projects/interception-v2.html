@@ -1,8 +1,18 @@
 <p class="eyebrow">Windows input SDKs</p>
 <h1>Interception V2</h1>
-<p class="article-lead">Windows keyboard and mouse driver for the original Interception C API. Evaluate legacy applications using the original Interception C SDK against TitanCSA’s independently maintained keyboard and mouse driver.</p>
-<div class="actions"><a class="button primary" href="{{DEMO_DOWNLOAD_URL}}">{{DEMO_DOWNLOAD_LABEL}}</a><a class="button" href="{{RELEASE_CONTACT_URL}}">Contact titancsa on Discord</a><a class="button" href="https://github.com/TitanCSA/Interception-V2">GitHub</a></div>
+<p class="article-lead">Keep using a Windows app that needs the original Interception keyboard and mouse library.</p>
+<div class="actions"><a class="button primary" href="{{DEMO_DOWNLOAD_URL}}">{{DEMO_DOWNLOAD_LABEL}}</a></div>
+<p>For 64-bit Windows. Use Windows 10 version 1709 or later, or Windows 11.</p>
+<h2>Try it</h2>
+<ol>
+<li>Download and extract the demo ZIP.</li>
+<li>Follow the <a href="https://github.com/TitanCSA/Interception-V2#install">installation steps</a>. Remove an older Interception driver first.</li>
+<li>Open the program you want to use and check that its keyboard or mouse works.</li>
+</ol>
 {{RELEASE_TERMS}}
+<details class="more-info">
+<summary>Technical details and support</summary>
+{{RELEASE_DETAILS}}
 <h2>When to use it</h2>
 <p>Use this edition when an existing application expects the original <code>interception_*</code> API. The release bundles the original SDK and seven sample projects, with x86 and x64 application support on x64 Windows.</p>
 <h2>First validation</h2>
@@ -17,3 +27,4 @@
 <p>Compatibility covers supported HID keyboard and mouse paths, including compatible USB and Bluetooth HID devices. The upstream SDK retains its original terms. The V2 driver has its own demo terms and TitanCSA maintains it independently from the original oblitum/Interception project. <a href="https://github.com/oblitum/Interception">Original Interception project</a>.</p>
 <p><a href="https://titancsa.github.io/TitanCSA-Benchmarks/">Windows input benchmark methods and data</a></p>
 <div class="related"><a href="/guides/choose-input/">Compare Windows input SDKs</a><a href="/about/evidence/">Evidence and project support</a></div>
+</details>

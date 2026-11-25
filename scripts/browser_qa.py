@@ -47,18 +47,19 @@ with sync_playwright() as p:
     page.locator('a[href="/guides/first-run/"]').first.click()
     assert page.url.endswith('/guides/first-run/') and page.locator('h1').inner_text().startswith('A useful first run')
     page.goto(base+'guides/windows-input-release-compare/',wait_until='domcontentloaded')
-    contacts=page.locator('tbody a[href="/about/evidence/#release-contact"]')
-    assert contacts.count()==5 and contacts.first.is_visible()
+    contacts=page.locator('main a[href="/about/evidence/#release-contact"]')
+    assert contacts.first.is_visible()
     assert page.locator('tbody a[href*="/releases/download/"]').count()==5
-    assert page.locator('tbody').inner_text().count('Ask titancsa on Discord')==5
+    assert 'What it does' in page.locator('thead').inner_text()
     assert page.get_by_role('table',name='Windows input driver editions').get_by_role('rowheader').count()==5
-    for link in contacts.all():
+    for link in page.locator('tbody a[href*="/releases/download/"]').all():
         box=link.bounding_box()
         assert box and box['x']>=0 and box['x']+box['width']<=390, 'Contact link is clipped on mobile'
-    assert page.locator('a[href="/guides/release-activation-help/"]').is_visible()
+    assert page.locator('main details summary').is_visible()
     page.locator('main a[lang="fr"]').click()
     assert page.url.endswith('/fr/pilotes-entree-windows/') and page.locator('html').get_attribute('lang')=='fr'
-    assert page.locator('main .guide-card a[href="#contact-release"]').count()==5
+    assert page.locator('main .guide-card a[href*="/releases/download/"]').count()==5
+    assert page.locator('main a[href="#contact-release"]').is_visible()
     assert 'titancsa' in page.locator('main').inner_text()
     page.close();browser.close()
 assert not errors,errors

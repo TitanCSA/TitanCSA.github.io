@@ -1,8 +1,18 @@
 <p class="eyebrow">Windows input SDKs</p>
 <h1>Interceptor</h1>
-<p class="article-lead">Windows keyboard, mouse and gamepad filter. Use a single C++17 SDK to observe and transform supported physical keyboard, mouse and controller input on Windows.</p>
-<div class="actions"><a class="button primary" href="{{DEMO_DOWNLOAD_URL}}">{{DEMO_DOWNLOAD_LABEL}}</a><a class="button" href="{{RELEASE_CONTACT_URL}}">Contact titancsa on Discord</a><a class="button" href="https://github.com/TitanCSA/Interceptor">GitHub</a></div>
+<p class="article-lead">Read or change input from a real keyboard, mouse or supported gamepad.</p>
+<div class="actions"><a class="button primary" href="{{DEMO_DOWNLOAD_URL}}">{{DEMO_DOWNLOAD_LABEL}}</a></div>
+<p>For 64-bit Windows. Use Windows 10 version 1709 or later, or Windows 11. If another Interceptor edition is installed, follow the <a href="https://github.com/TitanCSA/Interceptor/blob/main/docs/INSTALLATION.md">removal steps</a> first.</p>
+<h2>Try it</h2>
+<ol>
+<li>Run the demo installer and choose <strong>Install / reinstall</strong>. Restart Windows if asked.</li>
+<li>Open the <a href="https://github.com/TitanCSA/Interceptor/releases/download/v1.4.22.0-demo/InterceptorExampleUI.exe">input viewer</a>.</li>
+<li>Press a key or move a stick. The viewer should show input from your device. Click <strong>Stop</strong> when you finish.</li>
+</ol>
 {{RELEASE_TERMS}}
+<details class="more-info">
+<summary>Technical details and support</summary>
+{{RELEASE_DETAILS}}
 <h2>When to use it</h2>
 <p>A desktop remapper can use a spare keyboard for shortcuts and a supported USB controller for gamepad adjustments while keeping device attribution in one integration.</p>
 <h2>First validation</h2>
@@ -16,3 +26,4 @@
 <p>Controller coverage depends on the device profile and transport. Consult the HID, XInput/XUSB, XInputHID and GIP compatibility notes for your device. The user-mode MIT licence and driver distribution terms are separate.</p>
 <p><a href="https://titancsa.github.io/TitanCSA-Benchmarks/">Windows input benchmark methods and data</a></p>
 <div class="related"><a href="/guides/choose-input/">Compare Windows input SDKs</a><a href="/about/evidence/">Evidence and project support</a></div>
+</details>

@@ -1,22 +1,12 @@
 <div class="wrap">
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero simple-hero" aria-labelledby="hero-title">
   <div>
-    <p class="eyebrow">Windows tools / Developer SDKs</p>
-    <h1 id="hero-title">Find the right tool for your Windows workflow.</h1>
-    <p class="lead">Driver SDKs, virtual devices, input tools and diagnostics. Start with the job you need to do, then follow the matching guide.</p>
-    <div class="actions"><a class="button primary" href="/guides/windows-input-release-compare/">Compare the signed demos</a><a class="button" href="#projects">Explore all projects</a></div>
-    <p><a href="/about/evidence/#release-contact"><strong>Version without the one-hour limit</strong> · Discord titancsa</a></p>
-    <p class="subtle"><a href="/fr/pilotes-entree-windows/" lang="fr">Pilotes d’entrée Windows · Choisir et essayer en français</a></p>
-  </div>
-  <div class="workflow-panel">
-    <div class="panel-title"><span class="live-dot" aria-hidden="true"></span>Choose the boundary</div>
-    <a class="workflow-item" href="/guides/choose-input/"><span class="workflow-num">01</span><div><strong>Work with an existing device</strong><small>Read, transform or forward input through a matching filter.</small></div><span class="arrow" aria-hidden="true">↗</span></a>
-    <a class="workflow-item" href="#virtual-usb"><span class="workflow-num">02</span><div><strong>Create a virtual device</strong><small>Define the device contract, descriptors and reports.</small></div><span class="arrow" aria-hidden="true">↗</span></a>
-    <a class="workflow-item" href="#diagnostics"><span class="workflow-num">03</span><div><strong>Inspect before changing</strong><small>Collect device, driver or application evidence.</small></div><span class="arrow" aria-hidden="true">↗</span></a>
-    <p class="panel-foot">Applications, SDKs and drivers have separate prerequisites.</p>
+    <h1 id="hero-title">Find the right Windows tool.</h1>
+    <p class="lead">Choose a project below to see what it does and what to try first.</p>
+    <div class="actions"><a class="button primary" href="#projects">Find a project</a><a class="button" href="/fr/pilotes-entree-windows/" lang="fr">Choisir un pilote en français</a></div>
+    <p><a href="/about/evidence/#release-contact">Version without the one-hour demo limit · Discord titancsa</a>.</p>
   </div>
 </section>
-<div class="evidence-strip"><p><strong>Choose with evidence.</strong> Versioned source, documented first runs and an open input benchmark dataset.</p><a href="/about/evidence/">Read the scope and known issues ↗</a></div>
 <section id="projects" class="section" aria-labelledby="projects-title">
   <div class="section-intro"><div><p class="eyebrow">Project catalogue</p><h2 id="projects-title">Start from your use case.</h2><p>Explore {{PROJECT_COUNT}} projects and SDK source repositories across ten workflows. Preview limitations and separate driver requirements remain visible.</p></div></div>
   <form class="catalogue-tools" role="search" onsubmit="return false">
@@ -32,19 +22,15 @@
   <p class="subtle">Catalogue checked {{CHECKED_DATE}}. A public repository or source preview is not a promise of production qualification. <a href="https://github.com/TitanCSA/TitanCSA/blob/main/PROJECTS.en.md">Detailed source guide</a>.</p>
 </section>
 </div>
-<section class="guide-area"><div class="wrap section">
-  <p class="eyebrow">Practical guides</p><h2>Understand the first decision.</h2>
-  <p><a href="/rss.xml">Subscribe to the guide feed (RSS)</a></p>
-  <div class="guide-grid">
-    <article class="guide-card"><h3>Create a virtual USB mouse.</h3><p>Run the signed Vdevice demo and check the result in Windows.</p><a href="/guides/vdevice-virtual-usb-mouse/">Try the virtual mouse ↗</a></article>
-    <article class="guide-card"><h3>Test a custom virtual HID.</h3><p>Read and return exact report bytes with the independent hidapitester tool.</p><a href="/guides/vdevice-custom-hid-test/">Run the Vdevice HID test ↗</a></article>
-    <article class="guide-card"><h3>Remap a second keyboard.</h3><p>Try A to B on one keyboard and compare the original input on another.</p><a href="/guides/autohotkey-remap-second-keyboard/">Try per-device AutoHotkey ↗</a></article>
-    <article class="guide-card"><p class="eyebrow">Getting started</p><h3>A first run without an input driver.</h3><p>Start with browser automation, read-only diagnostics or offline fixture validation. Know what a successful first step actually proves.</p><a href="/guides/first-run/">Follow the guide ↗</a></article>
-    <article class="guide-card"><p class="eyebrow">Device architecture</p><h3>Interception or a virtual device?</h3><p>Choose between modifying an existing device's input, creating a new device and inspecting the Windows stack.</p><a href="/guides/choose-input/">Compare the paths ↗</a></article>
-    <article class="guide-card"><p class="eyebrow">Measurement</p><h3>Read a latency number in context.</h3><p>Separate API calls, independently observed reports and physical latency. Keep protocol boundaries and failed runs in view.</p><a href="/guides/read-benchmarks/">Read the evidence ↗</a></article>
-  </div>
-</div></section>
-<section class="wrap section trust-row">
-  <div><p class="eyebrow">Evidence over promises</p><h2>Inspect the results behind the claim.</h2><p>The publisher-operated benchmark lab retains raw QPC timestamps, versions, independent receiver checks and invalid trials. Its initial campaign measures selected virtual-device paths in Windows 11 Hyper-V.</p><a class="button" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Open the benchmark lab ↗</a></div>
-  <div><div class="notice"><p><strong>Vdevice controller teardown update</strong></p><p>The <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">signed 1.0.6.0 demo</a> includes the WDF-001 fix and passed repeated teardown in a Windows 11 guest. The commercial update is pending. The original crash evidence is preserved. <a href="https://titancsa.github.io/TitanCSA-Benchmarks/methodology/incident-wdf-001/">Read WDF-001 and its scope</a>.</p></div><p class="subtle" style="margin-top:18px">Signing, demonstrated functionality and production qualification are different evidence levels. Choose the exact edition, release and device profile described by the project.</p></div>
+<section class="wrap section">
+  <details class="more-info">
+    <summary>Guides and test results</summary>
+    <ul>
+      <li><a href="/guides/windows-input-release-compare/">Compare the Windows input drivers</a></li>
+      <li><a href="/guides/first-run/">Try a tool without installing a driver</a></li>
+      <li><a href="https://titancsa.github.io/TitanCSA-Benchmarks/">Read the benchmark results</a></li>
+      <li><a href="/about/evidence/">Documentation and support</a></li>
+      <li><a href="/rss.xml">Guide feed</a></li>
+    </ul>
+  </details>
 </section>

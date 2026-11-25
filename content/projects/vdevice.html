@@ -1,8 +1,18 @@
 <p class="eyebrow">Windows input SDKs</p>
 <h1>Vdevice</h1>
-<p class="article-lead">Virtual USB keyboard, mouse and gamepad SDK for Windows. Create virtual USB devices on Windows with a C++17 SDK for descriptors, endpoints, reports and control data.</p>
-<div class="actions"><a class="button primary" href="{{DEMO_DOWNLOAD_URL}}">{{DEMO_DOWNLOAD_LABEL}}</a><a class="button" href="{{RELEASE_CONTACT_URL}}">Contact titancsa on Discord</a><a class="button" href="https://github.com/TitanCSA/Vdevice">GitHub</a></div>
+<p class="article-lead">Make Windows see a virtual keyboard, mouse or gamepad.</p>
+<div class="actions"><a class="button primary" href="{{DEMO_DOWNLOAD_URL}}">{{DEMO_DOWNLOAD_LABEL}}</a></div>
+<p>For 64-bit Windows. Use Windows 10 or 11.</p>
+<h2>Try it</h2>
+<ol>
+<li>Run the demo installer and choose <strong>Install</strong>. Restart Windows if asked.</li>
+<li>Extract the <a href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/Vdevice-Examples-1.0.6.0.zip">examples ZIP</a> and open <code>VdeviceMouseUI.exe</code>.</li>
+<li>Click <strong>Create device</strong>. When ready, set <code>x</code> to <code>32</code> and <code>y</code> to <code>0</code>, then click <strong>Send state</strong>. Click <strong>Disconnect</strong> when you finish.</li>
+</ol>
 {{RELEASE_TERMS}}
+<details class="more-info">
+<summary>Technical details and support</summary>
+{{RELEASE_DETAILS}}
 <h2>When to use it</h2>
 <p>Build a repeatable input fixture for a Windows application. Start with a virtual keyboard or vendor HID sample, then verify enumeration and the content delivered to an independent receiver. A controller profile adds its own descriptor and protocol requirements.</p>
 <h2>First validation</h2>
@@ -22,3 +32,4 @@
 <p>The <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Microsoft-signed 1.0.6.0 demo</a> includes the fix. It passed repeated teardown and ten rounds of the five device examples in an isolated Windows 11 guest with Secure Boot enabled. The signed commercial update is still pending. <a href="https://github.com/TitanCSA/Vdevice/issues/1">Read the test results and status</a>.</p>
 <p><a href="https://titancsa.github.io/TitanCSA-Benchmarks/">Windows input benchmark methods and data</a></p>
 <div class="related"><a href="/guides/choose-input/">Compare Windows input SDKs</a><a href="/about/evidence/">Evidence and project support</a></div>
+</details>
