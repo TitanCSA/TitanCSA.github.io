@@ -70,16 +70,29 @@
         "overview_url": { "$ref": "#/$defs/url" },
         "demo": {
           "type": "object",
-          "required": ["version", "tag", "notes_url", "setup_download_url", "setup_format", "setup_member", "supported_driver_architecture", "trial_starts_on"],
+          "required": ["version", "tag", "notes_url", "setup_download_url", "setup_download_sha256", "setup_format", "setup_member", "supported_driver_architecture", "trial_starts_on", "assets"],
           "properties": {
             "version": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+){3}$" },
             "tag": { "type": "string", "minLength": 1 },
             "notes_url": { "$ref": "#/$defs/url" },
             "setup_download_url": { "$ref": "#/$defs/url" },
+            "setup_download_sha256": { "$ref": "#/$defs/sha256" },
             "setup_format": { "enum": ["installer", "zip"] },
             "setup_member": { "type": ["string", "null"] },
             "supported_driver_architecture": { "enum": ["x64", "x86", "arm64"] },
-            "trial_starts_on": { "type": "string", "minLength": 1 }
+            "trial_starts_on": { "type": "string", "minLength": 1 },
+            "assets": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "object",
+                "required": ["url", "sha256"],
+                "properties": {
+                  "url": { "$ref": "#/$defs/url" },
+                  "sha256": { "$ref": "#/$defs/sha256" }
+                }
+              }
+            }
           }
         },
         "sdk_check": {

@@ -19,7 +19,7 @@
 </details>
 <h2>Downloads by edition</h2>
 <div class="table-scroll"><table class="edition-comparison" role="table" aria-label="SDK downloads by edition"><thead><tr><th scope="col">Edition</th><th scope="col">Try it</th><th scope="col">Build an app</th></tr></thead><tbody>{{INSTALLER_SDK_ROWS_EN}}</tbody></table></div>
-<p><a href="/assets/demo-install-verification-2026-11-25.json">Windows 11 test results for the three Interceptor demos and Vdevice</a> from 25 November 2026. The lab checked installation, signature and a read-only driver response.</p>
+<p><a href="/assets/demo-install-verification-2026-11-25.json">Windows 11 test results for the three Interceptor demos and Vdevice</a> from 25 November 2026. The lab checked installation, signature and a read-only driver response from an administrator session.</p>
 <details class="more-info">
   <summary>Build the first SDK check</summary>
   <p>Install Visual Studio 2022 with Desktop development with C++, CMake 3.20+ and Python 3.10+. Extract the <a href="/downloads/first-sdk-checks.zip">first SDK checks ZIP</a>, open PowerShell in that folder and run one command.</p>
@@ -28,6 +28,7 @@
   <ul><li>For Interceptor or Vdevice, <strong>Driver answered</strong> confirms the status query. <strong>Windows 2</strong> means this check could not find the driver interface.</li><li>For Interception V2, the result is <strong>10 keyboard slots and 10 mouse slots</strong> without a driver. These are library positions. To list connected devices later, use the <a href="/guides/interception-v2-migration/">separate inventory example</a>, which opens a context and starts its demo allowance.</li><li>For Titan Audio Link, <strong>0 Titan endpoints</strong> is normal before installation. The check counts Titan audio inputs and outputs without playing or recording sound.</li></ul>
   <p>The supplied first checks do not capture input, create virtual devices or start a demo timer. The driver’s package version and the API version printed by a sample are separate values.</p>
   <p>For an existing C++ app, use the header and implementation from the same SDK archive. Interception V2 uses an import library and a DLL instead of an implementation file. Put the DLL for your app’s architecture beside its executable. The manifest gives each exact filename.</p>
+  <p>The manifest includes the SHA-256 of every installer, example and SDK download. See <a href="/guides/verify-windows-driver-package/">how to check a downloaded file</a>.</p>
 <p><a href="/guides/windows-input-sdk-packages/">Find packages for Python, Node.js, .NET and PowerShell</a>.</p>
 </details>
 <p><a href="/about/evidence/#release-contact">Version without the one-hour limit · Discord titancsa</a></p>

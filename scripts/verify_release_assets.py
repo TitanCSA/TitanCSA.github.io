@@ -71,6 +71,8 @@ def check_edition(edition, sdk_role):
         raise ValueError(f"{edition['slug']}: generated asset URLs differ from the official URLs")
     if assets[sdk_role][1] != edition["sdk_sha256"]:
         raise ValueError(f"{edition['slug']}: pinned SDK SHA-256 differs from the official digest")
+    if edition["demo_asset_sha256"] != {role: digest for role, (_, digest) in assets.items()}:
+        raise ValueError(f"{edition['slug']}: pinned asset SHA-256 differs from the official digest")
     return len(assets)
 
 
@@ -86,7 +88,8 @@ def candidate(edition, tag, version, sdk_role, overrides):
     assets = official_assets(edition, tag, filenames)
     source_fields = {"slug", "demo", "tag", "commercial", "use", "api", "trial_starts", "note", "demo_files", "sdk_sha256", "setup_member"}
     row = {name: value for name, value in edition.items() if name in source_fields}
-    row.update(demo=version, tag=tag, demo_files=filenames, sdk_sha256=assets[sdk_role][1])
+    row.update(demo=version, tag=tag, demo_files=filenames, sdk_sha256=assets[sdk_role][1],
+               demo_asset_sha256={role: digest for role, (_, digest) in assets.items()})
     return row
 
 

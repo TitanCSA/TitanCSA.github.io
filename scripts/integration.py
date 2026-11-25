@@ -35,6 +35,8 @@ def make_manifest(base, editions):
         header = f"{Path(implementation).stem}.h" if implementation else "interception.h"
         desktop_libraries = recipe.get("link_libraries", [])
         app_architectures = recipe["app_architectures"]
+        setup_role = "installer" if "installer" in edition["demo_assets"] else "archive"
+        digests = edition["demo_asset_sha256"]
         row = {
             "id": slug,
             "name": edition["name"],
@@ -45,10 +47,13 @@ def make_manifest(base, editions):
                 "tag": edition["tag"],
                 "notes_url": edition["demo_url"],
                 "setup_download_url": edition["demo_download_url"],
-                "setup_format": "installer" if "installer" in edition["demo_assets"] else "zip",
+                "setup_download_sha256": digests[setup_role],
+                "setup_format": "installer" if setup_role == "installer" else "zip",
                 "setup_member": edition.get("setup_member"),
                 "supported_driver_architecture": "x64",
                 "trial_starts_on": edition["trial_starts"],
+                "assets": {role: {"url": url, "sha256": digests[role]}
+                           for role, url in edition["demo_assets"].items()},
             },
             "sdk_check": {
                 "api": api,
@@ -88,6 +93,7 @@ def make_manifest(base, editions):
         proof = installed_evidence.get(slug)
         if proof and proof["version"] == edition["demo"] and proof["sdk_archive_sha256"] == edition["sdk_sha256"]:
             row["demo"]["read_only_install_verification"] = {"url": base + proof_file, "edition": slug}
+            row["sdk_check"]["tested_account"] = "Administrator on Windows 11 x64"
         rows.append(row)
     applications = json.loads((ROOT / "starter-apps.json").read_text(encoding="utf-8"))
     for app in applications:

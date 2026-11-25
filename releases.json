@@ -21,7 +21,14 @@
         "checksums": "SHA256SUMS.txt",
         "viewer": "InterceptorExampleUI.exe"
       },
-      "sdk_sha256": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f"
+      "sdk_sha256": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f",
+      "demo_asset_sha256": {
+        "installer": "fd9c449fa35ba40174176e1ad2f34e682fb8977730f9238c7c976e355f0b083f",
+        "examples": "9e1f7382fb8c9f59c0df56a69295986cbb196ed4c0bb6c9487f951c4c954add4",
+        "sdk": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f",
+        "checksums": "626d121153a0311ad22a4a12755a9a3655248d70376e9a0608933df6fdbef274",
+        "viewer": "fc87f00a8f90bd3b52994f113253bb6472277bd05bcf3a49b62a09c94b4c077d"
+      }
     },
     {
       "slug": "interceptor-keyboard-mouse",
@@ -42,7 +49,14 @@
         "checksums": "SHA256SUMS.txt",
         "viewer": "InterceptorExampleUI.exe"
       },
-      "sdk_sha256": "31789cca1f20b10a1184b0234e8ebe699e31a191c20b80092075efa19d856328"
+      "sdk_sha256": "31789cca1f20b10a1184b0234e8ebe699e31a191c20b80092075efa19d856328",
+      "demo_asset_sha256": {
+        "installer": "54bdd2cb3e5319eea2588fec7579721b0ce7b38ab1acfc888c90b48798f2ac83",
+        "examples": "b74a7f5f565b237bf0fd1ab144964c2fed6df7a3fd24db526efae9e37e20d7d9",
+        "sdk": "31789cca1f20b10a1184b0234e8ebe699e31a191c20b80092075efa19d856328",
+        "checksums": "add6e0f0b7ace2270995f83758b435eebf35fd3aa79635bde4b3e260eb23d1a0",
+        "viewer": "a01a150e27f21683a5557edd68b1df66df09b05b6de3c3c637d1c7fd3ece78d7"
+      }
     },
     {
       "slug": "interceptor-gamepad-controller",
@@ -63,7 +77,14 @@
         "checksums": "SHA256SUMS.txt",
         "viewer": "InterceptorExampleUI.exe"
       },
-      "sdk_sha256": "f50d10483bdb4875c63a822c8d333768d6da4d54316b60a433b0d5670373ea02"
+      "sdk_sha256": "f50d10483bdb4875c63a822c8d333768d6da4d54316b60a433b0d5670373ea02",
+      "demo_asset_sha256": {
+        "installer": "64b451334c3eca1b2a8c2941e72bf84983675098defd0b0269f4d945dbb2c75e",
+        "examples": "8a40d0764eb44ad4c816e2f340a2d07be573f43a5a408c55093c79b8c41d881b",
+        "sdk": "f50d10483bdb4875c63a822c8d333768d6da4d54316b60a433b0d5670373ea02",
+        "checksums": "0544db49df71ff8875b82e814ce6befa1b4c779c80be11355117e6dc15a2b71d",
+        "viewer": "5e7b4441f79fd32888e5f0d0efcc5e034243e744eab84cd84f5117ef81daa2c9"
+      }
     },
     {
       "slug": "vdevice",
@@ -83,7 +104,13 @@
         "sdk": "Vdevice-SDK-1.0.6.0.zip",
         "checksums": "SHA256SUMS.txt"
       },
-      "sdk_sha256": "eaa3b92c5da10cdb551d0877264369abf618fac32e379a5249d2f82218f019e2"
+      "sdk_sha256": "eaa3b92c5da10cdb551d0877264369abf618fac32e379a5249d2f82218f019e2",
+      "demo_asset_sha256": {
+        "installer": "7feea3a24ee129a39a919bc975fdfbc3ecc7a6733a92af290c0a2661591e5cbb",
+        "examples": "603ad8e6192f9cba5efd75a0517f6cbf69a51831cd61b05d71c82de87f97ca32",
+        "sdk": "eaa3b92c5da10cdb551d0877264369abf618fac32e379a5249d2f82218f019e2",
+        "checksums": "d48e9e53a540fccc01e2dfe991a9f083601cf22b38ec531fc8041445d60cfb02"
+      }
     },
     {
       "slug": "interception-v2",
@@ -102,7 +129,11 @@
         "checksums": "SHA256SUMS.txt"
       },
       "sdk_sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
-      "setup_member": "Interception/command line installer/install-interception.exe"
+      "setup_member": "Interception/command line installer/install-interception.exe",
+      "demo_asset_sha256": {
+        "archive": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
+        "checksums": "724733c7c5bf5e7ccd13cbf5a5916a5d4e462a3e3e1259d0c94c6c2a741ec770"
+      }
     },
     {
       "slug": "titan-audio-link",
@@ -120,7 +151,10 @@
         "archive": "Titan-Audio-Link-0.2.0-Demo-Windows-x64.zip"
       },
       "sdk_sha256": "3b828ffb415c327d5311c7124b1c14dad8f3166c077b3eadfb006124a8f18e19",
-      "setup_member": "Installers/TitanAudioLinkSetup.exe"
+      "setup_member": "Installers/TitanAudioLinkSetup.exe",
+      "demo_asset_sha256": {
+        "archive": "3b828ffb415c327d5311c7124b1c14dad8f3166c077b3eadfb006124a8f18e19"
+      }
     }
   ]
 }

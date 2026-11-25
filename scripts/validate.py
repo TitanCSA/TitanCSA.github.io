@@ -176,6 +176,12 @@ for row in manifest['products']:
     demo, check = row['demo'], row['sdk_check']
     assert demo['version'] == edition['demo'] and demo['tag'] == edition['tag']
     assert demo['setup_download_url'] == edition['demo_download_url']
+    assert set(demo['assets']) == set(edition['demo_assets']) == set(edition['demo_asset_sha256'])
+    for role, asset in demo['assets'].items():
+        assert asset == {'url':edition['demo_assets'][role],'sha256':edition['demo_asset_sha256'][role]}
+        assert re.fullmatch(r'[a-f0-9]{64}', asset['sha256'])
+    assert {'url':demo['setup_download_url'],'sha256':demo['setup_download_sha256']} in demo['assets'].values()
+    assert {'url':check['archive_url'],'sha256':check['archive_sha256']} in demo['assets'].values()
     if evidence := demo.get('read_only_install_verification'):
         evidence_file = OUT/evidence['url'].removeprefix(BASE)
         proof = json.loads(evidence_file.read_text(encoding='utf8'))['editions'][row['id']]

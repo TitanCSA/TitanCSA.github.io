@@ -23,6 +23,7 @@ class ReleaseAssetChecks(unittest.TestCase):
             "demo_files": {self.role: self.name},
             "demo_assets": {self.role: f"{self.base}/releases/download/{self.tag}/{self.name}"},
             "sdk_sha256": self.hash,
+            "demo_asset_sha256": {self.role: self.hash},
         }
 
     def public_release(self, tag, filename, digest=None):
@@ -54,9 +55,22 @@ class ReleaseAssetChecks(unittest.TestCase):
             row = checker.candidate(self.edition, tag, "1.0.1.0", self.role, [f"sdk={filename}"])
         self.assertEqual(row["tag"], tag)
         self.assertEqual(row["sdk_sha256"], self.hash)
+        self.assertEqual(row["demo_asset_sha256"], {self.role: self.hash})
         self.assertEqual(row["demo_files"]["sdk"], filename)
         self.assertEqual(self.edition["tag"], self.tag)
         self.assertEqual(self.edition["demo_files"]["sdk"], self.name)
+
+    def test_installer_digest_is_checked_even_when_the_sdk_is_unchanged(self):
+        setup_name = "ExampleSetup.exe"
+        changed_setup = self.public_release(self.tag, setup_name, "b" * 64)["assets"][0]
+        release = self.public_release(self.tag, self.name)
+        release["assets"].append(changed_setup)
+        self.edition["demo_files"]["installer"] = setup_name
+        self.edition["demo_assets"]["installer"] = changed_setup["browser_download_url"]
+        self.edition["demo_asset_sha256"]["installer"] = self.hash
+        with patch.object(checker, "fetch_release", return_value=release):
+            with self.assertRaisesRegex(ValueError, "pinned asset SHA-256"):
+                checker.check_edition(self.edition, self.role)
 
     def test_candidate_rejects_an_unknown_or_non_file_asset(self):
         for override in ("new=sample.zip", "sdk=../sample.zip"):

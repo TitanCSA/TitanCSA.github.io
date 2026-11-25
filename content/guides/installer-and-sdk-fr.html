@@ -19,7 +19,7 @@
 </details>
 <h2>Téléchargements par édition</h2>
 <div class="table-scroll"><table class="edition-comparison" role="table" aria-label="Téléchargements SDK par édition"><thead><tr><th scope="col">Édition</th><th scope="col">Pour essayer</th><th scope="col">Pour programmer</th></tr></thead><tbody>{{INSTALLER_SDK_ROWS_FR}}</tbody></table></div>
-<p><a href="/assets/demo-install-verification-2026-11-25.json">Résultats du test Windows 11 pour les trois démos Interceptor et Vdevice</a> du 25 novembre 2026. Le test vérifie l’installation, la signature et une réponse du pilote en lecture seule.</p>
+<p><a href="/assets/demo-install-verification-2026-11-25.json">Résultats du test Windows 11 pour les trois démos Interceptor et Vdevice</a> du 25 novembre 2026. Le test vérifie l’installation, la signature et une réponse du pilote en lecture seule depuis une session administrateur.</p>
 <details class="more-info">
   <summary>Compiler le premier test SDK</summary>
   <p>Installe Visual Studio 2022 avec le développement de bureau en C++, CMake 3.20+ et Python 3.10+. Décompresse le <a href="/downloads/first-sdk-checks.zip">ZIP de premiers tests SDK</a>, ouvre PowerShell dans ce dossier et lance une commande.</p>
@@ -28,6 +28,7 @@
   <ul><li>Pour Interceptor et Vdevice, <strong>Driver answered</strong> signifie que le pilote a répondu. <strong>Windows 2</strong> indique que le test ne trouve pas son interface.</li><li>Pour Interception V2, le test fonctionne sans pilote et affiche <strong>10 emplacements clavier et 10 souris</strong>. Pour voir les périphériques connectés, utilise ensuite <a href="/guides/interception-v2-migration/">l’exemple d’inventaire</a>. Celui-ci ouvre un contexte et démarre la démo.</li><li>Pour Titan Audio Link, <strong>0 endpoint Titan</strong> est normal avant l’installation. Le test compte les entrées et sorties audio Titan. Il ne joue et n’enregistre aucun son.</li></ul>
   <p>Les premiers tests ne capturent aucune entrée et ne créent aucun périphérique virtuel. Ils ne démarrent pas le compteur de démo. Le numéro de version du pilote et le numéro de l’interface affiché par le test sont deux informations différentes.</p>
   <p>Dans ton application C++, utilise les fichiers <code>.h</code> et <code>.cpp</code> du même ZIP. Pour Interception V2, lie le fichier <code>.lib</code> et place la DLL de la bonne architecture à côté de ton programme. Les noms exacts sont dans le fichier d’intégration.</p>
+  <p>Le fichier d’intégration contient le SHA-256 de chaque installateur, exemple et SDK. Le <a href="/guides/verify-windows-driver-package/">guide de vérification en anglais</a> explique comment comparer un fichier téléchargé.</p>
 <p><a href="/fr/installer-sdk-windows/">Installer les paquets Python, Node.js, .NET ou PowerShell</a>.</p>
 </details>
 <p><a href="/fr/pilotes-entree-windows/#contact-release">Version sans la limite d’une heure · Discord titancsa</a></p>
