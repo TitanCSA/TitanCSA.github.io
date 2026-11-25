@@ -34,7 +34,7 @@
       "use": "Distinguish physical keyboards and mice and remap input from selected devices.",
       "api": "C++17 SDK and optional AutoHotInterceptor integration",
       "trial_starts": "first successful capture",
-      "note": "Try the per-keyboard AutoHotkey v2 guide with two keyboards.",
+      "note": "Start with one keyboard or mouse in the supplied example. Remove overlapping editions before installation.",
       "demo_files": {
         "installer": "InterceptorSetup.exe",
         "examples": "Interceptor-Keyboard-Mouse-Examples-1.0.5.0.zip",

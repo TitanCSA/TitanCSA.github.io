@@ -5,6 +5,7 @@ from html import escape
 from xml.etree import ElementTree as ET
 import json,re,shutil
 from integration import app_cards, make_manifest, sdk_rows, write_starter
+from registry import registry_catalogue, registry_tables
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 data=json.loads((ROOT/'projects.json').read_text(encoding='utf8'));projects=data['projects'];checked=data['checked']
@@ -54,6 +55,7 @@ for edition in release_data['editions']:
 assert set(editions)==set(featured)|{'titan-audio-link'} and len(editions)==len(release_data['editions'])
 input_editions={slug:editions[slug] for slug in featured}
 integration=make_manifest(BASE,editions)
+integration['sdk_registry']=registry_catalogue(integration,BASE)
 assert len(projects)==60 and len({p['url'].lower() for p in projects})==60
 assert all(p['url'].startswith(('https://github.com/TitanCSA/','https://github.com/titanfyre/')) for p in projects)
 OUT.mkdir(exist_ok=True)
@@ -84,6 +86,11 @@ replacements={'PROJECT_COUNT':str(len(projects)),'CHECKED_DATE':checked,'PROJECT
 replacements['RELEASE_REVIEW_DATE']=release_date
 replacements['INSTALLER_SDK_ROWS_EN']=sdk_rows(integration)
 replacements['INSTALLER_SDK_ROWS_FR']=sdk_rows(integration,french=True)
+replacements['REGISTRY_TABLES_EN']=registry_tables(integration['sdk_registry'])
+replacements['REGISTRY_TABLES_FR']=registry_tables(integration['sdk_registry'],french=True)
+browser_package=next(row for row in integration['sdk_registry'] if row['name']=='browser-control-sdk')
+replacements['BROWSER_PYPI_URL']=escape(browser_package['package_url'],quote=True)
+replacements['BROWSER_PYPI_INSTALL']=escape(browser_package['install_command'])
 for lang in ('en', 'fr'):
     replacements[f'APP_CARDS_{lang.upper()}']=app_cards(integration, lang)
     replacements[f'APP_MORE_{lang.upper()}']=app_cards(integration, lang, more=True)

@@ -55,6 +55,12 @@ with sync_playwright() as p:
     image=page.locator('main .first-run-image').first
     image.scroll_into_view_if_needed()
     page.wait_for_function('document.querySelector(".first-run-image").naturalWidth > 0')
+    page.goto(base+'fr/installer-sdk-windows/',wait_until='domcontentloaded')
+    native_packages=page.locator('main details').filter(has=page.locator('summary').get_by_text('C/C++',exact=True))
+    assert not native_packages.locator('table').is_visible()
+    native_packages.locator('summary').click()
+    assert native_packages.get_by_text('Install-Package Vdevice.Native -Version 1.0.6',exact=True).is_visible()
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Registry table causes horizontal page scrolling'
     page.goto(base+'guides/windows-input-release-compare/',wait_until='domcontentloaded')
     contacts=page.locator('main a[href="/about/evidence/#release-contact"]')
     assert contacts.first.is_visible()

@@ -76,5 +76,18 @@
       "sample_exit_code": 0,
       "sample_output": "Driver answered. Info ABI version 1, device limit 16"
     }
+  },
+  "setup_preview": {
+    "edition": "interceptor",
+    "demo_version": "1.4.22.0",
+    "setup_download_url": "https://github.com/TitanCSA/Interceptor/releases/download/v1.4.22.0-demo/InterceptorSetup.exe",
+    "setup_sha256": "fd9c449fa35ba40174176e1ad2f34e682fb8977730f9238c7c976e355f0b083f",
+    "setup_executable_authenticode": "NotSigned",
+    "windows_build": 26100,
+    "secure_boot": true,
+    "preview_exit_code": 0,
+    "screenshot_url": "https://titancsa.github.io/assets/interceptor-setup-preview.png",
+    "screenshot_sha256": "973e935458475d74b83193e9ef42c079335e619da8bb9259c19483dc5b337277",
+    "scope": "Screenshot rendered by the exact graphical demo setup with its read-only preview option. Driver catalogue verification is recorded separately in the editions section."
   }
 }

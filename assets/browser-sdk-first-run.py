@@ -1,5 +1,6 @@
 """Try the Browser Control SDK on a page served only on this computer."""
 
+from argparse import ArgumentParser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -32,12 +33,18 @@ class PageHandler(BaseHTTPRequestHandler):
 
 
 def main():
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--installed-client", action="store_true", help="Import the client installed from PyPI")
+    options = parser.parse_args()
     app = Path.cwd()
     exe = app / "BrowserControl.exe"
     python_sdk = app / "SDK" / "Python"
-    if not exe.is_file() or not (python_sdk / "browser_control.py").is_file():
+    if not exe.is_file():
         raise SystemExit("Open PowerShell in the folder extracted from the complete Browser Control ZIP.")
-    sys.path.insert(0, str(python_sdk))
+    if not options.installed_client:
+        if not (python_sdk / "browser_control.py").is_file():
+            raise SystemExit("The bundled SDK is missing. Extract the complete Browser Control ZIP.")
+        sys.path.insert(0, str(python_sdk))
     from browser_control import Browser
 
     # A private folder under the current Windows user preserves the app's

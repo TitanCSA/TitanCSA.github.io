@@ -1,0 +1,281 @@
+[
+  {
+    "edition": "interceptor",
+    "ecosystem": "npm",
+    "name": "interceptor-sdk",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.info()",
+      "expected": "Driver status with the matching edition installed.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor/Interceptor-JavaScript-npm#readme"
+  },
+  {
+    "edition": "interceptor",
+    "ecosystem": "pypi",
+    "name": "interceptor-multilang",
+    "version": "1.0.2",
+    "first_check": {
+      "call": "importlib.metadata.version('interceptor-multilang')",
+      "expected": "1.0.2",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md"
+  },
+  {
+    "edition": "interceptor",
+    "ecosystem": "nuget-managed",
+    "name": "Interceptor.MultiLang",
+    "version": "1.0.2",
+    "first_check": {
+      "call": "Interceptor.GetInfo()",
+      "expected": "Driver status with the matching edition installed, or diagnostic Windows 2 if its interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/Interceptor-MultiLang/blob/main/docs/API.md"
+  },
+  {
+    "edition": "interceptor",
+    "ecosystem": "powershell",
+    "name": "Interceptor",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "Get-InterceptorSDKInfo -Client $client",
+      "expected": "Driver status with the matching edition installed, or diagnostic Windows 2 if its interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor/Interceptor-PowerShell-gallery/Interceptor#readme"
+  },
+  {
+    "edition": "interceptor-keyboard-mouse",
+    "ecosystem": "npm",
+    "name": "interceptor-keyboard-mouse-sdk",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.info()",
+      "expected": "Driver status with the matching edition installed.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-JavaScript-npm#readme"
+  },
+  {
+    "edition": "interceptor-keyboard-mouse",
+    "ecosystem": "powershell",
+    "name": "InterceptorKeyboardMouse",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "Get-InterceptorKeyboardMouseSDKInfo -Client $client",
+      "expected": "Driver status with the matching edition installed, or diagnostic Windows 2 if its interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-PowerShell-gallery/InterceptorKeyboardMouse#readme"
+  },
+  {
+    "edition": "interceptor-gamepad-controller",
+    "ecosystem": "npm",
+    "name": "interceptor-gamepad-controller",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.info()",
+      "expected": "Driver status with the matching edition installed.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-JavaScript-npm#readme"
+  },
+  {
+    "edition": "interceptor-gamepad-controller",
+    "ecosystem": "powershell",
+    "name": "InterceptorGamepadController",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "Get-InterceptorGamepadControllerSDKInfo -Client $client",
+      "expected": "Driver status with the matching edition installed, or diagnostic Windows 2 if its interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-PowerShell-gallery/InterceptorGamepadController#readme"
+  },
+  {
+    "edition": "vdevice",
+    "ecosystem": "powershell",
+    "name": "Vdevice",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "Invoke-VdeviceSDK -Client $client -Operation status",
+      "expected": "Driver status with Vdevice installed, or diagnostic Windows 2 if its interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Vdevice/Vdevice-PowerShell-gallery/Vdevice#readme"
+  },
+  {
+    "edition": "interception-v2",
+    "ecosystem": "powershell",
+    "name": "InterceptionV2",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "Invoke-InterceptionV2SDK -Client $client -Operation check -Arguments @{device=1}",
+      "expected": "Device number 1 is a keyboard slot. This check does not list connected devices.",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interception-V2/Interception-V2-PowerShell-gallery/InterceptionV2#readme"
+  },
+  {
+    "edition": "interceptor",
+    "ecosystem": "nuget-native",
+    "name": "Interceptor.Native",
+    "version": "1.4.22",
+    "first_check": {
+      "call": "Interceptor::Get_Status()",
+      "expected": "Read-only driver status, or Windows 2 when the interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "verified_archive": {
+      "url": "https://api.nuget.org/v3-flatcontainer/interceptor.native/1.4.22/interceptor.native.1.4.22.nupkg",
+      "sha256": "0ae4b112ac2fa7056fea0b7b04fed7bceea64d6206aa63604461f87fad6c9b76"
+    },
+    "architectures": [
+      "x64"
+    ]
+  },
+  {
+    "edition": "interceptor-keyboard-mouse",
+    "ecosystem": "nuget-native",
+    "name": "Interceptor-Keyboard-Mouse.Native",
+    "version": "1.0.5",
+    "first_check": {
+      "call": "Interceptor::Get_Status()",
+      "expected": "Read-only driver status, or Windows 2 when the interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "verified_archive": {
+      "url": "https://api.nuget.org/v3-flatcontainer/interceptor-keyboard-mouse.native/1.0.5/interceptor-keyboard-mouse.native.1.0.5.nupkg",
+      "sha256": "f4e192bb6d3d1d9e2882aa9069c0ec23b5b3d65d23de7487e81246476b488b30"
+    },
+    "architectures": [
+      "x64"
+    ]
+  },
+  {
+    "edition": "interceptor-gamepad-controller",
+    "ecosystem": "nuget-native",
+    "name": "Interceptor-Gamepad-Controller.Native",
+    "version": "1.0.13",
+    "first_check": {
+      "call": "Interceptor::Get_Status()",
+      "expected": "Read-only driver status, or Windows 2 when the interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "verified_archive": {
+      "url": "https://api.nuget.org/v3-flatcontainer/interceptor-gamepad-controller.native/1.0.13/interceptor-gamepad-controller.native.1.0.13.nupkg",
+      "sha256": "a25f5c0b9d75a9e5884cd3f80286fdbd73fae173dbbef6954dff4ee84a64418d"
+    },
+    "architectures": [
+      "x64"
+    ]
+  },
+  {
+    "edition": "vdevice",
+    "ecosystem": "nuget-native",
+    "name": "Vdevice.Native",
+    "version": "1.0.6",
+    "first_check": {
+      "call": "Vdevice::Get_Info()",
+      "expected": "Read-only driver information, or Windows 2 when the interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "verified_archive": {
+      "url": "https://api.nuget.org/v3-flatcontainer/vdevice.native/1.0.6/vdevice.native.1.0.6.nupkg",
+      "sha256": "9218d62ade83ea4b8d6171e9ad419051c7053617121bb8984945dcf6cc39551f"
+    },
+    "architectures": [
+      "x64"
+    ]
+  },
+  {
+    "edition": "interception-v2",
+    "ecosystem": "nuget-native",
+    "name": "Interception-V2.Native",
+    "version": "2.0.0",
+    "first_check": {
+      "call": "interception_is_keyboard(1)",
+      "expected": "True for the first keyboard slot. No driver context is needed.",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "verified_archive": {
+      "url": "https://api.nuget.org/v3-flatcontainer/interception-v2.native/2.0.0/interception-v2.native.2.0.0.nupkg",
+      "sha256": "288f29278b3253d09887f47722ffae57d18cf6e131c47c07b610a0ae460a89ad"
+    },
+    "architectures": [
+      "x86",
+      "x64"
+    ]
+  },
+  {
+    "edition": "titan-audio-link",
+    "ecosystem": "nuget-native",
+    "name": "Titan-Audio-Link.Native",
+    "version": "0.1.1",
+    "first_check": {
+      "call": "AudioLink::List()",
+      "expected": "On a clean Windows PC with no Titan endpoint, the inventory is empty.",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "verified_archive": {
+      "url": "https://api.nuget.org/v3-flatcontainer/titan-audio-link.native/0.1.1/titan-audio-link.native.0.1.1.nupkg",
+      "sha256": "93f7a32baf59746fec866920b2db2e09870e8437d63aa79127e76ea7ff383d37"
+    },
+    "architectures": [
+      "x64"
+    ]
+  },
+  {
+    "edition": "browser",
+    "ecosystem": "pypi",
+    "name": "browser-control-sdk",
+    "version": "0.2.1",
+    "first_check": {
+      "call": "Browser.launch(executable=...)",
+      "expected": "With the BrowserControl application, the local first-run example prints Saved: Ada.",
+      "requires_installed_driver": false,
+      "requires_application": true,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/Browser-Control-SDK/blob/main/docs/SDK.md",
+    "verified_archive": {
+      "filename": "browser_control_sdk-0.2.1-py3-none-any.whl",
+      "sha256": "1167ad3f817ed164b32ef490ab196e4b6c5c06b28e4cb8f0a685d804d2056fca"
+    }
+  }
+]

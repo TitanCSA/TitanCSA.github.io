@@ -144,6 +144,21 @@ for public_text in [*OUT.rglob('*.html'), OUT/'llms.txt', OUT/'releases.json', O
     assert 'licences.configcsa.com' not in public_text.read_text(encoding='utf8').lower(), public_text
 manifest = json.loads((OUT/'integration.json').read_text(encoding='utf8'))
 assert manifest['schema_version'] == 1
+preview = json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').read_text(encoding='utf8'))['setup_preview']
+assert preview['preview_exit_code'] == 0 and preview['secure_boot'] is True
+assert sha256((OUT/preview['screenshot_url'].removeprefix(BASE)).read_bytes()).hexdigest() == preview['screenshot_sha256']
+rows = manifest['sdk_registry']
+assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell'}
+for row in rows:
+    assert row['package_url'] in packages_en.links and row['package_url'] in packages_fr.links
+    assert row['install_includes_driver_or_application'] is False
+    assert row['first_check']['opens_input_context'] is False
+    assert isinstance(row['first_check']['requires_installed_driver'], bool)
+    assert isinstance(row['first_check']['requires_application'], bool)
+    if archive := row.get('verified_archive'):
+        assert re.fullmatch(r'[a-f0-9]{64}', archive['sha256'])
+        if row['ecosystem'] == 'nuget-native':
+            assert urlparse(archive['url']).netloc == 'api.nuget.org'
 assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]
