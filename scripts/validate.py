@@ -114,6 +114,8 @@ for path in project_pages:
     assert edition['demo_url'] in french_comparison.links and edition['purchase_url'] in french_comparison.links
     assert edition['overview_url'] in reference and edition['demo_url'] in reference
     app,=[item for item in page.schemas if item.get('@type')=='SoftwareApplication']
+    assert app['softwareVersion']==edition['commercial']['package_version']
+    assert all(re.fullmatch(r'\d+\.\d+\.\d+\.\d+', value) for value in edition['commercial'].values())
     assert app['offers']['url']==edition['purchase_url'] and app['offers']['price']==edition['price_eur']
     assert app['offers']['priceCurrency']=='EUR' and f'€{edition["price_eur"]}' in path.read_text(encoding='utf8')
 print('Validated',len(parsed),'HTML files, 60 entries, 10 workflows, metadata, JSON-LD, anchors and asset budgets')

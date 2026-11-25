@@ -24,6 +24,7 @@ featured_date='2026-11-23'
 shop='https://licences.configcsa.com/'
 release_data=json.loads((ROOT/'releases.json').read_text(encoding='utf8'))
 release_date=release_data['reviewed']
+commercial_checked=release_data['commercial_checked']
 editions={}
 for edition in release_data['editions']:
     slug=edition['slug']
@@ -66,6 +67,7 @@ for (key,title),entries in groups.items():
     cards.append(f'<section id="{escape(key)}" class="project-group" data-project-group aria-labelledby="heading-{escape(key)}"><div class="group-heading"><h2 id="heading-{escape(key)}">{escape(title)}</h2><span class="group-count" data-group-count>{len(entries)} entries</span></div>'+''.join(items)+'</section>')
 replacements={'PROJECT_COUNT':str(len(projects)),'CHECKED_DATE':checked,'PROJECTS':'\n'.join(cards),'CATEGORY_OPTIONS':''.join(f'<option value="{escape(key)}">{escape(title)}</option>' for key,title in groups),'CATEGORY_LINKS':''.join(f'<a href="#{escape(key)}" data-category-jump>{escape(title)}</a>' for key,title in groups)}
 replacements['RELEASE_REVIEW_DATE']=release_date
+replacements['COMMERCIAL_CHECK_DATE']=commercial_checked
 replacements['SUPPORT_ISSUE_FORMS']=''.join(
     f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'
     for e in editions.values()
@@ -85,11 +87,13 @@ for slug, edition in editions.items():
     replacements[f'{key}_DEMO_URL']=escape(edition['demo_url'],quote=True)
     replacements[f'{key}_DEMO_VERSION']=escape(edition['demo'])
     replacements[f'{key}_PURCHASE_URL']=escape(edition['purchase_url'],quote=True)
+    replacements[f'{key}_COMMERCIAL_VERSION']=escape(edition['commercial']['package_version'])
 replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
     f'<tr role="row"><th scope="row" role="rowheader"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
     f'<td role="cell">{escape(e["use"])} <strong>{escape(e["api"])}</strong> {escape(e["note"])}</td>'
     f'<td role="cell"><a href="{e["demo_url"]}">{escape(e["name"])} demo {e["demo"]}</a><br>Starts on {escape(e["trial_starts"])}.</td>'
-    f'<td role="cell"><a href="{e["purchase_url"]}">Buy {escape(e["name"])} Release</a><br><strong>€{e["price_eur"]} Lifetime</strong></td></tr>'
+    f'<td role="cell"><a href="{e["purchase_url"]}">Buy {escape(e["name"])} Release</a><br><strong>€{e["price_eur"]} Lifetime</strong>'
+    f'<br>ZIP {escape(e["commercial"]["package_version"])} · driver {escape(e["commercial"]["driver_version"])}</td></tr>'
     for e in editions.values()
 )
 pages={
@@ -129,6 +133,7 @@ reviewed={
     **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
     **dict.fromkeys(release_guides | {'','guides/choose-input/','about/evidence/',*(f'projects/{slug}/' for slug in editions)},release_date),
     **dict.fromkeys({'guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','about/evidence/'},'2026-11-25'),
+    **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},commercial_checked),
 }
 purchase_terms='<p class="subtle">Licensed Release at €400 per edition, paid once. Online activation is required after installation and again after a driver reload or Windows restart.</p>'
 publisher={
@@ -151,6 +156,7 @@ def render(title,description,path,body,article=False):
             '@context':'https://schema.org','@type':'SoftwareApplication',
             '@id':canonical+'#release','name':edition['name']+' Release','url':canonical,
             'applicationCategory':'DeveloperApplication','operatingSystem':'Microsoft Windows x64',
+            'softwareVersion':edition['commercial']['package_version'],
             'description':edition['use'],
             'offers':{'@type':'Offer','url':edition['purchase_url'],'price':edition['price_eur'],'priceCurrency':'EUR'},
             'publisher':{'@id':publisher['@id']},
@@ -183,6 +189,8 @@ for path,(title,description,source) in pages.items():
         slug=path.split('/')[1]
         edition=editions[slug]
         links=(
+            f'<p>Commercial package <strong>{escape(edition["commercial"]["package_version"])}</strong> contains signed driver '
+            f'<strong>{escape(edition["commercial"]["driver_version"])}</strong>. Delivery verified {commercial_checked}.</p>'
             f'<p>Signed demo <a href="{edition["demo_url"]}">{edition["demo"]}</a>. '
             '<a href="/guides/windows-input-release-compare/">Compare editions</a> · '
             '<a href="/guides/release-activation-help/">Installation and activation help</a> · '
@@ -219,7 +227,7 @@ search_robots=['OAI-SearchBot','Claude-SearchBot','Claude-User']
     encoding='utf8',
 )
 (OUT/'releases.json').write_text(
-    json.dumps({'reviewed':release_date,'editions':list(editions.values())},ensure_ascii=False,indent=2)+'\n',
+    json.dumps({'reviewed':release_date,'commercial_checked':commercial_checked,'editions':list(editions.values())},ensure_ascii=False,indent=2)+'\n',
     encoding='utf8',
 )
 reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documentation from the publisher.', '',
