@@ -58,8 +58,12 @@ with sync_playwright() as p:
     assert page.locator('main details summary').is_visible()
     page.locator('main a[lang="fr"]').click()
     assert page.url.endswith('/fr/pilotes-entree-windows/') and page.locator('html').get_attribute('lang')=='fr'
-    assert page.locator('main .guide-card a[href*="/releases/download/"]').count()==5
+    assert page.locator('main .guide-card a.button.primary[href*="/releases/download/"]').count()==5
     assert page.locator('main a[href="#contact-release"]').is_visible()
+    first_trial=page.locator('main .guide-card details').first
+    assert not first_trial.locator('p').is_visible()
+    first_trial.locator('summary').click()
+    assert first_trial.locator('p').is_visible()
     assert 'titancsa' in page.locator('main').inner_text()
     page.close();browser.close()
 assert not errors,errors
