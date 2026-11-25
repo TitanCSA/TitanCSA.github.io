@@ -7,17 +7,28 @@ on:
       - '.github/workflows/sdk-examples.yml'
       - 'assets/interception-device-inventory.c'
       - 'assets/vdevice-hid-test.cpp'
+      - 'releases.json'
+      - 'scripts/verify_release_assets.py'
   pull_request:
     paths:
       - '.github/workflows/sdk-examples.yml'
       - 'assets/interception-device-inventory.c'
       - 'assets/vdevice-hid-test.cpp'
+      - 'releases.json'
+      - 'scripts/verify_release_assets.py'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
+  release-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/build.py
+      - run: python3 scripts/verify_release_assets.py
   inventory:
     runs-on: windows-2022
     timeout-minutes: 12

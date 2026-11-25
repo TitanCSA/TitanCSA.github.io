@@ -82,6 +82,14 @@ assert (OUT/'assets/site.css').stat().st_size<50_000
 assert (OUT/'assets/catalogue.js').stat().st_size<15_000
 hid_result=json.loads((OUT/'assets/vdevice-hid-test-20261124.json').read_text(encoding='utf8'))
 assert hid_result['source_sha256']==sha256((OUT/'assets/vdevice-hid-test.cpp').read_bytes()).hexdigest()
+hvci_result=json.loads((OUT/'assets/vdevice-hid-test-20261125-hvci.json').read_text(encoding='utf8'))
+assert hvci_result['driver_version']==hid_result['driver']
+assert hvci_result['driver_sha256']==hid_result['driver_sha256'].lower()
+assert hvci_result['platform']['secure_boot'] is True and hvci_result['platform']['memory_integrity'] is True
+assert 2 in hvci_result['platform']['device_guard_running_security_services']
+assert hvci_result['observed']['producer_exit']==0
+assert hvci_result['observed']['receiver_found_no_matching_device_after_removal'] is True
+assert all(hvci_result['observed'][f'{direction}_payload_length']==16 for direction in ('input','output'))
 robots=(OUT/'robots.txt').read_text();assert 'Allow: /' in robots and BASE+'sitemap.xml' in robots
 for bot in ('OAI-SearchBot','Claude-SearchBot','Claude-User'):
     assert f'User-agent: {bot}\n' in robots
