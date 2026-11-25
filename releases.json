@@ -32,8 +32,8 @@
     },
     {
       "slug": "interceptor-keyboard-mouse",
-      "demo": "1.0.5.0",
-      "tag": "v1.0.5.0-demo",
+      "demo": "1.0.5.4",
+      "tag": "v1.0.5.4-demo",
       "commercial": {
         "package_version": "1.0.2.2",
         "driver_version": "1.0.2.2"
@@ -44,18 +44,18 @@
       "note": "Start with one keyboard or mouse in the supplied example. Remove overlapping editions before installation.",
       "demo_files": {
         "installer": "InterceptorSetup.exe",
-        "examples": "Interceptor-Keyboard-Mouse-Examples-1.0.5.0.zip",
-        "sdk": "Interceptor-Keyboard-Mouse-SDK-1.0.5.0.zip",
+        "examples": "Interceptor-Keyboard-Mouse-Examples-1.0.5.4.zip",
+        "sdk": "Interceptor-Keyboard-Mouse-SDK-1.0.5.4.zip",
         "checksums": "SHA256SUMS.txt",
         "viewer": "InterceptorExampleUI.exe"
       },
-      "sdk_sha256": "31789cca1f20b10a1184b0234e8ebe699e31a191c20b80092075efa19d856328",
+      "sdk_sha256": "ef0515b2ca1240dd5d2cdea781eb60dbe177e84cfd868bbfe5933db1f3484834",
       "demo_asset_sha256": {
-        "installer": "54bdd2cb3e5319eea2588fec7579721b0ce7b38ab1acfc888c90b48798f2ac83",
-        "examples": "b74a7f5f565b237bf0fd1ab144964c2fed6df7a3fd24db526efae9e37e20d7d9",
-        "sdk": "31789cca1f20b10a1184b0234e8ebe699e31a191c20b80092075efa19d856328",
-        "checksums": "add6e0f0b7ace2270995f83758b435eebf35fd3aa79635bde4b3e260eb23d1a0",
-        "viewer": "a01a150e27f21683a5557edd68b1df66df09b05b6de3c3c637d1c7fd3ece78d7"
+        "installer": "ecd19ed92ef39114bd17a4cec8f5d26be18ca08af341b00b11905b0f0ba96788",
+        "examples": "5048d2827a93ea807746be9cd6c7568c306ebaa90c1380bac103e4c8a7a89134",
+        "sdk": "ef0515b2ca1240dd5d2cdea781eb60dbe177e84cfd868bbfe5933db1f3484834",
+        "checksums": "91d901a9ee57ebb67417aa9e7deb6f8c4ccc1d54ddc144af6b9f2ab1fe81e13e",
+        "viewer": "88464e8b6668f4da96edbd6c99aa79f73c05b8802c4f703e862276941d3312d9"
       }
     },
     {
