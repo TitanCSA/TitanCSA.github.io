@@ -192,10 +192,12 @@ def write_starter(out, manifest):
         "scripts/integration.py": ROOT / "scripts/integration.py",
         "scripts/test_first_sdk.py": ROOT / "scripts/test_first_sdk.py",
     }
+    # Generated JSON and Git checkouts can use CRLF locally. Store canonical LF
+    # for the starter metadata and scripts so its checksum is reproducible.
+    items = {name: path.read_bytes().replace(b"\r\n", b"\n") for name, path in files.items()}
     for row in manifest["products"]:
         source = "assets/" + row["sdk_check"]["source_file"]
-        files[source] = ROOT / source
-    items = {name: path.read_bytes() for name, path in files.items()}
+        items[source] = (ROOT / source).read_bytes()
     items["START-HERE.txt"] = b"""First Windows SDK check
 
 You need Python 3.10+, CMake 3.20+, and Visual Studio 2022 with

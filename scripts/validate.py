@@ -285,10 +285,14 @@ with ZipFile(download) as package:
               'scripts/integration.py','scripts/test_first_sdk.py',
               *{'assets/'+row['sdk_check']['source_file'] for row in manifest['products']}}
     assert package.testzip() is None and set(package.namelist()) == expected
-    assert package.read('integration.json') == (OUT/'integration.json').read_bytes()
-    assert package.read('dist/releases.json') == (OUT/'releases.json').read_bytes()
-    for name in expected - {'START-HERE.txt','integration.json','dist/releases.json'}:
-        assert package.read(name) == (ROOT/name).read_bytes()
+    bundled_metadata={'integration.json':OUT/'integration.json',
+                      'integration.schema.json':OUT/'integration.schema.json',
+                      'dist/releases.json':OUT/'releases.json'}
+    for name in expected - {'START-HERE.txt'}:
+        original=bundled_metadata.get(name,ROOT/name).read_bytes()
+        if not name.startswith('assets/'):
+            original=original.replace(b"\r\n", b"\n")
+        assert package.read(name) == original, name
 for route in manifest['guides'].values():
     assert '/downloads/first-sdk-checks.zip' in by_canonical[route].links
 print('Validated',len(parsed),'HTML files, 60 entries, 10 workflows, metadata, JSON-LD, anchors and asset budgets')
