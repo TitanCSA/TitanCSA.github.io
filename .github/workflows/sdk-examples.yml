@@ -45,6 +45,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: python3 scripts/build.py
       - run: python3 scripts/verify_release_assets.py
+        env:
+          TITANCSA_CATALOGUE_TOKEN: ${{ github.token }}
       - run: python3 -m unittest discover -s scripts/tests
   inventory:
     runs-on: windows-2022

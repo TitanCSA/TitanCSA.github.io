@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 import json
+import os
 from pathlib import Path
 import re
 import time
@@ -21,6 +22,9 @@ def fetch_release(url):
         "Accept": "application/vnd.github+json",
         "User-Agent": "TitanCSA-Catalogue-Link-Check",
     })
+    token = os.environ.get("TITANCSA_CATALOGUE_TOKEN")
+    if token and urlparse(url).netloc == "api.github.com":
+        request.add_unredirected_header("Authorization", f"Bearer {token}")
     for attempt in range(3):
         try:
             with urlopen(request, timeout=12) as response:
