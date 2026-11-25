@@ -18,7 +18,8 @@
         "installer": "InterceptorSetup.exe",
         "examples": "Interceptor-Examples-1.4.22.0.zip",
         "sdk": "Interceptor-SDK-1.4.22.0.zip",
-        "checksums": "SHA256SUMS.txt"
+        "checksums": "SHA256SUMS.txt",
+        "viewer": "InterceptorExampleUI.exe"
       }
     },
     {
@@ -37,7 +38,8 @@
         "installer": "InterceptorSetup.exe",
         "examples": "Interceptor-Keyboard-Mouse-Examples-1.0.5.0.zip",
         "sdk": "Interceptor-Keyboard-Mouse-SDK-1.0.5.0.zip",
-        "checksums": "SHA256SUMS.txt"
+        "checksums": "SHA256SUMS.txt",
+        "viewer": "InterceptorExampleUI.exe"
       }
     },
     {
@@ -56,7 +58,8 @@
         "installer": "InterceptorSetup.exe",
         "examples": "Interceptor-Gamepad-Controller-1.0.13.0-Examples.zip",
         "sdk": "Interceptor-Gamepad-Controller-SDK-1.0.13.0.zip",
-        "checksums": "SHA256SUMS.txt"
+        "checksums": "SHA256SUMS.txt",
+        "viewer": "InterceptorExampleUI.exe"
       }
     },
     {
