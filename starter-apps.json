@@ -60,7 +60,9 @@
       "alt": {
         "en": "Driver Readiness Inspector with the example device selected and Export HTML above the list.",
         "fr": "Driver Readiness Inspector avec un périphérique d’exemple sélectionné et le bouton Export HTML au-dessus."
-      }
+      },
+      "width": 1280,
+      "height": 850
     }
   },
   {
@@ -96,7 +98,9 @@
       "alt": {
         "en": "HID Fixture Studio showing Mouse fixture at top left and Validate offline on the right.",
         "fr": "HID Fixture Studio avec Mouse fixture en haut à gauche et Validate offline sur la droite."
-      }
+      },
+      "width": 1160,
+      "height": 860
     }
   },
   {
@@ -164,7 +168,9 @@
       "alt": {
         "en": "Scanner Route in offline preview with two sample barcodes in the list.",
         "fr": "Scanner Route en aperçu hors ligne avec deux codes-barres d’exemple."
-      }
+      },
+      "width": 1020,
+      "height": 820
     }
   },
   {

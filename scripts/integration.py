@@ -148,7 +148,8 @@ def app_cards(manifest, language, *, more=False):
             image_path = escape(picture["path"], quote=True)
             alt = escape(picture["alt"][language], quote=True)
             label = "Voir la capture" if french else "See the screenshot"
-            screenshot = f'<details><summary>{label}</summary><img class="first-run-image" loading="lazy" src="{image_path}" alt="{alt}"></details>'
+            screenshot = (f'<details><summary>{label}</summary><img class="first-run-image" loading="lazy" '
+                          f'width="{picture["width"]}" height="{picture["height"]}" src="{image_path}" alt="{alt}"></details>')
         cards.append(f'<article class="guide-card">{title}{intro}{steps}{command}{result}{screenshot}</article>')
     return '<div class="guide-grid">' + "\n".join(cards) + '</div>'
 

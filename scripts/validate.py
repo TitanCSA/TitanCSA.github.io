@@ -2,6 +2,7 @@ from zipfile import ZipFile
 from pathlib import Path
 from html.parser import HTMLParser
 from hashlib import sha256
+from struct import unpack
 from urllib.parse import urlparse,unquote
 import json,re,xml.etree.ElementTree as ET
 
@@ -222,7 +223,10 @@ for app in apps:
         page = by_canonical[guide]
         assert app['download_url'] in page.links
         if 'picture' in app:
-            assert app['picture']['path'] in page.links
+            picture = app['picture']
+            assert picture['path'] in page.links
+            image = (OUT/picture['path'].lstrip('/')).read_bytes()
+            assert unpack('>II', image[16:24]) == (picture['width'], picture['height'])
         if 'source_url' in app['test']:
             assert app['test']['source_url'].startswith(BASE+'assets/')
             relative = app['test']['source_url'].removeprefix(BASE)
