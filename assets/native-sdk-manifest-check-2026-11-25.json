@@ -2,7 +2,7 @@
   "schema_version": 1,
   "checked": "2026-11-25",
   "manifest_url": "https://titancsa.github.io/integration.json",
-  "manifest_sha256": "200da138634c2b1aed62e0c5c7ea836832eff0d12a79b70d5387bf4a38bd47d8",
+  "manifest_sha256": "388aad1f388179ac648293de69e1a3d3e63ed4fc7b25603f5ef99f828c1bac2b",
   "environment": "Windows x64, Visual Studio 2022 and CMake, build directory containing spaces",
   "scope": "A separate consumer used the live integration JSON and downloaded the exact SDK archives and sample sources it specifies. It built and ran the read-only first check for each listed app architecture.",
   "configuration_count": 7,
