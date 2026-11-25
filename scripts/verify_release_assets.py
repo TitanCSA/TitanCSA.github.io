@@ -37,7 +37,7 @@ def fetch_release(url):
 def official_assets(edition, tag, filenames):
     repository = urlparse(edition["repository"])
     if (repository.scheme != "https" or repository.netloc != "github.com"
-            or not re.fullmatch(r"/TitanCSA/[A-Za-z0-9._-]+", repository.path)):
+            or not re.fullmatch(r"/(?:TitanCSA|titanfyre)/[A-Za-z0-9._-]+", repository.path)):
         raise ValueError(f"{edition['slug']}: expected the official GitHub repository")
     if not re.fullmatch(r"[A-Za-z0-9._-]+", tag):
         raise ValueError("Unexpected release tag")
@@ -80,7 +80,7 @@ def candidate(edition, tag, version, sdk_role, overrides):
             raise ValueError("Use --asset once per replacement with an existing role and a filename")
         filenames[role] = filename
     assets = official_assets(edition, tag, filenames)
-    source_fields = {"slug", "demo", "tag", "commercial", "use", "api", "trial_starts", "note", "demo_files", "sdk_sha256"}
+    source_fields = {"slug", "demo", "tag", "commercial", "use", "api", "trial_starts", "note", "demo_files", "sdk_sha256", "setup_member"}
     row = {name: value for name, value in edition.items() if name in source_fields}
     row.update(demo=version, tag=tag, demo_files=filenames, sdk_sha256=assets[sdk_role][1])
     return row

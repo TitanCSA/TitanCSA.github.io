@@ -29,8 +29,16 @@ commercial_checked=release_data['commercial_checked']
 editions={}
 for edition in release_data['editions']:
     slug=edition['slug']
-    repo,title,_=featured[slug]
-    repo_url=f'https://github.com/TitanCSA/{repo}'
+    if slug in featured:
+        repo,title,_=featured[slug]
+        repo_url=f'https://github.com/TitanCSA/{repo}'
+        overview=f'{BASE}projects/{slug}/'
+    elif slug=='titan-audio-link':
+        title='Titan Audio Link'
+        repo_url='https://github.com/titanfyre/Titan-Audio-Link'
+        overview=f'{BASE}guides/titan-audio-link-first-run/'
+    else:
+        raise ValueError(f'Unknown edition {slug}')
     assets={role:f'{repo_url}/releases/download/{edition["tag"]}/{filename}' for role,filename in edition['demo_files'].items()}
     primary=assets.get('installer') or assets['archive']
     editions[slug]={
@@ -40,10 +48,11 @@ for edition in release_data['editions']:
         'demo_url':f'{repo_url}/releases/tag/{edition["tag"]}',
         'demo_download_url':primary,
         'demo_assets':assets,
-        'overview_url':f'{BASE}projects/{slug}/',
+        'overview_url':overview,
         'release_contact':{'platform':'Discord','username':'titancsa','instructions_url':BASE.rstrip('/')+contact_path},
     }
-assert set(editions)==set(featured) and len(editions)==len(release_data['editions'])
+assert set(editions)==set(featured)|{'titan-audio-link'} and len(editions)==len(release_data['editions'])
+input_editions={slug:editions[slug] for slug in featured}
 integration=make_manifest(BASE,editions)
 assert len(projects)==60 and len({p['url'].lower() for p in projects})==60
 assert all(p['url'].startswith(('https://github.com/TitanCSA/','https://github.com/titanfyre/')) for p in projects)
@@ -78,10 +87,10 @@ replacements['INSTALLER_SDK_ROWS_FR']=sdk_rows(integration,french=True)
 replacements['COMMERCIAL_CHECK_DATE']=commercial_checked
 replacements['SUPPORT_ISSUE_FORMS']=''.join(
     f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'
-    for e in editions.values()
+    for e in input_editions.values()
 )
 language_package_rows=[]
-for slug,edition in editions.items():
+for slug,edition in input_editions.items():
     java_version,gem=('1.0.1','interceptor-multilang') if slug=='interceptor' else ('1.0.0',slug)
     language_package_rows.append(
         f'<tr><th scope="row"><a href="{edition["overview_url"]}">{escape(edition["name"])}</a></th>'
@@ -102,7 +111,7 @@ replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
     f'<td role="cell">{escape(plain_by_slug[e["slug"]])}</td>'
     f'<td role="cell"><a href="{e["demo_download_url"]}">Download {escape(e["name"])} demo {e["demo"]}</a><br>'
     f'<a href="{e["demo_url"]}">Release notes</a></td></tr>'
-    for e in editions.values()
+    for e in input_editions.values()
 )
 pages={
  '':('TitanCSA — Windows tools, device SDKs and practical guides','Find Windows input tools, virtual devices, diagnostics and SDKs by workflow. Clear first-run guides, project licences, public evidence and known limits.','index.html'),

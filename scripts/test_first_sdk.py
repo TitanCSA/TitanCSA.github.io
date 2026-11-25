@@ -20,7 +20,7 @@ GENERATORS = {"x86": "Win32", "x64": "x64"}
 
 def checked_archive(url, expected, destination):
     parsed = urlsplit(url)
-    if parsed.scheme != "https" or parsed.netloc != "github.com" or not parsed.path.startswith("/TitanCSA/"):
+    if parsed.scheme != "https" or parsed.netloc != "github.com" or not parsed.path.startswith(("/TitanCSA/", "/titanfyre/")):
         raise ValueError(f"Expected an official GitHub SDK asset: {url}")
     if not re.fullmatch(r"[a-f0-9]{64}", expected):
         raise ValueError("Missing SHA-256 for the SDK archive")
@@ -71,6 +71,9 @@ def make_project(directory, sdk, recipe, arch):
     else:
         library = sdk / arch / "interception.lib"
         cmake.append(f'target_link_libraries(first-sdk-check PRIVATE "{library.as_posix()}")')
+    libraries = recipe.get("link_libraries", [])
+    if libraries:
+        cmake.append("target_link_libraries(first-sdk-check PRIVATE " + " ".join(libraries) + ")")
     (directory / "CMakeLists.txt").write_text("\n".join(cmake) + "\n", encoding="utf-8")
 
 
@@ -102,7 +105,14 @@ def run_check(slug, arch, run, expect_clean, cached_archive, verbose):
         else:
             checked_archive(url, edition["sdk_sha256"], archive)
         safe_extract(archive, folder / "sdk")
+        setup_member = edition.get("setup_member")
+        if setup_member and not (folder / "sdk" / setup_member).is_file():
+            raise ValueError("The downloaded demo archive does not have the documented installer")
         sdk = folder / "sdk" / sdk_folder(edition, recipe)
+        implementation = recipe["implementation"]
+        header = f"{Path(implementation).stem}.h" if implementation else "interception.h"
+        if not (sdk / header).is_file():
+            raise ValueError("The pinned SDK archive is missing its documented native header")
         make_project(folder, sdk, recipe, arch)
         build = folder / "build"
         cmake(["-S", str(folder), "-B", str(build), "-G", "Visual Studio 17 2022", "-A", GENERATORS[arch]], verbose)
@@ -116,12 +126,11 @@ def run_check(slug, arch, run, expect_clean, cached_archive, verbose):
                                 encoding="utf-8", errors="replace")
         print(result.stdout, end="")
         print(result.stderr, end="")
-        if recipe["needs_installed_driver"]:
-            valid = result.returncode == 2 and "Windows 2" in result.stderr
-            if not expect_clean:
-                valid |= result.returncode == 0 and "Driver answered." in result.stdout
-        else:
-            valid = result.returncode == 0 and "Keyboard slots: 10; mouse slots: 10." in result.stdout
+        expected = [recipe["expected_without_driver"]]
+        if not expect_clean:
+            expected.append(recipe["expected_after_setup"])
+        valid = any(result.returncode == item["exit_code"] and
+                    item["output_contains"] in result.stdout + result.stderr for item in expected)
         if not valid:
             raise RuntimeError(f"Unexpected {slug} sample result: exit {result.returncode}")
 

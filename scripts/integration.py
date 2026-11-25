@@ -30,6 +30,9 @@ def make_manifest(base, editions):
         implementation = recipe["implementation"]
         api = "C++17" if implementation else "C"
         needs_driver = recipe["needs_installed_driver"]
+        header = f"{Path(implementation).stem}.h" if implementation else "interception.h"
+        desktop_libraries = recipe.get("link_libraries", [])
+        app_architectures = recipe["app_architectures"]
         rows.append({
             "id": slug,
             "name": edition["name"],
@@ -41,6 +44,7 @@ def make_manifest(base, editions):
                 "notes_url": edition["demo_url"],
                 "setup_download_url": edition["demo_download_url"],
                 "setup_format": "installer" if "installer" in edition["demo_assets"] else "zip",
+                "setup_member": edition.get("setup_member"),
                 "supported_driver_architecture": "x64",
                 "trial_starts_on": edition["trial_starts"],
             },
@@ -52,15 +56,22 @@ def make_manifest(base, editions):
                 "source_sha256": sha256(sample_path.read_bytes()).hexdigest(),
                 "source_file": recipe["sample"],
                 "archive_member_directory": sdk_folder(edition, recipe),
+                "header_file": header,
                 "implementation_file": implementation,
-                "app_architectures": recipe["app_architectures"],
+                "link_libraries": desktop_libraries,
+                "import_library_by_architecture": ({} if implementation else
+                    {arch: f"{arch}/interception.lib" for arch in app_architectures}),
+                "runtime_file_by_architecture": ({} if implementation else
+                    {arch: f"{arch}/interception.dll" for arch in app_architectures}),
+                "app_architectures": app_architectures,
                 "needs_installed_driver": needs_driver,
                 "opens_input_context": recipe["opens_input_context"],
                 "starts_demo_timer": recipe["starts_demo_timer"],
-                "result": ("Driver answered." if needs_driver
-                           else "Library loaded. Keyboard slots: 10; mouse slots: 10."),
+                "result": recipe["expected_after_setup"]["output_contains"],
+                "expected_without_driver": recipe["expected_without_driver"],
+                "expected_after_setup": recipe["expected_after_setup"],
                 "exit_codes": {
-                    "0": "The driver answered a status query." if needs_driver else "The matching DLL classified its slots.",
+                    "0": "The check completed.",
                     "1": "The check failed. Read the diagnostic.",
                     **({"2": "Windows could not find the driver interface."} if needs_driver else {}),
                 },
@@ -105,9 +116,14 @@ def sdk_rows(manifest, french=False):
                  *labels[1:]),
             )
         ]
+        setup_hint = ""
+        if setup["setup_member"]:
+            file = escape(Path(setup["setup_member"]).name)
+            label = "Ouvre ensuite" if french else "Then open"
+            setup_hint = f'<br>{label} <code>{file}</code>'
         lines.append(
             f'<tr><th scope="row"><a href="{escape(row["overview_url"], quote=True)}">{escape(row["name"])}</a></th>'
-            f'<td>{links[0]}</td><td>{sdk["api"]} · {architecture}<br>{links[1]} · {links[2]}</td></tr>'
+            f'<td>{links[0]}{setup_hint}</td><td>{sdk["api"]} · {architecture}<br>{links[1]} · {links[2]}</td></tr>'
         )
     return "\n".join(lines)
 
@@ -142,6 +158,7 @@ the driver interface. Install the matching demo and run the check again.
 
 For Interception V2, append --arch x86 if your own app is 32-bit.
 The sample reports DLL slot ranges without opening a device context.
+For Titan Audio Link, zero matching endpoints is normal before installation.
 
 See integration.json for edition IDs and official source links.
 Human instructions are at https://titancsa.github.io/guides/installer-and-sdk/

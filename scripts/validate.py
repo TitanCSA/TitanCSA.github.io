@@ -117,7 +117,7 @@ for item in entries:
 project_pages={path for path in parsed if path.parent.parent.name=='projects'}
 assert len(project_pages)==5
 editions={row['slug']:row for row in json.loads((OUT/'releases.json').read_text(encoding='utf8'))['editions']}
-assert set(editions)=={path.parent.name for path in project_pages}
+assert {row['slug'] for row in editions.values() if '/projects/' in row['overview_url']} == {path.parent.name for path in project_pages}
 comparison=parsed[(OUT/'guides/windows-input-release-compare/index.html').resolve()]
 french_comparison=by_canonical[BASE+'fr/pilotes-entree-windows/']
 assert comparison.alternates=={'en':comparison.canonical,'fr':french_comparison.canonical}
@@ -156,6 +156,12 @@ for row in manifest['products']:
     assert re.fullmatch(r'[a-z0-9-]+\.(cpp|c)', check['source_file'])
     assert sha256((OUT/'assets'/check['source_file']).read_bytes()).hexdigest() == check['source_sha256']
     assert check['opens_input_context'] is check['starts_demo_timer'] is False
+    assert check['header_file'].endswith('.h')
+    if check['implementation_file']:
+        assert not check['runtime_file_by_architecture']
+    else:
+        assert set(check['runtime_file_by_architecture']) == set(check['app_architectures'])
+        assert set(check['import_library_by_architecture']) == set(check['app_architectures'])
     assert check['app_architectures']==(['x86','x64'] if row['id']=='interception-v2' else ['x64'])
     for route in manifest['guides'].values():
         page = by_canonical[route]

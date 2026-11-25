@@ -9,7 +9,15 @@
     "needs_installed_driver": true,
     "opens_input_context": false,
     "starts_demo_timer": false,
-    "sdk_subdirectory": "Interceptor"
+    "sdk_subdirectory": "Interceptor",
+    "expected_without_driver": {
+      "exit_code": 2,
+      "output_contains": "Windows 2"
+    },
+    "expected_after_setup": {
+      "exit_code": 0,
+      "output_contains": "Driver answered."
+    }
   },
   "interceptor-keyboard-mouse": {
     "asset_role": "sdk",
@@ -21,7 +29,15 @@
     "needs_installed_driver": true,
     "opens_input_context": false,
     "starts_demo_timer": false,
-    "sdk_subdirectory": "Interceptor"
+    "sdk_subdirectory": "Interceptor",
+    "expected_without_driver": {
+      "exit_code": 2,
+      "output_contains": "Windows 2"
+    },
+    "expected_after_setup": {
+      "exit_code": 0,
+      "output_contains": "Driver answered."
+    }
   },
   "interceptor-gamepad-controller": {
     "asset_role": "sdk",
@@ -33,7 +49,15 @@
     "needs_installed_driver": true,
     "opens_input_context": false,
     "starts_demo_timer": false,
-    "sdk_subdirectory": "Interceptor"
+    "sdk_subdirectory": "Interceptor",
+    "expected_without_driver": {
+      "exit_code": 2,
+      "output_contains": "Windows 2"
+    },
+    "expected_after_setup": {
+      "exit_code": 0,
+      "output_contains": "Driver answered."
+    }
   },
   "vdevice": {
     "asset_role": "sdk",
@@ -45,7 +69,15 @@
     "needs_installed_driver": true,
     "opens_input_context": false,
     "starts_demo_timer": false,
-    "sdk_subdirectory": "Vdevice"
+    "sdk_subdirectory": "Vdevice",
+    "expected_without_driver": {
+      "exit_code": 2,
+      "output_contains": "Windows 2"
+    },
+    "expected_after_setup": {
+      "exit_code": 0,
+      "output_contains": "Driver answered."
+    }
   },
   "interception-v2": {
     "asset_role": "archive",
@@ -58,6 +90,41 @@
     "needs_installed_driver": false,
     "opens_input_context": false,
     "starts_demo_timer": false,
-    "sdk_subdirectory": "Interception/library"
+    "sdk_subdirectory": "Interception/library",
+    "expected_without_driver": {
+      "exit_code": 0,
+      "output_contains": "Library loaded. Keyboard slots: 10; mouse slots: 10."
+    },
+    "expected_after_setup": {
+      "exit_code": 0,
+      "output_contains": "Library loaded. Keyboard slots: 10; mouse slots: 10."
+    }
+  },
+  "titan-audio-link": {
+    "asset_role": "archive",
+    "sdk_subdirectory": "SDK",
+    "sample": "audio-link-inventory.cpp",
+    "implementation": "AudioLink.cpp",
+    "link_libraries": [
+      "ole32",
+      "uuid",
+      "propsys",
+      "cfgmgr32",
+      "avrt"
+    ],
+    "app_architectures": [
+      "x64"
+    ],
+    "needs_installed_driver": false,
+    "opens_input_context": false,
+    "starts_demo_timer": false,
+    "expected_without_driver": {
+      "exit_code": 0,
+      "output_contains": "Audio inventory read. Titan endpoints: 0."
+    },
+    "expected_after_setup": {
+      "exit_code": 0,
+      "output_contains": "Audio inventory read. Titan endpoints: "
+    }
   }
 }

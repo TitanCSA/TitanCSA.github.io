@@ -9,22 +9,23 @@
 <h2>Essayer un pilote</h2>
 <ol>
   <li>Choisis ton édition. Télécharge son <strong>installateur</strong> dans le tableau.</li>
-  <li>Ouvre-le, accepte la demande administrateur de Windows et clique sur <strong>Install</strong>. Pour Interception V2, décompresse le ZIP entier et suis les étapes du projet.</li>
-  <li>Ouvre l’exemple indiqué sur la fiche. Appuie sur une touche, bouge un stick ou crée la souris virtuelle selon l’édition choisie.</li>
+  <li>Ouvre-le, accepte la demande administrateur de Windows et clique sur <strong>Install</strong>. Si tu as téléchargé un ZIP, décompresse-le d’abord et ouvre l’installateur indiqué dans le tableau.</li>
+  <li>Ouvre l’exemple indiqué sur la fiche. Appuie sur une touche, bouge un stick ou crée la souris virtuelle selon l’édition choisie. Pour Titan Audio Link, essaie le câble audio dans l’application.</li>
 </ol>
 <details class="more-info">
   <summary>Voir le bouton d’installation</summary>
   <figure><img src="/assets/interceptor-setup-preview.png" loading="lazy" alt="Fenêtre Interceptor avant installation. Le premier bouton à gauche s’appelle Install / reinstall."><figcaption>Capture de la documentation d’Interceptor 1.4.15.0. Le numéro de ta version peut être différent. Le bouton s’appelle <strong>Install / reinstall</strong>.</figcaption></figure>
 </details>
 <h2>Téléchargements par édition</h2>
-<div class="table-scroll"><table><thead><tr><th scope="col">Édition</th><th scope="col">Pour essayer</th><th scope="col">Pour programmer</th></tr></thead><tbody>{{INSTALLER_SDK_ROWS_FR}}</tbody></table></div>
+<div class="table-scroll"><table class="edition-comparison" role="table" aria-label="Téléchargements SDK par édition"><thead><tr><th scope="col">Édition</th><th scope="col">Pour essayer</th><th scope="col">Pour programmer</th></tr></thead><tbody>{{INSTALLER_SDK_ROWS_FR}}</tbody></table></div>
 <details class="more-info">
   <summary>Compiler le premier test SDK</summary>
   <p>Installe Visual Studio 2022 avec le développement de bureau en C++, CMake 3.20+ et Python 3.10+. Décompresse le <a href="/downloads/first-sdk-checks.zip">ZIP de premiers tests SDK</a>, ouvre PowerShell dans ce dossier et lance une commande.</p>
   <pre><code>python scripts/test_first_sdk.py vdevice --run</code></pre>
   <p>Le script vérifie le SHA-256 du ZIP exact, compile l’exemple et l’exécute. Remplace <code>vdevice</code> par l’identifiant de l’édition dans le <a href="/integration.json">fichier d’intégration</a>. Pour la bibliothèque Interception V2 en 32 bits, ajoute <code>--arch x86</code>.</p>
-  <ul><li>Pour Interceptor et Vdevice, <strong>Driver answered</strong> signifie que le pilote a répondu. <strong>Windows 2</strong> indique que le test ne trouve pas son interface.</li><li>Pour Interception V2, le test fonctionne sans pilote et affiche <strong>10 emplacements clavier et 10 souris</strong>. Pour voir les périphériques connectés, utilise ensuite <a href="/guides/interception-v2-migration/">l’exemple d’inventaire</a>. Celui-ci ouvre un contexte et démarre la démo.</li></ul>
+  <ul><li>Pour Interceptor et Vdevice, <strong>Driver answered</strong> signifie que le pilote a répondu. <strong>Windows 2</strong> indique que le test ne trouve pas son interface.</li><li>Pour Interception V2, le test fonctionne sans pilote et affiche <strong>10 emplacements clavier et 10 souris</strong>. Pour voir les périphériques connectés, utilise ensuite <a href="/guides/interception-v2-migration/">l’exemple d’inventaire</a>. Celui-ci ouvre un contexte et démarre la démo.</li><li>Pour Titan Audio Link, <strong>0 endpoint Titan</strong> est normal avant l’installation. Le test compte les entrées et sorties audio Titan. Il ne joue et n’enregistre aucun son.</li></ul>
   <p>Les premiers tests ne capturent aucune entrée et ne créent aucun périphérique virtuel. Ils ne démarrent pas le compteur de démo. Le numéro de version du pilote et le numéro de l’interface affiché par le test sont deux informations différentes.</p>
-  <p><a href="/fr/installer-sdk-windows/">Installer les paquets Python, Node.js, .NET ou PowerShell</a>.</p>
+  <p>Dans ton application C++, utilise les fichiers <code>.h</code> et <code>.cpp</code> du même ZIP. Pour Interception V2, lie le fichier <code>.lib</code> et place la DLL de la bonne architecture à côté de ton programme. Les noms exacts sont dans le fichier d’intégration.</p>
+<p><a href="/fr/installer-sdk-windows/">Installer les paquets Python, Node.js, .NET ou PowerShell</a>.</p>
 </details>
 <p><a href="/fr/pilotes-entree-windows/#contact-release">Version sans la limite d’une heure · Discord titancsa</a></p>

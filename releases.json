@@ -101,7 +101,26 @@
         "archive": "Interception-V2.zip",
         "checksums": "SHA256SUMS.txt"
       },
-      "sdk_sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed"
+      "sdk_sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
+      "setup_member": "Interception/command line installer/install-interception.exe"
+    },
+    {
+      "slug": "titan-audio-link",
+      "demo": "0.2.0.0",
+      "tag": "v0.2.0-demo",
+      "commercial": {
+        "package_version": "0.2.1.2",
+        "driver_version": "0.2.1.0"
+      },
+      "use": "Send the audio output of one Windows app to the recording input of another.",
+      "api": "C++17 SDK over WASAPI shared mode",
+      "trial_starts": "first successful capture",
+      "note": "The complete demo ZIP contains the installer, app and C++ SDK.",
+      "demo_files": {
+        "archive": "Titan-Audio-Link-0.2.0-Demo-Windows-x64.zip"
+      },
+      "sdk_sha256": "3b828ffb415c327d5311c7124b1c14dad8f3166c077b3eadfb006124a8f18e19",
+      "setup_member": "Installers/TitanAudioLinkSetup.exe"
     }
   ]
 }
