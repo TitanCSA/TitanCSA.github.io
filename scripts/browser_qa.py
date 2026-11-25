@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1];out=ROOT/'.local/qa';out.mkdir(parents=True,exist_ok=True)
 base=sys.argv[1].rstrip('/')+'/' if len(sys.argv)>1 else 'http://127.0.0.1:8778/'
 errors=[];checks=[]
-routes=['','guides/first-run/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
+routes=['','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
         'guides/windows-input-release-compare/','guides/release-activation-help/',
         'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','guides/vdevice-custom-hid-test/',
@@ -46,6 +46,15 @@ with sync_playwright() as p:
     page.goto(base,wait_until='networkidle');assert page.locator('[data-project]:visible').count()==60
     page.locator('a[href="/guides/first-run/"]').first.click()
     assert page.url.endswith('/guides/first-run/') and page.locator('h1').inner_text().startswith('A useful first run')
+    page.locator('main a[lang="fr"]').click()
+    assert page.url.endswith('/fr/essayer-sans-pilote/') and page.locator('html').get_attribute('lang')=='fr'
+    assert page.locator('main .guide-card:visible').count()==4
+    page.locator('main details.first-run-more > summary').first.click()
+    assert page.locator('main .guide-card:visible').count()==8
+    page.locator('main .guide-card details > summary').first.click()
+    image=page.locator('main .first-run-image').first
+    image.scroll_into_view_if_needed()
+    page.wait_for_function('document.querySelector(".first-run-image").naturalWidth > 0')
     page.goto(base+'guides/windows-input-release-compare/',wait_until='domcontentloaded')
     contacts=page.locator('main a[href="/about/evidence/#release-contact"]')
     assert contacts.first.is_visible()

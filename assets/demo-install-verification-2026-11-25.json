@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-25",
+  "evidence_type": "Publisher reproduction in a dedicated Hyper-V lab",
+  "limits": "This run covers these demo packages and status queries. Commercial activation, real input capture and virtual device creation are outside its scope.",
+  "editions": {
+    "interceptor": {
+      "test_date": "2026-11-25",
+      "scope": "Published demo console installer, Windows driver package inventory, kernel image SHA-256, catalogue signature and read-only SDK query.",
+      "environment": {
+        "windows_build": 26100,
+        "architecture": "x64",
+        "secure_boot": true
+      },
+      "version": "1.4.22.0",
+      "installer_sha256": "adfd6fde565aee57a1c7d669b92c4cf9ea6be0789f37553bad32ee0a5eb8fbe2",
+      "installer_exit_code": 0,
+      "sdk_archive_sha256": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f",
+      "installed_kernel_sha256": "d091a6f832f34d28c9b1337358a5ea1504a09d222445c0c42932e0eabefc37f5",
+      "catalogue_signature": "Valid",
+      "compiled_sample_sha256": "033d819bf57549e9b4831002a82912e5da84272c2a0087f23242b59bba333f50",
+      "sample_exit_code": 0,
+      "sample_output": "Driver answered. Status ABI version 4"
+    },
+    "interceptor-gamepad-controller": {
+      "test_date": "2026-11-25",
+      "scope": "Published demo console installer, Windows driver package inventory, kernel image SHA-256, catalogue signature and read-only SDK query.",
+      "environment": {
+        "windows_build": 26100,
+        "architecture": "x64",
+        "secure_boot": true
+      },
+      "version": "1.0.13.0",
+      "installer_sha256": "3a2d2ff6c011c506f2f4e1162769ad854a0bb9840c8d351b204794da8d85d047",
+      "installer_exit_code": 0,
+      "sdk_archive_sha256": "f50d10483bdb4875c63a822c8d333768d6da4d54316b60a433b0d5670373ea02",
+      "installed_kernel_sha256": "2b792a9d6398de9cf46ddbb7db6075e70e2e4812d1e2083248205db04873a727",
+      "catalogue_signature": "Valid",
+      "compiled_sample_sha256": "586e1107f46b6ab63b21813f0f46f0b11bbad91dd96fed9267cb000770c18970",
+      "sample_exit_code": 0,
+      "sample_output": "Driver answered. Status ABI version 4"
+    },
+    "interceptor-keyboard-mouse": {
+      "test_date": "2026-11-25",
+      "scope": "Published demo console installer, Windows driver package inventory, kernel image SHA-256, catalogue signature and read-only SDK query.",
+      "environment": {
+        "windows_build": 26100,
+        "architecture": "x64",
+        "secure_boot": true
+      },
+      "version": "1.0.5.0",
+      "installer_sha256": "b2ab9c5f3793f0da90f940c091a0e650152657b5dad7197364c6e002a043cd6f",
+      "installer_exit_code": 0,
+      "sdk_archive_sha256": "31789cca1f20b10a1184b0234e8ebe699e31a191c20b80092075efa19d856328",
+      "installed_kernel_sha256": "562a52d2ef70867682a37eaeb1ad87cbca6a7bd186df8f272920ba7ddd834794",
+      "catalogue_signature": "Valid",
+      "compiled_sample_sha256": "956a27c077ddc3b35bb65877e171fd04530fc83fd6638ef58d1f77f6694717dd",
+      "sample_exit_code": 0,
+      "sample_output": "Driver answered. Status ABI version 4"
+    },
+    "vdevice": {
+      "test_date": "2026-11-25",
+      "scope": "Published demo console installer, Windows driver package inventory, kernel image SHA-256, catalogue signature and read-only SDK query.",
+      "environment": {
+        "windows_build": 26100,
+        "architecture": "x64",
+        "secure_boot": true
+      },
+      "version": "1.0.6.0",
+      "installer_sha256": "8c46c5ae67680e2813e61ec28301bf6e3ed24d8bb17a7eca8ae70634c8c0e07f",
+      "installer_exit_code": 0,
+      "sdk_archive_sha256": "eaa3b92c5da10cdb551d0877264369abf618fac32e379a5249d2f82218f019e2",
+      "installed_kernel_sha256": "74056f7fa1fc00b4833b3ada989f78ecdfcf56a002fe2af92c118072a5f70f39",
+      "catalogue_signature": "Valid",
+      "compiled_sample_sha256": "ed9ba16249e2bb26af3b101a5edc43126fc3ee3e15bec7a69409bc6b796feba3",
+      "sample_exit_code": 0,
+      "sample_output": "Driver answered. Info ABI version 1, device limit 16"
+    }
+  }
+}

@@ -4,7 +4,7 @@ from collections import OrderedDict
 from html import escape
 from xml.etree import ElementTree as ET
 import json,re,shutil
-from integration import make_manifest, sdk_rows, write_starter
+from integration import app_cards, make_manifest, sdk_rows, write_starter
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 data=json.loads((ROOT/'projects.json').read_text(encoding='utf8'));projects=data['projects'];checked=data['checked']
@@ -84,6 +84,9 @@ replacements={'PROJECT_COUNT':str(len(projects)),'CHECKED_DATE':checked,'PROJECT
 replacements['RELEASE_REVIEW_DATE']=release_date
 replacements['INSTALLER_SDK_ROWS_EN']=sdk_rows(integration)
 replacements['INSTALLER_SDK_ROWS_FR']=sdk_rows(integration,french=True)
+for lang in ('en', 'fr'):
+    replacements[f'APP_CARDS_{lang.upper()}']=app_cards(integration, lang)
+    replacements[f'APP_MORE_{lang.upper()}']=app_cards(integration, lang, more=True)
 replacements['COMMERCIAL_CHECK_DATE']=commercial_checked
 replacements['SUPPORT_ISSUE_FORMS']=''.join(
     f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'
@@ -116,6 +119,7 @@ replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
 pages={
  '':('TitanCSA — Windows tools, device SDKs and practical guides','Find Windows input tools, virtual devices, diagnostics and SDKs by workflow. Clear first-run guides, project licences, public evidence and known limits.','index.html'),
  'guides/first-run/':('A first Windows tool run without an input driver — TitanCSA','Start with Browser Control SDK, read-only Driver Readiness Inspector or offline fixture validation. Prerequisites, exact steps and expected results.','guides/first-run.html'),
+ 'fr/essayer-sans-pilote/':('Essayer un outil Windows sans installer de pilote — TitanCSA','Huit outils à essayer avec des étapes courtes, des captures et le résultat à vérifier.','guides/first-run-fr.html'),
  'guides/choose-input/':('Input interception or virtual devices? Choose the Windows path — TitanCSA','Compare physical-device filters, virtual USB creation and diagnostics. Match the SDK edition, device contract and observation path before a live test.','guides/choose-input.html'),
  'guides/read-benchmarks/':('How to read Windows input latency benchmarks — TitanCSA','Understand QPC endpoints, HID/Raw Input/XInput/WinMM receiver contracts, warm-up, tails, invalid runs and the difference between virtual and physical latency.','guides/read-benchmarks.html'),
  'guides/vdevice-virtual-usb-mouse/':('Create a virtual USB mouse on Windows with Vdevice — TitanCSA','Try a signed Windows 10/11 virtual USB mouse. Follow the mouse panel, verify movement and find the C++ example.','guides/vdevice-virtual-usb-mouse.html'),
@@ -144,6 +148,7 @@ demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second
 release_guides={'guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
 translations=(
     {'en':'guides/installer-and-sdk/','fr':'fr/installeur-et-sdk/'},
+    {'en':'guides/first-run/','fr':'fr/essayer-sans-pilote/'},
     {'en':'guides/release-activation-help/','fr':'fr/activation-release/'},
     {'en':'guides/windows-input-sdk-packages/','fr':'fr/installer-sdk-windows/'},
     {'en':'guides/windows-input-release-compare/','fr':'fr/pilotes-entree-windows/'},
@@ -154,7 +159,7 @@ reviewed={
     **dict.fromkeys(updated,featured_date),
     **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
     **dict.fromkeys(release_guides | {'','guides/choose-input/','about/evidence/',*(f'projects/{slug}/' for slug in editions)},release_date),
-    **dict.fromkeys({'guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/release-activation-help/','fr/activation-release/','about/evidence/','fr/installer-sdk-windows/'},'2026-11-25'),
+    **dict.fromkeys({'guides/first-run/','fr/essayer-sans-pilote/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/release-activation-help/','fr/activation-release/','about/evidence/','fr/installer-sdk-windows/'},'2026-11-25'),
     **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},commercial_checked),
 }
 release_terms='<p><strong><a href="/about/evidence/#release-contact">Version without the one-hour demo limit</a></strong> · Add <strong>titancsa</strong> on Discord and message the project name.</p>'
@@ -163,7 +168,7 @@ publisher={
     'sameAs':['https://github.com/TitanCSA'],
 }
 
-published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/')}
+published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/essayer-sans-pilote/')}
 reviewed.update(published_dates)
 
 
@@ -191,7 +196,7 @@ def render(title,description,path,body,article=False):
     for variants in translations:
         if path in variants.values():
             structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in variants.items())
-    if path in ('','guides/installer-and-sdk/','fr/installeur-et-sdk/') or path.startswith('projects/'):
+    if path in ('','guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/first-run/','fr/essayer-sans-pilote/') or path.startswith('projects/'):
         structured+=f'<link rel="alternate" type="application/json" href="{BASE}integration.json" title="SDK integration manifest">'
     if not path:
         structured+=f'<link rel="alternate" type="application/rss+xml" title="TitanCSA guides" href="{BASE}rss.xml">'
@@ -269,6 +274,8 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Installer, driver and SDK]({BASE}guides/installer-and-sdk/)',
     f'- [Installateur, pilote et SDK]({BASE}fr/installeur-et-sdk/)',
     f'- [SDK integration manifest]({BASE}integration.json)',
+    f'- [First Windows app runs without a driver]({BASE}guides/first-run/)',
+    f'- [Essayer un outil sans ajouter de pilote]({BASE}fr/essayer-sans-pilote/)',
     f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',
     f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',

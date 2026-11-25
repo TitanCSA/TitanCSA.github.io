@@ -150,6 +150,13 @@ for row in manifest['products']:
     demo, check = row['demo'], row['sdk_check']
     assert demo['version'] == edition['demo'] and demo['tag'] == edition['tag']
     assert demo['setup_download_url'] == edition['demo_download_url']
+    if evidence := demo.get('read_only_install_verification'):
+        evidence_file = OUT/evidence['url'].removeprefix(BASE)
+        proof = json.loads(evidence_file.read_text(encoding='utf8'))['editions'][row['id']]
+        assert evidence['edition'] == row['id'] and proof['version'] == demo['version']
+        assert proof['sdk_archive_sha256'] == check['archive_sha256']
+        assert proof['environment']['secure_boot'] is True and proof['sample_exit_code'] == 0
+        assert proof['catalogue_signature'] == 'Valid' and proof['installer_exit_code'] in (0, 3010)
     assert check['archive_url'] in edition['demo_assets'].values()
     assert re.fullmatch(r'[a-f0-9]{64}', check['archive_sha256'])
     assert check['source_url'] == BASE+'assets/'+check['source_file']
@@ -168,6 +175,27 @@ for row in manifest['products']:
         assert demo['setup_download_url'] in page.links
         assert check['source_url'] in page.links and check['archive_url'] in page.links
 assert 'licences.configcsa.com' not in (OUT/'integration.json').read_text(encoding='utf8')
+apps = manifest['applications']
+assert len(apps) == len({app['id'] for app in apps}) == len({app['source'] for app in apps})
+assert set(manifest['first_run_guides']) == {'en','fr'}
+for app in apps:
+    assert re.fullmatch(r'https://github.com/(TitanCSA|titanfyre)/[A-Za-z0-9._-]+', app['source'])
+    assert re.fullmatch(r'v[0-9.]+', app['tag']) and re.fullmatch(r'[A-Za-z0-9._-]+\.zip', app['zip'])
+    assert app['download_url'] == app['source']+'/releases/download/'+app['tag']+'/'+app['zip']
+    for key in ('sha256','executable_sha256'):
+        assert re.fullmatch(r'[a-f0-9]{64}', app[key])
+    assert set(app['purpose']) == set(app['steps']) == set(app['expected']) == {'en','fr'}
+    assert app['needs_input_driver_for_first_run'] is False and app['test']['exit_code'] == 0
+    for guide in manifest['first_run_guides'].values():
+        page = by_canonical[guide]
+        assert app['download_url'] in page.links
+        if 'picture' in app:
+            assert app['picture']['path'] in page.links
+        if 'source_url' in app['test']:
+            assert app['test']['source_url'].startswith(BASE+'assets/')
+            relative = app['test']['source_url'].removeprefix(BASE)
+            assert '/'+relative in page.links
+            assert sha256((OUT/relative).read_bytes()).hexdigest() == app['test']['source_sha256']
 download=OUT/'downloads/first-sdk-checks.zip'
 assert (OUT/'downloads/first-sdk-checks.zip.sha256').read_text(encoding='ascii').split()[0] == sha256(download.read_bytes()).hexdigest()
 with ZipFile(download) as package:

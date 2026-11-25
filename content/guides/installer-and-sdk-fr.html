@@ -9,15 +9,17 @@
 <h2>Essayer un pilote</h2>
 <ol>
   <li>Choisis ton édition. Télécharge son <strong>installateur</strong> dans le tableau.</li>
-  <li>Ouvre-le, accepte la demande administrateur de Windows et clique sur <strong>Install</strong>. Si tu as téléchargé un ZIP, décompresse-le d’abord et ouvre l’installateur indiqué dans le tableau.</li>
-  <li>Ouvre l’exemple indiqué sur la fiche. Appuie sur une touche, bouge un stick ou crée la souris virtuelle selon l’édition choisie. Pour Titan Audio Link, essaie le câble audio dans l’application.</li>
+  <li>Lance l’installation en administrateur. Pour un ZIP, décompresse-le d’abord. Clique sur <strong>Install</strong> dans l’installateur graphique ou suis la <a href="/guides/interception-v2-migration/#install-the-demo">commande Interception V2</a>.</li>
+  <li>Redémarre si l’installateur le demande. Ouvre l’exemple indiqué sur la fiche et suis son premier test.</li>
 </ol>
+<p>Tu changes d’édition Interceptor pour les mêmes périphériques ? Désinstalle l’ancienne édition et redémarre avant d’installer la nouvelle.</p>
 <details class="more-info">
   <summary>Voir le bouton d’installation</summary>
   <figure><img src="/assets/interceptor-setup-preview.png" loading="lazy" alt="Fenêtre Interceptor avant installation. Le premier bouton à gauche s’appelle Install / reinstall."><figcaption>Capture de la documentation d’Interceptor 1.4.15.0. Le numéro de ta version peut être différent. Le bouton s’appelle <strong>Install / reinstall</strong>.</figcaption></figure>
 </details>
 <h2>Téléchargements par édition</h2>
 <div class="table-scroll"><table class="edition-comparison" role="table" aria-label="Téléchargements SDK par édition"><thead><tr><th scope="col">Édition</th><th scope="col">Pour essayer</th><th scope="col">Pour programmer</th></tr></thead><tbody>{{INSTALLER_SDK_ROWS_FR}}</tbody></table></div>
+<p><a href="/assets/demo-install-verification-2026-11-25.json">Résultats du test Windows 11 pour les trois démos Interceptor et Vdevice</a> du 25 novembre 2026. Le test vérifie l’installation, la signature et une réponse du pilote en lecture seule.</p>
 <details class="more-info">
   <summary>Compiler le premier test SDK</summary>
   <p>Installe Visual Studio 2022 avec le développement de bureau en C++, CMake 3.20+ et Python 3.10+. Décompresse le <a href="/downloads/first-sdk-checks.zip">ZIP de premiers tests SDK</a>, ouvre PowerShell dans ce dossier et lance une commande.</p>

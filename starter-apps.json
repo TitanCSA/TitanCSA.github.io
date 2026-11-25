@@ -1,0 +1,262 @@
+[
+  {
+    "repository": "TitanCSA/Browser-Control-SDK",
+    "tag": "v0.2.0",
+    "zip": "Browser-Control-SDK-0.2.0-Windows-x64.zip",
+    "sha256": "332f285e5d1dd90673b61e7f84fa96b8982ce09a5a7cdb8dbed157f5901a48c5",
+    "id": "browser",
+    "name": "Browser Control SDK",
+    "executable": "BrowserControl.exe",
+    "executable_sha256": "f4bc88295269964459ae9e6665d96c3cf48c1cad886945cb651e095de86c9f77",
+    "purpose": {
+      "en": "Open a browser you can use normally or control from Python.",
+      "fr": "Ouvre un navigateur utilisable à la main ou depuis Python."
+    },
+    "steps": {
+      "en": "Extract the ZIP and open BrowserControl.exe. Open a page with the address bar.",
+      "fr": "Décompresse le ZIP et ouvre BrowserControl.exe. Ouvre une page depuis la barre d’adresse."
+    },
+    "expected": {
+      "en": "The dedicated browser displays your page. Its optional Python test prints Saved: Ada on a local page.",
+      "fr": "Le navigateur affiche ta page. Son test Python facultatif affiche Saved: Ada avec une page locale."
+    },
+    "test": {
+      "type": "loopback browser SDK test",
+      "source_path": "/assets/browser-sdk-first-run.py",
+      "expected": "Saved: Ada",
+      "exit_code": 0
+    }
+  },
+  {
+    "repository": "titanfyre/Driver-Readiness-Inspector",
+    "tag": "v0.1.0",
+    "zip": "Driver-Readiness-Inspector-0.1.0-Windows-x64.zip",
+    "sha256": "a775fad767e94fa103d698000dd2704cf5162d3bb519ff3e6047d66f88d48c21",
+    "id": "readiness",
+    "name": "Driver Readiness Inspector",
+    "executable": "DriverReadinessInspector.exe",
+    "executable_sha256": "50bbaaf1ecc689462af284dbc1cc016709fef7a1d80d90291b9f1e7e1f7db1c3",
+    "purpose": {
+      "en": "See what Windows reports about a device and save a report.",
+      "fr": "Vois ce que Windows indique sur un périphérique et enregistre un rapport."
+    },
+    "steps": {
+      "en": "Extract the ZIP, open DriverReadinessInspector.exe and select a device in the list.",
+      "fr": "Décompresse le ZIP, ouvre DriverReadinessInspector.exe et choisis un périphérique dans la liste."
+    },
+    "expected": {
+      "en": "The panel shows the selected device’s reported state. Export HTML if you need the report.",
+      "fr": "Le panneau affiche l’état du périphérique. Choisis Export HTML si tu veux garder un rapport."
+    },
+    "test": {
+      "type": "offline test",
+      "arguments": [
+        "--self-test"
+      ],
+      "exit_code": 0
+    },
+    "picture": {
+      "path": "/assets/first-run-readiness.png",
+      "alt": {
+        "en": "Driver Readiness Inspector with the example device selected and Export HTML above the list.",
+        "fr": "Driver Readiness Inspector avec un périphérique d’exemple sélectionné et le bouton Export HTML au-dessus."
+      }
+    }
+  },
+  {
+    "repository": "titanfyre/HID-Fixture-Studio",
+    "tag": "v0.1.2",
+    "zip": "HID-Fixture-Studio-0.1.2-Windows-x64.zip",
+    "sha256": "738cd677345dfe50d829a0cb906542484264c4b92e5c125f9df5427f0e7d87ba",
+    "id": "studio",
+    "name": "HID Fixture Studio",
+    "executable": "HIDFixtureStudio.exe",
+    "executable_sha256": "9ed11932aaf2b18d3626d20ce3707acabe0db2d8b1dc4f726983676595d29ca9",
+    "purpose": {
+      "en": "Check a virtual mouse or keyboard description before creating the device.",
+      "fr": "Vérifie la description d’une souris ou d’un clavier virtuel avant de créer le périphérique."
+    },
+    "steps": {
+      "en": "Extract the ZIP, open HIDFixtureStudio.exe, choose Mouse fixture, then Validate offline.",
+      "fr": "Décompresse le ZIP, ouvre HIDFixtureStudio.exe, choisis Mouse fixture puis Validate offline."
+    },
+    "expected": {
+      "en": "The status panel tells you if the example is valid.",
+      "fr": "Le panneau indique si l’exemple est valide."
+    },
+    "test": {
+      "type": "offline test",
+      "arguments": [
+        "--self-test"
+      ],
+      "exit_code": 0
+    },
+    "picture": {
+      "path": "/assets/first-run-studio.png",
+      "alt": {
+        "en": "HID Fixture Studio showing Mouse fixture at top left and Validate offline on the right.",
+        "fr": "HID Fixture Studio avec Mouse fixture en haut à gauche et Validate offline sur la droite."
+      }
+    }
+  },
+  {
+    "repository": "titanfyre/Input-CI-Runner",
+    "tag": "v0.1.0",
+    "zip": "Input-CI-Runner-0.1.0-Windows-x64.zip",
+    "sha256": "327fd6908c97bd33e50374004b96cdceef7e22ac98e7e3a1c9c3ae816577fba1",
+    "id": "runner",
+    "name": "Input CI Runner",
+    "executable": "InputCIRunner.exe",
+    "executable_sha256": "a502e4be62bd69b678dec854e3f44ed2eda341cc93580118f4fe0050673b991d",
+    "purpose": {
+      "en": "Check that a test input file is readable and valid.",
+      "fr": "Vérifie qu’un fichier de test est lisible et valide."
+    },
+    "steps": {
+      "en": "Extract the ZIP, open PowerShell in that folder and run this command.",
+      "fr": "Décompresse le ZIP, ouvre PowerShell dans ce dossier et lance la commande."
+    },
+    "expected": {
+      "en": "The result says Valid fixture and reports three sample actions.",
+      "fr": "Le résultat affiche Valid fixture et trois actions d’exemple."
+    },
+    "test": {
+      "type": "offline test",
+      "arguments": [
+        "validate",
+        "Examples\\mouse.json"
+      ],
+      "exit_code": 0
+    },
+    "command": ".\\InputCIRunner.exe validate .\\Examples\\mouse.json"
+  },
+  {
+    "repository": "titanfyre/Scanner-Route",
+    "tag": "v0.1.0",
+    "zip": "Scanner-Route-0.1.0-Windows-x64.zip",
+    "sha256": "8e266bf46363cb1c39e87409cde9b0a0a67aa8c8f754fe36c5b48553bd287e3d",
+    "id": "scanner",
+    "name": "Scanner Route",
+    "executable": "ScannerRoute.exe",
+    "executable_sha256": "fb5fc4dba506965797c8576b934bec1ebe5401ee4f19862ef939e409d63a777b",
+    "purpose": {
+      "en": "See how barcode scans can be displayed or saved.",
+      "fr": "Vois comment afficher ou enregistrer des codes-barres."
+    },
+    "steps": {
+      "en": "Extract the ZIP and run this command from its folder in PowerShell.",
+      "fr": "Décompresse le ZIP et lance la commande dans ce dossier avec PowerShell."
+    },
+    "expected": {
+      "en": "A preview lists sample barcodes.",
+      "fr": "Un aperçu affiche des codes-barres d’exemple."
+    },
+    "test": {
+      "type": "offline test",
+      "arguments": [
+        "--ui-self-test"
+      ],
+      "exit_code": 0
+    },
+    "command": ".\\ScannerRoute.exe --preview",
+    "picture": {
+      "path": "/assets/first-run-scanner.png",
+      "alt": {
+        "en": "Scanner Route in offline preview with two sample barcodes in the list.",
+        "fr": "Scanner Route en aperçu hors ligne avec deux codes-barres d’exemple."
+      }
+    }
+  },
+  {
+    "repository": "titanfyre/Assistive-Pointer",
+    "tag": "v0.1.0",
+    "zip": "Assistive-Pointer-0.1.0-Windows-x64.zip",
+    "sha256": "f2e25986908345e44671f7ce063a7ba7918ef7da0043f3a061bda2200fb91e95",
+    "id": "pointer",
+    "name": "Assistive Pointer",
+    "executable": "AssistivePointer.exe",
+    "executable_sha256": "f9d1ab20692275d94aa2461e23591b522ded7ff8e693304739f03f3dbad6304a",
+    "purpose": {
+      "en": "Try the controls that adjust how a mouse pointer moves.",
+      "fr": "Essaie les réglages qui modifient le déplacement du pointeur."
+    },
+    "steps": {
+      "en": "Extract the ZIP and run this command from its folder in PowerShell.",
+      "fr": "Décompresse le ZIP et lance la commande dans ce dossier avec PowerShell."
+    },
+    "expected": {
+      "en": "The app opens with sample data. A live mouse adjustment requires the matching driver.",
+      "fr": "L’application affiche des données d’exemple. Pour modifier une vraie souris, il faut le pilote indiqué par le projet."
+    },
+    "test": {
+      "type": "offline test",
+      "arguments": [
+        "--self-test"
+      ],
+      "exit_code": 0
+    },
+    "command": ".\\AssistivePointer.exe --preview"
+  },
+  {
+    "repository": "titanfyre/Controller-Repair-Bench",
+    "tag": "v0.1.0",
+    "zip": "Controller-Repair-Bench-0.1.0-Windows-x64.zip",
+    "sha256": "115f683c61e8c5166c299ec9952af4359673552f8d5ae3027d2a914d63204115",
+    "id": "controller",
+    "name": "Controller Repair Bench",
+    "executable": "ControllerRepairBench.exe",
+    "executable_sha256": "82a1671cb61ac1c093ea468173ddd5aa3b6ca01ce15a8f7639bc7764a12d53d2",
+    "purpose": {
+      "en": "See how a gamepad’s sticks and buttons are shown in a report.",
+      "fr": "Vois comment un rapport affiche les sticks et boutons d’une manette."
+    },
+    "steps": {
+      "en": "Extract the ZIP and run this command from its folder in PowerShell.",
+      "fr": "Décompresse le ZIP et lance la commande dans ce dossier avec PowerShell."
+    },
+    "expected": {
+      "en": "The app shows labelled sample values before you connect a controller.",
+      "fr": "L’application affiche des valeurs d’exemple avant de connecter une manette."
+    },
+    "test": {
+      "type": "offline test",
+      "arguments": [
+        "--self-test"
+      ],
+      "exit_code": 0
+    },
+    "command": ".\\ControllerRepairBench.exe --preview"
+  },
+  {
+    "repository": "TitanCSA/MouseControl",
+    "tag": "v1.1.0",
+    "zip": "MouseControl-1.1.0-Windows-x64.zip",
+    "sha256": "489cb516b66454e4ee7198029ff8e18a57258a70e208a4af5bc4e92cd2415059",
+    "id": "mouse",
+    "name": "MouseControl",
+    "executable": "MouseControl.exe",
+    "executable_sha256": "461dbd93fe3f5009a940fdd4772fe4f7bc3438dd91b97e7e28dfd7be115f6244",
+    "purpose": {
+      "en": "See the editor for mouse movements triggered by a key.",
+      "fr": "Découvre l’éditeur de mouvements de souris déclenchés par une touche."
+    },
+    "steps": {
+      "en": "Extract the ZIP and run this command from its folder in PowerShell.",
+      "fr": "Décompresse le ZIP et lance la commande dans ce dossier avec PowerShell."
+    },
+    "expected": {
+      "en": "The editor shows an offline preview.",
+      "fr": "L’éditeur affiche un aperçu hors ligne."
+    },
+    "test": {
+      "type": "offline self-test",
+      "arguments": [
+        "--self-test",
+        "report.json"
+      ],
+      "assertions": 38,
+      "exit_code": 0
+    },
+    "command": ".\\MouseControl.exe --preview"
+  }
+]

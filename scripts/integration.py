@@ -22,6 +22,8 @@ def make_manifest(base, editions):
     recipes = json.loads((ROOT / "sdk-checks.json").read_text(encoding="utf-8"))
     if recipes.keys() != editions.keys():
         raise ValueError("Every driver edition needs one SDK check recipe")
+    proof_file = "assets/demo-install-verification-2026-11-25.json"
+    installed_evidence = json.loads((ROOT / proof_file).read_text(encoding="utf-8"))["editions"]
 
     rows = []
     for slug, edition in editions.items():
@@ -33,7 +35,7 @@ def make_manifest(base, editions):
         header = f"{Path(implementation).stem}.h" if implementation else "interception.h"
         desktop_libraries = recipe.get("link_libraries", [])
         app_architectures = recipe["app_architectures"]
-        rows.append({
+        row = {
             "id": slug,
             "name": edition["name"],
             "source": edition["repository"],
@@ -82,7 +84,24 @@ def make_manifest(base, editions):
                     "scope": "Compile and run the documented first check. The build does not install a driver.",
                 },
             },
-        })
+        }
+        proof = installed_evidence.get(slug)
+        if proof and proof["version"] == edition["demo"] and proof["sdk_archive_sha256"] == edition["sdk_sha256"]:
+            row["demo"]["read_only_install_verification"] = {"url": base + proof_file, "edition": slug}
+        rows.append(row)
+    applications = json.loads((ROOT / "starter-apps.json").read_text(encoding="utf-8"))
+    for app in applications:
+        repository = f'https://github.com/{app["repository"]}'
+        app.update(
+            source=repository,
+            download_url=f'{repository}/releases/download/{app["tag"]}/{app["zip"]}',
+            platform="Windows x64",
+            needs_input_driver_for_first_run=False,
+        )
+        test = app["test"]
+        if "source_path" in test:
+            path = test.pop("source_path").lstrip("/")
+            test.update(source_url=base + path, source_sha256=sha256((ROOT / path).read_bytes()).hexdigest())
     return {
         "schema_version": 1,
         "reviewed": REVIEW_DATE,
@@ -97,7 +116,34 @@ def make_manifest(base, editions):
             "contact_guide_url": base + "about/evidence/#release-contact",
         },
         "products": rows,
+        "first_run_guides": {"en": base + "guides/first-run/", "fr": base + "fr/essayer-sans-pilote/"},
+        "applications": applications,
     }
+
+
+def app_cards(manifest, language, *, more=False):
+    french = language == "fr"
+    cards = []
+    apps = manifest["applications"]
+    for app in (apps[4:] if more else apps[:4]):
+        name = escape(app["name"])
+        download = escape(app["download_url"], quote=True)
+        download_label = "Télécharger le ZIP" if french else "Download the ZIP"
+        title = f'<h3 id="{app["id"]}">{name}</h3>'
+        intro = f'<p>{escape(app["purpose"][language])}</p>'
+        steps = f'<ol><li><a href="{download}">{download_label}</a>.</li><li>{escape(app["steps"][language])}</li></ol>'
+        command = f'<pre><code>{escape(app["command"])}</code></pre>' if "command" in app else ""
+        outcome = "À l’écran" if french else "What you should see"
+        result = f'<p><strong>{outcome}.</strong> {escape(app["expected"][language])}</p>'
+        screenshot = ""
+        if "picture" in app:
+            picture = app["picture"]
+            image_path = escape(picture["path"], quote=True)
+            alt = escape(picture["alt"][language], quote=True)
+            label = "Voir la capture" if french else "See the screenshot"
+            screenshot = f'<details><summary>{label}</summary><img class="first-run-image" loading="lazy" src="{image_path}" alt="{alt}"></details>'
+        cards.append(f'<article class="guide-card">{title}{intro}{steps}{command}{result}{screenshot}</article>')
+    return '<div class="guide-grid">' + "\n".join(cards) + '</div>'
 
 
 def sdk_rows(manifest, french=False):

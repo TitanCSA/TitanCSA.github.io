@@ -112,7 +112,14 @@ def main():
         count = check_edition(edition, recipes[edition["slug"]]["asset_role"])
         print(f"{edition['slug']} {edition['tag']}: {count} official assets and exact SDK digest")
         checked += count
-    print(f"Verified {checked} asset references across {len(editions)} pinned releases.")
+    apps = json.loads((ROOT / "dist" / "integration.json").read_text(encoding="utf-8"))["applications"]
+    for app in apps:
+        edition = {"slug": app["id"], "repository": app["source"]}
+        archive = official_assets(edition, app["tag"], {"zip": app["zip"]})["zip"]
+        if archive != (app["download_url"], app["sha256"]):
+            raise ValueError(f"{app['id']}: pinned app ZIP differs from the official release")
+        print(f"{app['id']} {app['tag']}: exact app ZIP digest")
+    print(f"Verified {checked + len(apps)} asset references across {len(editions) + len(apps)} pinned releases.")
 
 
 if __name__ == "__main__":
