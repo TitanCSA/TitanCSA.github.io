@@ -131,6 +131,17 @@ comparison=parsed[(OUT/'guides/windows-input-release-compare/index.html').resolv
 french_comparison=by_canonical[BASE+'fr/pilotes-entree-windows/']
 assert comparison.alternates=={'en':comparison.canonical,'fr':french_comparison.canonical}
 assert editions['vdevice']['demo_assets']['examples'] in french_comparison.links
+mouse_path='assets/vdevice-mouse-panel-2026-11-25.json'
+mouse_panel=json.loads((OUT/mouse_path).read_text(encoding='utf8'))
+assert mouse_panel['environment']['secure_boot'] is True and mouse_panel['driver']['signature_status']=='Valid'
+assert mouse_panel['results']['healthy_mouse_present_after_creation'] is True
+assert mouse_panel['results']['healthy_mouse_present_after_disconnect'] is False
+assert mouse_panel['results']['relative_motion_requested']=={'x':32,'y':0}
+if mouse_panel['demo_version']==editions['vdevice']['demo']:
+    assert mouse_panel['examples']['archive_url']==editions['vdevice']['demo_assets']['examples']
+    assert mouse_panel['examples']['archive_sha256']==editions['vdevice']['demo_asset_sha256']['examples']
+for route in ('guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/'):
+    assert '/'+mouse_path in by_canonical[BASE+route].links
 reference=(OUT/'llms.txt').read_text(encoding='utf8')
 for path in project_pages:
     edition=editions[path.parent.name]

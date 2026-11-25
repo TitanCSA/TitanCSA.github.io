@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-25",
+  "edition": "vdevice",
+  "demo_version": "1.0.6.0",
+  "environment": {
+    "windows_build": 26100,
+    "architecture": "x64",
+    "secure_boot": true,
+    "account": "administrator",
+    "virtual_machine": "Hyper-V"
+  },
+  "driver": {
+    "installation_exit_code": 0,
+    "kernel_sha256": "74056f7fa1fc00b4833b3ada989f78ecdfcf56a002fe2af92c118072a5f70f39",
+    "signature_status": "Valid",
+    "status_check_exit_code": 0
+  },
+  "examples": {
+    "archive_url": "https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/Vdevice-Examples-1.0.6.0.zip",
+    "archive_sha256": "603ad8e6192f9cba5efd75a0517f6cbf69a51831cd61b05d71c82de87f97ca32",
+    "program": "VdeviceMouseUI.exe",
+    "program_sha256": "9a3d542ab5e09136a57842515831ceca0afc22fc0047597339d7983665e4f95b"
+  },
+  "results": {
+    "healthy_mouse_present_before_creation": false,
+    "healthy_mouse_present_after_creation": true,
+    "ready": true,
+    "relative_motion_requested": {
+      "x": 32,
+      "y": 0
+    },
+    "ui_confirmation": "State sent.",
+    "healthy_mouse_present_after_disconnect": false,
+    "program_exit_code": 0
+  },
+  "scope": "Published mouse example and demo on a test VM. Windows Plug and Play independently confirmed creation and removal. The desktop pointer movement remains a manual check."
+}
