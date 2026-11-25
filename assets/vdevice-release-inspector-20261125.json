@@ -1,0 +1,30 @@
+{
+  "tested_utc_date": "2026-11-25",
+  "inspection_tool": {
+    "version": "0.1.0",
+    "release": "https://github.com/titanfyre/Driver-Readiness-Inspector/releases/tag/v0.1.0",
+    "zip_sha256": "a775fad767e94fa103d698000dd2704cf5162d3bb519ff3e6047d66f88d48c21"
+  },
+  "environment": {
+    "windows_build": 26100,
+    "architecture": "x64",
+    "secure_boot_enabled": true
+  },
+  "commercial_zip_version": "1.0.3.3",
+  "setup_exit": 0,
+  "service": "VdeviceRelease",
+  "before_install": {
+    "associated_pnp_nodes": 0,
+    "associated_services": 0
+  },
+  "after_install": {
+    "associated_pnp_nodes": 1,
+    "associated_services": 1,
+    "pnp_problem_code": 0,
+    "service_state": "running",
+    "binary": "VdeviceRelease.sys",
+    "binary_sha256": "b759735e01a59003e0c3195f317493e862eec3f10487da3b37ffb2169e62402e",
+    "package_version": "1.0.3.0"
+  },
+  "activation_key_used": false
+}
