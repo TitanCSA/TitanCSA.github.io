@@ -103,6 +103,7 @@ def make_manifest(base, editions):
             path = test.pop("source_path").lstrip("/")
             test.update(source_url=base + path, source_sha256=sha256((ROOT / path).read_bytes()).hexdigest())
     return {
+        "$schema": base + "integration.schema.json",
         "schema_version": 1,
         "reviewed": REVIEW_DATE,
         "project_catalogue_url": base + "projects.json",
@@ -179,6 +180,7 @@ def write_starter(out, manifest):
         "LICENSE": ROOT / "LICENSE",
         "sdk-checks.json": ROOT / "sdk-checks.json",
         "integration.json": out / "integration.json",
+        "integration.schema.json": out / "integration.schema.json",
         "dist/releases.json": out / "releases.json",
         "scripts/integration.py": ROOT / "scripts/integration.py",
         "scripts/test_first_sdk.py": ROOT / "scripts/test_first_sdk.py",

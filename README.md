@@ -32,6 +32,8 @@ Guides are in `content/`; presentation and local interactions are in `src/`. The
 
 The [public integration manifest](https://titancsa.github.io/integration.json) lists the setup download, SDK archive, app architectures, exact first check and expected output. Its bilingual download table and JSON use the same source data.
 
+The [JSON schema](https://titancsa.github.io/integration.schema.json) defines the fields used by tools consuming the manifest. Both files also ship in the portable starter ZIP. Keep existing fields compatible when adding an optional detail.
+
 Update the approved tag, demo version, asset filenames and SDK archive SHA-256 in releases.json. The build derives the native SDK folder from the archive's filename. The file sdk-checks.json holds the sample layout and supported app architectures, which only change when the integration changes.
 
 To preview a proposed update, run the release checker with the edition ID, public GitHub tag and driver version. The command prints the exact metadata without changing files.
@@ -44,10 +46,13 @@ Use --asset role=filename when the new release changes a filename's pattern. The
 python scripts/build.py
 python scripts/validate.py
 python scripts/verify_release_assets.py
+python scripts/verify_registry.py
 python scripts/test_first_sdk.py all --expect-clean
 ```
 
 Run the last command on a Windows x64 host with Visual Studio 2022 C++ desktop tools and CMake 3.20 or later. For a host with the corresponding driver already installed, use `python scripts/test_first_sdk.py <edition> --run`. It queries status without installing a driver or starting a demo.
+
+Update `starter-apps.json` after checking a new app's released ZIP and exact first run. Update `sdk-registry.json` after confirming that its version is installable from the named registry. The site generates both languages from those records and checks the public links and hashes in CI.
 
 ## Verification
 

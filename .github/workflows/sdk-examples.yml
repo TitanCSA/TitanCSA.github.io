@@ -14,8 +14,10 @@ on:
       - 'sdk-checks.json'
       - 'starter-apps.json'
       - 'sdk-registry.json'
+      - 'integration.schema.json'
       - 'scripts/registry.py'
       - 'scripts/verify_registry.py'
+      - 'scripts/verify_integration_schema.py'
       - 'assets/browser-sdk-first-run.py'
       - 'scripts/test_first_sdk.py'
       - 'scripts/integration.py'
@@ -34,8 +36,10 @@ on:
       - 'sdk-checks.json'
       - 'starter-apps.json'
       - 'sdk-registry.json'
+      - 'integration.schema.json'
       - 'scripts/registry.py'
       - 'scripts/verify_registry.py'
+      - 'scripts/verify_integration_schema.py'
       - 'assets/browser-sdk-first-run.py'
       - 'scripts/test_first_sdk.py'
       - 'scripts/integration.py'
@@ -53,11 +57,16 @@ jobs:
     timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - run: python3 scripts/build.py
       - run: python3 scripts/verify_release_assets.py
         env:
           TITANCSA_CATALOGUE_TOKEN: ${{ github.token }}
       - run: python3 scripts/verify_registry.py
+      - run: python3 -m pip install jsonschema==4.26.0 rfc3986-validator==0.1.1
+      - run: python3 scripts/verify_integration_schema.py
       - run: python3 -m unittest discover -s scripts/tests
   inventory:
     runs-on: windows-2022

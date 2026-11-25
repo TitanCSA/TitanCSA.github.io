@@ -144,6 +144,9 @@ for public_text in [*OUT.rglob('*.html'), OUT/'llms.txt', OUT/'releases.json', O
     assert 'licences.configcsa.com' not in public_text.read_text(encoding='utf8').lower(), public_text
 manifest = json.loads((OUT/'integration.json').read_text(encoding='utf8'))
 assert manifest['schema_version'] == 1
+schema=json.loads((OUT/'integration.schema.json').read_text(encoding='utf8'))
+assert manifest['$schema']==schema['$id']==BASE+'integration.schema.json'
+assert schema['properties']['schema_version']['const']==manifest['schema_version']
 preview = json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').read_text(encoding='utf8'))['setup_preview']
 assert preview['preview_exit_code'] == 0 and preview['secure_boot'] is True
 assert sha256((OUT/preview['screenshot_url'].removeprefix(BASE)).read_bytes()).hexdigest() == preview['screenshot_sha256']
@@ -214,7 +217,7 @@ for app in apps:
 download=OUT/'downloads/first-sdk-checks.zip'
 assert (OUT/'downloads/first-sdk-checks.zip.sha256').read_text(encoding='ascii').split()[0] == sha256(download.read_bytes()).hexdigest()
 with ZipFile(download) as package:
-    expected={'LICENSE','START-HERE.txt','sdk-checks.json','integration.json','dist/releases.json',
+    expected={'LICENSE','START-HERE.txt','sdk-checks.json','integration.json','integration.schema.json','dist/releases.json',
               'scripts/integration.py','scripts/test_first_sdk.py',
               *{'assets/'+row['sdk_check']['source_file'] for row in manifest['products']}}
     assert package.testzip() is None and set(package.namelist()) == expected

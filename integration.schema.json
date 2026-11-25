@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://titancsa.github.io/integration.schema.json",
+  "title": "TitanCSA Windows integration catalogue",
+  "description": "Versioned download and first-check instructions for applications, drivers and SDK packages.",
+  "type": "object",
+  "required": ["$schema", "schema_version", "reviewed", "guides", "first_run_guides", "commercial_contact", "products", "applications", "sdk_registry", "starter_zip_url", "starter_zip_checksum_url", "project_catalogue_url", "source_repository"],
+  "properties": {
+    "$schema": { "const": "https://titancsa.github.io/integration.schema.json" },
+    "schema_version": { "const": 1 },
+    "reviewed": { "type": "string", "format": "date" },
+    "guides": { "$ref": "#/$defs/guideUrls" },
+    "first_run_guides": { "$ref": "#/$defs/guideUrls" },
+    "project_catalogue_url": { "$ref": "#/$defs/url" },
+    "starter_zip_url": { "$ref": "#/$defs/url" },
+    "starter_zip_checksum_url": { "$ref": "#/$defs/url" },
+    "source_repository": { "$ref": "#/$defs/url" },
+    "commercial_contact": {
+      "type": "object",
+      "required": ["platform", "username", "contact_guide_url"],
+      "properties": {
+        "platform": { "const": "Discord" },
+        "username": { "type": "string", "minLength": 1 },
+        "contact_guide_url": { "$ref": "#/$defs/url" }
+      }
+    },
+    "products": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/driverProduct" }
+    },
+    "applications": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/windowsApp" }
+    },
+    "sdk_registry": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/registryPackage" }
+    }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "architectures": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["x64", "x86", "arm64"] }
+    },
+    "guideUrls": {
+      "type": "object",
+      "required": ["en", "fr"],
+      "additionalProperties": { "$ref": "#/$defs/url" }
+    },
+    "localizedText": {
+      "type": "object",
+      "required": ["en", "fr"],
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "driverProduct": {
+      "type": "object",
+      "required": ["id", "name", "source", "overview_url", "demo", "sdk_check"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1 },
+        "source": { "$ref": "#/$defs/url" },
+        "overview_url": { "$ref": "#/$defs/url" },
+        "demo": {
+          "type": "object",
+          "required": ["version", "tag", "notes_url", "setup_download_url", "setup_format", "setup_member", "supported_driver_architecture", "trial_starts_on"],
+          "properties": {
+            "version": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+){3}$" },
+            "tag": { "type": "string", "minLength": 1 },
+            "notes_url": { "$ref": "#/$defs/url" },
+            "setup_download_url": { "$ref": "#/$defs/url" },
+            "setup_format": { "enum": ["installer", "zip"] },
+            "setup_member": { "type": ["string", "null"] },
+            "supported_driver_architecture": { "enum": ["x64", "x86", "arm64"] },
+            "trial_starts_on": { "type": "string", "minLength": 1 }
+          }
+        },
+        "sdk_check": {
+          "type": "object",
+          "required": ["api", "archive_url", "archive_sha256", "source_url", "source_sha256", "source_file", "archive_member_directory", "header_file", "implementation_file", "link_libraries", "import_library_by_architecture", "runtime_file_by_architecture", "app_architectures", "needs_installed_driver", "opens_input_context", "starts_demo_timer", "expected_without_driver", "expected_after_setup"],
+          "properties": {
+            "api": { "enum": ["C", "C++17"] },
+            "archive_url": { "$ref": "#/$defs/url" },
+            "archive_sha256": { "$ref": "#/$defs/sha256" },
+            "source_url": { "$ref": "#/$defs/url" },
+            "source_sha256": { "$ref": "#/$defs/sha256" },
+            "source_file": { "type": "string", "minLength": 1 },
+            "archive_member_directory": { "type": "string", "minLength": 1 },
+            "header_file": { "type": "string", "minLength": 1 },
+            "implementation_file": { "type": ["string", "null"] },
+            "link_libraries": { "type": "array", "items": { "type": "string" } },
+            "import_library_by_architecture": { "type": "object", "additionalProperties": { "type": "string" } },
+            "runtime_file_by_architecture": { "type": "object", "additionalProperties": { "type": "string" } },
+            "app_architectures": { "$ref": "#/$defs/architectures" },
+            "needs_installed_driver": { "type": "boolean" },
+            "opens_input_context": { "const": false },
+            "starts_demo_timer": { "const": false },
+            "expected_without_driver": { "$ref": "#/$defs/checkOutcome" },
+            "expected_after_setup": { "$ref": "#/$defs/checkOutcome" }
+          }
+        }
+      }
+    },
+    "checkOutcome": {
+      "type": "object",
+      "required": ["exit_code", "output_contains"],
+      "properties": {
+        "exit_code": { "type": "integer", "minimum": 0 },
+        "output_contains": { "type": "string", "minLength": 1 }
+      }
+    },
+    "windowsApp": {
+      "type": "object",
+      "required": ["id", "name", "tag", "executable", "source", "download_url", "sha256", "executable_sha256", "purpose", "steps", "expected", "needs_input_driver_for_first_run", "test"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string", "minLength": 1 },
+        "tag": { "type": "string", "minLength": 1 },
+        "executable": { "type": "string", "pattern": "\\.exe$" },
+        "source": { "$ref": "#/$defs/url" },
+        "download_url": { "$ref": "#/$defs/url" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "executable_sha256": { "$ref": "#/$defs/sha256" },
+        "purpose": { "$ref": "#/$defs/localizedText" },
+        "steps": { "$ref": "#/$defs/localizedText" },
+        "expected": { "$ref": "#/$defs/localizedText" },
+        "needs_input_driver_for_first_run": { "const": false },
+        "test": {
+          "type": "object",
+          "required": ["type", "exit_code"],
+          "properties": {
+            "type": { "type": "string", "minLength": 1 },
+            "exit_code": { "const": 0 },
+            "arguments": { "type": "array", "items": { "type": "string" } },
+            "source_url": { "$ref": "#/$defs/url" },
+            "source_sha256": { "$ref": "#/$defs/sha256" }
+          },
+          "dependentRequired": { "source_url": ["source_sha256"], "source_sha256": ["source_url"] }
+        }
+      }
+    },
+    "registryPackage": {
+      "type": "object",
+      "required": ["edition", "ecosystem", "name", "version", "package_url", "metadata_url", "install_command", "install_context", "runtime", "architectures", "install_includes_driver_or_application", "first_check"],
+      "properties": {
+        "edition": { "$ref": "#/$defs/id" },
+        "ecosystem": { "enum": ["npm", "pypi", "nuget-managed", "nuget-native", "powershell"] },
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "package_url": { "$ref": "#/$defs/url" },
+        "metadata_url": { "$ref": "#/$defs/url" },
+        "install_command": { "type": "string", "minLength": 1 },
+        "install_context": { "type": "string", "minLength": 1 },
+        "runtime": { "type": "string", "minLength": 1 },
+        "architectures": { "$ref": "#/$defs/architectures" },
+        "install_includes_driver_or_application": { "const": false },
+        "first_check": {
+          "type": "object",
+          "required": ["call", "expected", "requires_installed_driver", "requires_application", "opens_input_context"],
+          "properties": {
+            "call": { "type": "string", "minLength": 1 },
+            "expected": { "type": "string", "minLength": 1 },
+            "requires_installed_driver": { "type": "boolean" },
+            "requires_application": { "type": "boolean" },
+            "opens_input_context": { "const": false }
+          }
+        },
+        "verified_archive": {
+          "type": "object",
+          "required": ["sha256"],
+          "properties": {
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "url": { "$ref": "#/$defs/url" },
+            "filename": { "type": "string", "minLength": 1 }
+          },
+          "oneOf": [{ "required": ["url"] }, { "required": ["filename"] }]
+        }
+      }
+    }
+  }
+}

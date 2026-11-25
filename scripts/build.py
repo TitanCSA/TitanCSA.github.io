@@ -272,6 +272,7 @@ search_robots=['OAI-SearchBot','Claude-SearchBot','Claude-User']
     encoding='utf8',
 )
 (OUT/'integration.json').write_text(json.dumps(integration,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+shutil.copyfile(ROOT/'integration.schema.json', OUT/'integration.schema.json')
 (OUT/'releases.json').write_text(
     json.dumps({'reviewed':release_date,'commercial_checked':commercial_checked,'editions':list(editions.values())},ensure_ascii=False,indent=2)+'\n',
     encoding='utf8',
@@ -281,6 +282,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Installer, driver and SDK]({BASE}guides/installer-and-sdk/)',
     f'- [Installateur, pilote et SDK]({BASE}fr/installeur-et-sdk/)',
     f'- [SDK integration manifest]({BASE}integration.json)',
+    f'- [Integration JSON schema]({BASE}integration.schema.json)',
     f'- [First Windows app runs without a driver]({BASE}guides/first-run/)',
     f'- [Essayer un outil sans ajouter de pilote]({BASE}fr/essayer-sans-pilote/)',
     f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',

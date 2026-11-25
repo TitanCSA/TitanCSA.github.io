@@ -117,8 +117,8 @@
       "fr": "Décompresse le ZIP, ouvre PowerShell dans ce dossier et lance la commande."
     },
     "expected": {
-      "en": "The result says Valid fixture and reports three sample actions.",
-      "fr": "Le résultat affiche Valid fixture et trois actions d’exemple."
+      "en": "The result displays Valid fixture and 3 reports.",
+      "fr": "Le résultat affiche Valid fixture et 3 reports."
     },
     "test": {
       "type": "offline test",

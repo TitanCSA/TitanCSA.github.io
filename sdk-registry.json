@@ -223,22 +223,25 @@
     "edition": "interception-v2",
     "ecosystem": "nuget-native",
     "name": "Interception-V2.Native",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "first_check": {
       "call": "interception_is_keyboard(1)",
       "expected": "True for the first keyboard slot. No driver context is needed.",
       "requires_installed_driver": false,
       "requires_application": false,
-      "opens_input_context": false
+      "opens_input_context": false,
+      "verification_scope": "Restored by NuGet and compiled using the shipped MSBuild targets in 32-bit and 64-bit Visual C++ builds, with /W4 /WX. Calls only slot classifiers.",
+      "static_library_source": true
     },
     "verified_archive": {
-      "url": "https://api.nuget.org/v3-flatcontainer/interception-v2.native/2.0.0/interception-v2.native.2.0.0.nupkg",
-      "sha256": "288f29278b3253d09887f47722ffae57d18cf6e131c47c07b610a0ae460a89ad"
+      "url": "https://api.nuget.org/v3-flatcontainer/interception-v2.native/2.0.1/interception-v2.native.2.0.1.nupkg",
+      "sha256": "248aa31a383642c87177b2799ff9e2a8542a97bd7f40e84e822975ec28c07b8c"
     },
     "architectures": [
       "x86",
       "x64"
-    ]
+    ],
+    "project_sdk_source_version": "2.0.0"
   },
   {
     "edition": "titan-audio-link",
