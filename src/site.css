@@ -50,3 +50,5 @@
 }
 
 .simple-hero{grid-template-columns:1fr;padding-bottom:34px}.simple-hero h1{max-width:26ch}.more-info{border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;margin-top:22px}.more-info summary{cursor:pointer;color:var(--blue);font-weight:650}.more-info[open] summary{margin-bottom:16px}
+
+.part-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;margin:18px 0 34px}.part-list div{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;background:var(--surface)}.part-list dt{font-weight:750;margin-bottom:4px}.part-list dd{margin:0;color:var(--muted);font-size:14px}

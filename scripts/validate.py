@@ -141,4 +141,24 @@ for path in project_pages:
     assert 'offers' not in app
 for public_text in [*OUT.rglob('*.html'), OUT/'llms.txt', OUT/'releases.json', OUT/'projects.json']:
     assert 'licences.configcsa.com' not in public_text.read_text(encoding='utf8').lower(), public_text
+manifest = json.loads((OUT/'integration.json').read_text(encoding='utf8'))
+assert manifest['schema_version'] == 1
+assert {row['id'] for row in manifest['products']} == set(editions)
+for row in manifest['products']:
+    edition = editions[row['id']]
+    demo, check = row['demo'], row['sdk_check']
+    assert demo['version'] == edition['demo'] and demo['tag'] == edition['tag']
+    assert demo['setup_download_url'] == edition['demo_download_url']
+    assert check['archive_url'] in edition['demo_assets'].values()
+    assert re.fullmatch(r'[a-f0-9]{64}', check['archive_sha256'])
+    assert check['source_url'] == BASE+'assets/'+check['source_file']
+    assert re.fullmatch(r'[a-z0-9-]+\.(cpp|c)', check['source_file'])
+    assert sha256((OUT/'assets'/check['source_file']).read_bytes()).hexdigest() == check['source_sha256']
+    assert check['opens_input_context'] is check['starts_demo_timer'] is False
+    assert check['app_architectures']==(['x86','x64'] if row['id']=='interception-v2' else ['x64'])
+    for route in manifest['guides'].values():
+        page = by_canonical[route]
+        assert demo['setup_download_url'] in page.links
+        assert check['source_url'] in page.links and check['archive_url'] in page.links
+assert 'licences.configcsa.com' not in (OUT/'integration.json').read_text(encoding='utf8')
 print('Validated',len(parsed),'HTML files, 60 entries, 10 workflows, metadata, JSON-LD, anchors and asset budgets')

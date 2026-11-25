@@ -1,0 +1,68 @@
+{
+  "interceptor": {
+    "asset_role": "sdk",
+    "sha256": "07ec461b39a2927df9a7f89b5958bc2cde533040e7054633d58cc55782020e1f",
+    "sample": "interceptor-status.cpp",
+    "implementation": "Interceptor.cpp",
+    "app_architectures": [
+      "x64"
+    ],
+    "needs_installed_driver": true,
+    "opens_input_context": false,
+    "starts_demo_timer": false,
+    "sdk_subdirectory": "Interceptor"
+  },
+  "interceptor-keyboard-mouse": {
+    "asset_role": "sdk",
+    "sha256": "31789cca1f20b10a1184b0234e8ebe699e31a191c20b80092075efa19d856328",
+    "sample": "interceptor-status.cpp",
+    "implementation": "Interceptor.cpp",
+    "app_architectures": [
+      "x64"
+    ],
+    "needs_installed_driver": true,
+    "opens_input_context": false,
+    "starts_demo_timer": false,
+    "sdk_subdirectory": "Interceptor"
+  },
+  "interceptor-gamepad-controller": {
+    "asset_role": "sdk",
+    "sha256": "f50d10483bdb4875c63a822c8d333768d6da4d54316b60a433b0d5670373ea02",
+    "sample": "interceptor-status.cpp",
+    "implementation": "Interceptor.cpp",
+    "app_architectures": [
+      "x64"
+    ],
+    "needs_installed_driver": true,
+    "opens_input_context": false,
+    "starts_demo_timer": false,
+    "sdk_subdirectory": "Interceptor"
+  },
+  "vdevice": {
+    "asset_role": "sdk",
+    "sha256": "eaa3b92c5da10cdb551d0877264369abf618fac32e379a5249d2f82218f019e2",
+    "sample": "vdevice-status.cpp",
+    "implementation": "Vdevice.cpp",
+    "app_architectures": [
+      "x64"
+    ],
+    "needs_installed_driver": true,
+    "opens_input_context": false,
+    "starts_demo_timer": false,
+    "sdk_subdirectory": "Vdevice"
+  },
+  "interception-v2": {
+    "asset_role": "archive",
+    "sha256": "907077812308406133066e329ba8544b73410d70dc5f86790c5c021e6a360aed",
+    "sample": "interception-slot-types.c",
+    "implementation": null,
+    "app_architectures": [
+      "x86",
+      "x64"
+    ],
+    "needs_installed_driver": false,
+    "opens_input_context": false,
+    "starts_demo_timer": false,
+    "sdk_subdirectory": "Interception/library"
+  }
+}

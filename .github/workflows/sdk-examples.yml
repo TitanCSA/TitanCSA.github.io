@@ -7,6 +7,12 @@ on:
       - '.github/workflows/sdk-examples.yml'
       - 'assets/interception-device-inventory.c'
       - 'assets/vdevice-hid-test.cpp'
+      - 'assets/interceptor-status.cpp'
+      - 'assets/vdevice-status.cpp'
+      - 'assets/interception-slot-types.c'
+      - 'sdk-checks.json'
+      - 'scripts/test_first_sdk.py'
+      - 'scripts/integration.py'
       - 'releases.json'
       - 'scripts/verify_release_assets.py'
   pull_request:
@@ -14,6 +20,12 @@ on:
       - '.github/workflows/sdk-examples.yml'
       - 'assets/interception-device-inventory.c'
       - 'assets/vdevice-hid-test.cpp'
+      - 'assets/interceptor-status.cpp'
+      - 'assets/vdevice-status.cpp'
+      - 'assets/interception-slot-types.c'
+      - 'sdk-checks.json'
+      - 'scripts/test_first_sdk.py'
+      - 'scripts/integration.py'
       - 'releases.json'
       - 'scripts/verify_release_assets.py'
   workflow_dispatch:
@@ -99,3 +111,13 @@ jobs:
           Set-Location -LiteralPath $work
           cl /nologo /W4 /WX /MT /std:c++17 /EHsc /utf-8 /permissive- /DUNICODE /D_UNICODE /I Vdevice-SDK-1.0.6.0\Vdevice vdevice-hid-test.cpp Vdevice-SDK-1.0.6.0\Vdevice\Vdevice.cpp /Fe:vdevice-hid-test.exe
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
+  first-sdk-checks:
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/build.py
+      - run: python scripts/test_first_sdk.py all --expect-clean

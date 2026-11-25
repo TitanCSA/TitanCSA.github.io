@@ -28,6 +28,21 @@ Check the current public README, release, licence and live-validation limits bef
 
 Guides are in `content/`; presentation and local interactions are in `src/`. The build goes to ignored `dist/`. GitHub Actions validates the output before deploying Pages. The website's source licence does not change any linked product's licence or driver distribution rights.
 
+## Update a published SDK example
+
+The [public integration manifest](https://titancsa.github.io/integration.json) lists the setup download, SDK archive, app architectures, exact first check and expected output. Its bilingual download table and JSON use the same source data.
+
+Update the approved tag and asset filenames in `releases.json`, then record the matching SDK archive SHA-256 in `sdk-checks.json`. For native SDK ZIPs, the build uses the ZIP filename to resolve the release directory. The pipeline verifies links to official assets, and the Windows job builds and runs every listed architecture.
+
+```text
+python scripts/build.py
+python scripts/validate.py
+python scripts/verify_release_assets.py
+python scripts/test_first_sdk.py all --expect-clean
+```
+
+Run the last command on a Windows x64 host with Visual Studio 2022 C++ desktop tools and CMake 3.20 or later. For a host with the corresponding driver already installed, use `python scripts/test_first_sdk.py <edition> --run`. It queries status without installing a driver or starting a demo.
+
 ## Verification
 
 `scripts/validate.py` checks data shape, unique project links, generated metadata, structured data, local links and file budgets. Browser QA checks desktop/mobile layouts, catalogue search/filter/reset behavior, preview warnings, theme switching and navigation without JavaScript. Those checks are distinct from product or driver qualification.

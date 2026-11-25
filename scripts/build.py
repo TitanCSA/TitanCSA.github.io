@@ -4,6 +4,7 @@ from collections import OrderedDict
 from html import escape
 from xml.etree import ElementTree as ET
 import json,re,shutil
+from integration import make_manifest, sdk_rows
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 data=json.loads((ROOT/'projects.json').read_text(encoding='utf8'));projects=data['projects'];checked=data['checked']
@@ -43,6 +44,7 @@ for edition in release_data['editions']:
         'release_contact':{'platform':'Discord','username':'titancsa','instructions_url':BASE.rstrip('/')+contact_path},
     }
 assert set(editions)==set(featured) and len(editions)==len(release_data['editions'])
+integration=make_manifest(BASE,editions)
 assert len(projects)==60 and len({p['url'].lower() for p in projects})==60
 assert all(p['url'].startswith(('https://github.com/TitanCSA/','https://github.com/titanfyre/')) for p in projects)
 OUT.mkdir(exist_ok=True)
@@ -71,6 +73,8 @@ for (key,title),entries in groups.items():
     cards.append(f'<section id="{escape(key)}" class="project-group" data-project-group aria-labelledby="heading-{escape(key)}"><div class="group-heading"><h2 id="heading-{escape(key)}">{escape(title)}</h2><span class="group-count" data-group-count>{len(entries)} entries</span></div>'+''.join(items)+'</section>')
 replacements={'PROJECT_COUNT':str(len(projects)),'CHECKED_DATE':checked,'PROJECTS':'\n'.join(cards),'CATEGORY_OPTIONS':''.join(f'<option value="{escape(key)}">{escape(title)}</option>' for key,title in groups),'CATEGORY_LINKS':''.join(f'<a href="#{escape(key)}" data-category-jump>{escape(title)}</a>' for key,title in groups)}
 replacements['RELEASE_REVIEW_DATE']=release_date
+replacements['INSTALLER_SDK_ROWS_EN']=sdk_rows(integration)
+replacements['INSTALLER_SDK_ROWS_FR']=sdk_rows(integration,french=True)
 replacements['COMMERCIAL_CHECK_DATE']=commercial_checked
 replacements['SUPPORT_ISSUE_FORMS']=''.join(
     f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'
@@ -110,6 +114,8 @@ pages={
  'guides/windows-input-release-compare/':('Compare Windows input drivers and Lifetime editions — TitanCSA','Compare Interceptor, Vdevice and Interception V2. Find the matching API, signed demo, device scope and commercial edition.','guides/windows-input-release-compare.html'),
  'guides/release-activation-help/':('Install and activate a TitanCSA Windows Release — error help','Resolve missing activation interfaces, invalid keys and HTTPS failures. Find the correct Windows Release ZIP, SDK and driver version.','guides/release-activation-help.html'),
  'guides/interception-v2-migration/':('Migrate an Interception application to Interception V2 — TitanCSA','Migrate an application using interception.dll, check x86 or x64 library compatibility and list keyboard and mouse hardware IDs.','guides/interception-v2-migration.html'),
+ 'guides/installer-and-sdk/':('Installer, driver and SDK on Windows — TitanCSA','Understand what to install first, when to download the SDK and how to run a verified first check.','guides/installer-and-sdk.html'),
+ 'fr/installeur-et-sdk/':('Installateur, pilote et SDK sous Windows — TitanCSA','Choisis le bon téléchargement Windows. Essaie la démo ou compile un premier test SDK.','guides/installer-and-sdk-fr.html'),
  'guides/windows-input-sdk-packages/':('Install Windows input SDK packages for Python, Node.js, .NET, PowerShell and C++ — TitanCSA','Find verified packages for Interceptor, Vdevice and Interception V2 in PyPI, npm, PowerShell Gallery and NuGet. Match the SDK to the installed Windows driver.','guides/windows-input-sdk-packages.html'),
  'guides/windows-input-sdk-java-php-ruby/':('Java, PHP and Ruby SDKs for Windows input drivers — TitanCSA','Find the verified Maven Central, Packagist and RubyGems bindings for Interceptor, Vdevice and Interception V2, with Windows and runtime prerequisites.','guides/windows-input-sdk-java-php-ruby.html'),
  'guides/gamepad-controller-first-run/':('Test and remap a physical gamepad on Windows — TitanCSA','Identify HID, XUSB, XInputHID or GIP input, use the signed controller demo and try the C++ stick deadzone example.','guides/gamepad-controller-first-run.html'),
@@ -126,8 +132,9 @@ for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/','guides/vdevice-custom-hid-test/','fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/'}
-release_guides={'guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
+release_guides={'guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
 translations=(
+    {'en':'guides/installer-and-sdk/','fr':'fr/installeur-et-sdk/'},
     {'en':'guides/release-activation-help/','fr':'fr/activation-release/'},
     {'en':'guides/windows-input-sdk-packages/','fr':'fr/installer-sdk-windows/'},
     {'en':'guides/windows-input-release-compare/','fr':'fr/pilotes-entree-windows/'},
@@ -147,7 +154,8 @@ publisher={
     'sameAs':['https://github.com/TitanCSA'],
 }
 
-published_dates={'fr/installer-sdk-windows/':'2026-11-25'}
+published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/')}
+reviewed.update(published_dates)
 
 
 def render(title,description,path,body,article=False):
@@ -174,6 +182,8 @@ def render(title,description,path,body,article=False):
     for variants in translations:
         if path in variants.values():
             structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in variants.items())
+    if path in ('','guides/installer-and-sdk/','fr/installeur-et-sdk/') or path.startswith('projects/'):
+        structured+=f'<link rel="alternate" type="application/json" href="{BASE}integration.json" title="SDK integration manifest">'
     if not path:
         structured+=f'<link rel="alternate" type="application/rss+xml" title="TitanCSA guides" href="{BASE}rss.xml">'
     if not path and verification:structured+='<meta name="google-site-verification" content="'+escape(verification,quote=True)+'">'
@@ -240,12 +250,16 @@ search_robots=['OAI-SearchBot','Claude-SearchBot','Claude-User']
     + 'Allow: /\n\nSitemap: '+BASE+'sitemap.xml\nSitemap: '+BASE+'TitanCSA-Benchmarks/sitemap.xml\n',
     encoding='utf8',
 )
+(OUT/'integration.json').write_text(json.dumps(integration,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
 (OUT/'releases.json').write_text(
     json.dumps({'reviewed':release_date,'commercial_checked':commercial_checked,'editions':list(editions.values())},ensure_ascii=False,indent=2)+'\n',
     encoding='utf8',
 )
 reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documentation from the publisher.', '',
     '## Choose, try and activate',
+    f'- [Installer, driver and SDK]({BASE}guides/installer-and-sdk/)',
+    f'- [Installateur, pilote et SDK]({BASE}fr/installeur-et-sdk/)',
+    f'- [SDK integration manifest]({BASE}integration.json)',
     f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',
     f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
