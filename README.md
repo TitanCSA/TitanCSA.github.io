@@ -50,7 +50,7 @@ Add `--verify-downloads` to fetch the public files and hash their actual bytes. 
 python scripts/build.py
 python scripts/validate.py
 python scripts/verify_release_assets.py
-python scripts/verify_registry.py
+python scripts/verify_registry.py --documentation
 python scripts/test_first_sdk.py all --expect-clean
 ```
 

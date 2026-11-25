@@ -1,10 +1,12 @@
 """Verify the exact installable versions linked in the bilingual SDK guide."""
 
+from argparse import ArgumentParser
 from concurrent.futures import ThreadPoolExecutor
 from hashlib import sha256
 from pathlib import Path
 from time import sleep
 from urllib.error import HTTPError, URLError
+from urllib.parse import urldefrag
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree as ET
 import json
@@ -23,7 +25,7 @@ def read(url):
         except HTTPError as error:
             if attempt == 2 or error.code not in {429, 500, 502, 503, 504}:
                 raise
-        except URLError:
+        except (TimeoutError, URLError):
             if attempt == 2:
                 raise
         sleep(1 + attempt)
@@ -75,12 +77,28 @@ def verify(row):
     return f"{name} {version} ({registry})"
 
 
+def verify_documentation(url):
+    try:
+        read(url)
+    except (TimeoutError, URLError) as error:
+        raise ValueError(f"SDK documentation unavailable at {url}: {error}") from error
+
+
 def main():
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--documentation", action="store_true",
+                        help="Check the documentation links as well as registry packages")
+    args = parser.parse_args()
     rows = json.loads((ROOT / "dist/integration.json").read_text(encoding="utf-8"))["sdk_registry"]
     with ThreadPoolExecutor(max_workers=5) as pool:
         for result in pool.map(verify, rows):
             print(result)
-    print(f"Verified {len(rows)} pinned registry versions.")
+        print(f"Verified {len(rows)} pinned registry versions.")
+        if args.documentation:
+            links = sorted({urldefrag(row["documentation_url"]).url for row in rows if row.get("documentation_url")})
+            for _ in pool.map(verify_documentation, links):
+                pass
+            print(f"Verified {len(links)} distinct SDK documentation links.")
 
 
 if __name__ == "__main__":
