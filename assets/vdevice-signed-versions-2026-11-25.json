@@ -87,15 +87,17 @@
           "activation_interface_ready": true
         }
       ],
-      "company_archive_sha256": "c135429fe7467f2356d7673d0539e768ced680feb22c71a5c5bd86525aa3292a",
+      "company_archive_sha256": "0132816b1c6b847febd589cfaf68febaa9b010ecc006fad51d4c04483784e9c1",
       "signature_return_sha256": "465e09ed1bdb68bcdaec7fa82cfecc3d2ac6b49e9182989b9b34382d9dc09936",
       "candidate_program_and_inf_match": true,
       "verified_company_members": 9,
       "private_delivery": {
         "configured_version": "1.0.4.1",
-        "configured_archive_sha256": "c135429fe7467f2356d7673d0539e768ced680feb22c71a5c5bd86525aa3292a",
+        "configured_archive_sha256": "0132816b1c6b847febd589cfaf68febaa9b010ecc006fad51d4c04483784e9c1",
         "health_http_status": 200,
-        "anonymous_http_status": 404
+        "anonymous_http_status": 404,
+        "manifest_digest_checked": "2026-11-26",
+        "configuration_scope": "The storefront manifest and local validated copy agree on the package SHA-256. Earlier HTTP health and anonymous-access checks are recorded separately."
       },
       "secure_boot_memory_integrity_lab": {
         "windows_build": 26100,
@@ -126,14 +128,15 @@
         "key_used": false,
         "uninstall_exit_code": 0,
         "windows_error_after_uninstall_and_restart": 2,
-        "service_registered_after_uninstall_and_restart": false
+        "service_registered_after_uninstall_and_restart": false,
+        "tested_target_company_archive_sha256": "c135429fe7467f2356d7673d0539e768ced680feb22c71a5c5bd86525aa3292a"
       },
       "sdk_version_diagnostics": {
         "checked": "2026-11-26",
         "windows_build": 26100,
         "secure_boot": true,
         "memory_integrity_running": true,
-        "sdk_source_sha256": "b106d5f27322166eba9675518d98c3f01c48e2a7d598ec5c4f591e883ba477cb",
+        "sdk_source_sha256": "fe8544a932e8c5715c6bd67d7afa391464e58f12f8c8f12e4104ca01efc8b2d4",
         "scope": "The exact Company SDK rejected an empty key at local format validation. No key or request was sent to the license service. After removal and restart, the read-only status check returned Windows error 2.",
         "format_error_with_release_driver_present": {
           "stage": "key_format",
@@ -152,7 +155,29 @@
             "Vdevice Release driver (installed): not detected",
             "Vdevice Demo driver (installed): 1.0.6.0"
           ]
-        }
+        },
+        "tested_company_archive_sha256": "0132816b1c6b847febd589cfaf68febaa9b010ecc006fad51d4c04483784e9c1",
+        "compile_definitions": [
+          "UNICODE",
+          "_UNICODE",
+          "NOMINMAX",
+          "WIN32_LEAN_AND_MEAN"
+        ]
+      },
+      "prior_same_version_company_archive_sha256": "c135429fe7467f2356d7673d0539e768ced680feb22c71a5c5bd86525aa3292a",
+      "current_configured_archive_lab": {
+        "checked": "2026-11-26",
+        "windows_build": 26100,
+        "secure_boot": true,
+        "memory_integrity_running": true,
+        "previous_driver_version": "1.0.3.0",
+        "install_exit_code": 0,
+        "uninstall_exit_code": 0,
+        "after_restart_sdk_status": "ABI 1, 16 maximum devices, licensed=no, owned devices=0",
+        "activation_interface_ready": true,
+        "key_used": false,
+        "reboot_verified_after_install": true,
+        "reboot_verified_after_removal": true
       }
     }
   }
