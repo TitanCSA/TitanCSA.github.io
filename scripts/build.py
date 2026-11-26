@@ -157,6 +157,7 @@ pages={
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Download the signed Titan Audio Link demo, verify a stereo virtual audio pair on Windows 11, and find the matching commercial package.','guides/titan-audio-link-first-run.html'),
  'fr/micro-virtuel-titan-audio-link/':('Titan Audio Link · Envoyer le son vers un micro virtuel Windows','Installe la démo signée de Titan Audio Link. Teste la sortie et le micro virtuels, puis relie deux applications Windows.','guides/titan-audio-link-first-run-fr.html'),
  'guides/verify-windows-driver-package/':('Verify a signed Windows driver package before installation — TitanCSA','Compare the published SHA-256, verify the Microsoft-signed driver catalog and check the INF package version with PowerShell and SignTool.','guides/verify-windows-driver-package.html'),
+ 'fr/verifier-pilote-windows/':('Vérifier un pilote Windows signé avant de l’installer — TitanCSA','Vérifie le SHA-256 d’un ZIP, la signature du catalogue et la version du pilote avec PowerShell. Exemple avec la démo Vdevice.','guides/verify-windows-driver-package-fr.html'),
  'guides/vdevice-custom-hid-test/':('Test a custom virtual USB HID with Vdevice and hidapitester — TitanCSA','Create a vendor-defined virtual USB HID, read and return exact report bytes with hidapitester, and verify device removal on Windows.','guides/vdevice-custom-hid-test.html'),
  'fr/installer-sdk-windows/':('Installer les SDK d’entrée Windows · Python, Node.js, C++, .NET, PowerShell, Go et Rust','Retrouvez les paquets vérifiés pour Interceptor, Vdevice et Interception V2. Commandes d’installation, versions et pilote Windows signé à associer.','guides/windows-input-sdk-packages-fr.html'),
  'fr/activation-release/':('Installer et activer une édition Release TitanCSA sous Windows','Résoudre les erreurs d’activation de Vdevice et Interceptor, vérifier les versions du pilote et du SDK et préparer un rapport de support.','guides/release-activation-fr.html'),
@@ -181,6 +182,7 @@ translations=(
     {'en':'guides/autohotkey-remap-second-keyboard/','fr':'fr/remapper-deuxieme-clavier-autohotkey/'},
     {'en':'guides/titan-audio-link-first-run/','fr':'fr/micro-virtuel-titan-audio-link/'},
     {'en':'guides/gamepad-controller-first-run/','fr':'fr/remapper-manette-windows/'},
+    {'en':'guides/verify-windows-driver-package/','fr':'fr/verifier-pilote-windows/'},
 )
 reviewed={
     **dict.fromkeys(updated,featured_date),
@@ -201,6 +203,7 @@ publisher={
 
 published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/essayer-sans-pilote/','fr/sdk-java-php-ruby/')}
 published_dates['fr/remapper-manette-windows/']='2026-11-26'
+published_dates['fr/verifier-pilote-windows/']='2026-11-26'
 reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
@@ -209,6 +212,7 @@ reviewed.update(dict.fromkeys((
     'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
     'guides/windows-input-sdk-java-php-ruby/', 'fr/sdk-java-php-ruby/',
     'guides/titan-audio-link-first-run/', 'fr/micro-virtuel-titan-audio-link/', 'guides/gamepad-controller-first-run/',
+    'guides/verify-windows-driver-package/', 'fr/installeur-et-sdk/', 'fr/souris-usb-virtuelle-vdevice/',
 ), '2026-11-26'))
 
 
@@ -344,6 +348,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Java, PHP and Ruby SDK packages]({BASE}guides/windows-input-sdk-java-php-ruby/)',
     f'- [Paquets Java, PHP et Ruby]({BASE}fr/sdk-java-php-ruby/)',
     f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
+    f'- [Vérifier un pilote Windows signé avant installation]({BASE}fr/verifier-pilote-windows/)',
     f'- [Physical gamepad quickstart]({BASE}guides/gamepad-controller-first-run/)',
     f'- [Tester une manette sous Windows]({BASE}fr/remapper-manette-windows/)',
     f'- [Titan Audio Link virtual microphone]({BASE}guides/titan-audio-link-first-run/)',

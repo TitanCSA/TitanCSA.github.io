@@ -13,7 +13,7 @@
 </ol>
 <h2>Reprendre le même profil en C++</h2>
 <p>L’exemple configure le descripteur USB HID avec <code>Device_Config</code>, crée le périphérique avec <code>Create_Device</code>, puis envoie un rapport de sept octets avec <code>Send_Input</code>. Le rapport contient cinq bits de boutons, les déplacements relatifs X/Y signés et deux valeurs de molette.</p>
-<p><a href="https://github.com/TitanCSA/Vdevice/blob/{{VDEVICE_DEMO_TAG}}/Examples/UI/Mouse.cpp">Lire le code de la souris pour la démo {{VDEVICE_DEMO_VERSION}}</a> · <a href="/guides/verify-windows-driver-package/">Vérifier le ZIP et le catalogue signé (guide en anglais)</a></p>
+<p><a href="https://github.com/TitanCSA/Vdevice/blob/{{VDEVICE_DEMO_TAG}}/Examples/UI/Mouse.cpp">Lire le code de la souris pour la démo {{VDEVICE_DEMO_VERSION}}</a> · <a href="/fr/verifier-pilote-windows/">Vérifier le ZIP et le catalogue signé</a></p>
 <h2>Ce qui a été vérifié</h2>
 <p>La campagne Windows 11 Hyper-V avec Secure Boot a confirmé que la pile USB de Windows consommait les rapports de la souris dans les essais des cinq profils. Le déplacement du pointeur et le comportement de ton application restent à vérifier avec les étapes ci-dessus. <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Voir la validation publiée avec la démo</a>.</p>
 <p>Sous Windows 11 avec Secure Boot, le panneau officiel de la démo 1.0.6.1 a affiché <strong>READY</strong> puis <strong>State sent</strong> pour <code>x=32</code> et <code>y=0</code>. Windows a reconnu la souris HID, puis l’a retirée après <strong>Disconnect</strong>. Le déplacement du pointeur reste le contrôle manuel de l’étape 3. <a href="/assets/vdevice-mouse-panel-2026-11-25.json">Voir les résultats du panneau de la souris</a></p>
