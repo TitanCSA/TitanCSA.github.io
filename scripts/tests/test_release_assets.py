@@ -49,6 +49,17 @@ class ReleaseAssetChecks(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "pinned SHA-256 differs for Example-SDK"):
                 checker.check_edition(self.edition, self.role)
 
+    def test_public_contact_audit_checks_the_published_body(self):
+        release = self.public_release(self.tag, self.name)
+        with patch.object(checker, "fetch_release", return_value=release):
+            with self.assertRaisesRegex(ValueError, "missing the Discord contact"):
+                checker.check_edition(self.edition, self.role, check_contact=True)
+            release["body"] = "Contact TitanCSA on Discord for the full version."
+            self.assertEqual(checker.check_edition(self.edition, self.role, check_contact=True), 1)
+            release["body"] += " Payment: https://checkout.stripe.com/example"
+            with self.assertRaisesRegex(ValueError, "contain a checkout link"):
+                checker.check_edition(self.edition, self.role, check_contact=True)
+
     def test_candidate_supplies_replacement_without_mutating_the_current_edition(self):
         tag = "v1.0.1.0-demo"
         filename = "Native-SDK.zip"

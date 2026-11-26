@@ -27,7 +27,7 @@ jobs:
       - name: Build the public catalogue
         run: python scripts/build.py
       - name: Verify published assets and their SHA-256
-        run: python scripts/verify_release_assets.py ${{ inputs.verify_downloads && '--verify-downloads' || '' }}
+        run: python scripts/verify_release_assets.py --check-public-contact ${{ inputs.verify_downloads && '--verify-downloads' || '' }}
         env:
           TITANCSA_CATALOGUE_TOKEN: ${{ github.token }}
       - name: Verify published SDK versions and documentation

@@ -56,7 +56,7 @@ Add `--apply` to save the verified candidate to `releases.json`. The command lea
 
 Add `--verify-downloads` to fetch the public files and hash their actual bytes. Without a candidate, this checks the entire driver and application catalogue.
 
-The [Audit published downloads](https://github.com/TitanCSA/TitanCSA.github.io/actions/workflows/public-release-audit.yml) workflow runs daily at 04:37 UTC. It checks the pinned release assets against GitHub metadata, hashes both public Rust quickstarts and checks the SDK versions and documentation. Run it on demand with `verify_downloads` to download and hash every pinned file. Results are reported in GitHub Actions.
+The [Audit published downloads](https://github.com/TitanCSA/TitanCSA.github.io/actions/workflows/public-release-audit.yml) workflow runs daily at 04:37 UTC. It checks the pinned release assets against GitHub metadata, verifies the Discord contact in the driver demo notes, hashes both public Rust quickstarts and checks the SDK versions and documentation. Run it on demand with `verify_downloads` to download and hash every pinned file. Results are reported in GitHub Actions.
 
 If an existing release replaces a file, the check reports the filename and leaves the pin in place. Compare the new download with the previously verified package before applying the candidate. For an installer, verify the signed driver files and repeat the install and removal checks. The integration manifest links to console installer evidence only while its exact SHA-256 and SDK match the catalogue.
 

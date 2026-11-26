@@ -19,6 +19,7 @@ CATALOGUE = ROOT / "dist" / "releases.json"
 SOURCE = ROOT / "releases.json"
 RETRYABLE_STATUS = {429, 500, 502, 503, 504}
 SHA256_TAG = re.compile(r"sha256:([0-9a-f]{64})")
+PUBLIC_CHECKOUT = re.compile(r"licences\.configcsa\.com|checkout\.stripe\.com|buy\.stripe\.com", re.I)
 
 
 def fetch_release(url):
@@ -42,7 +43,7 @@ def fetch_release(url):
         time.sleep(1 + attempt)
 
 
-def official_assets(edition, tag, filenames):
+def official_assets(edition, tag, filenames, *, check_contact=False):
     repository = urlparse(edition["repository"])
     if (repository.scheme != "https" or repository.netloc != "github.com"
             or not re.fullmatch(r"/(?:TitanCSA|titanfyre)/[A-Za-z0-9._-]+", repository.path)):
@@ -52,6 +53,12 @@ def official_assets(edition, tag, filenames):
     release = fetch_release(f"https://api.github.com/repos{repository.path}/releases/tags/{quote(tag, safe='')}")
     if release["draft"] or tag != release["tag_name"]:
         raise ValueError(f"{edition['slug']}: unpublished or mismatched release {tag}")
+    if check_contact:
+        body = (release.get("body") or "").casefold()
+        if PUBLIC_CHECKOUT.search(body):
+            raise ValueError(f"{edition['slug']} {tag}: public release notes contain a checkout link")
+        if not all(word in body for word in ("discord", "titancsa")):
+            raise ValueError(f"{edition['slug']} {tag}: release notes are missing the Discord contact")
 
     assets = {asset["name"]: asset for asset in release["assets"]}
     result = {}
@@ -79,8 +86,8 @@ def verify_download(url, expected):
         raise ValueError(f"Downloaded bytes differ from the expected SHA-256: {url}")
 
 
-def check_edition(edition, sdk_role, verify_bytes=False):
-    assets = official_assets(edition, edition["tag"], edition["demo_files"])
+def check_edition(edition, sdk_role, verify_bytes=False, *, check_contact=False):
+    assets = official_assets(edition, edition["tag"], edition["demo_files"], check_contact=check_contact)
     if edition["demo_assets"] != {role: url for role, (url, _) in assets.items()}:
         raise ValueError(f"{edition['slug']}: generated asset URLs differ from the official URLs")
     pinned = edition["demo_asset_sha256"]
@@ -154,9 +161,12 @@ def main():
     parser.add_argument("--asset", action="append", default=[], metavar="ROLE=FILENAME")
     parser.add_argument("--apply", action="store_true", help="Write the checked candidate revision to releases.json")
     parser.add_argument("--verify-downloads", action="store_true", help="Download each public file and hash its bytes")
+    parser.add_argument("--check-public-contact", action="store_true", help="Audit the pinned demo notes for the Discord purchase contact")
     args = parser.parse_args()
     if (args.asset or args.apply) and not args.candidate:
         parser.error("--asset and --apply require --candidate")
+    if args.check_public_contact and args.candidate:
+        parser.error("--check-public-contact audits the currently pinned releases")
     if not CATALOGUE.is_file():
         parser.error("Run python scripts/build.py before checking a release.")
     editions = json.loads(CATALOGUE.read_text(encoding="utf-8"))["editions"]
@@ -173,7 +183,8 @@ def main():
         return
     checked = 0
     for edition in editions:
-        count = check_edition(edition, recipes[edition["slug"]]["asset_role"], args.verify_downloads)
+        count = check_edition(edition, recipes[edition["slug"]]["asset_role"], args.verify_downloads,
+                              check_contact=args.check_public_contact)
         print(f"{edition['slug']} {edition['tag']}: {count} official assets and exact SDK digest")
         checked += count
     integration = json.loads((ROOT / "dist" / "integration.json").read_text(encoding="utf-8"))
@@ -188,6 +199,8 @@ def main():
         print(f"{app['id']} {app['tag']}: exact app ZIP digest")
     scope = "downloaded files" if args.verify_downloads else "asset references"
     print(f"Verified {checked + len(apps)} {scope} across {len(editions) + len(apps)} pinned releases.")
+    if args.check_public_contact:
+        print(f"Verified the public Discord contact in all {len(editions)} pinned driver demo notes.")
     quickstarts = integration.get("sdk_quickstarts", [])
     for release_url in sorted({item["release_url"] for item in quickstarts}):
         repository, separator, tag = release_url.rpartition("/releases/tag/")
