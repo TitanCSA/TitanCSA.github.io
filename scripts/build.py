@@ -80,6 +80,9 @@ write_go_samples(integration['sdk_registry'], OUT/'assets', BASE)
 write_rust_samples(integration['sdk_registry'], OUT/'assets', BASE)
 app_sections={row['repository'].split('/')[-1]:row['id'] for row in integration['applications']}
 replacements={'PROJECT_COUNT':str(len(projects)), 'CHECKED_DATE':checked}
+for quickstart in rust_quickstarts:
+    key=quickstart['edition'].upper().replace('-','_')
+    replacements[f'{key}_RUST_QUICKSTART_URL']=escape(quickstart['download_url'],quote=True)
 for french in (False, True):
     localized_paths=featured_paths_fr if french else featured_paths
     replacements.update(catalogue_sections(projects, french_copy, localized_paths, app_sections, french=french))
@@ -198,7 +201,7 @@ reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
 reviewed.update(dict.fromkeys((
-    '', 'fr/', 'fr/pilotes-entree-windows/',
+    '', 'fr/', 'fr/pilotes-entree-windows/', 'projects/interception-v2/', 'guides/interception-v2-migration/',
     'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
     'guides/windows-input-sdk-java-php-ruby/', 'fr/sdk-java-php-ruby/',
     'guides/titan-audio-link-first-run/', 'fr/micro-virtuel-titan-audio-link/',

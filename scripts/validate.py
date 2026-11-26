@@ -252,11 +252,16 @@ quickstart_proof=json.loads((OUT/quickstart_path).read_text(encoding='utf8'))
 quickstarts=manifest['sdk_quickstarts']
 assert quickstarts==quickstart_proof['checks'] and len(quickstarts)==2
 outputs={'interception-v2':{'keyboard':True,'mouse':False,'valid':True},'titan-audio-link':[]}
+quickstart_routes={
+    'interception-v2':('projects/interception-v2/','guides/interception-v2-migration/','fr/pilotes-entree-windows/'),
+    'titan-audio-link':('guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/'),
+}
 assert {row['edition'] for row in quickstarts}==outputs.keys()
 for row in quickstarts:
     assert row['command']=='cargo run --locked' and row['expected_output']==outputs[row['edition']]
     assert row['evidence_url']==BASE+quickstart_path and re.fullmatch(r'[a-f0-9]{64}',row['sha256'])
     assert row['download_url'] in packages_en.links and row['download_url'] in packages_fr.links
+    assert all(row['download_url'] in by_canonical[BASE+route].links for route in quickstart_routes[row['edition']])
     assert row['download_url'].startswith(row['release_url'].replace('/releases/tag/','/releases/download/')+'/')
 rows = manifest['sdk_registry']
 other_registries={'maven','packagist','rubygems'}
