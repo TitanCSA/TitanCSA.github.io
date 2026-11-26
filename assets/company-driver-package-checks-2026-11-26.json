@@ -54,6 +54,33 @@
           "Interceptor driver (installed): not detected"
         ],
         "license_service_called": false
+      },
+      "windows_11_vm": {
+        "windows_build": 26100,
+        "secure_boot": true,
+        "memory_integrity_running": false,
+        "install_exit_code": 0,
+        "installed_inf_names": [
+          "interceptorkeyboard.inf",
+          "interceptormouse.inf",
+          "interceptorcontrol.inf"
+        ],
+        "running_kernel_sha256": "016fce32c0af3641932bbad5fa73df3ef7a79269026aff0552fdda28a1f187ea",
+        "restart_after_install_verified": true,
+        "sdk_status_before_activation": "License ABI 5, state 1",
+        "version_lines_with_driver_present": [
+          "Interceptor Release SDK: 1.6.1.1",
+          "Interceptor driver (installed): 1.6.0.0"
+        ],
+        "uninstall_exit_code": 0,
+        "restart_after_uninstall_verified": true,
+        "driver_service_present_after_uninstall": false,
+        "windows_error_after_uninstall": 2,
+        "version_lines_after_driver_removal": [
+          "Interceptor Release SDK: 1.6.1.1",
+          "Interceptor driver (installed): not detected"
+        ],
+        "paid_key_used": false
       }
     },
     {
@@ -169,6 +196,33 @@
           "Interceptor Gamepad & Controller Demo driver (installed): not detected"
         ],
         "license_service_called": false
+      },
+      "windows_11_vm": {
+        "windows_build": 26100,
+        "secure_boot": true,
+        "memory_integrity_running": false,
+        "install_exit_code": 0,
+        "installed_inf_names": [
+          "interceptorgamepadcontrollerreleasecontrol.inf"
+        ],
+        "running_kernel_sha256": "69283eb634108bcbe811d980de8d6afe2646ba053aac5bdc375d8fd2c2a64d3f",
+        "restart_after_install_verified": true,
+        "sdk_status_before_activation": "License ABI 5, state 1",
+        "version_lines_with_driver_present": [
+          "Interceptor Gamepad & Controller Release SDK: 1.0.1.1",
+          "Interceptor Gamepad & Controller Release driver (installed): 1.0.0.0",
+          "Interceptor Gamepad & Controller Demo driver (installed): not detected"
+        ],
+        "uninstall_exit_code": 0,
+        "restart_after_uninstall_verified": true,
+        "driver_service_present_after_uninstall": false,
+        "windows_error_after_uninstall": 2,
+        "version_lines_after_driver_removal": [
+          "Interceptor Gamepad & Controller Release SDK: 1.0.1.1",
+          "Interceptor Gamepad & Controller Release driver (installed): not detected",
+          "Interceptor Gamepad & Controller Demo driver (installed): not detected"
+        ],
+        "paid_key_used": false
       }
     },
     {
@@ -222,6 +276,35 @@
           "Interception V2 Demo driver (installed): not detected"
         ],
         "license_service_called": false
+      },
+      "windows_11_vm": {
+        "windows_build": 26100,
+        "secure_boot": true,
+        "memory_integrity_running": false,
+        "install_exit_code": 0,
+        "installed_inf_names": [
+          "interceptionv2releasekeyboard.inf",
+          "interceptionv2releasemouse.inf",
+          "interceptionv2releasecontrol.inf"
+        ],
+        "running_kernel_sha256": "f9fd7328d1225fcd44a7b29b71f5ac9aacb56784c361782eda7cf8127c3425e1",
+        "restart_after_install_verified": true,
+        "sdk_status_before_activation": "License ABI 5, state 1",
+        "version_lines_with_driver_present": [
+          "Interception V2 Release SDK: 2.0.0.1",
+          "Interception V2 Release driver (installed): 2.0.0.0",
+          "Interception V2 Demo driver (installed): not detected"
+        ],
+        "uninstall_exit_code": 0,
+        "restart_after_uninstall_verified": true,
+        "driver_service_present_after_uninstall": false,
+        "windows_error_after_uninstall": 2,
+        "version_lines_after_driver_removal": [
+          "Interception V2 Release SDK: 2.0.0.1",
+          "Interception V2 Release driver (installed): not detected",
+          "Interception V2 Demo driver (installed): not detected"
+        ],
+        "paid_key_used": false
       }
     }
   ]
