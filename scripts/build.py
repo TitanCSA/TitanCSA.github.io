@@ -266,6 +266,8 @@ def render(title,description,path,body,article=False):
         name='Catalogue public TitanCSA' if language=='fr' else 'TitanCSA public project catalogue'
         schemas.append({'@context':'https://schema.org','@type':'ItemList','name':name,'numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
     structured=''.join('<script type="application/ld+json">'+json.dumps(s,ensure_ascii=True).replace('<','\\u003c')+'</script>' for s in schemas)
+    if path in pages:
+        structured+='<link rel="describedby" href="/llms.txt">'
     localized=next((variants for variants in translations if path in variants.values()),None)
     if localized:
         structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in localized.items())
@@ -357,53 +359,68 @@ shutil.copyfile(ROOT/'integration.schema.json', OUT/'integration.schema.json')
     json.dumps({'reviewed':release_date,'commercial_checked':commercial_checked,'editions':list(editions.values())},ensure_ascii=False,indent=2)+'\n',
     encoding='utf8',
 )
-reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documentation from the publisher.', '',
-    '## Choose, try and activate',
+reference_links=['# TitanCSA','', '> Official documentation for TitanCSA Windows applications, signed driver demos and developer SDKs.', '',
+    'Start with the product guide and match the demo and SDK to the same edition. The integration manifest gives exact file hashes, SDK versions, installation commands and expected test results.',
+    '',
+    '## Start here','',
+    f'- [Project catalogue]({BASE})',
     f'- [Catalogue des projets en français]({BASE}fr/)',
-    f'- [Guide updates RSS feed]({BASE}rss.xml)',
-    f'- [Flux RSS des guides français]({BASE}fr/rss.xml)',
-    f'- [Installer, driver and SDK]({BASE}guides/installer-and-sdk/)',
-    f'- [Installateur, pilote et SDK]({BASE}fr/installeur-et-sdk/)',
     f'- [SDK integration manifest]({BASE}integration.json)',
     f'- [Integration JSON schema]({BASE}integration.schema.json)',
+    f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',
+    f'- [Comparer les pilotes Windows]({BASE}fr/pilotes-entree-windows/)',
+    f'- [First Windows app runs without a driver]({BASE}guides/first-run/)',
+    f'- [Essayer un outil sans ajouter de pilote]({BASE}fr/essayer-sans-pilote/)',
+    '', '## Products', '',
+]
+reference_links.extend(f'- [{e["name"]}]({e["overview_url"]}): {e["use"]}' for e in editions.values())
+reference_links.extend(['', '## First run', ''])
+for e in editions.values():
+    guides=e['first_run_guides']
+    reference_links.extend([
+        f'- [{e["name"]} first run in English]({guides["en"]})',
+        f'- [Premier essai en français · {e["name"]}]({guides["fr"]})',
+    ])
+reference_links.extend(['', '## Signed demos', ''])
+for e in editions.values():
+    reference_links.extend([
+        f'- [{e["name"]} {e["demo"]} demo download]({e["demo_download_url"]})',
+        f'- [{e["name"]} demo release notes]({e["demo_url"]})',
+    ])
+reference_links.extend([
+    '', '## SDK installation', '',
+    f'- [Installer, driver and SDK]({BASE}guides/installer-and-sdk/)',
+    f'- [Installateur, pilote et SDK]({BASE}fr/installeur-et-sdk/)',
+    f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
+    f'- [Installation des SDK Windows en français]({BASE}fr/installer-sdk-windows/)',
+    f'- [Java, PHP and Ruby SDK packages]({BASE}guides/windows-input-sdk-java-php-ruby/)',
+    f'- [Paquets Java, PHP et Ruby]({BASE}fr/sdk-java-php-ruby/)',
+    '', '## Support and licensing', '',
+    f'- [Release without the one-hour demo limit]({BASE}about/evidence/#release-contact): Add titancsa on Discord and send the edition name. TitanCSA shares purchase details privately.',
+    f'- [Version sans la limite d’une heure]({BASE}fr/pilotes-entree-windows/#contact-release): Contacte titancsa sur Discord et indique l’édition. Le lien d’achat est communiqué en privé.',
+    f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
+    f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
+    f'- [Evidence and support]({BASE}about/evidence/)',
+    f'- [Vérifications et assistance TitanCSA]({BASE}fr/aide-et-verifications/)',
+    '', '## Optional', '',
+    f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
+    f'- [Vérifier un pilote Windows signé avant installation]({BASE}fr/verifier-pilote-windows/)',
     f'- [Vdevice signed Demo and Release validation]({BASE}assets/vdevice-signed-versions-2026-11-25.json)',
     f'- [Four Company installation and removal tests on Windows 11]({BASE}assets/company-driver-package-checks-2026-11-26.json)',
     f'- [Windows mouse driver switching test with two synthetic USB HID devices]({BASE}assets/interceptor-mouse-driver-switch-2026-11-26.json)',
-    f'- [First Windows app runs without a driver]({BASE}guides/first-run/)',
-    f'- [Essayer un outil sans ajouter de pilote]({BASE}fr/essayer-sans-pilote/)',
-    f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',
-    f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
-    f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
-    f'- [Installation des SDK Windows en français]({BASE}fr/installer-sdk-windows/)',
-    f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
-    f'- [Migrer une application vers Interception V2]({BASE}fr/migrer-interception-v2/)',
-    f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
     f'- [Standalone Rust ZIP quickstarts]({BASE}{rust_proof_path})',
     f'- [Rust crate checks with exact package hashes]({BASE}assets/rust-sdk-first-checks-2026-11-26.json)',
     f'- [Go module checks with exact package hashes]({BASE}assets/go-sdk-first-checks-2026-11-26.json)',
     f'- [npm and RubyGems package runtime checks]({BASE}assets/sdk-registry-runtime-2026-11-26.json)',
-    f'- [Java, PHP and Ruby SDK packages]({BASE}guides/windows-input-sdk-java-php-ruby/)',
-    f'- [Paquets Java, PHP et Ruby]({BASE}fr/sdk-java-php-ruby/)',
-    f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
-    f'- [Vérifier un pilote Windows signé avant installation]({BASE}fr/verifier-pilote-windows/)',
-    f'- [Vérifications et assistance TitanCSA]({BASE}fr/aide-et-verifications/)',
-    f'- [Physical gamepad quickstart]({BASE}guides/gamepad-controller-first-run/)',
-    f'- [Tester une manette sous Windows]({BASE}fr/remapper-manette-windows/)',
-    f'- [Titan Audio Link virtual microphone]({BASE}guides/titan-audio-link-first-run/)',
-    f'- [Micro virtuel Windows avec Titan Audio Link]({BASE}fr/micro-virtuel-titan-audio-link/)',
-    f'- [Virtual USB mouse tutorial]({BASE}guides/vdevice-virtual-usb-mouse/)',
-    f'- [Souris USB virtuelle avec Vdevice]({BASE}fr/souris-usb-virtuelle-vdevice/)',
     f'- [Reproduce the Vdevice custom HID test]({BASE}guides/vdevice-custom-hid-test/)',
     f'- [Per-device AutoHotkey tutorial]({BASE}guides/autohotkey-remap-second-keyboard/)',
     f'- [Deuxième clavier avec AutoHotkey v2]({BASE}fr/remapper-deuxieme-clavier-autohotkey/)',
-    f'- [Benchmark results and scope]({BASE}TitanCSA-Benchmarks/)', '', '## Products']
+    f'- [Benchmark results and scope]({BASE}TitanCSA-Benchmarks/)',
+    f'- [Guide updates RSS feed]({BASE}rss.xml)',
+    f'- [Flux RSS des guides français]({BASE}fr/rss.xml)',
+])
 if audio_verified:
-    reference_links.insert(reference_links.index('## Products') - 1,
-                           f'- [Titan Audio Link verification with Windows Memory Integrity]({audio_verified})')
-reference_links.extend(
-    f'- [{e["name"]}]({e["overview_url"]}): {e["use"]} Signed demo notes: {e["demo_url"]}. Demo download: {e["demo_download_url"]}. Release without the one-hour demo limit: contact titancsa on Discord. {e["release_contact"]["instructions_url"]}'
-    for e in editions.values()
-)
+    reference_links.append(f'- [Titan Audio Link verification with Windows Memory Integrity]({audio_verified})')
 (OUT/'llms.txt').write_text('\n'.join(reference_links)+'\n',encoding='utf8')
 write_starter(OUT,integration)
 public_projects={**data,'source_fr':french_copy['source'],'projects':[]}

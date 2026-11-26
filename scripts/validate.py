@@ -79,6 +79,7 @@ for route in ('','fr/'):
     assert '/'+route+'rss.xml' in landing.links
 for page in by_canonical.values():
     assert page.rss_feed==BASE+('fr/' if page.language=='fr' else '')+'rss.xml'
+    assert '/llms.txt' in page.links
     if page.alternates:
         assert page.alternates[page.language]==page.canonical
         for language,url in page.alternates.items():
@@ -265,7 +266,21 @@ if later['demo_version']==editions['vdevice']['demo']:
 for route in ('guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/'):
     assert '/'+mouse_path in by_canonical[BASE+route].links
 reference=(OUT/'llms.txt').read_text(encoding='utf8')
-assert BASE+'assets/company-driver-package-checks-2026-11-26.json' in reference
+reference_lines=[line for line in reference.splitlines() if line.startswith('- ')]
+reference_items=[re.fullmatch(r'- \[[^\]]+\]\((https://[^\s)]+)\)(?:: .+)?', line)
+                 for line in reference_lines]
+assert reference_items and all(reference_items)
+reference_urls={item[1] for item in reference_items}
+assert BASE+'assets/company-driver-package-checks-2026-11-26.json' in reference_urls
+for edition in editions.values():
+    assert {edition['overview_url'],edition['demo_url'],edition['demo_download_url'],
+            *edition['first_run_guides'].values()} <= reference_urls
+for url in reference_urls:
+    target, _, fragment=url.partition('#')
+    if target in by_canonical:
+        assert not fragment or fragment in by_canonical[target].ids
+    elif target.startswith(BASE) and target != BASE+'TitanCSA-Benchmarks/':
+        assert (OUT/target.removeprefix(BASE)).is_file(), target
 for path in project_pages:
     edition=editions[path.parent.name]
     page=parsed[path]
@@ -278,7 +293,6 @@ for path in project_pages:
     for role, filename in edition['demo_files'].items():
         assert re.fullmatch(r'[A-Za-z0-9._-]+',filename)
         assert edition['demo_assets'][role] == f'{edition["repository"]}/releases/download/{edition["tag"]}/{filename}'
-    assert edition['overview_url'] in reference and edition['demo_url'] in reference
     app,=[item for item in page.schemas if item.get('@type')=='SoftwareApplication']
     assert app['softwareVersion']==edition['commercial']['package_version']
     assert all(re.fullmatch(r'\d+\.\d+\.\d+\.\d+', value) for value in edition['commercial'].values())
