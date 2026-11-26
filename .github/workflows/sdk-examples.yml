@@ -30,7 +30,7 @@ on:
       - 'scripts/integration.py'
       - 'releases.json'
       - 'scripts/verify_release_assets.py'
-      - 'scripts/tests/test_release_assets.py'
+      - 'scripts/tests/test_*.py'
   pull_request:
     paths:
       - '.github/workflows/sdk-examples.yml'
@@ -59,7 +59,7 @@ on:
       - 'scripts/integration.py'
       - 'releases.json'
       - 'scripts/verify_release_assets.py'
-      - 'scripts/tests/test_release_assets.py'
+      - 'scripts/tests/test_*.py'
   workflow_dispatch:
 
 permissions:

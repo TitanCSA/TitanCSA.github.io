@@ -6,7 +6,7 @@ from hashlib import sha256
 from pathlib import Path
 from time import sleep
 from urllib.error import HTTPError, URLError
-from urllib.parse import urldefrag
+from urllib.parse import urldefrag, urlsplit
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree as ET
 import json
@@ -14,6 +14,7 @@ import json
 ROOT = Path(__file__).resolve().parents[1]
 GALLERY = "{http://schemas.microsoft.com/ado/2007/08/dataservices}"
 POM = "{http://maven.apache.org/POM/4.0.0}"
+RETRYABLE_STATUS = {429, 500, 502, 503, 504}
 
 
 def read(url):
@@ -23,7 +24,7 @@ def read(url):
             with urlopen(request, timeout=20) as response:
                 return response.read()
         except HTTPError as error:
-            if attempt == 2 or error.code not in {429, 500, 502, 503, 504}:
+            if attempt == 2 or error.code not in RETRYABLE_STATUS:
                 raise
         except (TimeoutError, URLError):
             if attempt == 2:
@@ -80,6 +81,22 @@ def verify(row):
 def verify_documentation(url):
     try:
         read(url)
+    except HTTPError as error:
+        address = urlsplit(url)
+        repository, view, path = address.path.lstrip("/").partition("/blob/main/")
+        owner, separator, repo = repository.partition("/")
+        if (error.code in RETRYABLE_STATUS and address.scheme == "https" and address.netloc == "github.com"
+                and owner.casefold() in {"titancsa", "titanfyre"} and separator and repo and "/" not in repo
+                and view and path and not (address.query or address.fragment)):
+            raw = f"https://raw.githubusercontent.com/{repository}/main/{path}"
+            try:
+                if not read(raw):
+                    raise ValueError("The source file is empty.")
+            except (ValueError, TimeoutError, URLError) as fallback_error:
+                raise ValueError(f"SDK documentation unavailable at {url}: {error}; source: {fallback_error}") from fallback_error
+            print(f"GitHub documentation view returned {error.code}. Verified the exact source file for {url}.")
+            return
+        raise ValueError(f"SDK documentation unavailable at {url}: {error}") from error
     except (TimeoutError, URLError) as error:
         raise ValueError(f"SDK documentation unavailable at {url}: {error}") from error
 
