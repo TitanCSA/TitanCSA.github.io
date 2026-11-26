@@ -4,12 +4,17 @@ from argparse import ArgumentParser
 from concurrent.futures import ThreadPoolExecutor
 from hashlib import sha256
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from time import sleep
 from urllib.error import HTTPError, URLError
 from urllib.parse import urldefrag, urlsplit
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree as ET
 import json
+import os
+import shutil
+import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 GALLERY = "{http://schemas.microsoft.com/ado/2007/08/dataservices}"
@@ -105,12 +110,60 @@ def verify_documentation(url):
         raise ValueError(f"SDK documentation unavailable at {url}: {error}") from error
 
 
+def check_node_examples(rows):
+    if sys.platform != "win32":
+        raise RuntimeError("The published Node.js SDK examples require Windows x64.")
+    npm, node = shutil.which("npm.cmd"), shutil.which("node.exe")
+    if not npm or not node:
+        raise RuntimeError("Install Node.js 20 or later with npm before running this check.")
+    sample = ROOT / "assets/node-sdk-status.cjs"
+    checked_sample = sample.read_bytes()
+    environment = os.environ.copy()
+    for name in ("NODE_OPTIONS", "NODE_PATH", "INTERCEPTOR_SDK_NODE_PATH",
+                 "INTERCEPTOR_KEYBOARD_MOUSE_SDK_NODE_PATH", "INTERCEPTOR_GAMEPAD_CONTROLLER_SDK_NODE_PATH"):
+        environment.pop(name, None)
+    if subprocess.check_output([node, "-p", "process.arch"], env=environment, text=True).strip() != "x64":
+        raise RuntimeError("The SDK archives require Node.js x64.")
+    for row in rows:
+        name, version = row["name"], row["version"]
+        archive = row["verified_archive"]
+        filename = f"{name}-{version}.tgz"
+        wanted = f"https://registry.npmjs.org/{name}/-/{filename}"
+        if archive["url"] != wanted or sha256(checked_sample).hexdigest() != row["first_check"]["source_sha256"]:
+            raise ValueError(f"{name} {version} has mismatched package or sample metadata.")
+        payload = read(wanted)
+        if len(payload) > 8 * 1024 * 1024 or sha256(payload).hexdigest() != archive["sha256"]:
+            raise ValueError(f"{name} {version} does not match its SHA-256.")
+        with TemporaryDirectory(prefix="titancsa-node-sdk-") as directory:
+            project = Path(directory)
+            (project / "package.json").write_text('{"private":true}', encoding="ascii")
+            (project / "npmrc").touch()
+            (project / filename).write_bytes(payload)
+            (project / sample.name).write_bytes(checked_sample)
+            subprocess.run([npm, "install", "./" + filename, "--offline", "--ignore-scripts",
+                            "--no-audit", "--no-fund", "--no-save", "--no-package-lock", "--userconfig", "npmrc"],
+                           cwd=project, env=environment, check=True, timeout=60)
+            installed = json.loads((project / "node_modules" / name / "package.json").read_text(encoding="utf-8"))
+            if installed["name"] != name or installed["version"] != version:
+                raise ValueError(f"The installed npm package did not match {name} {version}.")
+            result = subprocess.run([node, sample.name, row["edition"]], cwd=project, env=environment,
+                                    capture_output=True, text=True, timeout=20)
+            if result.returncode != 2 or not result.stderr.startswith("Windows 2. Run InterceptorSetup.exe"):
+                raise RuntimeError(f"{name} {version} did not report a missing driver: {result.stderr.strip()[:300]}")
+            print(f"{name} {version} loaded and returned the documented missing-driver result.")
+
+
 def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--documentation", action="store_true",
                         help="Check the documentation links as well as registry packages")
+    parser.add_argument("--check-node-on-clean-windows", action="store_true",
+                        help="Install the pinned npm archives and run their documented status sample on Windows x64 without the drivers")
     args = parser.parse_args()
     rows = json.loads((ROOT / "dist/integration.json").read_text(encoding="utf-8"))["sdk_registry"]
+    if args.check_node_on_clean_windows:
+        check_node_examples([row for row in rows if row["ecosystem"] == "npm"])
+        return
     with ThreadPoolExecutor(max_workers=5) as pool:
         for result in pool.map(verify, rows):
             print(result)

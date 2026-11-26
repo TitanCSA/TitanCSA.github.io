@@ -109,3 +109,10 @@ jobs:
           Set-Location -LiteralPath $saved
           python scripts/test_first_sdk.py all --expect-clean
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          architecture: 'x64'
+          package-manager-cache: false
+      - name: Run the documented npm status checks on clean Windows
+        run: python scripts/verify_registry.py --check-node-on-clean-windows
