@@ -10,6 +10,10 @@
 <li>Open the <a href="{{INTERCEPTOR_KEYBOARD_MOUSE_VIEWER_URL}}">input viewer</a>.</li>
 <li>Press a key or move the mouse. Check that the device appears. Click <strong>Stop</strong> when you finish.</li>
 </ol>
+{{RELEASE_TERMS}}
+<details class="more-info">
+<summary>Technical details and support</summary>
+{{RELEASE_DETAILS}}
 <h2 id="switch-input-driver">Switch between Interceptor and the original driver</h2>
 <p>For compatible HID keyboards and mice, Setup records the original driver package before installing Interceptor. Restore that package when you need to access settings in the manufacturer’s software, then switch back to Interceptor to capture input.</p>
 <ul>
@@ -17,10 +21,7 @@
 <li><code>Set_Input_Driver_Mode(instance, true)</code> restores the recorded original driver. Pass <code>false</code> to switch back to Interceptor.</li>
 </ul>
 <p>Both functions are in the C++ SDK for Demo and Release. Close capture and run the switch as administrator. If the switch returns <code>3010</code>, restart Windows before continuing. <a href="https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/blob/main/docs/API.md#switch-the-driver-for-a-keyboard-or-mouse">C++ API reference</a></p>
-{{RELEASE_TERMS}}
-<details class="more-info">
-<summary>Technical details and support</summary>
-{{RELEASE_DETAILS}}
+<p>Use the <a href="/assets/interceptor-input-driver-bindings.cpp">read-only C++ example</a> to list the current driver for each compatible input device before switching. Compile it with the two-file SDK. Instance IDs can contain serial numbers, so review the output before sharing it.</p>
 <h2>When to use it</h2>
 <p>Use a second keyboard for accessibility shortcuts or a macro pad while keeping your main keyboard’s normal behavior. Device attribution lets the same key have a different role on each keyboard.</p>
 <h2>First validation</h2>

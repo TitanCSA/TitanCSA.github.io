@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked": "2026-11-25",
+  "checked": "2026-11-26",
   "evidence_type": "Publisher reproduction in a dedicated Hyper-V lab",
   "limits": "This run covers these demo packages and status queries. Commercial activation, real input capture and virtual device creation are outside its scope.",
   "editions": {
@@ -13,15 +13,15 @@
         "secure_boot": true
       },
       "version": "1.4.23.0",
-      "installer_sha256": "d2f0346bfb4e2b2ef06324d5072e2fe7ed55241cc0c93a8c8a4cfa4cd46256fd",
+      "installer_sha256": "bcb953083ba71e64d0c65524f068395601165953da2501fbd637b643fcf822c0",
       "installer_exit_code": 0,
-      "sdk_archive_sha256": "734fde1cbe20fd3d99250174432af50ee5690848b92daba0e8a984fb291bceb7",
+      "sdk_archive_sha256": "fc30b63dac6265ee4244d6efab189fa6c39eb31094b990938ae6e05ec1f0dc55",
       "installed_kernel_sha256": "07acd1cd68780e59411a4f1cb8145519644503d007a50fdb63ab2373026749f5",
       "catalogue_signature": "Valid",
-      "compiled_sample_sha256": "c0e3a5b5867d48730782b3904a27b23aad954f3a40253046c28852e235ac0b4c",
+      "compiled_sample_sha256": "dce1560c0fd9b1f03aeed4b211b4cd62770672ed4483787540cbcbc777506a2a",
       "sample_exit_code": 0,
       "sample_output": "Driver answered. Status ABI version 4",
-      "installer_url": "https://github.com/TitanCSA/Interceptor/releases/download/v1.4.23.0-demo/InterceptorSetupConsole.exe",
+      "installer_url": "https://github.com/TitanCSA/Interceptor/releases/download/v1.4.23.0-demo-r3/InterceptorSetupConsole.exe",
       "reboot_and_uninstall": {
         "status_exit_before_install": 2,
         "installation_exit": 0,
@@ -32,7 +32,8 @@
         "status_exit_after_uninstall_and_restart": 2,
         "kernel_service_registered_after_uninstall": false,
         "secure_boot_after_uninstall": true
-      }
+      },
+      "tag": "v1.4.23.0-demo-r3"
     },
     "interceptor-gamepad-controller": {
       "test_date": "2026-11-25",
@@ -65,7 +66,7 @@
       }
     },
     "interceptor-keyboard-mouse": {
-      "test_date": "2026-11-25",
+      "test_date": "2026-11-26",
       "scope": "Published demo console installer, Windows driver package inventory, kernel image SHA-256, catalogue signature and read-only SDK query.",
       "environment": {
         "windows_build": 26100,
@@ -73,15 +74,15 @@
         "secure_boot": true
       },
       "version": "1.0.5.4",
-      "installer_sha256": "f7650e55e45d1a60f74a464e7be194a2772829711c2433fb992969d693856009",
+      "installer_sha256": "f8a1a5b9607079630aa577a28441588d62839a5b37c9b846c9d2ea18fd166576",
       "installer_exit_code": 0,
-      "sdk_archive_sha256": "ef0515b2ca1240dd5d2cdea781eb60dbe177e84cfd868bbfe5933db1f3484834",
+      "sdk_archive_sha256": "fb3facceeeb4fc15bfdd7ae473bcfe2dcbe99044f0b7209c285e682c799acede",
       "installed_kernel_sha256": "9f132ad0ed76dd80dbc7c0902b00a684668d11c11c7eff3e9b42f955e25eabcb",
       "catalogue_signature": "Valid",
-      "compiled_sample_sha256": "1419f901ece323761aa2c16dadab1c9fd3cf0bf571da453d12e67e5344ad1bae",
+      "compiled_sample_sha256": "0aef620a71af75f6ef24ed621ce07e6dec3cf1debf3f8533b0f39655046a1c3c",
       "sample_exit_code": 0,
       "sample_output": "Driver answered. Status ABI version 4",
-      "installer_url": "https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/releases/download/v1.0.5.4-demo/InterceptorSetupConsole.exe",
+      "installer_url": "https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/releases/download/v1.0.5.4-demo-r3/InterceptorSetupConsole.exe",
       "reboot_and_uninstall": {
         "status_exit_before_install": 2,
         "installation_exit": 0,
@@ -92,7 +93,8 @@
         "status_exit_after_uninstall_and_restart": 2,
         "kernel_service_registered_after_uninstall": false,
         "secure_boot_after_uninstall": true
-      }
+      },
+      "tag": "v1.0.5.4-demo-r3"
     },
     "vdevice": {
       "test_date": "2026-11-25",
@@ -138,5 +140,6 @@
     "screenshot_sha256": "973e935458475d74b83193e9ef42c079335e619da8bb9259c19483dc5b337277",
     "scope": "Screenshot rendered by the exact graphical demo setup with its read-only preview option. Driver catalogue verification is recorded separately in the editions section."
   },
-  "updated": "2026-11-26"
+  "updated": "2026-11-26",
+  "prior_published_record_url": "https://github.com/TitanCSA/TitanCSA.github.io/blob/2c7b0c1ccac14518fbc15da3848c1c803acfaeda/assets/demo-install-verification-2026-11-25.json"
 }
