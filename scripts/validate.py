@@ -412,6 +412,14 @@ assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]
     demo, check = row['demo'], row['sdk_check']
+    assert row['first_run_guides']==edition['first_run_guides']
+    assert set(row['first_run_guides'])=={'en','fr'}
+    for language, guide in row['first_run_guides'].items():
+        page_url, _, anchor = guide.partition('#')
+        first_run = by_canonical[page_url]
+        assert first_run.language==language and demo['setup_download_url'] in first_run.links
+        assert not anchor or anchor in first_run.ids
+    assert row['first_run_guides']['fr'].removeprefix(BASE.rstrip('/')) in by_canonical[BASE+'fr/'].links
     assert demo['version'] == edition['demo'] and demo['tag'] == edition['tag']
     assert demo['setup_download_url'] == edition['demo_download_url']
     assert set(demo['assets']) == set(edition['demo_assets']) == set(edition['demo_asset_sha256'])

@@ -68,6 +68,7 @@ def make_manifest(base, editions):
             "name": edition["name"],
             "source": edition["repository"],
             "overview_url": edition["overview_url"],
+            "first_run_guides": edition["first_run_guides"],
             "demo": {
                 "version": edition["demo"],
                 "tag": edition["tag"],

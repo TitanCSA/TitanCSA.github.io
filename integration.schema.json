@@ -102,6 +102,7 @@
         "name": { "type": "string", "minLength": 1 },
         "source": { "$ref": "#/$defs/url" },
         "overview_url": { "$ref": "#/$defs/url" },
+        "first_run_guides": { "$ref": "#/$defs/guideUrls" },
         "commercial_install_verification": {
           "type": "object",
           "required": ["url", "package_version", "driver_version"],

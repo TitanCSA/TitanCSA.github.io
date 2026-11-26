@@ -32,6 +32,13 @@ featured_paths['Titan-Audio-Link']='/guides/titan-audio-link-first-run/'
 featured_paths_fr={repo:f'/fr/pilotes-entree-windows/#edition-{slug}' for slug,(repo,_,_) in featured.items()}
 featured_paths_fr['Titan-Audio-Link']='/fr/micro-virtuel-titan-audio-link/'
 featured_paths_fr['Interceptor-Gamepad-Controller']='/fr/remapper-manette-windows/'
+featured_paths_fr['Vdevice']='/fr/souris-usb-virtuelle-vdevice/'
+featured_paths_fr['Interception-V2']='/fr/migrer-interception-v2/'
+first_run_paths_en={
+    'interceptor-gamepad-controller':'guides/gamepad-controller-first-run/',
+    'vdevice':'guides/vdevice-virtual-usb-mouse/',
+    'interception-v2':'guides/interception-v2-migration/',
+}
 featured_date='2026-11-23'
 contact_path='/about/evidence/#release-contact'
 release_data=json.loads((ROOT/'releases.json').read_text(encoding='utf8'))
@@ -60,6 +67,10 @@ for edition in release_data['editions']:
         'demo_download_url':primary,
         'demo_assets':assets,
         'overview_url':overview,
+        'first_run_guides':{
+            'en':BASE+first_run_paths_en[slug] if slug in first_run_paths_en else overview,
+            'fr':BASE.rstrip('/')+featured_paths_fr[repo_url.rsplit('/',1)[-1]],
+        },
         'release_contact':{'platform':'Discord','username':'titancsa','instructions_url':BASE.rstrip('/')+contact_path},
     }
 assert set(editions)==set(featured)|{'titan-audio-link'} and len(editions)==len(release_data['editions'])

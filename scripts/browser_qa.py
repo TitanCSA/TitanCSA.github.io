@@ -130,8 +130,8 @@ with sync_playwright() as p:
     page.locator('#project-vdevice summary').click()
     assert 'Create device' in page.locator('#project-vdevice details').inner_text()
     page.locator('#project-vdevice h3 a').press('Enter')
-    assert page.url.endswith('/fr/pilotes-entree-windows/#edition-vdevice')
-    assert page.locator(':target .button.primary').get_attribute('href')==edition_routes['projects/vdevice/']['demo_download_url']
+    assert page.url.endswith('/fr/souris-usb-virtuelle-vdevice/')
+    assert page.locator('main .button.primary').get_attribute('href')==edition_routes['projects/vdevice/']['demo_download_url']
     page.go_back(wait_until='domcontentloaded')
     page.locator('main a[lang="en"][href="/"]').click()
     page.locator('#project-vdevice h3 a').press('Enter')
