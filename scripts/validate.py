@@ -116,9 +116,12 @@ robots=(OUT/'robots.txt').read_text();assert 'Allow: /' in robots and BASE+'site
 for bot in ('OAI-SearchBot','Claude-SearchBot','Claude-User'):
     assert f'User-agent: {bot}\n' in robots
 tree=ET.parse(OUT/'sitemap.xml')
-assert {url.findtext('{*}loc') for url in tree.getroot()} == {
+xml_sitemap_urls = [url.findtext('{*}loc') for url in tree.getroot()]
+assert set(xml_sitemap_urls) == {
     page.canonical for path,page in parsed.items() if path.name!='404.html'
 }
+assert len(xml_sitemap_urls)==len(set(xml_sitemap_urls))
+assert (OUT/'sitemap.txt').read_text(encoding='utf8').splitlines()==xml_sitemap_urls
 feed=ET.parse(OUT/'rss.xml').getroot()
 entries=feed.findall('channel/item')
 assert feed.tag=='rss' and feed.get('version')=='2.0' and len(entries)>=10

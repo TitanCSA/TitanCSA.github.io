@@ -40,7 +40,9 @@ Update the approved tag, demo version, asset filenames and SHA-256 values in rel
 
 To preview a proposed update, run the release checker with the edition ID, public GitHub tag and driver version. The command prints the exact metadata without changing files.
 
-    python scripts/verify_release_assets.py --candidate vdevice v1.0.6.0-demo 1.0.6.0
+    python scripts/verify_release_assets.py --candidate interceptor v1.4.23.0-demo-r3 1.4.23.0
+
+The GitHub tag identifies the exact publication even when a revision retains the same Windows driver version.
 
 Use --asset role=filename when the new release changes a filename's pattern. The pipeline checks the URL and pinned SHA-256 of each asset against GitHub. Its Windows job builds and runs every listed architecture.
 
@@ -71,5 +73,7 @@ Update `starter-apps.json` after checking a new app's released ZIP and exact fir
 The initial social preview is generated from owned text and shapes; it makes no customer, certification or performance claim. Content and code are maintained with AI assistance.
 
 `site-verification.json`, when present, contains the public Google ownership-verification meta value for this site. It is deliberately rendered in the homepage and is not an API credential. Preserve it for the existing site's verification; replace/remove it before deploying a fork to another website. Search Console ownership and sitemap submission do not guarantee indexing or rankings.
+
+The build generates `sitemap.xml` and a plain-text `sitemap.txt` from the same canonical pages. Search Console accepts either format.
 
 The same file contains a public IndexNow key. The builder publishes its verification file at the site root. Submit only URLs on this host after the updated pages are live.

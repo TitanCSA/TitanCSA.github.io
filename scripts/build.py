@@ -259,6 +259,7 @@ for path,(title,description,source) in pages.items():
 (OUT/'404.html').write_text(render('Page not found — TitanCSA','Find the TitanCSA project catalogue and first-run guides.','404.html','<h1>Page not found.</h1><p>The address may have changed. <a href="/">Open the project catalogue</a> or <a href="/guides/first-run/">read the first-run guide</a>.</p>',True).replace('index,follow,max-image-preview:large','noindex,follow'),encoding='utf8')
 urls=''.join(f'<url><loc>{BASE+path}</loc><lastmod>{reviewed.get(path,checked)}</lastmod></url>' for path in pages)
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls+'</urlset>',encoding='utf8')
+(OUT/'sitemap.txt').write_text(''.join(BASE+path+'\n' for path in pages),encoding='utf8',newline='\n')
 feed=ET.Element('rss', version='2.0')
 channel=ET.SubElement(feed,'channel')
 ET.SubElement(channel,'title').text='TitanCSA guides'
