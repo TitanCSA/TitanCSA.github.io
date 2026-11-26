@@ -464,6 +464,12 @@ for row in manifest['products']:
         first_run = by_canonical[page_url]
         assert first_run.language==language and demo['setup_download_url'] in first_run.links
         assert not anchor or anchor in first_run.ids
+    for url in {row['overview_url'], *row['first_run_guides'].values()}:
+        page_url = url.split('#', 1)[0]
+        page = by_canonical[page_url]
+        assert 'first-sdk-check' in page.ids and manifest['starter_zip_url'] in page.links
+        html = (OUT / page_url.removeprefix(BASE) / 'index.html').read_text(encoding='utf8')
+        assert check['build_verification']['command_from_starter_zip'] in html
     assert row['first_run_guides']['fr'].removeprefix(BASE.rstrip('/')) in by_canonical[BASE+'fr/'].links
     assert demo['version'] == edition['demo'] and demo['tag'] == edition['tag']
     assert demo['setup_download_url'] == edition['demo_download_url']

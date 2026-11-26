@@ -33,7 +33,7 @@ routes=['','fr/','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-in
         'guides/interception-v2-migration/','fr/migrer-interception-v2/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/','fr/sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','fr/verifier-pilote-windows/','guides/vdevice-custom-hid-test/',
         'fr/activation-release/','fr/pilotes-entree-windows/',pad_en,pad_fr,'guides/keyboard-mouse-first-run/','fr/tester-deux-claviers-windows/',
-        'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/',audio_fr,*edition_routes]
+        'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/','fr/essayer-interceptor/',audio_fr,*edition_routes]
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='C:/Program Files/Google/Chrome/Application/chrome.exe',headless=True)
     for width in [1440,390]:
@@ -48,9 +48,13 @@ with sync_playwright() as p:
                 nav=page.get_by_role('navigation',name='Project sections')
                 repo=edition_routes[route]['repository'].rsplit('/',1)[1]
                 assert nav.get_by_role('link').all_text_contents()==['First steps','Develop','Maintain'],route
-                assert nav.get_by_role('link',name='Develop').get_attribute('href') == (
-                    f'https://github.com/TitanCSA/sdk-packages/tree/main/projects/{repo}#readme'
-                ),route
+                nav.get_by_role('link',name='Develop').click()
+                sdk=page.locator('#first-sdk-check')
+                assert page.url.endswith('#first-sdk-check') and sdk.is_visible(),route
+                assert sdk.locator('a').last.get_attribute('href') == (
+                    f'https://github.com/TitanCSA/sdk-packages/tree/main/projects/{repo}#readme'),route
+                command=f'python scripts/test_first_sdk.py {edition_routes[route]["slug"]} --run'
+                assert sdk.locator('pre').inner_text().strip()==command,route
                 nav.get_by_role('link',name='First steps').click()
                 assert page.url.endswith('#first-steps') and page.locator('#first-steps').is_visible(),route
         page.goto(base,wait_until='networkidle')

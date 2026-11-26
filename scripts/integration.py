@@ -240,6 +240,34 @@ def app_cards(manifest, language, *, more=False):
     return '<div class="guide-grid">' + "\n".join(cards) + '</div>'
 
 
+def first_sdk_check(product, starter_url, language):
+    sdk = product["sdk_check"]
+    package_link = f'https://github.com/TitanCSA/sdk-packages/tree/main/projects/{product["source"].rsplit("/", 1)[-1]}#readme'
+    command = escape(sdk["build_verification"]["command_from_starter_zip"])
+    result = escape(sdk["expected_after_setup"]["output_contains"])
+    driver_needed = sdk["needs_installed_driver"]
+    if language == "fr":
+        title, download, reference = "Compiler le premier test SDK", "ZIP de départ", "Documentation du SDK"
+        requirements = "Sous Windows, installe Visual Studio 2022 avec les outils C++, CMake 3.20+ et Python 3.10+."
+        setup = "Installe la démo ci-dessus. " if driver_needed else ""
+        instructions = "Décompresse le ZIP et ouvre PowerShell dans le dossier extrait."
+        outcome = "Résultat attendu après installation" if driver_needed else "Résultat attendu"
+    else:
+        title, download, reference = "Build the first SDK check", "Starter ZIP", "SDK documentation"
+        requirements = "On Windows, install Visual Studio 2022 with the C++ desktop tools, CMake 3.20+, and Python 3.10+."
+        setup = "Install the demo above. " if driver_needed else ""
+        instructions = "Extract the ZIP and open PowerShell in the extracted folder."
+        outcome = "Expected after installation" if driver_needed else "Expected result"
+    return (
+        f'<details class="more-info"><summary>{title}</summary><div id="first-sdk-check">'
+        f'<p>{requirements} {setup}{instructions}</p>'
+        f'<p><a href="{escape(starter_url, quote=True)}">{download}</a></p>'
+        f'<pre><code>{command}</code></pre>'
+        f'<p>{outcome} <code>{result}</code></p>'
+        f'<p><a href="{escape(package_link, quote=True)}">{reference}</a></p></div></details>'
+    )
+
+
 def sdk_rows(manifest, french=False):
     labels = (("Installer", "Archive SDK", "Code du test") if french else
               ("Setup download", "SDK archive", "Test source"))

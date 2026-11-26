@@ -3,7 +3,7 @@ from pathlib import Path
 from html import escape
 from feeds import write_feeds
 import json,re,shutil
-from integration import app_cards, make_manifest, sdk_rows, write_sdk_reference, write_starter
+from integration import app_cards, first_sdk_check, make_manifest, sdk_rows, write_sdk_reference, write_starter
 from go_samples import write_go_samples
 from rust_samples import write_rust_samples
 from catalogue import catalogue_sections
@@ -31,6 +31,7 @@ featured_paths={repo:f'/projects/{slug}/' for slug,(repo,_,_) in featured.items(
 featured_paths['Titan-Audio-Link']='/guides/titan-audio-link-first-run/'
 featured_paths_fr={repo:f'/fr/pilotes-entree-windows/#edition-{slug}' for slug,(repo,_,_) in featured.items()}
 featured_paths_fr['Titan-Audio-Link']='/fr/micro-virtuel-titan-audio-link/'
+featured_paths_fr['Interceptor']='/fr/essayer-interceptor/'
 featured_paths_fr['Interceptor-Gamepad-Controller']='/fr/remapper-manette-windows/'
 featured_paths_fr['Interceptor-Keyboard-Mouse']='/fr/tester-deux-claviers-windows/'
 featured_paths_fr['Vdevice']='/fr/souris-usb-virtuelle-vdevice/'
@@ -79,6 +80,11 @@ assert set(editions)==set(featured)|{'titan-audio-link'} and len(editions)==len(
 editions_by_overview={edition['overview_url']:edition for edition in editions.values()}
 input_editions={slug:editions[slug] for slug in featured}
 integration=make_manifest(BASE,editions)
+sdk_first_check_routes={
+    url.removeprefix(BASE): product
+    for product in integration["products"]
+    for url in (product["overview_url"], *product["first_run_guides"].values())
+}
 integration['sdk_registry']=registry_catalogue(integration,BASE)
 rust_proof_path='assets/rust-sdk-quickstarts-2026-11-26.json'
 rust_quickstarts=json.loads((ROOT/rust_proof_path).read_text(encoding='utf8'))['checks']
@@ -179,6 +185,7 @@ pages={
  'fr/remapper-manette-windows/':('Tester et remapper une manette sous Windows — TitanCSA','Installe la démo Interceptor Gamepad & Controller, vérifie la réponse de ta manette et essaie un exemple de zone morte du stick.','guides/gamepad-controller-first-run-fr.html'),
  'guides/gamepad-controller-first-run/':('Test and remap a physical gamepad on Windows — TitanCSA','Identify HID, XUSB, XInputHID or GIP input, use the signed controller demo and try the C++ stick deadzone example.','guides/gamepad-controller-first-run.html'),
  'guides/keyboard-mouse-first-run/':('Identify two keyboards on Windows with Interceptor Keyboard & Mouse — TitanCSA','Install the signed demo and use the input viewer to tell two keyboards apart before changing any mapping.','guides/keyboard-mouse-first-run.html'),
+ 'fr/essayer-interceptor/':('Essayer Interceptor avec un clavier, une souris ou une manette Windows','Installe la démo signée d’Interceptor. Vérifie les entrées dans le visualiseur ou compile le premier test du SDK C++.','guides/interceptor-first-run-fr.html'),
  'fr/tester-deux-claviers-windows/':('Identifier deux claviers sous Windows avec Interceptor Keyboard & Mouse — TitanCSA','Installe la démo signée et repère quel clavier envoie la touche dans le visualiseur.','guides/keyboard-mouse-first-run-fr.html'),
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Download the signed Titan Audio Link demo, verify a stereo virtual audio pair on Windows 11, and find the matching commercial package.','guides/titan-audio-link-first-run.html'),
  'fr/micro-virtuel-titan-audio-link/':('Titan Audio Link · Envoyer le son vers un micro virtuel Windows','Installe la démo signée de Titan Audio Link. Teste la sortie et le micro virtuels, puis relie deux applications Windows.','guides/titan-audio-link-first-run-fr.html'),
@@ -210,6 +217,7 @@ translations=(
     {'en':'guides/autohotkey-remap-second-keyboard/','fr':'fr/remapper-deuxieme-clavier-autohotkey/'},
     {'en':'guides/titan-audio-link-first-run/','fr':'fr/micro-virtuel-titan-audio-link/'},
     {'en':'guides/gamepad-controller-first-run/','fr':'fr/remapper-manette-windows/'},
+    {'en':'projects/interceptor/','fr':'fr/essayer-interceptor/'},
     {'en':'guides/keyboard-mouse-first-run/','fr':'fr/tester-deux-claviers-windows/'},
     {'en':'guides/interception-v2-migration/','fr':'fr/migrer-interception-v2/'},
     {'en':'guides/verify-windows-driver-package/','fr':'fr/verifier-pilote-windows/'},
@@ -236,6 +244,7 @@ published_dates['fr/remapper-manette-windows/']='2026-11-26'
 published_dates['fr/verifier-pilote-windows/']='2026-11-26'
 published_dates['fr/migrer-interception-v2/']='2026-11-26'
 published_dates['fr/aide-et-verifications/']='2026-11-26'
+published_dates['fr/essayer-interceptor/']='2026-11-26'
 published_dates.update(dict.fromkeys(('guides/keyboard-mouse-first-run/','fr/tester-deux-claviers-windows/'),'2026-11-26'))
 reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('guides/vdevice-virtual-usb-mouse/',
@@ -318,10 +327,9 @@ for path,(title,description,source) in pages.items():
     body=(ROOT/'content'/source).read_text(encoding='utf8')
     for key,value in replacements.items():body=body.replace('{{'+key+'}}',value)
     if edition := editions_by_overview.get(BASE+path):
-        repo=edition['repository'].rsplit('/',1)[1]
         sections=(
             '<nav aria-label="Project sections"><a href="#first-steps">First steps</a> · '
-            f'<a href="https://github.com/TitanCSA/sdk-packages/tree/main/projects/{repo}#readme">Develop</a> · '
+            '<a href="#first-sdk-check">Develop</a> · '
             '<a href="https://github.com/TitanCSA/sdk-packages/blob/main/CONTRIBUTING.md">Maintain</a></nav>'
         )
         assert body.count('{{PROJECT_START_LINKS}}')==1,path
@@ -345,6 +353,9 @@ for path,(title,description,source) in pages.items():
         label='Download demo installer' if 'installer' in demo_assets else 'Download demo ZIP'
         body=body.replace('{{DEMO_DOWNLOAD_URL}}',edition['demo_download_url']).replace('{{DEMO_DOWNLOAD_LABEL}}',label)
         body=body.replace('{{RELEASE_TERMS}}',release_terms).replace('{{RELEASE_DETAILS}}',links)
+    if product := sdk_first_check_routes.get(path):
+        language='fr' if path.startswith('fr/') else 'en'
+        body+=first_sdk_check(product,integration['starter_zip_url'],language)
     assert '{{' not in body
     target=OUT/path/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(title,description,path,body,path not in ('','fr/')),encoding='utf8')
 (OUT/'404.html').write_text(render('Page not found — TitanCSA','Find the TitanCSA project catalogue and first-run guides.','404.html','<h1>Page not found.</h1><p>The address may have changed. <a href="/">Open the project catalogue</a> or <a href="/guides/first-run/">read the first-run guide</a>.</p>',True).replace('index,follow,max-image-preview:large','noindex,follow'),encoding='utf8')
