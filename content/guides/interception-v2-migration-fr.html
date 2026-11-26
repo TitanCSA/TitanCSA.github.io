@@ -1,0 +1,23 @@
+<h1>Continuer à utiliser une application Interception sous Windows</h1>
+<p class="article-lead">Interception V2 fournit un pilote clavier et souris pour les applications qui utilisent le SDK C d’Interception. Essaie d’abord ton application existante avec la démo.</p>
+<div class="actions"><a class="button primary" href="{{INTERCEPTION_V2_DEMO_URL}}">Télécharger la démo {{INTERCEPTION_V2_DEMO_VERSION}}</a><a class="button" href="{{INTERCEPTION_V2_CHECKSUMS_URL}}">Empreintes SHA-256</a></div>
+<h2 id="installer">Installer et tester</h2>
+<ol>
+<li>Vérifie que ton PC utilise Windows 10 version 1709 ou plus récente, ou Windows 11, en 64 bits. Ferme ton application. Si l’ancien pilote Interception ou une édition Interceptor clavier et souris est installé, désinstalle-le puis redémarre.</li>
+<li>Décompresse le ZIP. Ouvre une invite de commandes en tant qu’administrateur, place-toi dans le dossier <code>Interception</code> extrait et lance cette commande.
+<pre><code>"command line installer\install-interception.exe" /install</code></pre></li>
+<li>Redémarre si l’installateur le demande. Garde le fichier <code>interception.dll</code> fourni avec ton application, lance-la en tant qu’administrateur et vérifie le clavier ou la souris dans cette application.</li>
+</ol>
+<p>Après chaque démarrage de Windows, la démo dure une heure à partir du moment où une application se connecte au pilote pour la première fois. Pour retirer le pilote, remplace <code>/install</code> par <code>/uninstall</code> et redémarre si demandé.</p>
+<details>
+<summary>Intégrer le SDK et lister les périphériques</summary>
+<p>Le ZIP comprend l’en-tête C, la bibliothèque <code>.lib</code> pour la compilation et la DLL à placer près de ton programme. Choisis les fichiers x86 ou x64 selon l’architecture de ton application. Le pilote s’installe uniquement sous Windows x64.</p>
+<p>Télécharge <a href="/assets/interception-device-inventory.c" download>l’exemple C d’inventaire</a> et enregistre-le dans le dossier <code>Interception</code> extrait. Ouvre l’invite de commandes développeur Visual Studio x64 dans ce dossier et lance les lignes suivantes. Pour compiler en x86, ouvre l’invite x86 et remplace les deux chemins <code>library\x64</code> par <code>library\x86</code>.</p>
+<pre><code>cl /nologo /W4 /MT /I library interception-device-inventory.c /link /LIBPATH:library\x64 interception.lib
+copy /y library\x64\interception.dll .</code></pre>
+<p>Une fois le pilote installé, lance <code>interception-device-inventory.exe</code> en tant qu’administrateur. L’exemple liste les identifiants matériels accessibles sans activer de filtre. L’ouverture réussie du contexte démarre la démo. Réidentifie ton périphérique après un redémarrage ou une reconnexion.</p>
+<p>Après installation de la démo 2.0.0.0 dans une VM Windows 11, les deux versions de l’exemple ont chacune détecté une souris. <a href="/assets/interception-v2-install-verification-2026-11-25.json">Rapport d’installation et de désinstallation</a>.</p>
+<p>Tu peux aussi décompresser le <a href="{{INTERCEPTION_V2_RUST_QUICKSTART_URL}}">ZIP d’exemple Rust</a> et lancer <code>cargo run --locked</code> pour vérifier le premier emplacement clavier.</p>
+</details>
+<p>Pour la version sans la limite d’une heure, <a href="/fr/pilotes-entree-windows/#contact-release">contacte <strong>titancsa</strong> sur Discord</a> et indique <strong>Interception V2</strong>.</p>
+<div class="related"><a href="/guides/interception-v2-migration/" lang="en">Read in English</a><a href="{{INTERCEPTION_V2_DEMO_NOTES_URL}}">Notes de version</a><a href="https://github.com/oblitum/Interception">Projet Interception original</a></div>

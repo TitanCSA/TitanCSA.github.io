@@ -289,7 +289,7 @@ quickstarts=manifest['sdk_quickstarts']
 assert quickstarts==quickstart_proof['checks'] and len(quickstarts)==2
 outputs={'interception-v2':{'keyboard':True,'mouse':False,'valid':True},'titan-audio-link':[]}
 quickstart_routes={
-    'interception-v2':('projects/interception-v2/','guides/interception-v2-migration/','fr/pilotes-entree-windows/'),
+    'interception-v2':('projects/interception-v2/','guides/interception-v2-migration/','fr/migrer-interception-v2/','fr/pilotes-entree-windows/'),
     'titan-audio-link':('guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/'),
 }
 assert {row['edition'] for row in quickstarts}==outputs.keys()

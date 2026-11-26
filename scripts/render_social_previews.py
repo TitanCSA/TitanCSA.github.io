@@ -8,6 +8,10 @@ CONTROLLER_PREVIEW = (
     "interceptor-gamepad-controller", "Interceptor Gamepad & Controller",
     "Remap buttons and adjust sticks on Windows.", "controller", "en",
 )
+INTERCEPTION_PREVIEW = (
+    "interception-v2", "Interception V2",
+    "Use the original Interception C API on Windows.", "code", "en",
+)
 
 # route: (file stem, product name, first use, visual, language)
 PREVIEWS = {
@@ -23,8 +27,11 @@ PREVIEWS = {
         "Teste les boutons et règle les sticks d’une manette sous Windows.", "controller", "fr"),
     "projects/vdevice/": (
         "vdevice", "Vdevice", "Create virtual USB devices from your Windows application.", "usb", "en"),
-    "projects/interception-v2/": (
-        "interception-v2", "Interception V2", "Use the original Interception C API on Windows.", "code", "en"),
+    "projects/interception-v2/": INTERCEPTION_PREVIEW,
+    "guides/interception-v2-migration/": INTERCEPTION_PREVIEW,
+    "fr/migrer-interception-v2/": (
+        "interception-v2-fr", "Interception V2",
+        "Essaie ton application Interception existante sous Windows.", "code", "fr"),
     "guides/titan-audio-link-first-run/": (
         "titan-audio-link", "Titan Audio Link", "Send one app’s sound into another app’s microphone.", "audio", "en"),
     "fr/micro-virtuel-titan-audio-link/": (

@@ -148,6 +148,7 @@ pages={
  'guides/windows-input-release-compare/':('Compare Windows input drivers and Release editions — TitanCSA','Compare Interceptor, Vdevice and Interception V2. Find the matching API, signed demo, device scope and commercial edition.','guides/windows-input-release-compare.html'),
  'guides/release-activation-help/':('Install and activate a TitanCSA Windows Release — error help','Resolve missing activation interfaces, invalid keys and HTTPS failures. Find the correct Windows Release ZIP, SDK and driver version.','guides/release-activation-help.html'),
  'guides/interception-v2-migration/':('Migrate an Interception application to Interception V2 — TitanCSA','Migrate an application using interception.dll, check x86 or x64 library compatibility and list keyboard and mouse hardware IDs.','guides/interception-v2-migration.html'),
+ 'fr/migrer-interception-v2/':('Migrer une application vers Interception V2 sous Windows — TitanCSA','Installe la démo du pilote clavier et souris, essaie ton application existante, puis trouve les fichiers SDK Interception x86 et x64.','guides/interception-v2-migration-fr.html'),
  'guides/installer-and-sdk/':('Installer, driver and SDK on Windows — TitanCSA','Understand what to install first, when to download the SDK and how to run a verified first check.','guides/installer-and-sdk.html'),
  'fr/installeur-et-sdk/':('Installateur, pilote et SDK sous Windows — TitanCSA','Choisis le bon téléchargement Windows. Essaie la démo ou compile un premier test SDK.','guides/installer-and-sdk-fr.html'),
  'guides/windows-input-sdk-packages/':('Install Windows input SDK packages for Python, Node.js, .NET, PowerShell, Go, Rust and C++ — TitanCSA','Find verified packages for Interceptor, Vdevice and Interception V2 in PyPI, npm, PowerShell Gallery, NuGet, Go and crates.io. Match the SDK to the installed Windows driver.','guides/windows-input-sdk-packages.html'),
@@ -183,6 +184,7 @@ translations=(
     {'en':'guides/autohotkey-remap-second-keyboard/','fr':'fr/remapper-deuxieme-clavier-autohotkey/'},
     {'en':'guides/titan-audio-link-first-run/','fr':'fr/micro-virtuel-titan-audio-link/'},
     {'en':'guides/gamepad-controller-first-run/','fr':'fr/remapper-manette-windows/'},
+    {'en':'guides/interception-v2-migration/','fr':'fr/migrer-interception-v2/'},
     {'en':'guides/verify-windows-driver-package/','fr':'fr/verifier-pilote-windows/'},
 )
 reviewed={
@@ -205,6 +207,7 @@ publisher={
 published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/essayer-sans-pilote/','fr/sdk-java-php-ruby/')}
 published_dates['fr/remapper-manette-windows/']='2026-11-26'
 published_dates['fr/verifier-pilote-windows/']='2026-11-26'
+published_dates['fr/migrer-interception-v2/']='2026-11-26'
 reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
@@ -341,6 +344,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
     f'- [Installation des SDK Windows en français]({BASE}fr/installer-sdk-windows/)',
     f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
+    f'- [Migrer une application vers Interception V2]({BASE}fr/migrer-interception-v2/)',
     f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
     f'- [Standalone Rust ZIP quickstarts]({BASE}{rust_proof_path})',
     f'- [Rust crate checks with exact package hashes]({BASE}assets/rust-sdk-first-checks-2026-11-26.json)',
