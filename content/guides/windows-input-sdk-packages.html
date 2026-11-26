@@ -10,7 +10,6 @@
 <p>The Interception V2 NuGet package compiles the C library into your app. If your app loads <code>interception.dll</code>, use the matching x86 or x64 files from the <a href="/guides/interception-v2-migration/">Interception V2 demo ZIP</a>.</p>
 <p><a href="/assets/sdk-registry-runtime-2026-11-25.json">See nine SDK package checks on Windows 11</a>. Node.js, PowerShell, Python and .NET read the matching installed demo driver’s status with the demo timer still idle.</p>
 <p><a href="/guides/windows-input-sdk-java-php-ruby/">Find the Java, PHP and Ruby packages</a>.</p>
-<p>For direct, machine-readable npm version metadata, use the official registry entries for <a href="https://registry.npmjs.org/interceptor-sdk/1.0.0">Interceptor</a>, <a href="https://registry.npmjs.org/interceptor-keyboard-mouse-sdk/1.0.0">Keyboard &amp; Mouse</a> and <a href="https://registry.npmjs.org/interceptor-gamepad-controller/1.0.0">Gamepad &amp; Controller</a>.</p>
 <details class="first-run-more"><summary>First API checks and the Node.js 1.0.1 archives</summary>
 <h2>Read driver status from your project</h2>
 <p>After running the npm command above, save <a href="/assets/node-sdk-status.cjs" download>node-sdk-status.cjs</a> in your project folder. Open PowerShell in that folder and run the command below for the combined Interceptor edition.</p>
@@ -18,7 +17,7 @@
 <p>The script prints driver status. Windows 2 means this call could not find the driver interface. Use the edition ID and command in the <a href="/integration.json">integration manifest</a> for the other bindings.</p>
 <p>For a Gallery module, use the <a href="/assets/gallery-sdk-status.ps1">PowerShell status sample</a> after installing the matching module. The Interception V2 check classifies a library slot and works before driver installation.</p>
 <h2>Use the reviewed Node.js 1.0.1 packages</h2>
-<p>The publisher's <a href="https://github.com/TitanCSA/sdk-packages/releases/tag/node-input-sdk-v1.0.1">GitHub release</a> supplies Windows x64 Node.js 1.0.1 archives and a SHA-256 list. Download your edition and run <code>npm install ./PACKAGE-1.0.1.tgz</code> with the downloaded file name. The npm commands in the table install the registry's 1.0.0 versions.</p>
+<p>Run the npm command for your edition in the table. In <code>client.info()</code>, <code>installed</code> and <code>active</code> use numeric flags, with <code>1</code> for yes and <code>0</code> for no.</p>
 <ul>
 <li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-sdk-1.0.1.tgz">interceptor-sdk 1.0.1</a></li>
 <li><a href="https://github.com/TitanCSA/sdk-packages/releases/download/node-input-sdk-v1.0.1/interceptor-keyboard-mouse-sdk-1.0.1.tgz">interceptor-keyboard-mouse-sdk 1.0.1</a></li>

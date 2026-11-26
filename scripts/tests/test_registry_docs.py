@@ -1,3 +1,4 @@
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -14,6 +15,23 @@ class RegistryDocumentationChecks(unittest.TestCase):
 
     def failure(self, address, status):
         return HTTPError(address, status, "Unavailable", {}, None)
+
+    def test_npm_homepage_matches_the_maintained_sdk_guide(self):
+        row = {
+            "name": "interceptor-sdk", "version": "1.0.1", "ecosystem": "npm",
+            "metadata_url": "https://registry.npmjs.org/interceptor-sdk/1.0.1",
+            "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor/Interceptor-JavaScript-npm#readme",
+        }
+        doc = {
+            "name": row["name"], "version": row["version"], "homepage": row["documentation_url"],
+            "dist": {"integrity": "sha512-fixture"},
+        }
+        with patch.object(registry, "read", return_value=json.dumps(doc).encode()):
+            self.assertEqual(registry.verify(row), "interceptor-sdk 1.0.1 (npm)")
+        doc["homepage"] = "https://github.com/TitanCSA/Interceptor/tree/main/Interceptor-JavaScript-npm#readme"
+        with patch.object(registry, "read", return_value=json.dumps(doc).encode()):
+            with self.assertRaisesRegex(ValueError, "different SDK guide"):
+                registry.verify(row)
 
     def test_recovers_from_transient_github_view_error(self):
         with patch.object(registry, "read", side_effect=[self.failure(self.documentation, 503), b"# Python SDK"]) as read:

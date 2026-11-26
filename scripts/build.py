@@ -181,6 +181,7 @@ published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','g
 reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('', 'fr/', 'guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
+reviewed.update(dict.fromkeys(('guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/'), '2026-11-26'))
 
 
 def render(title,description,path,body,article=False):

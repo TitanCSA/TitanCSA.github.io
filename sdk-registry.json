@@ -3,7 +3,7 @@
     "edition": "interceptor",
     "ecosystem": "npm",
     "name": "interceptor-sdk",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "first_check": {
       "call": "client.info()",
       "expected": "Driver status with the matching edition installed.",
@@ -13,8 +13,8 @@
     },
     "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor/Interceptor-JavaScript-npm#readme",
     "verified_archive": {
-      "url": "https://registry.npmjs.org/interceptor-sdk/-/interceptor-sdk-1.0.0.tgz",
-      "sha256": "151ffeb073f6dffcb6b0ca8b7370bd78f863df9703537035d36e73fa89cd3ac6"
+      "url": "https://registry.npmjs.org/interceptor-sdk/-/interceptor-sdk-1.0.1.tgz",
+      "sha256": "d03b1416060b1cfaccd474ffebcb17f5785182895c6292dfb14fbab912ce6fd1"
     }
   },
   {
@@ -72,7 +72,7 @@
     "edition": "interceptor-keyboard-mouse",
     "ecosystem": "npm",
     "name": "interceptor-keyboard-mouse-sdk",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "first_check": {
       "call": "client.info()",
       "expected": "Driver status with the matching edition installed.",
@@ -82,8 +82,8 @@
     },
     "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-JavaScript-npm#readme",
     "verified_archive": {
-      "url": "https://registry.npmjs.org/interceptor-keyboard-mouse-sdk/-/interceptor-keyboard-mouse-sdk-1.0.0.tgz",
-      "sha256": "dfcc0df6cbf05f7a8f07ab2e9adeba50576bc14d2757d3eb0593c571c5fca0b7"
+      "url": "https://registry.npmjs.org/interceptor-keyboard-mouse-sdk/-/interceptor-keyboard-mouse-sdk-1.0.1.tgz",
+      "sha256": "9bc0320593bf342ab026877c5ad4d462a3dd776400955c1dd54d8a8c880310c3"
     }
   },
   {
@@ -104,7 +104,7 @@
     "edition": "interceptor-gamepad-controller",
     "ecosystem": "npm",
     "name": "interceptor-gamepad-controller",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "first_check": {
       "call": "client.info()",
       "expected": "Driver status with the matching edition installed.",
@@ -114,8 +114,8 @@
     },
     "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-JavaScript-npm#readme",
     "verified_archive": {
-      "url": "https://registry.npmjs.org/interceptor-gamepad-controller/-/interceptor-gamepad-controller-1.0.0.tgz",
-      "sha256": "eb7146cdbacd487250350eec7908acc9cffd50bd885458dd102ca898ffd17de2"
+      "url": "https://registry.npmjs.org/interceptor-gamepad-controller/-/interceptor-gamepad-controller-1.0.1.tgz",
+      "sha256": "5f4654cc05d7f77a66a06dff37459062c933152de8114523da01ffaa3b3b6d44"
     }
   },
   {

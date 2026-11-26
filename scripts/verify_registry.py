@@ -59,6 +59,8 @@ def verify(row):
                 )
         elif registry == "npm":
             available = document["name"] == name and document["version"] == version and bool(document["dist"]["integrity"])
+            if document.get("homepage") != row.get("documentation_url"):
+                raise ValueError(f"{name} {version} lists a different SDK guide on npm")
             if archive:
                 available = (available and document["dist"]["tarball"] == archive["url"]
                              and sha256(read(archive["url"])).hexdigest() == archive["sha256"])
