@@ -121,6 +121,20 @@ for route in controller_routes:
     assert contact_routes[page.language] in page.links
 assert '/'+controller_routes[1] in by_canonical[BASE+'fr/'].links
 assert '/'+controller_routes[1] in by_canonical[BASE+'fr/pilotes-entree-windows/'].links
+keyboard_mouse=next(row for row in audio_catalogue['editions'] if row['slug']=='interceptor-keyboard-mouse')
+viewer_report='/assets/interceptor-keyboard-mouse-viewer-check-2026-11-26.json'
+viewer_test=json.loads((OUT/viewer_report.lstrip('/')).read_text(encoding='utf8'))
+viewer_image=viewer_test['published_image']
+picture=(OUT/viewer_image['path'].lstrip('/')).read_bytes()
+assert sha256(picture).hexdigest()==viewer_image['sha256']
+assert unpack('>II',picture[16:24])==(viewer_test['render']['width'],viewer_test['render']['height'])
+assert viewer_test['self_test']['passed'] and not viewer_test['self_test']['captureStarted']
+assert viewer_test['render']['passed'] and viewer_test['render']['simulated']
+for route in ('guides/keyboard-mouse-first-run/','fr/tester-deux-claviers-windows/'):
+    page=by_canonical[BASE+route]
+    required={keyboard_mouse['demo_download_url'],keyboard_mouse['demo_assets']['viewer'],
+              viewer_report,viewer_image['path'],contact_routes[page.language]}
+    assert required <= set(page.links)
 if (ROOT/'site-verification.json').exists():
     verification=json.loads((ROOT/'site-verification.json').read_text())
     assert parsed[(OUT/'index.html').resolve()].google_verification==verification['google_site_verification']

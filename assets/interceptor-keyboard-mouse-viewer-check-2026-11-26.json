@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-26T22:47:26.607395+00:00",
+  "edition": "interceptor-keyboard-mouse",
+  "demo_tag": "v1.0.5.4-demo-r3",
+  "viewer": {
+    "url": "https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/releases/download/v1.0.5.4-demo-r3/InterceptorExampleUI.exe",
+    "sha256": "025d42f8f9107805226ed4f35ae2c6151d0a38a353a70934076b1b731690cc58"
+  },
+  "self_test": {
+    "passed": true,
+    "installationCheck": "installed, missing with setup instructions, and access denied",
+    "snapshotBytes": 80,
+    "deviceBytes": 1064,
+    "keyCount": 105,
+    "aggregation": "multi-keyboard release and mouse last packet",
+    "bridge": "embedded DLL loaded, stopped snapshot read; four concurrent Read/Stop callers racing Dispose, repeated four times",
+    "captureStarted": false,
+    "installedAnything": false
+  },
+  "render": {
+    "passed": true,
+    "simulated": true,
+    "files": [
+      "keyboard.png",
+      "mouse.png"
+    ],
+    "width": 1200,
+    "height": 800,
+    "captureStarted": false
+  },
+  "published_image": {
+    "path": "/assets/interceptor-keyboard-mouse-viewer-keyboard.png",
+    "sha256": "171eb7a2d40543f34c202fd2abfb00d3c469fcc34f1f52ef17f705958ab44f79"
+  },
+  "scope": "Offline self-test and rendering of a simulated preview; no driver installation or live input capture."
+}

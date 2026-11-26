@@ -32,7 +32,7 @@ routes=['','fr/','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-in
         'guides/windows-input-release-compare/','guides/release-activation-help/',
         'guides/interception-v2-migration/','fr/migrer-interception-v2/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/','fr/sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','fr/verifier-pilote-windows/','guides/vdevice-custom-hid-test/',
-        'fr/activation-release/','fr/pilotes-entree-windows/',pad_en,pad_fr,
+        'fr/activation-release/','fr/pilotes-entree-windows/',pad_en,pad_fr,'guides/keyboard-mouse-first-run/','fr/tester-deux-claviers-windows/',
         'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/',audio_fr,*edition_routes]
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='C:/Program Files/Google/Chrome/Application/chrome.exe',headless=True)

@@ -1,0 +1,16 @@
+<h1>Tell two keyboards apart on Windows</h1>
+<p class="article-lead">Use the Interceptor Keyboard &amp; Mouse input viewer to see which keyboard sent a key. The viewer passes the keys through normally while you observe them.</p>
+<div class="actions"><a class="button primary" href="{{INTERCEPTOR_KEYBOARD_MOUSE_DEMO_URL}}">Download the signed demo installer</a><a class="button" href="{{INTERCEPTOR_KEYBOARD_MOUSE_VIEWER_URL}}">Download the input viewer</a></div>
+<h2 id="first-steps">Install and try it</h2>
+<ol>
+<li>Connect two keyboards to your Windows 10 (1709 or newer) or Windows 11 x64 PC. If the combined Interceptor edition is installed, follow its <a href="https://github.com/TitanCSA/Interceptor/blob/main/docs/INSTALLATION.md">removal steps</a> first.</li>
+<li>Run <code>InterceptorSetup.exe</code>, accept the administrator prompt and choose <strong>Install / reinstall</strong>. Restart Windows if requested.</li>
+<li>Open <code>InterceptorExampleUI.exe</code>. In <strong>Keyboard</strong>, select <strong>All keyboards</strong> and click <strong>Observe</strong> if observation is stopped.</li>
+<li>Tap the same letter on each keyboard in turn. Read <strong>last ID</strong> below the diagram after each press. Two different IDs show that the viewer can tell the keyboards apart. You can then select a single keyboard in the list. Click <strong>Stop</strong> when finished.</li>
+</ol>
+<details><summary>See where the viewer shows the device ID</summary>
+<figure><img src="/assets/interceptor-keyboard-mouse-viewer-keyboard.png" width="1200" height="800" loading="lazy" alt="The Keyboard tab shows the All keyboards selector above the diagram and last ID below it."><figcaption>Preview rendered by demo viewer 1.0.5.4 with simulated input.</figcaption></figure>
+</details>
+<p>If the second keyboard does not appear, check that it works normally in Windows and see the <a href="https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/blob/{{INTERCEPTOR_KEYBOARD_MOUSE_DEMO_TAG}}/docs/COMPATIBILITY.md">supported device paths</a>. Each demo lasts one hour per Windows boot, starting with the first capture.</p>
+<p><a href="/assets/interceptor-keyboard-mouse-viewer-check-2026-11-26.json">See the viewer self-test and preview verification</a>. Test physical device recognition with your keyboards.</p>
+<div class="related"><a href="/fr/tester-deux-claviers-windows/" lang="fr">Lire en français</a><a href="/projects/interceptor-keyboard-mouse/">SDK and product details</a><a href="/about/evidence/#release-contact">Version without the one-hour limit · Discord titancsa</a></div>

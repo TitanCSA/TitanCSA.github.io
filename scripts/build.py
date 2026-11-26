@@ -32,9 +32,11 @@ featured_paths['Titan-Audio-Link']='/guides/titan-audio-link-first-run/'
 featured_paths_fr={repo:f'/fr/pilotes-entree-windows/#edition-{slug}' for slug,(repo,_,_) in featured.items()}
 featured_paths_fr['Titan-Audio-Link']='/fr/micro-virtuel-titan-audio-link/'
 featured_paths_fr['Interceptor-Gamepad-Controller']='/fr/remapper-manette-windows/'
+featured_paths_fr['Interceptor-Keyboard-Mouse']='/fr/tester-deux-claviers-windows/'
 featured_paths_fr['Vdevice']='/fr/souris-usb-virtuelle-vdevice/'
 featured_paths_fr['Interception-V2']='/fr/migrer-interception-v2/'
 first_run_paths_en={
+    'interceptor-keyboard-mouse':'guides/keyboard-mouse-first-run/',
     'interceptor-gamepad-controller':'guides/gamepad-controller-first-run/',
     'vdevice':'guides/vdevice-virtual-usb-mouse/',
     'interception-v2':'guides/interception-v2-migration/',
@@ -176,6 +178,8 @@ pages={
  'fr/sdk-java-php-ruby/':('SDK TitanCSA pour Java, PHP et Ruby sous Windows','Choisis le paquet et le pilote Windows de la même édition. Retrouve les versions, les commandes et les premiers appels.','guides/windows-input-sdk-java-php-ruby-fr.html'),
  'fr/remapper-manette-windows/':('Tester et remapper une manette sous Windows — TitanCSA','Installe la démo Interceptor Gamepad & Controller, vérifie la réponse de ta manette et essaie un exemple de zone morte du stick.','guides/gamepad-controller-first-run-fr.html'),
  'guides/gamepad-controller-first-run/':('Test and remap a physical gamepad on Windows — TitanCSA','Identify HID, XUSB, XInputHID or GIP input, use the signed controller demo and try the C++ stick deadzone example.','guides/gamepad-controller-first-run.html'),
+ 'guides/keyboard-mouse-first-run/':('Identify two keyboards on Windows with Interceptor Keyboard & Mouse — TitanCSA','Install the signed demo and use the input viewer to tell two keyboards apart before changing any mapping.','guides/keyboard-mouse-first-run.html'),
+ 'fr/tester-deux-claviers-windows/':('Identifier deux claviers sous Windows avec Interceptor Keyboard & Mouse — TitanCSA','Installe la démo signée et repère quel clavier envoie la touche dans le visualiseur.','guides/keyboard-mouse-first-run-fr.html'),
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Download the signed Titan Audio Link demo, verify a stereo virtual audio pair on Windows 11, and find the matching commercial package.','guides/titan-audio-link-first-run.html'),
  'fr/micro-virtuel-titan-audio-link/':('Titan Audio Link · Envoyer le son vers un micro virtuel Windows','Installe la démo signée de Titan Audio Link. Teste la sortie et le micro virtuels, puis relie deux applications Windows.','guides/titan-audio-link-first-run-fr.html'),
  'guides/verify-windows-driver-package/':('Verify a signed Windows driver package before installation — TitanCSA','Compare the published SHA-256, verify the Microsoft-signed driver catalog and check the INF package version with PowerShell and SignTool.','guides/verify-windows-driver-package.html'),
@@ -206,6 +210,7 @@ translations=(
     {'en':'guides/autohotkey-remap-second-keyboard/','fr':'fr/remapper-deuxieme-clavier-autohotkey/'},
     {'en':'guides/titan-audio-link-first-run/','fr':'fr/micro-virtuel-titan-audio-link/'},
     {'en':'guides/gamepad-controller-first-run/','fr':'fr/remapper-manette-windows/'},
+    {'en':'guides/keyboard-mouse-first-run/','fr':'fr/tester-deux-claviers-windows/'},
     {'en':'guides/interception-v2-migration/','fr':'fr/migrer-interception-v2/'},
     {'en':'guides/verify-windows-driver-package/','fr':'fr/verifier-pilote-windows/'},
 )
@@ -231,6 +236,7 @@ published_dates['fr/remapper-manette-windows/']='2026-11-26'
 published_dates['fr/verifier-pilote-windows/']='2026-11-26'
 published_dates['fr/migrer-interception-v2/']='2026-11-26'
 published_dates['fr/aide-et-verifications/']='2026-11-26'
+published_dates.update(dict.fromkeys(('guides/keyboard-mouse-first-run/','fr/tester-deux-claviers-windows/'),'2026-11-26'))
 reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
