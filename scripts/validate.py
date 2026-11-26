@@ -100,6 +100,15 @@ for path, language, alternate in zip(audio_routes, ('en','fr'), reversed(audio_r
     assert page.language==language and audio['demo_download_url'] in page.links
     assert '/'+alternate in page.links and '/about/evidence/#release-contact' in page.links
 assert '/'+audio_routes[1] in by_canonical[BASE+'fr/'].links
+controller_routes=('guides/gamepad-controller-first-run/','fr/remapper-manette-windows/')
+controller=next(edition for edition in audio_catalogue['editions'] if edition['slug']=='interceptor-gamepad-controller')
+for route in controller_routes:
+    page=by_canonical[BASE+route]
+    expected={controller['demo_assets'][role] for role in ('installer','examples','checksums')}
+    assert expected <= set(page.links)
+    assert '/about/evidence/#release-contact' in page.links
+assert '/'+controller_routes[1] in by_canonical[BASE+'fr/'].links
+assert '/'+controller_routes[1] in by_canonical[BASE+'fr/pilotes-entree-windows/'].links
 if (ROOT/'site-verification.json').exists():
     verification=json.loads((ROOT/'site-verification.json').read_text())
     assert parsed[(OUT/'index.html').resolve()].google_verification==verification['google_site_verification']

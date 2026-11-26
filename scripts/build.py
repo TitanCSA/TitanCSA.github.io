@@ -31,6 +31,7 @@ featured_paths={repo:f'/projects/{slug}/' for slug,(repo,_,_) in featured.items(
 featured_paths['Titan-Audio-Link']='/guides/titan-audio-link-first-run/'
 featured_paths_fr={repo:f'/fr/pilotes-entree-windows/#edition-{slug}' for slug,(repo,_,_) in featured.items()}
 featured_paths_fr['Titan-Audio-Link']='/fr/micro-virtuel-titan-audio-link/'
+featured_paths_fr['Interceptor-Gamepad-Controller']='/fr/remapper-manette-windows/'
 featured_date='2026-11-23'
 contact_path='/about/evidence/#release-contact'
 release_data=json.loads((ROOT/'releases.json').read_text(encoding='utf8'))
@@ -151,6 +152,7 @@ pages={
  'guides/windows-input-sdk-packages/':('Install Windows input SDK packages for Python, Node.js, .NET, PowerShell, Go, Rust and C++ — TitanCSA','Find verified packages for Interceptor, Vdevice and Interception V2 in PyPI, npm, PowerShell Gallery, NuGet, Go and crates.io. Match the SDK to the installed Windows driver.','guides/windows-input-sdk-packages.html'),
  'guides/windows-input-sdk-java-php-ruby/':('Java, PHP and Ruby SDKs for Windows input drivers — TitanCSA','Find the verified Maven Central, Packagist and RubyGems bindings for Interceptor, Vdevice and Interception V2, with Windows and runtime prerequisites.','guides/windows-input-sdk-java-php-ruby.html'),
  'fr/sdk-java-php-ruby/':('SDK TitanCSA pour Java, PHP et Ruby sous Windows','Choisis le paquet et le pilote Windows de la même édition. Retrouve les versions, les commandes et les premiers appels.','guides/windows-input-sdk-java-php-ruby-fr.html'),
+ 'fr/remapper-manette-windows/':('Tester et remapper une manette sous Windows — TitanCSA','Installe la démo Interceptor Gamepad & Controller, vérifie la réponse de ta manette et essaie un exemple de zone morte du stick.','guides/gamepad-controller-first-run-fr.html'),
  'guides/gamepad-controller-first-run/':('Test and remap a physical gamepad on Windows — TitanCSA','Identify HID, XUSB, XInputHID or GIP input, use the signed controller demo and try the C++ stick deadzone example.','guides/gamepad-controller-first-run.html'),
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Download the signed Titan Audio Link demo, verify a stereo virtual audio pair on Windows 11, and find the matching commercial package.','guides/titan-audio-link-first-run.html'),
  'fr/micro-virtuel-titan-audio-link/':('Titan Audio Link · Envoyer le son vers un micro virtuel Windows','Installe la démo signée de Titan Audio Link. Teste la sortie et le micro virtuels, puis relie deux applications Windows.','guides/titan-audio-link-first-run-fr.html'),
@@ -166,7 +168,7 @@ for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/','guides/vdevice-custom-hid-test/','fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/'}
-release_guides={'guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
+release_guides={'guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','fr/remapper-manette-windows/','guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
 translations=(
     {'en':'','fr':'fr/'},
     {'en':'guides/installer-and-sdk/','fr':'fr/installeur-et-sdk/'},
@@ -178,6 +180,7 @@ translations=(
     {'en':'guides/vdevice-virtual-usb-mouse/','fr':'fr/souris-usb-virtuelle-vdevice/'},
     {'en':'guides/autohotkey-remap-second-keyboard/','fr':'fr/remapper-deuxieme-clavier-autohotkey/'},
     {'en':'guides/titan-audio-link-first-run/','fr':'fr/micro-virtuel-titan-audio-link/'},
+    {'en':'guides/gamepad-controller-first-run/','fr':'fr/remapper-manette-windows/'},
 )
 reviewed={
     **dict.fromkeys(updated,featured_date),
@@ -197,6 +200,7 @@ publisher={
 }
 
 published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/essayer-sans-pilote/','fr/sdk-java-php-ruby/')}
+published_dates['fr/remapper-manette-windows/']='2026-11-26'
 reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
@@ -204,7 +208,7 @@ reviewed.update(dict.fromkeys((
     '', 'fr/', 'fr/pilotes-entree-windows/', 'projects/interception-v2/', 'guides/interception-v2-migration/',
     'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
     'guides/windows-input-sdk-java-php-ruby/', 'fr/sdk-java-php-ruby/',
-    'guides/titan-audio-link-first-run/', 'fr/micro-virtuel-titan-audio-link/',
+    'guides/titan-audio-link-first-run/', 'fr/micro-virtuel-titan-audio-link/', 'guides/gamepad-controller-first-run/',
 ), '2026-11-26'))
 
 
@@ -341,6 +345,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Paquets Java, PHP et Ruby]({BASE}fr/sdk-java-php-ruby/)',
     f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
     f'- [Physical gamepad quickstart]({BASE}guides/gamepad-controller-first-run/)',
+    f'- [Tester une manette sous Windows]({BASE}fr/remapper-manette-windows/)',
     f'- [Titan Audio Link virtual microphone]({BASE}guides/titan-audio-link-first-run/)',
     f'- [Micro virtuel Windows avec Titan Audio Link]({BASE}fr/micro-virtuel-titan-audio-link/)',
     f'- [Virtual USB mouse tutorial]({BASE}guides/vdevice-virtual-usb-mouse/)',

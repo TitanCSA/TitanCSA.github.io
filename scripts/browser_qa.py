@@ -24,12 +24,15 @@ no_driver_count=sum(row['start_without_adding_driver'] for row in projects)
 audio_en='guides/titan-audio-link-first-run/'
 audio_fr='fr/micro-virtuel-titan-audio-link/'
 audio_download=edition_routes[audio_en]['demo_download_url']
+pad=edition_routes['projects/interceptor-gamepad-controller/']
+pad_en='guides/gamepad-controller-first-run/'
+pad_fr='fr/remapper-manette-windows/'
 errors=[];checks=[]
 routes=['','fr/','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
         'guides/windows-input-release-compare/','guides/release-activation-help/',
         'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/','fr/sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','guides/vdevice-custom-hid-test/',
-        'fr/activation-release/','fr/pilotes-entree-windows/',
+        'fr/activation-release/','fr/pilotes-entree-windows/',pad_en,pad_fr,
         'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/',audio_fr,*edition_routes]
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='C:/Program Files/Google/Chrome/Application/chrome.exe',headless=True)
@@ -98,6 +101,14 @@ with sync_playwright() as p:
         assert page.locator('.actions a.primary').get_attribute('href')==audio_download
         page.locator('header a[lang="fr"]').click()
         assert page.url.endswith('/'+audio_fr) and page.locator('html').get_attribute('lang')=='fr'
+        page.goto(base+'fr/')
+        page.locator('#project-interceptor-gamepad-controller h3 a').click()
+        assert page.url.endswith('/'+pad_fr)
+        assert page.locator('.actions a.primary').get_attribute('href')==pad['demo_download_url']
+        assert page.locator('.actions a:not(.primary)').get_attribute('href')==pad['demo_assets']['examples']
+        page.locator('header a[lang="en"]').click()
+        assert page.url.endswith('/'+pad_en)
+        assert page.locator('.actions a.primary').get_attribute('href')==pad['demo_download_url']
         page.close()
     page=browser.new_page(java_script_enabled=False,viewport={'width':390,'height':844})
     page.goto(base,wait_until='networkidle');assert page.locator('[data-project]:visible').count()==project_count
