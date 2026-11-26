@@ -201,6 +201,21 @@
         "purpose": { "$ref": "#/$defs/localizedText" },
         "steps": { "$ref": "#/$defs/localizedText" },
         "expected": { "$ref": "#/$defs/localizedText" },
+        "directory_listings": {
+          "type": "array",
+          "description": "Public software-directory entries for this application.",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "required": ["name", "url"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "url": { "$ref": "#/$defs/url" }
+            },
+            "additionalProperties": false
+          }
+        },
         "needs_input_driver_for_first_run": { "const": false },
         "test": {
           "type": "object",

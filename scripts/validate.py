@@ -546,6 +546,12 @@ for app in apps:
         assert re.fullmatch(r'[a-f0-9]{64}', app[key])
     assert set(app['purpose']) == set(app['steps']) == set(app['expected']) == {'en','fr'}
     assert app['needs_input_driver_for_first_run'] is False and app['test']['exit_code'] == 0
+    if listings := app.get('directory_listings'):
+        evidence = by_canonical[BASE+'about/evidence/']
+        assert 'public-directories' in evidence.ids
+        assert manifest['first_run_guides']['en']+'#'+app['id'] in evidence.links
+        assert len({entry['url'] for entry in listings}) == len(listings)
+        assert {entry['url'] for entry in listings} <= set(evidence.links)
     for guide in manifest['first_run_guides'].values():
         page = by_canonical[guide]
         assert app['download_url'] in page.links

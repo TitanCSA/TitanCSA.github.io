@@ -100,6 +100,14 @@ replacements['INTERCEPTOR_MANAGED_INSTALL']=escape(managed_package['install_comm
 for lang in ('en', 'fr'):
     replacements[f'APP_CARDS_{lang.upper()}']=app_cards(integration, lang)
     replacements[f'APP_MORE_{lang.upper()}']=app_cards(integration, lang, more=True)
+directory_entries=[]
+for app in integration['applications']:
+    if listings:=app.get('directory_listings'):
+        links=' · '.join(f'<a href="{escape(entry["url"],quote=True)}">{escape(entry["name"])}</a>'
+                         for entry in listings)
+        app_url=f'{integration["first_run_guides"]["en"]}#{app["id"]}'
+        directory_entries.append(f'<li><a href="{app_url}">{escape(app["name"])}</a> · {links}</li>')
+replacements['APPLICATION_DIRECTORY_LISTINGS']='\n'.join(directory_entries)
 replacements['COMMERCIAL_CHECK_DATE']=commercial_checked
 replacements['SUPPORT_ISSUE_FORMS']=''.join(
     f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'

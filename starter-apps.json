@@ -6,6 +6,16 @@
     "sha256": "332f285e5d1dd90673b61e7f84fa96b8982ce09a5a7cdb8dbed157f5901a48c5",
     "id": "browser",
     "name": "Browser Control SDK",
+    "directory_listings": [
+      {
+        "name": "AlternativeTo",
+        "url": "https://alternativeto.net/software/browser-control-sdk/about/"
+      },
+      {
+        "name": "Awesome Windows Specific FOSS",
+        "url": "https://github.com/fithisux/awesome-windows-foss#nettools"
+      }
+    ],
     "executable": "BrowserControl.exe",
     "executable_sha256": "f4bc88295269964459ae9e6665d96c3cf48c1cad886945cb651e095de86c9f77",
     "purpose": {
@@ -34,6 +44,20 @@
     "sha256": "a775fad767e94fa103d698000dd2704cf5162d3bb519ff3e6047d66f88d48c21",
     "id": "readiness",
     "name": "Driver Readiness Inspector",
+    "directory_listings": [
+      {
+        "name": "AlternativeTo",
+        "url": "https://alternativeto.net/software/driver-readiness-inspector/about/"
+      },
+      {
+        "name": "Awesome Windows Specific FOSS",
+        "url": "https://github.com/fithisux/awesome-windows-foss#systools"
+      },
+      {
+        "name": "Awesome Windows",
+        "url": "https://github.com/thechampagne/awesome-windows#utilities"
+      }
+    ],
     "executable": "DriverReadinessInspector.exe",
     "executable_sha256": "50bbaaf1ecc689462af284dbc1cc016709fef7a1d80d90291b9f1e7e1f7db1c3",
     "purpose": {
