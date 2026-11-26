@@ -27,7 +27,8 @@ featured={
 }
 featured_paths={repo:f'/projects/{slug}/' for slug,(repo,_,_) in featured.items()}
 featured_paths['Titan-Audio-Link']='/guides/titan-audio-link-first-run/'
-featured_paths_fr={**featured_paths,'Titan-Audio-Link':'/fr/micro-virtuel-titan-audio-link/'}
+featured_paths_fr={repo:f'/fr/pilotes-entree-windows/#edition-{slug}' for slug,(repo,_,_) in featured.items()}
+featured_paths_fr['Titan-Audio-Link']='/fr/micro-virtuel-titan-audio-link/'
 featured_date='2026-11-23'
 contact_path='/about/evidence/#release-contact'
 release_data=json.loads((ROOT/'releases.json').read_text(encoding='utf8'))
