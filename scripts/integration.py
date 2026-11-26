@@ -7,7 +7,7 @@ from pathlib import Path
 from zipfile import ZIP_STORED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
-REVIEW_DATE = "2026-11-25"
+REVIEW_DATE = "2026-11-26"
 WINDOWS_CXX_DEFINITIONS = ("UNICODE", "_UNICODE", "NOMINMAX")
 
 
@@ -69,6 +69,7 @@ def make_manifest(base, editions):
         row = {
             "id": slug,
             "name": edition["name"],
+            "purpose": edition["use"],
             "source": edition["repository"],
             "overview_url": edition["overview_url"],
             "first_run_guides": edition["first_run_guides"],
@@ -81,6 +82,8 @@ def make_manifest(base, editions):
                 "setup_format": "installer" if setup_role == "installer" else "zip",
                 "setup_member": edition.get("setup_member"),
                 "supported_driver_architecture": "x64",
+                "trial_duration_minutes": 60,
+                "trial_scope": "windows_kernel_boot",
                 "trial_starts_on": edition["trial_starts"],
                 "assets": {role: {"url": url, "sha256": digests[role]}
                            for role, url in edition["demo_assets"].items()},
@@ -207,6 +210,7 @@ def make_manifest(base, editions):
             "platform": "Discord",
             "username": "titancsa",
             "contact_guide_url": base + "about/evidence/#release-contact",
+            "purchase_details_shared_privately": True,
         },
         "products": rows,
         "first_run_guides": {"en": base + "guides/first-run/", "fr": base + "fr/essayer-sans-pilote/"},
@@ -304,6 +308,8 @@ def write_sdk_reference(path, base, manifest, language):
         guide, download, archive, source = "Guide de premier essai", "Démo signée", "Archive SDK", "Code du test"
         starter = "Pour compiler le premier test natif, décompresse le ZIP de départ et lance la commande de ton édition."
         starter_label = "ZIP de départ"
+        checks = "Ces tests n’ouvrent pas de capture et ne démarrent pas le compteur de la démo."
+        member_label, after, before = "Installateur dans le ZIP", "Après installation", "Sans pilote installé"
         contact = "Version sans la limite d’une heure · contacte titancsa sur Discord"
         contact_url = base + "fr/pilotes-entree-windows/#contact-release"
     else:
@@ -313,12 +319,14 @@ def write_sdk_reference(path, base, manifest, language):
         guide, download, archive, source = "First-run guide", "Signed demo", "SDK archive", "Test source"
         starter = "To build the first native check, extract the starter ZIP and run the command for your edition."
         starter_label = "Starter ZIP"
+        checks = "These checks leave input capture closed and the demo timer unstarted."
+        member_label, after, before = "Installer inside the ZIP", "After setup", "With no driver installed"
         contact = "Release without the one-hour demo limit · contact titancsa on Discord"
         contact_url = manifest["commercial_contact"]["contact_guide_url"]
     lines = [
         f"# {title}", "", intro, "",
         f"[{starter_label}]({manifest['starter_zip_url']}) · [integration.json]({base}integration.json)",
-        "", starter,
+        "", starter, checks,
     ]
     for product in manifest["products"]:
         demo, sdk = product["demo"], product["sdk_check"]
@@ -331,6 +339,15 @@ def write_sdk_reference(path, base, manifest, language):
             f"- [{source}]({sdk['source_url']})",
             f"- `{sdk['build_verification']['command_from_starter_zip']}`",
         ])
+        if demo["setup_member"]:
+            lines.append(f"- {member_label} `{demo['setup_member']}`")
+        installed = sdk["expected_after_setup"]
+        clean = sdk["expected_without_driver"]
+        if clean == installed:
+            lines.append(f"- {before} · `{clean['output_contains']}`")
+        else:
+            lines.append(f"- {after} · `{installed['output_contains']}`")
+            lines.append(f"- {before} · `{clean['output_contains']}`")
     lines.extend(["", f"[{contact}]({contact_url})", ""])
     path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
 

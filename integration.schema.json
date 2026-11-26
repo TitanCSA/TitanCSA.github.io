@@ -21,7 +21,8 @@
       "properties": {
         "platform": { "const": "Discord" },
         "username": { "type": "string", "minLength": 1 },
-        "contact_guide_url": { "$ref": "#/$defs/url" }
+        "contact_guide_url": { "$ref": "#/$defs/url" },
+        "purchase_details_shared_privately": { "type": "boolean" }
       }
     },
     "products": {
@@ -100,6 +101,7 @@
       "properties": {
         "id": { "$ref": "#/$defs/id" },
         "name": { "type": "string", "minLength": 1 },
+        "purpose": { "type": "string", "minLength": 1 },
         "source": { "$ref": "#/$defs/url" },
         "overview_url": { "$ref": "#/$defs/url" },
         "first_run_guides": { "$ref": "#/$defs/guideUrls" },
@@ -124,6 +126,8 @@
             "setup_format": { "enum": ["installer", "zip"] },
             "setup_member": { "type": ["string", "null"] },
             "supported_driver_architecture": { "enum": ["x64", "x86", "arm64"] },
+            "trial_duration_minutes": { "type": "integer", "minimum": 1 },
+            "trial_scope": { "const": "windows_kernel_boot" },
             "trial_starts_on": { "type": "string", "minLength": 1 },
             "installer_verification_url": { "$ref": "#/$defs/url" },
             "mouse_driver_switch_verification_url": { "$ref": "#/$defs/url" },

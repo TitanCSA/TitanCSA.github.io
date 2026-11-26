@@ -316,6 +316,7 @@ for public_text in [*OUT.rglob('*.html'), OUT/'llms.txt', OUT/'releases.json', O
     assert 'licences.configcsa.com' not in public_text.read_text(encoding='utf8').lower(), public_text
 manifest = json.loads((OUT/'integration.json').read_text(encoding='utf8'))
 assert manifest['schema_version'] == 1
+assert manifest['commercial_contact']['purchase_details_shared_privately'] is True
 schema=json.loads((OUT/'integration.schema.json').read_text(encoding='utf8'))
 assert manifest['$schema']==schema['$id']==BASE+'integration.schema.json'
 assert schema['properties']['schema_version']['const']==manifest['schema_version']
@@ -334,7 +335,9 @@ for language, guide in manifest['guides'].items():
             demo['version'],demo['setup_download_url'],demo['setup_download_sha256'],
             sdk['archive_url'],sdk['archive_sha256'],sdk['source_url'],
             product['first_run_guides'][language],sdk['build_verification']['command_from_starter_zip'],
+            sdk['expected_without_driver']['output_contains'],sdk['expected_after_setup']['output_contains'],
         ))
+        assert not demo['setup_member'] or demo['setup_member'] in section
 preview = json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').read_text(encoding='utf8'))['setup_preview']
 assert preview['preview_exit_code'] == 0 and preview['secure_boot'] is True
 assert sha256((OUT/preview['screenshot_url'].removeprefix(BASE)).read_bytes()).hexdigest() == preview['screenshot_sha256']
@@ -457,6 +460,9 @@ assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]
     demo, check = row['demo'], row['sdk_check']
+    assert row['purpose'] == edition['use']
+    assert (demo['trial_duration_minutes'], demo['trial_scope'], demo['trial_starts_on']) == (
+        60, 'windows_kernel_boot', edition['trial_starts'])
     assert row['first_run_guides']==edition['first_run_guides']
     assert set(row['first_run_guides'])=={'en','fr'}
     for language, guide in row['first_run_guides'].items():

@@ -32,3 +32,5 @@ jobs:
           TITANCSA_CATALOGUE_TOKEN: ${{ github.token }}
       - name: Verify published SDK versions and documentation
         run: python scripts/verify_registry.py --documentation
+      - name: Verify public documentation discovery
+        run: python scripts/verify_public_discovery.py
