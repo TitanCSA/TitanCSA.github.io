@@ -178,6 +178,7 @@
             "needs_installed_driver": { "type": "boolean" },
             "opens_input_context": { "const": false },
             "starts_demo_timer": { "const": false },
+            "installed_validation_url": { "$ref": "#/$defs/url" },
             "expected_without_driver": { "$ref": "#/$defs/checkOutcome" },
             "expected_after_setup": { "$ref": "#/$defs/checkOutcome" }
           }

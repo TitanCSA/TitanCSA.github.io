@@ -103,7 +103,7 @@
   "titan-audio-link": {
     "asset_role": "archive",
     "sdk_subdirectory": "SDK",
-    "sample": "audio-link-inventory.cpp",
+    "sample": "audio-link-pair-check.cpp",
     "implementation": "AudioLink.cpp",
     "link_libraries": [
       "ole32",
@@ -124,7 +124,7 @@
     },
     "expected_after_setup": {
       "exit_code": 0,
-      "output_contains": "Audio inventory read. Titan endpoints: "
+      "output_contains": "Active Titan audio pair confirmed."
     }
   }
 }

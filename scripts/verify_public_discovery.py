@@ -2,6 +2,7 @@
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+from hashlib import sha256
 from html.parser import HTMLParser
 import json
 import re
@@ -80,6 +81,11 @@ def main():
         page = Guide(address, document)
         assert page.canonicals == [address] and "first-sdk-check" in page.ids, address
 
+    sources = {(product["sdk_check"]["source_url"], product["sdk_check"]["source_sha256"])
+               for product in manifest["products"]}
+    for address, digest in sorted(sources):
+        assert sha256(fetch(address).encode("utf-8")).hexdigest() == digest, address
+
     for language, guide in manifest["guides"].items():
         reference_url = guide + "quick-reference.md"
         assert reference_url in references, language
@@ -89,16 +95,19 @@ def main():
         for section, product in zip(sections, manifest["products"]):
             sdk, demo = product["sdk_check"], product["demo"]
             command = sdk["build_verification"]["command_from_starter_zip"]
+            installed_command = sdk["build_verification"].get("command_after_setup")
             expected = sdk["expected_after_setup"]["output_contains"]
             assert section.startswith(product["name"] + "\n") and all(item in section for item in (
                 product["first_run_guides"][language], demo["setup_download_sha256"],
                 sdk["archive_sha256"], command, expected,
             )), (language, product["id"])
+            assert not installed_command or installed_command in section
 
     print(json.dumps({
         "checked_utc": datetime.now(timezone.utc).isoformat(),
         "products": len(manifest["products"]),
         "canonical_sdk_pages": len(guides),
+        "sdk_sources_with_verified_hash": len(sources),
         "markdown_languages": sorted(manifest["guides"]),
         "search_agents_allowed_by_robots": list(SEARCH_AGENTS),
     }))

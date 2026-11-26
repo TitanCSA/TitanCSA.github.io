@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-26T23:20:30Z",
+  "edition": "titan-audio-link",
+  "scope": "Read-only enumeration of active Titan playback and recording endpoints grouped by their Windows adapter. The sample did not open an audio stream.",
+  "demo_tag": "v0.2.0-demo",
+  "sdk_archive_sha256": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37",
+  "console_installer_sha256": "4efb8deec1ebc494188d22ded019224ff8ae1d125fc068f551814457b64bb5e5",
+  "source_sha256": "96ea4e592832472f5b226bc88f7632c009b9ca0eb1af70a0c6034bdcbc90bb67",
+  "windows": {"architecture": "x64", "build": 26100, "secure_boot": true},
+  "installation": {"exit_code": 0, "restarted": true},
+  "removal": {"exit_code": 0, "restarted": true, "audio_driver_service_absent": true},
+  "observations": {
+    "before_setup": {"exit_code": 0, "endpoints": 0, "active_pairs": 0},
+    "after_setup": {"exit_code": 0, "endpoints": 2, "active_pairs": 1},
+    "after_removal": {"exit_code": 0, "endpoints": 0, "active_pairs": 0}
+  },
+  "synthetic_inventory_cases": {
+    "active_endpoints_on_different_adapters": 0,
+    "active_playback_with_disabled_recording": 0,
+    "active_playback_with_non_titan_recording": 0,
+    "one_active_pair_with_duplicate_recording_entry": 1
+  }
+}

@@ -53,6 +53,8 @@ def make_manifest(base, editions):
     keyboard_capture_file = "assets/interceptor-keyboard-mouse-two-keyboard-check-2026-11-26.json"
     keyboard_capture = json.loads((ROOT / keyboard_capture_file).read_text(encoding="utf-8"))
     keyboard_package = keyboard_capture["interceptor_keyboard_mouse"]
+    audio_pair_file = "assets/titan-audio-link-sdk-pair-check-2026-11-26.json"
+    audio_pair = json.loads((ROOT / audio_pair_file).read_text(encoding="utf-8"))
 
     rows = []
     for slug, edition in editions.items():
@@ -124,6 +126,13 @@ def make_manifest(base, editions):
                 },
             },
         }
+        if recipe["expected_after_setup"] != recipe["expected_without_driver"]:
+            row["sdk_check"]["build_verification"]["command_after_setup"] = (
+                f"python scripts/test_first_sdk.py {slug} --expect-installed")
+        if (audio_pair["edition"] == slug and audio_pair["demo_tag"] == edition["tag"]
+                and audio_pair["sdk_archive_sha256"] == edition["sdk_sha256"]
+                and audio_pair["source_sha256"] == row["sdk_check"]["source_sha256"]):
+            row["sdk_check"]["installed_validation_url"] = base + audio_pair_file
         proof = installed_evidence.get(slug)
         if (proof and proof["version"] == edition["demo"]
                 and proof["sdk_archive_sha256"] == edition["sdk_sha256"]
@@ -248,6 +257,7 @@ def first_sdk_check(product, starter_url, language):
     sdk = product["sdk_check"]
     package_link = f'https://github.com/TitanCSA/sdk-packages/tree/main/projects/{product["source"].rsplit("/", 1)[-1]}#readme'
     command = escape(sdk["build_verification"]["command_from_starter_zip"])
+    installed_command = sdk["build_verification"].get("command_after_setup")
     result = escape(sdk["expected_after_setup"]["output_contains"])
     driver_needed = sdk["needs_installed_driver"]
     if language == "fr":
@@ -255,18 +265,22 @@ def first_sdk_check(product, starter_url, language):
         requirements = "Sous Windows, installe Visual Studio 2022 avec les outils C++, CMake 3.20+ et Python 3.10+."
         setup = "Installe la démo ci-dessus. " if driver_needed else ""
         instructions = "Décompresse le ZIP et ouvre PowerShell dans le dossier extrait."
-        outcome = "Résultat attendu après installation" if driver_needed else "Résultat attendu"
+        outcome = "Résultat attendu après installation" if installed_command else "Résultat attendu"
+        verify_setup = "Pour exiger le résultat après installation, lance"
     else:
         title, download, reference = "Build the first SDK check", "Starter ZIP", "SDK documentation"
         requirements = "On Windows, install Visual Studio 2022 with the C++ desktop tools, CMake 3.20+, and Python 3.10+."
         setup = "Install the demo above. " if driver_needed else ""
         instructions = "Extract the ZIP and open PowerShell in the extracted folder."
-        outcome = "Expected after installation" if driver_needed else "Expected result"
+        outcome = "Expected after installation" if installed_command else "Expected result"
+        verify_setup = "To require the post-install result, run"
+    installed_check = (
+        f'<p>{verify_setup} <code>{escape(installed_command)}</code>.</p>' if installed_command else "")
     return (
         f'<details class="more-info"><summary>{title}</summary><div id="first-sdk-check">'
         f'<p>{requirements} {setup}{instructions}</p>'
         f'<p><a href="{escape(starter_url, quote=True)}">{download}</a></p>'
-        f'<pre><code>{command}</code></pre>'
+        f'<pre><code>{command}</code></pre>{installed_check}'
         f'<p>{outcome} <code>{result}</code></p>'
         f'<p><a href="{escape(package_link, quote=True)}">{reference}</a></p></div></details>'
     )
@@ -346,7 +360,8 @@ def write_sdk_reference(path, base, manifest, language):
         if clean == installed:
             lines.append(f"- {before} · `{clean['output_contains']}`")
         else:
-            lines.append(f"- {after} · `{installed['output_contains']}`")
+            installed_command = sdk["build_verification"]["command_after_setup"]
+            lines.append(f"- {after} · `{installed_command}` → `{installed['output_contains']}`")
             lines.append(f"- {before} · `{clean['output_contains']}`")
     lines.extend(["", f"[{contact}]({contact_url})", ""])
     path.write_text("\n".join(lines), encoding="utf-8", newline="\n")

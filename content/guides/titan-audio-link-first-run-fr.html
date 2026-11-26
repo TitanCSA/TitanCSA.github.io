@@ -10,7 +10,7 @@
 <p>Si le test passe mais que l’autre application reste muette, vérifie sa source micro et ses autorisations dans les paramètres Windows. Pour retirer le câble virtuel, relance l’installateur et choisis <strong>Uninstall</strong>.</p>
 <p>La démo fonctionne pendant une heure par démarrage Windows à partir de la première capture réussie. Le bouton de test démarre cette heure.</p>
 <h2>Intégrer Titan Audio Link dans une application</h2>
-<p>L’installateur ajoute la paire de périphériques à Windows. Le SDK C++ permet à ton application de trouver la paire et d’ouvrir les flux WASAPI. Commence par l’exemple qui énumère les périphériques avant d’envoyer ton propre audio.</p>
+<p>L’installateur ajoute la paire de périphériques à Windows. Le test SDK C++ ci-dessous vérifie qu’une sortie et un micro actifs appartiennent au même adaptateur. Tu pourras ensuite utiliser le SDK pour ouvrir les flux WASAPI.</p>
 <p><a href="#first-sdk-check">Premier essai SDK en C++</a> · <a href="{{TITAN_AUDIO_LINK_RUST_QUICKSTART_URL}}">Exemple Rust à télécharger</a>. Pour lancer l’exemple Rust, décompresse le ZIP et exécute <code>cargo run --locked</code>.</p>
 <details>
   <summary>Test en ligne de commande et résultat vérifié</summary>
@@ -18,6 +18,7 @@
   <pre><code>.\AudioLinkCLI.exe --list
 .\AudioLinkCLI.exe --test</code></pre>
   <p>Le test du ZIP démo 0.2.0 a vérifié 72 000 trames stéréo sur une paire dans une VM Windows 11 x64 avec démarrage sécurisé. Après désinstallation et redémarrage, la paire et le pilote avaient été retirés. <a href="/assets/titan-audio-link-install-verification-2026-11-25.json">Voir le rapport de test</a>.</p>
+  <p><a href="/assets/titan-audio-link-sdk-pair-check-2026-11-26.json">Résultats du contrôle SDK avant installation, avec une paire et après désinstallation</a>.</p>
   {{AUDIO_HVCI_FR}}
 </details>
 <h2>Version sans limite de démo</h2>

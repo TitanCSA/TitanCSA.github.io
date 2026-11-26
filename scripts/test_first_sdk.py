@@ -88,7 +88,7 @@ def cmake(command, verbose):
         completed.check_returncode()
 
 
-def run_check(slug, arch, run, expect_clean, cached_archive, verbose, *, compile_sample=None):
+def run_check(slug, arch, run, expect_clean, cached_archive, verbose, *, compile_sample=None, expect_installed=False):
     rows = json.loads((ROOT / "dist/releases.json").read_text(encoding="utf-8"))["editions"]
     edition = next(row for row in rows if row["slug"] == slug)
     recipe = json.loads((ROOT / "sdk-checks.json").read_text(encoding="utf-8"))[slug]
@@ -130,13 +130,16 @@ def run_check(slug, arch, run, expect_clean, cached_archive, verbose, *, compile
                                 encoding="utf-8", errors="replace")
         print(result.stdout, end="")
         print(result.stderr, end="")
-        expected = [recipe["expected_without_driver"]]
+        expected = []
+        if not expect_installed:
+            expected.append(recipe["expected_without_driver"])
         if not expect_clean:
             expected.append(recipe["expected_after_setup"])
         valid = any(result.returncode == item["exit_code"] and
                     item["output_contains"] in result.stdout + result.stderr for item in expected)
         if not valid:
-            raise RuntimeError(f"Unexpected {slug} sample result: exit {result.returncode}")
+            wanted = " or ".join(repr(item["output_contains"]) for item in expected)
+            raise RuntimeError(f"Unexpected {slug} sample result (exit {result.returncode}). Expected {wanted}.")
 
 
 def main():
@@ -145,10 +148,17 @@ def main():
     parser.add_argument("edition", choices=(*recipes, "all"))
     parser.add_argument("--arch", choices=tuple(GENERATORS))
     parser.add_argument("--run", action="store_true", help="Run the sample without installing a driver")
-    parser.add_argument("--expect-clean", action="store_true", help="Require the expected missing-driver result on a clean host")
+    state = parser.add_mutually_exclusive_group()
+    state.add_argument("--expect-clean", action="store_true", help="Require the expected result on a clean host")
+    state.add_argument("--expect-installed", action="store_true", help="Require the expected result with the edition's driver installed")
     parser.add_argument("--cached-archive", type=Path, help="Use a previously downloaded SDK ZIP and check its SHA-256")
     parser.add_argument("--verbose", action="store_true", help="Print full compiler and linker output")
     args = parser.parse_args()
+    if args.expect_installed and (
+        args.edition == "all" or
+        recipes[args.edition]["expected_after_setup"] == recipes[args.edition]["expected_without_driver"]
+    ):
+        parser.error("Use --expect-installed with one edition whose first check can verify its installed driver")
     if args.edition == "all":
         if args.cached_archive or args.arch:
             parser.error("Use --arch or --cached-archive with a single edition")
@@ -158,7 +168,8 @@ def main():
         pairs = [(args.edition, args.arch or "x64")]
     for slug, arch in pairs:
         print(f"Checking {slug} ({arch})", flush=True)
-        run_check(slug, arch, args.run or args.expect_clean, args.expect_clean, args.cached_archive, args.verbose)
+        run_check(slug, arch, args.run or args.expect_clean or args.expect_installed,
+                  args.expect_clean, args.cached_archive, args.verbose, expect_installed=args.expect_installed)
 
 
 if __name__ == "__main__":

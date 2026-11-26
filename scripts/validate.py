@@ -338,6 +338,8 @@ for language, guide in manifest['guides'].items():
             sdk['expected_without_driver']['output_contains'],sdk['expected_after_setup']['output_contains'],
         ))
         assert not demo['setup_member'] or demo['setup_member'] in section
+        if setup_command := sdk['build_verification'].get('command_after_setup'):
+            assert setup_command in section
 preview = json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').read_text(encoding='utf8'))['setup_preview']
 assert preview['preview_exit_code'] == 0 and preview['secure_boot'] is True
 assert sha256((OUT/preview['screenshot_url'].removeprefix(BASE)).read_bytes()).hexdigest() == preview['screenshot_sha256']
@@ -460,6 +462,20 @@ assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]
     demo, check = row['demo'], row['sdk_check']
+    setup_command = check['build_verification'].get('command_after_setup')
+    if check['expected_after_setup'] != check['expected_without_driver']:
+        assert setup_command == f"python scripts/test_first_sdk.py {row['id']} --expect-installed"
+    else:
+        assert setup_command is None
+    if evidence_url := check.get('installed_validation_url'):
+        proof = json.loads((OUT/evidence_url.removeprefix(BASE)).read_text(encoding='utf8'))
+        assert proof['edition'] == row['id'] == 'titan-audio-link'
+        assert proof['demo_tag'] == demo['tag'] and proof['sdk_archive_sha256'] == check['archive_sha256']
+        assert proof['source_sha256'] == check['source_sha256']
+        assert proof['console_installer_sha256'] == demo['console_setup']['installer_sha256']
+        stages = proof['observations']
+        assert [stages[key]['active_pairs'] for key in ('before_setup', 'after_setup', 'after_removal')] == [0, 1, 0]
+        assert proof['removal']['audio_driver_service_absent']
     assert row['purpose'] == edition['use']
     assert (demo['trial_duration_minutes'], demo['trial_scope'], demo['trial_starts_on']) == (
         60, 'windows_kernel_boot', edition['trial_starts'])
@@ -476,6 +492,7 @@ for row in manifest['products']:
         assert 'first-sdk-check' in page.ids and manifest['starter_zip_url'] in page.links
         html = (OUT / page_url.removeprefix(BASE) / 'index.html').read_text(encoding='utf8')
         assert check['build_verification']['command_from_starter_zip'] in html
+        assert not setup_command or setup_command in html
     assert row['first_run_guides']['fr'].removeprefix(BASE.rstrip('/')) in by_canonical[BASE+'fr/'].links
     assert demo['version'] == edition['demo'] and demo['tag'] == edition['tag']
     assert demo['setup_download_url'] == edition['demo_download_url']
