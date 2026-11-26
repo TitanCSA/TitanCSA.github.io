@@ -3,7 +3,7 @@ from pathlib import Path
 from html import escape
 from feeds import write_feeds
 import json,re,shutil
-from integration import app_cards, make_manifest, sdk_rows, write_starter
+from integration import app_cards, make_manifest, sdk_rows, write_sdk_reference, write_starter
 from go_samples import write_go_samples
 from rust_samples import write_rust_samples
 from catalogue import catalogue_sections
@@ -367,6 +367,8 @@ reference_links=['# TitanCSA','', '> Official documentation for TitanCSA Windows
     f'- [Catalogue des projets en français]({BASE}fr/)',
     f'- [SDK integration manifest]({BASE}integration.json)',
     f'- [Integration JSON schema]({BASE}integration.schema.json)',
+    f'- [Windows driver and SDK quick reference in Markdown]({BASE}guides/installer-and-sdk/quick-reference.md)',
+    f'- [Aide-mémoire des pilotes et SDK Windows en Markdown]({BASE}fr/installeur-et-sdk/quick-reference.md)',
     f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',
     f'- [Comparer les pilotes Windows]({BASE}fr/pilotes-entree-windows/)',
     f'- [First Windows app runs without a driver]({BASE}guides/first-run/)',
@@ -422,6 +424,8 @@ reference_links.extend([
 if audio_verified:
     reference_links.append(f'- [Titan Audio Link verification with Windows Memory Integrity]({audio_verified})')
 (OUT/'llms.txt').write_text('\n'.join(reference_links)+'\n',encoding='utf8')
+for language, guide in integration['guides'].items():
+    write_sdk_reference(OUT/guide.removeprefix(BASE)/'quick-reference.md', BASE, integration, language)
 write_starter(OUT,integration)
 public_projects={**data,'source_fr':french_copy['source'],'projects':[]}
 for project in projects:

@@ -261,6 +261,45 @@ def sdk_rows(manifest, french=False):
     return "\n".join(lines)
 
 
+def write_sdk_reference(path, base, manifest, language):
+    if language == "fr":
+        title = "Pilotes et SDK Windows TitanCSA"
+        intro = ("Choisis ton édition. L’installateur ajoute le pilote à Windows. "
+                 "Le SDK donne le code et les bibliothèques pour créer ta propre application.")
+        guide, download, archive, source = "Guide de premier essai", "Démo signée", "Archive SDK", "Code du test"
+        starter = "Pour compiler le premier test natif, décompresse le ZIP de départ et lance la commande de ton édition."
+        starter_label = "ZIP de départ"
+        contact = "Version sans la limite d’une heure · contacte titancsa sur Discord"
+        contact_url = base + "fr/pilotes-entree-windows/#contact-release"
+    else:
+        title = "TitanCSA Windows drivers and SDKs"
+        intro = ("Choose your edition. The installer adds its driver to Windows. "
+                 "The SDK supplies the code and libraries to write your own application.")
+        guide, download, archive, source = "First-run guide", "Signed demo", "SDK archive", "Test source"
+        starter = "To build the first native check, extract the starter ZIP and run the command for your edition."
+        starter_label = "Starter ZIP"
+        contact = "Release without the one-hour demo limit · contact titancsa on Discord"
+        contact_url = manifest["commercial_contact"]["contact_guide_url"]
+    lines = [
+        f"# {title}", "", intro, "",
+        f"[{starter_label}]({manifest['starter_zip_url']}) · [integration.json]({base}integration.json)",
+        "", starter,
+    ]
+    for product in manifest["products"]:
+        demo, sdk = product["demo"], product["sdk_check"]
+        architectures = " / ".join(sdk["app_architectures"])
+        lines.extend([
+            "", f"## {product['name']}", "",
+            f"- [{guide}]({product['first_run_guides'][language]})",
+            f"- [{download} {demo['version']}]({demo['setup_download_url']}) · SHA-256 `{demo['setup_download_sha256']}`",
+            f"- [{archive}]({sdk['archive_url']}) · {sdk['api']} · {architectures} · SHA-256 `{sdk['archive_sha256']}`",
+            f"- [{source}]({sdk['source_url']})",
+            f"- `{sdk['build_verification']['command_from_starter_zip']}`",
+        ])
+    lines.extend(["", f"[{contact}]({contact_url})", ""])
+    path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
+
+
 def write_starter(out, manifest):
     files = {
         "LICENSE": ROOT / "LICENSE",

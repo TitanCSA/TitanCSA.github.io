@@ -304,6 +304,22 @@ assert manifest['schema_version'] == 1
 schema=json.loads((OUT/'integration.schema.json').read_text(encoding='utf8'))
 assert manifest['$schema']==schema['$id']==BASE+'integration.schema.json'
 assert schema['properties']['schema_version']['const']==manifest['schema_version']
+for language, guide in manifest['guides'].items():
+    relative=guide.removeprefix(BASE)+'quick-reference.md'
+    assert BASE+relative in reference_urls and '/'+relative in by_canonical[guide].links
+    markdown=(OUT/relative).read_text(encoding='utf8')
+    assert 'licences.configcsa.com' not in markdown.lower()
+    assert manifest['starter_zip_url'] in markdown and 'titancsa' in markdown
+    sections=re.split(r'^## ', markdown, flags=re.MULTILINE)[1:]
+    assert len(sections)==len(manifest['products'])
+    for section, product in zip(sections,manifest['products']):
+        demo,sdk=product['demo'],product['sdk_check']
+        assert section.splitlines()[0]==product['name']
+        assert all(value in section for value in (
+            demo['version'],demo['setup_download_url'],demo['setup_download_sha256'],
+            sdk['archive_url'],sdk['archive_sha256'],sdk['source_url'],
+            product['first_run_guides'][language],sdk['build_verification']['command_from_starter_zip'],
+        ))
 preview = json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').read_text(encoding='utf8'))['setup_preview']
 assert preview['preview_exit_code'] == 0 and preview['secure_boot'] is True
 assert sha256((OUT/preview['screenshot_url'].removeprefix(BASE)).read_bytes()).hexdigest() == preview['screenshot_sha256']
