@@ -159,10 +159,11 @@ reviewed={
     **dict.fromkeys(updated,featured_date),
     **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
     **dict.fromkeys(release_guides | {'','guides/choose-input/','about/evidence/',*(f'projects/{slug}/' for slug in editions)},release_date),
-    **dict.fromkeys({'guides/first-run/','fr/essayer-sans-pilote/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/release-activation-help/','fr/activation-release/','about/evidence/','fr/installer-sdk-windows/'},'2026-11-25'),
+    **dict.fromkeys({'guides/first-run/','fr/essayer-sans-pilote/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/release-activation-help/','fr/activation-release/','fr/installer-sdk-windows/'},'2026-11-25'),
     **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},commercial_checked),
     'about/evidence/':'2026-11-26',
     'guides/release-activation-help/':'2026-11-26',
+    'about/evidence/':'2026-11-26',
     'fr/activation-release/':'2026-11-26',
 }
 release_terms='<p><strong><a href="/about/evidence/#release-contact">Version without the one-hour demo limit</a></strong> · Add <strong>titancsa</strong> on Discord and message the project name.</p>'
@@ -295,6 +296,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [SDK integration manifest]({BASE}integration.json)',
     f'- [Integration JSON schema]({BASE}integration.schema.json)',
     f'- [Vdevice signed Demo and Release validation]({BASE}assets/vdevice-signed-versions-2026-11-25.json)',
+    f'- [Four Company installation and removal tests on Windows 11]({BASE}assets/company-driver-package-checks-2026-11-26.json)',
     f'- [First Windows app runs without a driver]({BASE}guides/first-run/)',
     f'- [Essayer un outil sans ajouter de pilote]({BASE}fr/essayer-sans-pilote/)',
     f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',

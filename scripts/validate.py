@@ -182,6 +182,7 @@ if later['demo_version']==editions['vdevice']['demo']:
 for route in ('guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/'):
     assert '/'+mouse_path in by_canonical[BASE+route].links
 reference=(OUT/'llms.txt').read_text(encoding='utf8')
+assert BASE+'assets/company-driver-package-checks-2026-11-26.json' in reference
 for path in project_pages:
     edition=editions[path.parent.name]
     page=parsed[path]
