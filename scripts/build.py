@@ -57,6 +57,7 @@ for edition in release_data['editions']:
         'release_contact':{'platform':'Discord','username':'titancsa','instructions_url':BASE.rstrip('/')+contact_path},
     }
 assert set(editions)==set(featured)|{'titan-audio-link'} and len(editions)==len(release_data['editions'])
+editions_by_overview={edition['overview_url']:edition for edition in editions.values()}
 input_editions={slug:editions[slug] for slug in featured}
 integration=make_manifest(BASE,editions)
 integration['sdk_registry']=registry_catalogue(integration,BASE)
@@ -223,6 +224,15 @@ def render(title,description,path,body,article=False):
 for path,(title,description,source) in pages.items():
     body=(ROOT/'content'/source).read_text(encoding='utf8')
     for key,value in replacements.items():body=body.replace('{{'+key+'}}',value)
+    if edition := editions_by_overview.get(BASE+path):
+        repo=edition['repository'].rsplit('/',1)[1]
+        sections=(
+            '<nav aria-label="Project sections"><a href="#first-steps">First steps</a> · '
+            f'<a href="https://github.com/TitanCSA/sdk-packages/tree/main/projects/{repo}#readme">Develop</a> · '
+            '<a href="https://github.com/TitanCSA/sdk-packages/blob/main/CONTRIBUTING.md">Maintain</a></nav>'
+        )
+        assert body.count('{{PROJECT_START_LINKS}}')==1,path
+        body=body.replace('{{PROJECT_START_LINKS}}',sections)
     if path.startswith('projects/'):
         slug=path.split('/')[1]
         edition=editions[slug]
@@ -236,8 +246,7 @@ for path,(title,description,source) in pages.items():
             f'<strong>{escape(edition["commercial"]["driver_version"])}</strong>. Delivery verified {commercial_checked}.</p>'
             f'<p>Signed demo <a href="{edition["demo_url"]}">{edition["demo"]} release notes</a> · {downloads}.</p><p>'
             '<a href="/guides/windows-input-release-compare/">Compare editions</a> · '
-            '<a href="/guides/release-activation-help/">Installation and activation help</a> · '
-            '<a href="/guides/windows-input-sdk-packages/">SDK packages</a>.</p>'
+            '<a href="/guides/release-activation-help/">Installation and activation help</a>.</p>'
         )
         label='Download demo installer' if 'installer' in demo_assets else 'Download demo ZIP'
         body=body.replace('{{DEMO_DOWNLOAD_URL}}',edition['demo_download_url']).replace('{{DEMO_DOWNLOAD_LABEL}}',label)

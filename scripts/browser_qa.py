@@ -2,6 +2,7 @@
 from pathlib import Path
 from datetime import datetime,timezone
 from time import monotonic
+from urllib.parse import urlsplit
 from urllib.request import urlopen
 import json,sys
 from playwright.sync_api import sync_playwright
@@ -9,6 +10,9 @@ ROOT=Path(__file__).resolve().parents[1];out=ROOT/'.local/qa';out.mkdir(parents=
 base=sys.argv[1].rstrip('/')+'/' if len(sys.argv)>1 else 'http://127.0.0.1:8778/'
 with urlopen(base+'projects.json',timeout=15) as response:
     projects=json.load(response)['projects']
+with urlopen(base+'releases.json',timeout=15) as response:
+    editions=json.load(response)['editions']
+edition_routes={urlsplit(row['overview_url']).path.lstrip('/'):row for row in editions}
 project_count=len(projects)
 assert project_count
 network_count=sum(row['category']=='networking' for row in projects)
@@ -20,7 +24,7 @@ routes=['','fr/','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-in
         'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/','fr/sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','guides/vdevice-custom-hid-test/',
         'fr/activation-release/','fr/pilotes-entree-windows/',
-        'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/']
+        'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/',*edition_routes]
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='C:/Program Files/Google/Chrome/Application/chrome.exe',headless=True)
     for width in [1440,390]:
@@ -31,6 +35,15 @@ with sync_playwright() as p:
             assert page.locator('h1').count()==1,route
             assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'),(route,width,'overflow')
             checks.append({'route':route,'width':width,'status':response.status,'title':page.title()})
+            if route in edition_routes:
+                nav=page.get_by_role('navigation',name='Project sections')
+                repo=edition_routes[route]['repository'].rsplit('/',1)[1]
+                assert nav.get_by_role('link').all_text_contents()==['First steps','Develop','Maintain'],route
+                assert nav.get_by_role('link',name='Develop').get_attribute('href') == (
+                    f'https://github.com/TitanCSA/sdk-packages/tree/main/projects/{repo}#readme'
+                ),route
+                nav.get_by_role('link',name='First steps').click()
+                assert page.url.endswith('#first-steps') and page.locator('#first-steps').is_visible(),route
         page.goto(base,wait_until='networkidle')
         page.keyboard.press('Tab')
         assert page.locator('.skip').evaluate('link => link === document.activeElement')

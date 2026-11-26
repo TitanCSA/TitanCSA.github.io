@@ -130,6 +130,15 @@ project_pages={path for path in parsed if path.parent.parent.name=='projects'}
 assert len(project_pages)==5
 editions={row['slug']:row for row in json.loads((OUT/'releases.json').read_text(encoding='utf8'))['editions']}
 assert {row['slug'] for row in editions.values() if '/projects/' in row['overview_url']} == {path.parent.name for path in project_pages}
+for edition in editions.values():
+    overview=by_canonical[edition['overview_url']]
+    repo=edition['repository'].rsplit('/',1)[1]
+    sections={
+        '#first-steps',
+        f'https://github.com/TitanCSA/sdk-packages/tree/main/projects/{repo}#readme',
+        'https://github.com/TitanCSA/sdk-packages/blob/main/CONTRIBUTING.md',
+    }
+    assert sections <= set(overview.links),edition['slug']
 comparison=parsed[(OUT/'guides/windows-input-release-compare/index.html').resolve()]
 french_comparison=by_canonical[BASE+'fr/pilotes-entree-windows/']
 assert comparison.alternates=={'en':comparison.canonical,'fr':french_comparison.canonical}
@@ -167,7 +176,6 @@ for path in project_pages:
         assert re.fullmatch(r'[A-Za-z0-9._-]+',filename)
         assert edition['demo_assets'][role] == f'{edition["repository"]}/releases/download/{edition["tag"]}/{filename}'
     assert edition['overview_url'] in reference and edition['demo_url'] in reference
-    assert '<h2>Try it</h2>' in path.read_text(encoding='utf8')
     app,=[item for item in page.schemas if item.get('@type')=='SoftwareApplication']
     assert app['softwareVersion']==edition['commercial']['package_version']
     assert all(re.fullmatch(r'\d+\.\d+\.\d+\.\d+', value) for value in edition['commercial'].values())
