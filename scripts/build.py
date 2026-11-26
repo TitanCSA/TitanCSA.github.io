@@ -100,6 +100,7 @@ for row in integration['sdk_registry']:
 for slug, edition in editions.items():
     key=slug.upper().replace('-','_')
     replacements[f'{key}_DEMO_URL']=escape(edition['demo_download_url'],quote=True)
+    replacements[f'{key}_DEMO_NOTES_URL']=escape(edition['demo_url'],quote=True)
     replacements[f'{key}_DEMO_VERSION']=escape(edition['demo'])
     replacements[f'{key}_DEMO_TAG']=escape(edition['tag'],quote=True)
     for role, url in edition['demo_assets'].items():
@@ -205,8 +206,9 @@ def render(title,description,path,body,article=False):
             structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in variants.items())
     if path in ('','fr/','guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/first-run/','fr/essayer-sans-pilote/') or path.startswith('projects/'):
         structured+=f'<link rel="alternate" type="application/json" href="{BASE}integration.json" title="SDK integration manifest">'
-    if not path:
-        structured+=f'<link rel="alternate" type="application/rss+xml" title="TitanCSA guides" href="{BASE}rss.xml">'
+    if path in ('','fr/'):
+        feed_title='Guides TitanCSA' if language=='fr' else 'TitanCSA guides'
+        structured+=f'<link rel="alternate" type="application/rss+xml" title="{feed_title}" href="{BASE}rss.xml">'
     if not path and verification:structured+='<meta name="google-site-verification" content="'+escape(verification,quote=True)+'">'
     skip_label,nav_label,theme_text=(
         ('Aller au contenu','Navigation principale','Mode sombre')

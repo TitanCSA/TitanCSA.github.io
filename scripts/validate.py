@@ -67,6 +67,7 @@ for route in ('','fr/'):
     assert html.count('data-project data-category=')==len(projects)
     assert html.count(' data-project-group ')==len(categories)
     assert {p['url'] for p in projects} <= set(landing.links)
+    assert BASE+'rss.xml' in landing.links and '/rss.xml' in landing.links
 for page in by_canonical.values():
     if page.alternates:
         assert page.alternates[page.language]==page.canonical
