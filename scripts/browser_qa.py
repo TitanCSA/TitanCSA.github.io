@@ -12,6 +12,8 @@ with urlopen(base+'projects.json',timeout=15) as response:
     projects=json.load(response)['projects']
 with urlopen(base+'releases.json',timeout=15) as response:
     editions=json.load(response)['editions']
+with urlopen(base+'integration.json',timeout=15) as response:
+    registry={(row['ecosystem'],row['name']):row['install_command'] for row in json.load(response)['sdk_registry']}
 edition_routes={urlsplit(row['overview_url']).path.lstrip('/'):row for row in editions}
 project_count=len(projects)
 assert project_count
@@ -86,7 +88,8 @@ with sync_playwright() as p:
         page.screenshot(path=str(out/f'home-fr-{width}.png'),full_page=False)
         audio_card=page.locator('#project-titan-audio-link')
         audio_card.get_by_text('Premier essai',exact=True).click()
-        audio_card.get_by_role('link',name='Voir la fiche').click()
+        assert audio_card.get_by_role('link',name='GitHub').get_attribute('href')=='https://github.com/titanfyre/Titan-Audio-Link#readme'
+        audio_card.get_by_role('heading',level=3).get_by_role('link').click()
         assert page.url.endswith('/'+audio_fr)
         assert page.locator('.actions a.primary').get_attribute('href')==audio_download
         page.locator('header').get_by_role('link',name='English',exact=True).click()
@@ -102,6 +105,9 @@ with sync_playwright() as p:
     assert page.locator('html').get_attribute('lang')=='fr' and page.locator('[data-project]:visible').count()==project_count
     page.locator('#project-vdevice summary').click()
     assert 'Create device' in page.locator('#project-vdevice details').inner_text()
+    page.locator('#project-vdevice h3 a').press('Enter')
+    assert page.url.endswith('/projects/vdevice/')
+    page.go_back(wait_until='domcontentloaded')
     page.locator('main a[lang="en"][href="/"]').click()
     page.locator('a[href="/guides/first-run/"]').first.click()
     assert page.url.endswith('/guides/first-run/') and page.locator('h1').inner_text().startswith('A useful first run')
@@ -121,7 +127,7 @@ with sync_playwright() as p:
     native_packages=page.locator('main details').filter(has=page.locator('summary').get_by_text('C/C++',exact=True))
     assert not native_packages.locator('table').is_visible()
     native_packages.locator('summary').click()
-    assert native_packages.get_by_text('Install-Package Vdevice.Native -Version 1.0.6',exact=True).is_visible()
+    assert native_packages.get_by_text(registry['nuget-native','Vdevice.Native'],exact=True).is_visible()
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Registry table causes horizontal page scrolling'
     checks_help=page.locator('main details.first-run-more').filter(
         has=page.locator('a[href="/assets/python-interceptor-status.py"]'))
@@ -133,8 +139,8 @@ with sync_playwright() as p:
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Example project causes horizontal page scrolling'
     page.goto(base+'fr/sdk-java-php-ruby/',wait_until='domcontentloaded')
     page.get_by_text('Voir les commandes pour Vdevice',exact=True).click()
-    assert page.get_by_text('composer require titancsa/vdevice:1.0.0',exact=True).is_visible()
-    assert page.get_by_text('gem install vdevice -v 1.0.0',exact=True).is_visible()
+    assert page.get_by_text(registry['packagist','titancsa/vdevice'],exact=True).is_visible()
+    assert page.get_by_text(registry['rubygems','vdevice'],exact=True).is_visible()
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'SDK commands cause horizontal page scrolling'
     page.goto(base+'guides/windows-input-release-compare/',wait_until='domcontentloaded')
     contacts=page.locator('main a[href="/about/evidence/#release-contact"]')

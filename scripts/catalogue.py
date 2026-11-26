@@ -49,23 +49,27 @@ def catalogue_sections(projects, french_copy, featured_paths, app_sections, *, f
                 label = "État du problème WDF-001" if french else "WDF-001 status by edition"
                 issue = f'<a class="known-issue" href="{escape(entry["known_issue_url"], quote=True)}">{label} ↗</a>'
             overview = featured_paths.get(name)
+            url = escape(entry["url"], quote=True)
+            title_href = escape(overview, quote=True) if overview else url
+            title_icon = ' <span aria-hidden="true">↗</span>' if not overview else ""
             if name in app_sections:
                 guide = "/fr/essayer-sans-pilote/" if french else "/guides/first-run/"
                 overview = f'{guide}#{app_sections[name]}'
-            overview_label = ("Voir le premier essai" if name in app_sections else "Voir la fiche") if french else (
-                "See the first run" if name in app_sections else "Project overview"
-            )
-            overview_link = f'<p><a href="{escape(overview, quote=True)}">{overview_label}</a></p>' if overview else ""
+                guide_label = "Voir le premier essai" if french else "See the first run"
+                detail_link = f'<p><a href="{escape(overview, quote=True)}">{guide_label}</a></p>'
+            elif overview:
+                detail_link = f'<p><a href="{url}">GitHub <span aria-hidden="true">↗</span></a></p>'
+            else:
+                detail_link = ""
             ident = "project-" + re.sub(r"[^a-z0-9-]", "-", name.lower())
-            url = escape(entry["url"], quote=True)
             label = "Premier essai" if french else "First step"
             items.append(
                 f'<article id="{ident}" class="project" data-project data-category="{category}" '
                 f'data-no-driver="{str(no_driver).lower()}" data-search="{escape(searchable, quote=True)}">'
-                f'<div class="project-title"><h3><a href="{url}">{escape(name)} <span aria-hidden="true">↗</span></a></h3>'
+                f'<div class="project-title"><h3><a href="{title_href}">{escape(name)}{title_icon}</a></h3>'
                 f'<span class="{tag}">{escape(kind)}</span>{badge}</div>'
                 f'<div><p>{escape(purpose)}</p><details><summary>{label}</summary><p>{escape(first_step)}</p>'
-                f'{scope}{overview_link}</details>{issue}</div></article>'
+                f'{scope}{detail_link}</details>{issue}</div></article>'
             )
         count = len(entries)
         noun = "projets" if french else "entries"
