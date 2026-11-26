@@ -688,5 +688,77 @@
       "url": "https://proxy.golang.org/github.com/titanfyre/!titan-!audio-!link/!titan-!audio-!link-!go-modules/@v/v1.0.0.zip",
       "sha256": "c6b80d2f2002fd70accb09bd93250726570fc77d22e7e893e7f66c1e763e090d"
     }
+  },
+  {
+    "edition": "interceptor",
+    "ecosystem": "cargo",
+    "name": "interceptor-sdk",
+    "version": "1.0.1",
+    "first_check": {
+      "call": "client.info()",
+      "expected": "With a matching driver installed, installed is 1. Windows error 2 means its interface was not found.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/blob/main/projects/Interceptor/Interceptor-Rust-cargo/README.md",
+    "verified_archive": {
+      "url": "https://static.crates.io/crates/interceptor-sdk/interceptor-sdk-1.0.1.crate",
+      "sha256": "0fdd108fe41597ed9389e2626bddfe8e10c405898faff1994a11fc0b1637b0a5"
+    }
+  },
+  {
+    "edition": "interceptor-keyboard-mouse",
+    "ecosystem": "cargo",
+    "name": "interceptor-keyboard-mouse",
+    "version": "1.0.1",
+    "first_check": {
+      "call": "client.info()",
+      "expected": "With a matching driver installed, installed is 1. Windows error 2 means its interface was not found.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/blob/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-Rust-cargo/README.md",
+    "verified_archive": {
+      "url": "https://static.crates.io/crates/interceptor-keyboard-mouse/interceptor-keyboard-mouse-1.0.1.crate",
+      "sha256": "3cb6ddb91c3b0f39ce09b95c4197fe979853ad81e2733b27dad16074363bc7cd"
+    }
+  },
+  {
+    "edition": "interceptor-gamepad-controller",
+    "ecosystem": "cargo",
+    "name": "interceptor-gamepad-controller",
+    "version": "1.0.1",
+    "first_check": {
+      "call": "client.info()",
+      "expected": "With a matching driver installed, installed is 1. Windows error 2 means its interface was not found.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/blob/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-Rust-cargo/README.md",
+    "verified_archive": {
+      "url": "https://static.crates.io/crates/interceptor-gamepad-controller/interceptor-gamepad-controller-1.0.1.crate",
+      "sha256": "dd1ba67cdb52f4dbd098bafb0d88c05124146736083d4f3986260640d2eccef5"
+    }
+  },
+  {
+    "edition": "vdevice",
+    "ecosystem": "cargo",
+    "name": "vdevice",
+    "version": "1.0.1",
+    "first_check": {
+      "call": "client.call(\"status\", serde_json::json!({}))",
+      "expected": "Windows error 2 means the Vdevice driver interface was not found.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/blob/main/projects/Vdevice/Vdevice-Rust-cargo/README.md",
+    "verified_archive": {
+      "url": "https://static.crates.io/crates/vdevice/vdevice-1.0.1.crate",
+      "sha256": "3e1dda32c5fa365ec550bff5aad1da0e680b79b9b0ba01d94489ae023dcde0cc"
+    }
   }
 ]

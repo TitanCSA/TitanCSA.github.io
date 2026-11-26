@@ -74,6 +74,12 @@ def verify(row):
             available = any(entry["version"].removeprefix("v") == version
                             and entry["source"]["reference"] == row["source_reference"]
                             for entry in document["packages"][name])
+        elif registry == "cargo":
+            entry = document["version"]
+            expected_url = f"https://static.crates.io/crates/{name}/{name}-{version}.crate"
+            available = (entry["crate"] == name and entry["num"] == version and not entry["yanked"]
+                         and archive["url"] == expected_url and entry["checksum"] == archive["sha256"]
+                         and sha256(read(expected_url)).hexdigest() == archive["sha256"])
         elif registry == "go":
             available = (document["Version"] == "v" + version
                          and archive["url"] == row["metadata_url"].removesuffix(".info") + ".zip"
@@ -201,6 +207,49 @@ def check_go_examples(rows):
             print(f"{identity} ran its published first check on clean Windows.")
 
 
+def check_cargo_examples(rows):
+    cargo = shutil.which("cargo.exe")
+    if sys.platform != "win32" or not cargo:
+        raise RuntimeError("The Rust SDK examples require Cargo and MSVC on Windows x64.")
+    environment = os.environ.copy()
+    for name in tuple(environment):
+        if name.endswith("_SDK_LIB_DIR") or name in {
+            "RUSTFLAGS", "RUSTC_WRAPPER", "RUSTC_WORKSPACE_WRAPPER", "CARGO_TARGET_DIR", "CARGO_BUILD_BUILD_DIR",
+        }:
+            environment.pop(name)
+    environment.update(CARGO_BUILD_TARGET="x86_64-pc-windows-msvc", CARGO_REGISTRIES_CRATES_IO_PROTOCOL="sparse")
+    with TemporaryDirectory(prefix="titancsa-rust-") as directory:
+        location = Path(directory)
+        cargo_home = location / "registry"
+        environment["CARGO_HOME"] = str(cargo_home)
+        for index, row in enumerate(rows):
+            check = row["first_check"]
+            work = location / str(index)
+            work.mkdir()
+            project = work / "titancsa-check"
+            sample = (ROOT / "dist" / urlsplit(check["source_url"]).path.lstrip("/")).read_bytes()
+            if sha256(sample).hexdigest() != check["source_sha256"]:
+                raise ValueError(f"{row['name']} example does not match its published checksum.")
+
+            def run(command, cwd=project):
+                return subprocess.check_output([cargo, *shlex.split(command)[1:]], cwd=cwd,
+                                               env=environment, text=True, timeout=120)
+
+            run(check["create_example_project_command"], work)
+            run(row["install_command"])
+            (project / "src" / check["save_as"]).write_bytes(sample)
+            run("cargo fetch --locked")
+            archive_name = f"{row['name']}-{row['version']}.crate"
+            archive, = (cargo_home / "registry/cache").glob(f"*/{archive_name}")
+            if sha256(archive.read_bytes()).hexdigest() != row["verified_archive"]["sha256"]:
+                raise ValueError(f"{archive_name} does not match its published checksum.")
+            expected = {"interception-v2": {"valid": True, "keyboard": True, "mouse": False},
+                        "titan-audio-link": []}.get(row["edition"], {"windows_error": 2})
+            if json.loads(run(check["command_from_app_folder"] + " --locked --offline")) != expected:
+                raise ValueError(f"{archive_name} did not return the documented clean-Windows result.")
+            print(f"{archive_name} ran its published first check on clean Windows.")
+
+
 def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--documentation", action="store_true",
@@ -210,6 +259,8 @@ def main():
                         help="Install the pinned npm archives and run their documented status sample on Windows x64 without the drivers")
     runtime.add_argument("--check-go-on-clean-windows", action="store_true",
                          help="Run the published first checks with the pinned Go modules on Windows x64 without the drivers")
+    runtime.add_argument("--check-rust-on-clean-windows", action="store_true",
+                         help="Run the published first checks with the pinned Rust crates on Windows x64 without the drivers")
     args = parser.parse_args()
     rows = json.loads((ROOT / "dist/integration.json").read_text(encoding="utf-8"))["sdk_registry"]
     if args.check_node_on_clean_windows:
@@ -217,6 +268,9 @@ def main():
         return
     if args.check_go_on_clean_windows:
         check_go_examples([row for row in rows if row["ecosystem"] == "go"])
+        return
+    if args.check_rust_on_clean_windows:
+        check_cargo_examples([row for row in rows if row["ecosystem"] == "cargo"])
         return
     with ThreadPoolExecutor(max_workers=5) as pool:
         for result in pool.map(verify, rows):

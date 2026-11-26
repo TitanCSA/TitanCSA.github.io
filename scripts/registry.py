@@ -46,6 +46,14 @@ REGISTRIES = {
         "page": "https://www.powershellgallery.com/packages/{name}/{version}",
         "metadata": "https://www.powershellgallery.com/api/v2/Packages(Id='{name}',Version='{version}')",
     },
+    "cargo": {
+        "label": "Rust",
+        "runtime": "Rust 1.82+ with the Windows x64 MSVC toolchain",
+        "command": "cargo add {name}@={version} serde_json@1",
+        "page": "https://crates.io/crates/{name}/{version}",
+        "metadata": "https://crates.io/api/v1/crates/{name}/{version}",
+        "context": "A Cargo project directory with Cargo.toml",
+    },
     "go": {
         "label": "Go",
         "runtime": "Go 1.22+ on Windows x64, without cgo",
@@ -99,9 +107,14 @@ def registry_catalogue(manifest, base):
                           "url": base + "guides/first-run/#browser",
                           "release_url": browser["source"] + "/releases/tag/" + browser["tag"]}
     rows = json.loads((ROOT / "sdk-registry.json").read_text(encoding="utf-8"))
-    go_proof_file = "assets/go-sdk-first-checks-2026-11-26.json"
-    go_proof = json.loads((ROOT / go_proof_file).read_text(encoding="utf-8"))
-    go_checks = {(row["name"], row["version"]): row for row in go_proof["checks"]}
+    clean_checks = {}
+    for ecosystem, proof_file in (
+        ("go", "assets/go-sdk-first-checks-2026-11-26.json"),
+        ("cargo", "assets/rust-sdk-first-checks-2026-11-26.json"),
+    ):
+        proof = json.loads((ROOT / proof_file).read_text(encoding="utf-8"))
+        for result in proof["checks"]:
+            clean_checks[(ecosystem, result["name"], result["version"])] = (proof_file, result)
     lab_results = {}
     for proof_file, proof in runtime_reports(ROOT / "assets"):
         for observed in proof["checks"]:
@@ -124,9 +137,10 @@ def registry_catalogue(manifest, base):
         arguments = {"name": name, "version": version, "lower_name": name.lower(), "artifact": artifact}
         if ecosystem == "go":
             arguments["proxy_name"] = "".join("!" + char.lower() if "A" <= char <= "Z" else char for char in name)
-            proof = go_checks.get((name, version))
-            if proof and proof["edition"] == row["edition"] and proof["package_sha256"] == row["verified_archive"]["sha256"]:
-                row["first_check"]["without_driver_evidence_url"] = base + go_proof_file
+        if clean_check := clean_checks.get((ecosystem, name, version)):
+            proof_file, proof = clean_check
+            if proof["edition"] == row["edition"] and proof["package_sha256"] == row["verified_archive"]["sha256"]:
+                row["first_check"]["without_driver_evidence_url"] = base + proof_file
         row.update(
             project=project,
             language=registry["label"],
@@ -207,7 +221,7 @@ def registry_tables(rows, *, french=False):
     labels = ("Projet", "Paquet", "Commande") if french else ("Project", "Package", "Install command")
     columns = "".join(f'<th scope="col">{label}</th>' for label in labels)
     sections = []
-    for key in ("nuget-native", "pypi", "npm", "nuget-managed", "powershell", "go"):
+    for key in ("nuget-native", "pypi", "npm", "nuget-managed", "powershell", "go", "cargo"):
         registry = REGISTRIES[key]
         language = registry["label"]
         runtime = registry["runtime"]
@@ -215,6 +229,8 @@ def registry_tables(rows, *, french=False):
             runtime = "Visual Studio 2022 avec le développement de bureau en C++"
         if key == "go" and french:
             runtime = "Go 1.22 ou supérieur sous Windows x64, sans cgo"
+        if key == "cargo" and french:
+            runtime = "Rust 1.82 ou supérieur avec la chaîne MSVC sous Windows x64"
         table = []
         for row in (item for item in rows if item["ecosystem"] == key):
             name = escape(row["project"]["name"])
@@ -223,10 +239,12 @@ def registry_tables(rows, *, french=False):
             package_url = escape(row["package_url"], quote=True)
             command = escape(row["install_command"])
             sample = ""
-            if key == "go":
-                source = escape(urlsplit(row["first_check"]["source_url"]).path, quote=True)
-                label = "Fichier main.go" if french else "Download main.go"
-                sample = f'<br><a href="{source}" download="main.go">{label}</a>'
+            if key in ("go", "cargo"):
+                check = row["first_check"]
+                source = escape(urlsplit(check["source_url"]).path, quote=True)
+                filename = escape(check["save_as"], quote=True)
+                label = f"Fichier {filename}" if french else f"Download {filename}"
+                sample = f'<br><a href="{source}" download="{filename}">{label}</a>'
             table.append(
                 f'<tr><th scope="row"><a href="{project_url}">{name}</a></th>'
                 f'<td><a href="{package_url}">{package}</a></td><td><code>{command}</code>{sample}</td></tr>'
@@ -239,6 +257,16 @@ def registry_tables(rows, *, french=False):
                             "In an empty folder, run <code>go mod init example.com/titancsa-check</code>. "
                             "Copy the command from the table, save its sample as <code>main.go</code> "
                             "and run <code>go run .</code>.")
+            steps = f"<p>{instructions}</p>"
+        if key == "cargo":
+            instructions = ("Lance <code>cargo new titancsa-check --vcs none</code>, puis <code>cd titancsa-check</code>. "
+                            "Copie la commande du tableau, remplace <code>src/main.rs</code> par le fichier téléchargé "
+                            "et lance <code>cargo run</code>. Si tu distribues le fichier <code>.exe</code>, "
+                            "place la DLL du paquet à côté.") if french else (
+                            "Run <code>cargo new titancsa-check --vcs none</code>, then <code>cd titancsa-check</code>. "
+                            "Copy the command from the table, replace <code>src/main.rs</code> with its sample "
+                            "and run <code>cargo run</code>. When distributing the <code>.exe</code>, "
+                            "place the crate’s DLL beside it.")
             steps = f"<p>{instructions}</p>"
         sections.append(f'<details class="first-run-more"><summary>{language}</summary><p>{escape(runtime)}</p>{steps}'
                         f'<div class="table-scroll"><table><thead><tr>{columns}</tr></thead>'

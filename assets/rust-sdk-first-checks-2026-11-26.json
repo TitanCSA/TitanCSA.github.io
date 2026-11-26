@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-26T21:00:44.988932+00:00",
+  "runtime": "cargo 1.100.0 (3acc79c0c 2026-11-05)",
+  "environment": {
+    "operating_system": "Windows",
+    "architecture": "x64",
+    "target": "x86_64-pc-windows-msvc"
+  },
+  "scope": "The 1.0.0 public crates listed below needed their bundled DLL beside the executable on Cargo 1.100. The verified 1.0.1 archives run the first checks with the default Cargo build layout, using the same native payloads. The published archives matched the locally tested archive sizes and SHA-256 values. No driver was installed and no input capture was started.",
+  "checks": [
+    {
+      "edition": "interceptor",
+      "name": "interceptor-sdk",
+      "version": "1.0.1",
+      "package_sha256": "0fdd108fe41597ed9389e2626bddfe8e10c405898faff1994a11fc0b1637b0a5",
+      "previous_release_sha256": "888143b7e82c7b6e013cc3d8965e36184c6c94ffaf57db39333569d669862530",
+      "previous_release_loader_error": "0xc0000135",
+      "runtime_files_identical": 6,
+      "result": {
+        "windows_error": 2
+      }
+    },
+    {
+      "edition": "interceptor-keyboard-mouse",
+      "name": "interceptor-keyboard-mouse",
+      "version": "1.0.1",
+      "package_sha256": "3cb6ddb91c3b0f39ce09b95c4197fe979853ad81e2733b27dad16074363bc7cd",
+      "previous_release_sha256": "8bd86f7e85b13fea87b8201eca8c5f21b37401389e56209316448b5f51b27e9e",
+      "previous_release_loader_error": "0xc0000135",
+      "runtime_files_identical": 6,
+      "result": {
+        "windows_error": 2
+      }
+    },
+    {
+      "edition": "interceptor-gamepad-controller",
+      "name": "interceptor-gamepad-controller",
+      "version": "1.0.1",
+      "package_sha256": "dd1ba67cdb52f4dbd098bafb0d88c05124146736083d4f3986260640d2eccef5",
+      "previous_release_sha256": "0ff6787ac3ac50ed7e58ccdc0f7e0960f202b8aaebc2fd18415704efec2cd2fd",
+      "previous_release_loader_error": "0xc0000135",
+      "runtime_files_identical": 6,
+      "result": {
+        "windows_error": 2
+      }
+    },
+    {
+      "edition": "vdevice",
+      "name": "vdevice",
+      "version": "1.0.1",
+      "package_sha256": "3e1dda32c5fa365ec550bff5aad1da0e680b79b9b0ba01d94489ae023dcde0cc",
+      "previous_release_sha256": "a3b7559fada11cf28ee66ac00b22bc2bbc7a31dc3443086b58d6e1232263da5c",
+      "previous_release_loader_error": "0xc0000135",
+      "runtime_files_identical": 7,
+      "result": {
+        "windows_error": 2
+      }
+    }
+  ]
+}

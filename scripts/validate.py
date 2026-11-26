@@ -251,7 +251,7 @@ rows = manifest['sdk_registry']
 other_registries={'maven','packagist','rubygems'}
 language_guide=by_canonical[BASE+'guides/windows-input-sdk-java-php-ruby/']
 language_guide_fr=by_canonical[BASE+'fr/sdk-java-php-ruby/']
-assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell','go'} | other_registries
+assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell','go','cargo'} | other_registries
 runtime_results={}
 clean_results={}
 for runtime_path, runtime_proof in runtime_reports(OUT/'assets'):
@@ -294,12 +294,18 @@ for row in rows:
         example_file=OUT/example.removeprefix(BASE)
         assert sha256(example_file.read_bytes()).hexdigest()==row['first_check']['source_sha256']
     if clean_evidence := row['first_check'].get('without_driver_evidence_url'):
-        assert row['ecosystem']=='go'
+        assert row['ecosystem'] in ('go','cargo')
         report=json.loads((OUT/clean_evidence.removeprefix(BASE)).read_text(encoding='utf8'))
         record,=(item for item in report['checks'] if (item['name'],item['version'])==(row['name'],row['version']))
         assert record['edition']==row['edition'] and record['package_sha256']==row['verified_archive']['sha256']
-        assert report['environment']=={'operating_system':'Windows','architecture':'x64','cgo_enabled':False}
-        assert record['go_checksum'].startswith('h1:')
+        environment=report['environment']
+        assert environment['operating_system']=='Windows' and environment['architecture']=='x64'
+        if row['ecosystem']=='go':
+            assert environment['cgo_enabled'] is False and record['go_checksum'].startswith('h1:')
+        else:
+            assert environment['target']=='x86_64-pc-windows-msvc'
+            assert record['previous_release_loader_error']=='0xc0000135'
+            assert record['runtime_files_identical'] >= 2
         expected={'interception-v2':{'valid':True,'keyboard':True,'mouse':False},'titan-audio-link':[]}
         assert record['result']==expected.get(row['edition'],{'windows_error':2})
     if evidence := row.get('lab_verification'):
@@ -331,6 +337,8 @@ for row in rows:
         if row['ecosystem'] == 'go':
             assert urlparse(archive['url']).netloc == 'proxy.golang.org'
             assert archive['url']==row['metadata_url'].removesuffix('.info')+'.zip'
+        if row['ecosystem'] == 'cargo':
+            assert urlparse(archive['url']).netloc == 'static.crates.io'
 assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]

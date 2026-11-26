@@ -18,6 +18,8 @@ on:
       - 'scripts/registry.py'
       - 'scripts/go_samples.py'
       - 'assets/go-sdk-first-checks-*.json'
+      - 'scripts/rust_samples.py'
+      - 'assets/rust-sdk-first-checks-*.json'
       - 'scripts/verify_registry.py'
       - 'scripts/verify_integration_schema.py'
       - 'assets/browser-sdk-first-run.py'
@@ -49,6 +51,8 @@ on:
       - 'scripts/registry.py'
       - 'scripts/go_samples.py'
       - 'assets/go-sdk-first-checks-*.json'
+      - 'scripts/rust_samples.py'
+      - 'assets/rust-sdk-first-checks-*.json'
       - 'scripts/verify_registry.py'
       - 'scripts/verify_integration_schema.py'
       - 'assets/browser-sdk-first-run.py'
@@ -126,3 +130,10 @@ jobs:
           cache: false
       - name: Run the published Go programs on clean Windows
         run: python scripts/verify_registry.py --check-go-on-clean-windows
+      - name: Run the published Rust programs on clean Windows
+        env:
+          RUSTUP_TOOLCHAIN: '1.100.0'
+        run: |
+          rustup toolchain install 1.100.0 --profile minimal
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          python scripts/verify_registry.py --check-rust-on-clean-windows

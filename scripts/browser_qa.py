@@ -143,6 +143,15 @@ with sync_playwright() as p:
         go_download.click()
     assert go_file.value.suggested_filename=='main.go' and go_file.value.failure() is None
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Go table causes horizontal page scrolling'
+    rust_packages=page.locator('main details').filter(has=page.locator('summary').get_by_text('Rust',exact=True))
+    assert not rust_packages.locator('table').is_visible()
+    rust_packages.locator('summary').click()
+    assert rust_packages.get_by_text(registry['cargo','vdevice'], exact=True).is_visible()
+    rust_download=rust_packages.get_by_role('row', name='Vdevice').get_by_role('link', name='Fichier main.rs')
+    with page.expect_download() as rust_file:
+        rust_download.click()
+    assert rust_file.value.suggested_filename=='main.rs' and rust_file.value.failure() is None
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Rust table causes horizontal page scrolling'
     checks_help=page.locator('main details.first-run-more').filter(
         has=page.locator('a[href="/assets/python-interceptor-status.py"]'))
     assert not checks_help.locator('a[href="/assets/python-interceptor-status.py"]').is_visible()
