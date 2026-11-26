@@ -126,11 +126,11 @@
     },
     {
       "slug": "interception-v2",
-      "demo": "2.0.0.2",
-      "tag": "v2.0.0.2",
+      "demo": "2.0.0.0",
+      "tag": "v2.0.0",
       "commercial": {
-        "package_version": "2.0.0.4",
-        "driver_version": "2.0.0.4"
+        "package_version": "2.0.0.1",
+        "driver_version": "2.0.0.0"
       },
       "use": "Run applications built against the original Interception C API for keyboard and mouse input.",
       "api": "Original interception_* C API with x86/x64 user-mode libraries",
@@ -140,13 +140,12 @@
         "archive": "Interception-V2.zip",
         "checksums": "SHA256SUMS.txt"
       },
-      "sdk_sha256": "4ea24db57c6bccd19af2f4ea24523ca8352e729b8e2fb849e15316533bcda8b1",
+      "sdk_sha256": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9",
       "setup_member": "Interception/command line installer/install-interception.exe",
       "demo_asset_sha256": {
-        "archive": "4ea24db57c6bccd19af2f4ea24523ca8352e729b8e2fb849e15316533bcda8b1",
-        "checksums": "8652f2450ac06bee51a9a8f4772aeb746da5c9ae73742287106acd77be276a2a"
-      },
-      "commercial_checked": "2026-11-26"
+        "archive": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9",
+        "checksums": "c9ed25c44fbedbca3323cba3588e0183c87ef1f8a70180b7bc807875e0b011b9"
+      }
     },
     {
       "slug": "titan-audio-link",
