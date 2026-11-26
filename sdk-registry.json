@@ -762,6 +762,24 @@
     }
   },
   {
+    "edition": "interception-v2",
+    "ecosystem": "cargo",
+    "name": "interception-v2",
+    "version": "1.0.1",
+    "first_check": {
+      "call": "client.call(\"check\", serde_json::json!({\"device\": 1}))",
+      "expected": "Device number 1 is the first keyboard slot.",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/blob/main/projects/Interception-V2/Interception-V2-Rust-cargo/README.md",
+    "verified_archive": {
+      "url": "https://static.crates.io/crates/interception-v2/interception-v2-1.0.1.crate",
+      "sha256": "1bba9bda788de77157ccd5fba076e75b2e90f01ae2c332a8bd2a3150ae1047ff"
+    }
+  },
+  {
     "edition": "titan-audio-link",
     "ecosystem": "cargo",
     "name": "titan-audio-link",

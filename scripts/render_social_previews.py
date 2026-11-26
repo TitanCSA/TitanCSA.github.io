@@ -4,6 +4,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WIDTH, HEIGHT = 1200, 630
+CONTROLLER_PREVIEW = (
+    "interceptor-gamepad-controller", "Interceptor Gamepad & Controller",
+    "Remap buttons and adjust sticks on Windows.", "controller", "en",
+)
 
 # route: (file stem, product name, first use, visual, language)
 PREVIEWS = {
@@ -12,9 +16,11 @@ PREVIEWS = {
     "projects/interceptor-keyboard-mouse/": (
         "interceptor-keyboard-mouse", "Interceptor Keyboard & Mouse",
         "Remap a specific keyboard or mouse.", "keys", "en"),
-    "projects/interceptor-gamepad-controller/": (
-        "interceptor-gamepad-controller", "Interceptor Gamepad & Controller",
-        "Remap buttons and adjust sticks on Windows.", "controller", "en"),
+    "projects/interceptor-gamepad-controller/": CONTROLLER_PREVIEW,
+    "guides/gamepad-controller-first-run/": CONTROLLER_PREVIEW,
+    "fr/remapper-manette-windows/": (
+        "interceptor-gamepad-controller-fr", "Interceptor Gamepad & Controller",
+        "Teste les boutons et règle les sticks d’une manette sous Windows.", "controller", "fr"),
     "projects/vdevice/": (
         "vdevice", "Vdevice", "Create virtual USB devices from your Windows application.", "usb", "en"),
     "projects/interception-v2/": (
@@ -125,7 +131,7 @@ def main():
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(executable_path="C:/Program Files/Google/Chrome/Application/chrome.exe", headless=True)
         page = browser.new_page(viewport={"width": WIDTH, "height": HEIGHT}, device_scale_factor=1)
-        for stem, name, purpose, kind, language in PREVIEWS.values():
+        for stem, name, purpose, kind, language in dict.fromkeys(PREVIEWS.values()):
             page.set_content(card(name, purpose, kind, language))
             assert page.evaluate("document.documentElement.scrollWidth===1200 && document.documentElement.scrollHeight===630")
             assert page.locator("h1").bounding_box()["height"] <= 202

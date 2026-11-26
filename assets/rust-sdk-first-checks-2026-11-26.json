@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "checked_utc": "2026-11-26T21:15:19.429593+00:00",
+  "checked_utc": "2026-11-26T21:42:13.831321+00:00",
   "runtime": "cargo 1.100.0 (3acc79c0c 2026-11-05)",
   "environment": {
     "operating_system": "Windows",
@@ -55,6 +55,20 @@
       "runtime_files_identical": 7,
       "result": {
         "windows_error": 2
+      }
+    },
+    {
+      "edition": "interception-v2",
+      "name": "interception-v2",
+      "version": "1.0.1",
+      "package_sha256": "1bba9bda788de77157ccd5fba076e75b2e90f01ae2c332a8bd2a3150ae1047ff",
+      "previous_release_sha256": "0db0e63d6b16d55fcef72c61ff652171f0f8e8042d0623eec8c80f7424179067",
+      "previous_release_loader_error": "0xc0000135",
+      "runtime_files_identical": 15,
+      "result": {
+        "keyboard": true,
+        "mouse": false,
+        "valid": true
       }
     },
     {
