@@ -12,5 +12,8 @@
 <figure><img src="/assets/interceptor-keyboard-mouse-viewer-keyboard.png" width="1200" height="800" loading="lazy" alt="The Keyboard tab shows the All keyboards selector above the diagram and last ID below it."><figcaption>Preview rendered by demo viewer 1.0.5.4 with simulated input.</figcaption></figure>
 </details>
 <p>If the second keyboard does not appear, check that it works normally in Windows and see the <a href="https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/blob/{{INTERCEPTOR_KEYBOARD_MOUSE_DEMO_TAG}}/docs/COMPATIBILITY.md">supported device paths</a>. Each demo lasts one hour per Windows boot, starting with the first capture.</p>
-<p><a href="/assets/interceptor-keyboard-mouse-viewer-check-2026-11-26.json">See the viewer self-test and preview verification</a>. Test physical device recognition with your keyboards.</p>
+<details><summary>Test results</summary>
+<p>In a Windows 11 virtual machine, two virtual USB keyboards sent the same key. The demo SDK reported each press and release with the correct keyboard ID. Use the steps above to confirm support for your own keyboards.</p>
+<p><a href="/assets/interceptor-keyboard-mouse-two-keyboard-check-2026-11-26.json">USB keyboard capture report</a> · <a href="/assets/interceptor-keyboard-mouse-viewer-check-2026-11-26.json">Viewer self-test and preview report</a></p>
+</details>
 <div class="related"><a href="/fr/tester-deux-claviers-windows/" lang="fr">Lire en français</a><a href="/projects/interceptor-keyboard-mouse/">SDK and product details</a><a href="/about/evidence/#release-contact">Version without the one-hour limit · Discord titancsa</a></div>

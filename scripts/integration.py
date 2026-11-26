@@ -50,6 +50,9 @@ def make_manifest(base, editions):
     vdevice_proof = json.loads((ROOT / vdevice_proof_file).read_text(encoding="utf-8"))
     mouse_switch_file = "assets/interceptor-mouse-driver-switch-2026-11-26.json"
     mouse_switch = json.loads((ROOT / mouse_switch_file).read_text(encoding="utf-8"))["editions"]
+    keyboard_capture_file = "assets/interceptor-keyboard-mouse-two-keyboard-check-2026-11-26.json"
+    keyboard_capture = json.loads((ROOT / keyboard_capture_file).read_text(encoding="utf-8"))
+    keyboard_package = keyboard_capture["interceptor_keyboard_mouse"]
 
     rows = []
     for slug, edition in editions.items():
@@ -132,6 +135,10 @@ def make_manifest(base, editions):
                 and switch["sdk_sha256"] == edition["sdk_sha256"]
                 and switch["console_installer_sha256"] == digests.get("console_installer")):
             row["demo"]["mouse_driver_switch_verification_url"] = base + mouse_switch_file
+        if (keyboard_capture["edition"] == slug and keyboard_package["demo_tag"] == edition["tag"]
+                and keyboard_package["sdk_archive_sha256"] == edition["sdk_sha256"]
+                and keyboard_package["console_installer_sha256"] == digests.get("console_installer")):
+            row["demo"]["keyboard_capture_verification_url"] = base + keyboard_capture_file
         if (inventory["edition"] == slug and inventory["demo_version"] == edition["demo"]
                 and inventory["demo_archive"]["sha256"] == digests[setup_role]):
             row["demo"]["console_setup"] = console_setup(

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-26T23:01:58Z",
+  "edition": "interceptor-keyboard-mouse",
+  "scope": "Live C++ SDK capture with two virtual USB HID keyboard fixtures in an offline Windows 11 VM. Physical keyboards and the viewer interface were outside the scope of this run.",
+  "windows": {
+    "architecture": "x64",
+    "build": 26100,
+    "secure_boot": true,
+    "memory_integrity": false
+  },
+  "interceptor_keyboard_mouse": {
+    "demo_tag": "v1.0.5.4-demo-r3",
+    "console_installer_sha256": "f8a1a5b9607079630aa577a28441588d62839a5b37c9b846c9d2ea18fd166576",
+    "sdk_archive_sha256": "fb3facceeeb4fc15bfdd7ae473bcfe2dcbe99044f0b7209c285e682c799acede",
+    "install_exit": 0,
+    "uninstall_exit": 0,
+    "services_absent_after_uninstall_and_restart": true
+  },
+  "vdevice": {
+    "demo_tag": "v1.0.6.1-demo",
+    "console_installer_sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848",
+    "sdk_archive_sha256": "b0c8ceec0f872a8eb05e0281c87b6f30b3da23d35d94899fc220cce78efe5236",
+    "install_exit": 0,
+    "uninstall_exit": 0,
+    "fixtures_deleted": true
+  },
+  "capture": {
+    "method": "Enumerate with Get_Devices, read with Get_Input_With_Timeout, and forward each batch with Send_Input. Each fixture sends HID keyboard usage 0x04 followed by a release.",
+    "ordered_samples": [
+      {"vid": "FFFF", "pid": "D131", "device_id": 2, "scan_code": "001E", "event": "press"},
+      {"vid": "FFFF", "pid": "D131", "device_id": 2, "scan_code": "001E", "event": "release"},
+      {"vid": "FFFF", "pid": "D132", "device_id": 1, "scan_code": "001E", "event": "press"},
+      {"vid": "FFFF", "pid": "D132", "device_id": 1, "scan_code": "001E", "event": "release"}
+    ],
+    "both_present_in_windows": true,
+    "probe_exit": 0
+  }
+}

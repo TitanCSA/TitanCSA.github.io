@@ -416,6 +416,7 @@ reference_links.extend([
     f'- [Vdevice signed Demo and Release validation]({BASE}assets/vdevice-signed-versions-2026-11-25.json)',
     f'- [Four Company installation and removal tests on Windows 11]({BASE}assets/company-driver-package-checks-2026-11-26.json)',
     f'- [Windows mouse driver switching test with two synthetic USB HID devices]({BASE}assets/interceptor-mouse-driver-switch-2026-11-26.json)',
+    f'- [Windows SDK capture test with two virtual USB keyboards]({BASE}assets/interceptor-keyboard-mouse-two-keyboard-check-2026-11-26.json)',
     f'- [Standalone Rust ZIP quickstarts]({BASE}{rust_proof_path})',
     f'- [Rust crate checks with exact package hashes]({BASE}assets/rust-sdk-first-checks-2026-11-26.json)',
     f'- [Go module checks with exact package hashes]({BASE}assets/go-sdk-first-checks-2026-11-26.json)',
