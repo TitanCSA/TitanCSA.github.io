@@ -97,10 +97,11 @@ audio_catalogue=json.loads((OUT/'releases.json').read_text(encoding='utf8'))
 audio=next(edition for edition in audio_catalogue['editions'] if edition['slug']=='titan-audio-link')
 contact_routes={'en':'/about/evidence/#release-contact','fr':'/fr/pilotes-entree-windows/#contact-release'}
 help_routes={'en':'about/evidence/','fr':'fr/aide-et-verifications/'}
-issue_forms={edition['repository']+'/issues/new?template=installation-activation.yml'
-             for edition in audio_catalogue['editions']}
 for language, route in help_routes.items():
     support=by_canonical[BASE+route]
+    suffix='-fr' if language=='fr' else ''
+    issue_forms={edition['repository']+f'/issues/new?template=installation-activation{suffix}.yml'
+                 for edition in audio_catalogue['editions']}
     assert support.language==language and issue_forms <= set(support.links)
     assert 'public-directories' in support.ids
 for page in by_canonical.values():

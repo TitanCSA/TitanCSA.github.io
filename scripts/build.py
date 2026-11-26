@@ -108,11 +108,12 @@ for lang in ('en', 'fr'):
             app_url=f'{integration["first_run_guides"][lang]}#{app["id"]}'
             directory_entries.append(f'<li><a href="{app_url}">{escape(app["name"])}</a> · {links}</li>')
     replacements[f'APPLICATION_DIRECTORY_LISTINGS_{lang.upper()}']='\n'.join(directory_entries)
+    template='installation-activation-fr.yml' if lang=='fr' else 'installation-activation.yml'
+    replacements[f'SUPPORT_ISSUE_FORMS_{lang.upper()}']=''.join(
+        f'<li><a href="{e["repository"]}/issues/new?template={template}">{escape(e["name"])}</a></li>'
+        for e in editions.values()
+    )
 replacements['COMMERCIAL_CHECK_DATE']=commercial_checked
-replacements['SUPPORT_ISSUE_FORMS']=''.join(
-    f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'
-    for e in editions.values()
-)
 replacements['OTHER_SDK_REGISTRY_ROWS']=secondary_registry_rows(integration['sdk_registry'],input_editions)
 replacements['OTHER_SDK_REGISTRY_ROWS_FR']=secondary_registry_rows(integration['sdk_registry'],input_editions,french=True)
 for row in integration['sdk_registry']:
