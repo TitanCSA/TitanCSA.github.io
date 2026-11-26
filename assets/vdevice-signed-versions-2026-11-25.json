@@ -108,6 +108,25 @@
         "activation_interface_ready": true,
         "key_used": false,
         "windows_error_after_uninstall_and_restart": 2
+      },
+      "archived_company_upgrade": {
+        "checked": "2026-11-26",
+        "windows_build": 26100,
+        "secure_boot": true,
+        "memory_integrity_running": true,
+        "previous_company_archive_version": "1.0.3.2",
+        "previous_company_archive_sha256": "87764c0a17bd9956f1b2114c71a156f9f87b7c21604c4fd85393888df96ed2dd",
+        "previous_driver_version": "1.0.3.0",
+        "previous_driver_sha256": "b759735e01a59003e0c3195f317493e862eec3f10487da3b37ffb2169e62402e",
+        "previous_setup_exit_code": 0,
+        "previous_driver_status_after_restart": "ABI 1, 16 maximum devices, licensed=no, owned devices=0",
+        "upgrade_setup_exit_code": 0,
+        "sdk_status_after_current_restart": "ABI 1, 16 maximum devices, licensed=no, owned devices=0",
+        "activation_interface_ready": true,
+        "key_used": false,
+        "uninstall_exit_code": 0,
+        "windows_error_after_uninstall_and_restart": 2,
+        "service_registered_after_uninstall_and_restart": false
       }
     }
   }
