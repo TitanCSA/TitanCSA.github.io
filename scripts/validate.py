@@ -82,6 +82,14 @@ for host in package_hosts:
     refs_fr={link for link in packages_fr.links if urlparse(link).netloc==host}
     assert refs_en and refs_en==refs_fr, ('Mismatch in bilingual SDK package URLs',host)
 assert packages_en.alternates['fr']==packages_fr.canonical
+audio_routes=('guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/')
+audio_catalogue=json.loads((OUT/'releases.json').read_text(encoding='utf8'))
+audio=next(edition for edition in audio_catalogue['editions'] if edition['slug']=='titan-audio-link')
+for path, language, alternate in zip(audio_routes, ('en','fr'), reversed(audio_routes)):
+    page=by_canonical[BASE+path]
+    assert page.language==language and audio['demo_download_url'] in page.links
+    assert '/'+alternate in page.links and '/about/evidence/#release-contact' in page.links
+assert '/'+audio_routes[1] in by_canonical[BASE+'fr/'].links
 if (ROOT/'site-verification.json').exists():
     verification=json.loads((ROOT/'site-verification.json').read_text())
     assert parsed[(OUT/'index.html').resolve()].google_verification==verification['google_site_verification']

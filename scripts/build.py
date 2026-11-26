@@ -26,6 +26,7 @@ featured={
 }
 featured_paths={repo:f'/projects/{slug}/' for slug,(repo,_,_) in featured.items()}
 featured_paths['Titan-Audio-Link']='/guides/titan-audio-link-first-run/'
+featured_paths_fr={**featured_paths,'Titan-Audio-Link':'/fr/micro-virtuel-titan-audio-link/'}
 featured_date='2026-11-23'
 contact_path='/about/evidence/#release-contact'
 release_data=json.loads((ROOT/'releases.json').read_text(encoding='utf8'))
@@ -71,7 +72,8 @@ for folder in ['src','assets']:
 app_sections={row['repository'].split('/')[-1]:row['id'] for row in integration['applications']}
 replacements={'PROJECT_COUNT':str(len(projects)), 'CHECKED_DATE':checked}
 for french in (False, True):
-    replacements.update(catalogue_sections(projects, french_copy, featured_paths, app_sections, french=french))
+    localized_paths=featured_paths_fr if french else featured_paths
+    replacements.update(catalogue_sections(projects, french_copy, localized_paths, app_sections, french=french))
 replacements['RELEASE_REVIEW_DATE']=release_date
 replacements['INSTALLER_SDK_ROWS_EN']=sdk_rows(integration)
 replacements['INSTALLER_SDK_ROWS_FR']=sdk_rows(integration,french=True)
@@ -132,6 +134,7 @@ pages={
  'fr/sdk-java-php-ruby/':('SDK TitanCSA pour Java, PHP et Ruby sous Windows','Choisis le paquet et le pilote Windows de la même édition. Retrouve les versions, les commandes et les premiers appels.','guides/windows-input-sdk-java-php-ruby-fr.html'),
  'guides/gamepad-controller-first-run/':('Test and remap a physical gamepad on Windows — TitanCSA','Identify HID, XUSB, XInputHID or GIP input, use the signed controller demo and try the C++ stick deadzone example.','guides/gamepad-controller-first-run.html'),
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Download the signed Titan Audio Link demo, verify a stereo virtual audio pair on Windows 11, and find the matching commercial package.','guides/titan-audio-link-first-run.html'),
+ 'fr/micro-virtuel-titan-audio-link/':('Titan Audio Link · Envoyer le son vers un micro virtuel Windows','Installe la démo signée de Titan Audio Link. Teste la sortie et le micro virtuels, puis relie deux applications Windows.','guides/titan-audio-link-first-run-fr.html'),
  'guides/verify-windows-driver-package/':('Verify a signed Windows driver package before installation — TitanCSA','Compare the published SHA-256, verify the Microsoft-signed driver catalog and check the INF package version with PowerShell and SignTool.','guides/verify-windows-driver-package.html'),
  'guides/vdevice-custom-hid-test/':('Test a custom virtual USB HID with Vdevice and hidapitester — TitanCSA','Create a vendor-defined virtual USB HID, read and return exact report bytes with hidapitester, and verify device removal on Windows.','guides/vdevice-custom-hid-test.html'),
  'fr/installer-sdk-windows/':('Installer les SDK d’entrée Windows · Python, Node.js, C++, .NET et PowerShell','Retrouvez les paquets vérifiés pour Interceptor, Vdevice et Interception V2. Commandes d’installation, versions et pilote Windows signé à associer.','guides/windows-input-sdk-packages-fr.html'),
@@ -144,7 +147,7 @@ for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
 demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second-keyboard/','guides/vdevice-custom-hid-test/','fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/'}
-release_guides={'guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
+release_guides={'guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
 translations=(
     {'en':'','fr':'fr/'},
     {'en':'guides/installer-and-sdk/','fr':'fr/installeur-et-sdk/'},
@@ -155,6 +158,7 @@ translations=(
     {'en':'guides/windows-input-release-compare/','fr':'fr/pilotes-entree-windows/'},
     {'en':'guides/vdevice-virtual-usb-mouse/','fr':'fr/souris-usb-virtuelle-vdevice/'},
     {'en':'guides/autohotkey-remap-second-keyboard/','fr':'fr/remapper-deuxieme-clavier-autohotkey/'},
+    {'en':'guides/titan-audio-link-first-run/','fr':'fr/micro-virtuel-titan-audio-link/'},
 )
 reviewed={
     **dict.fromkeys(updated,featured_date),
@@ -162,6 +166,7 @@ reviewed={
     **dict.fromkeys(release_guides | {'','guides/choose-input/','about/evidence/',*(f'projects/{slug}/' for slug in editions)},release_date),
     **dict.fromkeys({'guides/first-run/','fr/essayer-sans-pilote/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/release-activation-help/','fr/activation-release/','fr/installer-sdk-windows/'},'2026-11-25'),
     **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},max(commercial_checked,release_date)),
+    'fr/micro-virtuel-titan-audio-link/':'2026-11-26',
     'guides/release-activation-help/':'2026-11-26',
     'about/evidence/':'2026-11-26',
     'fr/activation-release/':'2026-11-26',
@@ -201,9 +206,9 @@ def render(title,description,path,body,article=False):
         name='Catalogue public TitanCSA' if language=='fr' else 'TitanCSA public project catalogue'
         schemas.append({'@context':'https://schema.org','@type':'ItemList','name':name,'numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
     structured=''.join('<script type="application/ld+json">'+json.dumps(s,ensure_ascii=True).replace('<','\\u003c')+'</script>' for s in schemas)
-    for variants in translations:
-        if path in variants.values():
-            structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in variants.items())
+    localized=next((variants for variants in translations if path in variants.values()),None)
+    if localized:
+        structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in localized.items())
     if path in ('','fr/','guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/first-run/','fr/essayer-sans-pilote/') or path.startswith('projects/'):
         structured+=f'<link rel="alternate" type="application/json" href="{BASE}integration.json" title="SDK integration manifest">'
     if path in ('','fr/'):
@@ -217,8 +222,12 @@ def render(title,description,path,body,article=False):
     nav_links=(
         '<a href="/fr/#projects">Projets</a><a href="/fr/essayer-sans-pilote/">Premiers pas</a><a class="optional" href="/fr/pilotes-entree-windows/">Pilotes</a>'
         if language=='fr' else
-        '<a href="/#projects">Projects</a><a href="/guides/first-run/">Get started</a><a class="optional" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Benchmarks</a><a class="optional" href="/about/evidence/">Evidence &amp; support</a><a href="/fr/" lang="fr">Français</a>'
+        '<a href="/#projects">Projects</a><a href="/guides/first-run/">Get started</a><a class="optional" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Benchmarks</a><a class="optional" href="/about/evidence/">Evidence &amp; support</a>'
     )
+    alternate_language='en' if language=='fr' else 'fr'
+    alternate_path=(localized or {'en':'','fr':'fr/'})[alternate_language]
+    alternate_label='English' if language=='fr' else 'Français'
+    nav_links+=f'<a href="/{alternate_path}" lang="{alternate_language}">{alternate_label}</a>'
     footer_lang=' lang="en"' if language=='fr' else ''
     home_path='/fr/' if language=='fr' else '/'
     main=f'<main id="main" tabindex="-1" class="wrap article">{body}</main>' if article else f'<main id="main" tabindex="-1">{body}</main>'
@@ -313,6 +322,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
     f'- [Physical gamepad quickstart]({BASE}guides/gamepad-controller-first-run/)',
     f'- [Titan Audio Link virtual microphone]({BASE}guides/titan-audio-link-first-run/)',
+    f'- [Micro virtuel Windows avec Titan Audio Link]({BASE}fr/micro-virtuel-titan-audio-link/)',
     f'- [Virtual USB mouse tutorial]({BASE}guides/vdevice-virtual-usb-mouse/)',
     f'- [Souris USB virtuelle avec Vdevice]({BASE}fr/souris-usb-virtuelle-vdevice/)',
     f'- [Reproduce the Vdevice custom HID test]({BASE}guides/vdevice-custom-hid-test/)',

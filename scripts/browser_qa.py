@@ -18,13 +18,16 @@ assert project_count
 network_count=sum(row['category']=='networking' for row in projects)
 network_no_driver_count=sum(row['category']=='networking' and row['start_without_adding_driver'] for row in projects)
 no_driver_count=sum(row['start_without_adding_driver'] for row in projects)
+audio_en='guides/titan-audio-link-first-run/'
+audio_fr='fr/micro-virtuel-titan-audio-link/'
+audio_download=edition_routes[audio_en]['demo_download_url']
 errors=[];checks=[]
 routes=['','fr/','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
         'guides/windows-input-release-compare/','guides/release-activation-help/',
         'guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/','fr/sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','guides/vdevice-custom-hid-test/',
         'fr/activation-release/','fr/pilotes-entree-windows/',
-        'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/',*edition_routes]
+        'fr/souris-usb-virtuelle-vdevice/','fr/remapper-deuxieme-clavier-autohotkey/',audio_fr,*edition_routes]
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='C:/Program Files/Google/Chrome/Application/chrome.exe',headless=True)
     for width in [1440,390]:
@@ -81,6 +84,16 @@ with sync_playwright() as p:
         page.locator('#no-driver-filter').check();assert visible()==no_driver_count
         page.locator('[data-reset]').click()
         page.screenshot(path=str(out/f'home-fr-{width}.png'),full_page=False)
+        audio_card=page.locator('#project-titan-audio-link')
+        audio_card.get_by_text('Premier essai',exact=True).click()
+        audio_card.get_by_role('link',name='Voir la fiche').click()
+        assert page.url.endswith('/'+audio_fr)
+        assert page.locator('.actions a.primary').get_attribute('href')==audio_download
+        page.locator('header').get_by_role('link',name='English',exact=True).click()
+        assert page.url.endswith('/'+audio_en)
+        assert page.locator('.actions a.primary').get_attribute('href')==audio_download
+        page.locator('header a[lang="fr"]').click()
+        assert page.url.endswith('/'+audio_fr) and page.locator('html').get_attribute('lang')=='fr'
         page.close()
     page=browser.new_page(java_script_enabled=False,viewport={'width':390,'height':844})
     page.goto(base,wait_until='networkidle');assert page.locator('[data-project]:visible').count()==project_count
