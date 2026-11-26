@@ -28,7 +28,7 @@ pad=edition_routes['projects/interceptor-gamepad-controller/']
 pad_en='guides/gamepad-controller-first-run/'
 pad_fr='fr/remapper-manette-windows/'
 errors=[];checks=[]
-routes=['','fr/','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-input/','guides/read-benchmarks/','about/evidence/',
+routes=['','fr/','guides/first-run/','fr/essayer-sans-pilote/','guides/choose-input/','guides/read-benchmarks/','about/evidence/','fr/aide-et-verifications/',
         'guides/windows-input-release-compare/','guides/release-activation-help/',
         'guides/interception-v2-migration/','fr/migrer-interception-v2/','guides/windows-input-sdk-packages/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/installer-sdk-windows/','guides/windows-input-sdk-java-php-ruby/','fr/sdk-java-php-ruby/',
         'guides/verify-windows-driver-package/','fr/verifier-pilote-windows/','guides/vdevice-custom-hid-test/',

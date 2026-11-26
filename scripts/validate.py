@@ -96,6 +96,15 @@ audio_routes=('guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio
 audio_catalogue=json.loads((OUT/'releases.json').read_text(encoding='utf8'))
 audio=next(edition for edition in audio_catalogue['editions'] if edition['slug']=='titan-audio-link')
 contact_routes={'en':'/about/evidence/#release-contact','fr':'/fr/pilotes-entree-windows/#contact-release'}
+help_routes={'en':'about/evidence/','fr':'fr/aide-et-verifications/'}
+issue_forms={edition['repository']+'/issues/new?template=installation-activation.yml'
+             for edition in audio_catalogue['editions']}
+for language, route in help_routes.items():
+    support=by_canonical[BASE+route]
+    assert support.language==language and issue_forms <= set(support.links)
+    assert 'public-directories' in support.ids
+for page in by_canonical.values():
+    assert '/'+help_routes[page.language] in page.links
 for path, language, alternate in zip(audio_routes, ('en','fr'), reversed(audio_routes)):
     page=by_canonical[BASE+path]
     assert page.language==language and audio['demo_download_url'] in page.links
@@ -547,11 +556,11 @@ for app in apps:
     assert set(app['purpose']) == set(app['steps']) == set(app['expected']) == {'en','fr'}
     assert app['needs_input_driver_for_first_run'] is False and app['test']['exit_code'] == 0
     if listings := app.get('directory_listings'):
-        evidence = by_canonical[BASE+'about/evidence/']
-        assert 'public-directories' in evidence.ids
-        assert manifest['first_run_guides']['en']+'#'+app['id'] in evidence.links
         assert len({entry['url'] for entry in listings}) == len(listings)
-        assert {entry['url'] for entry in listings} <= set(evidence.links)
+        for language, route in help_routes.items():
+            evidence = by_canonical[BASE+route]
+            assert manifest['first_run_guides'][language]+'#'+app['id'] in evidence.links
+            assert {entry['url'] for entry in listings} <= set(evidence.links)
     for guide in manifest['first_run_guides'].values():
         page = by_canonical[guide]
         assert app['download_url'] in page.links

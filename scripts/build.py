@@ -100,18 +100,18 @@ replacements['INTERCEPTOR_MANAGED_INSTALL']=escape(managed_package['install_comm
 for lang in ('en', 'fr'):
     replacements[f'APP_CARDS_{lang.upper()}']=app_cards(integration, lang)
     replacements[f'APP_MORE_{lang.upper()}']=app_cards(integration, lang, more=True)
-directory_entries=[]
-for app in integration['applications']:
-    if listings:=app.get('directory_listings'):
-        links=' · '.join(f'<a href="{escape(entry["url"],quote=True)}">{escape(entry["name"])}</a>'
-                         for entry in listings)
-        app_url=f'{integration["first_run_guides"]["en"]}#{app["id"]}'
-        directory_entries.append(f'<li><a href="{app_url}">{escape(app["name"])}</a> · {links}</li>')
-replacements['APPLICATION_DIRECTORY_LISTINGS']='\n'.join(directory_entries)
+    directory_entries=[]
+    for app in integration['applications']:
+        if listings:=app.get('directory_listings'):
+            links=' · '.join(f'<a href="{escape(entry["url"],quote=True)}">{escape(entry["name"])}</a>'
+                             for entry in listings)
+            app_url=f'{integration["first_run_guides"][lang]}#{app["id"]}'
+            directory_entries.append(f'<li><a href="{app_url}">{escape(app["name"])}</a> · {links}</li>')
+    replacements[f'APPLICATION_DIRECTORY_LISTINGS_{lang.upper()}']='\n'.join(directory_entries)
 replacements['COMMERCIAL_CHECK_DATE']=commercial_checked
 replacements['SUPPORT_ISSUE_FORMS']=''.join(
     f'<li><a href="{e["repository"]}/issues/new?template=installation-activation.yml">{escape(e["name"])}</a></li>'
-    for e in input_editions.values()
+    for e in editions.values()
 )
 replacements['OTHER_SDK_REGISTRY_ROWS']=secondary_registry_rows(integration['sdk_registry'],input_editions)
 replacements['OTHER_SDK_REGISTRY_ROWS_FR']=secondary_registry_rows(integration['sdk_registry'],input_editions,french=True)
@@ -174,6 +174,7 @@ pages={
  'fr/souris-usb-virtuelle-vdevice/':('Créer une souris USB virtuelle sous Windows avec Vdevice','Installez la démo Vdevice signée, créez la souris USB virtuelle et testez le déplacement relatif avec le panneau et l’exemple C++.','guides/vdevice-virtual-usb-mouse-fr.html'),
  'fr/remapper-deuxieme-clavier-autohotkey/':('Remapper un deuxième clavier avec AutoHotkey v2 sous Windows','Téléchargez AutoHotInterceptor et un script AutoHotkey v2 pour remapper A vers B sur un seul des deux claviers.','guides/autohotkey-remap-second-keyboard-fr.html'),
  'about/evidence/':('About TitanCSA projects, evidence and support','Understand TitanCSA project evidence, separate SDK and driver licences, engineering previews, known issues, support and private vulnerability reporting.','about/evidence.html'),
+ 'fr/aide-et-verifications/':('Aide, tests et vérifications des pilotes Windows — TitanCSA','Retrouve les rapports d’installation, vérifie ton téléchargement et signale un problème d’installation ou d’activation du bon projet TitanCSA.','about/evidence-fr.html'),
  'fr/pilotes-entree-windows/':('Pilotes d’entrée Windows · Choisir une édition et l’essayer | TitanCSA','Comparez Interceptor, Interceptor Keyboard & Mouse, Interceptor Gamepad & Controller, Vdevice et Interception V2. Démonstrations, compatibilité et licences.','guides/windows-input-fr.html')}
 for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
@@ -182,6 +183,7 @@ demo_guides={'guides/vdevice-virtual-usb-mouse/','guides/autohotkey-remap-second
 release_guides={'guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/windows-input-release-compare/','guides/release-activation-help/','guides/interception-v2-migration/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','fr/remapper-manette-windows/','guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/','guides/verify-windows-driver-package/','fr/activation-release/','fr/installer-sdk-windows/'}
 translations=(
     {'en':'','fr':'fr/'},
+    {'en':'about/evidence/','fr':'fr/aide-et-verifications/'},
     {'en':'guides/installer-and-sdk/','fr':'fr/installeur-et-sdk/'},
     {'en':'guides/first-run/','fr':'fr/essayer-sans-pilote/'},
     {'en':'guides/release-activation-help/','fr':'fr/activation-release/'},
@@ -216,6 +218,7 @@ published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','g
 published_dates['fr/remapper-manette-windows/']='2026-11-26'
 published_dates['fr/verifier-pilote-windows/']='2026-11-26'
 published_dates['fr/migrer-interception-v2/']='2026-11-26'
+published_dates['fr/aide-et-verifications/']='2026-11-26'
 reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
@@ -265,7 +268,7 @@ def render(title,description,path,body,article=False):
         if language=='fr' else ('Skip to content','Main navigation','Dark mode')
     )
     nav_links=(
-        '<a href="/fr/#projects">Projets</a><a href="/fr/essayer-sans-pilote/">Premiers pas</a><a class="optional" href="/fr/pilotes-entree-windows/">Pilotes</a>'
+        '<a href="/fr/#projects">Projets</a><a href="/fr/essayer-sans-pilote/">Premiers pas</a><a class="optional" href="/fr/pilotes-entree-windows/">Pilotes</a><a class="optional" href="/fr/aide-et-verifications/">Assistance</a>'
         if language=='fr' else
         '<a href="/#projects">Projects</a><a href="/guides/first-run/">Get started</a><a class="optional" href="https://titancsa.github.io/TitanCSA-Benchmarks/">Benchmarks</a><a class="optional" href="/about/evidence/">Evidence &amp; support</a>'
     )
@@ -278,10 +281,19 @@ def render(title,description,path,body,article=False):
     if preview:=PREVIEWS.get(path):
         image_path=f'assets/social-{preview[0]}.png'
         image_alt=f'{preview[1]}. {preview[2]}'
-    footer_lang=' lang="en"' if language=='fr' else ''
+    if language=='fr':
+        footer_text='Documentation maintenue avec l’aide de l’IA. Consulte les licences et les conditions d’essai de chaque projet. TitanCSA publie ce catalogue.'
+        footer_label='Pied de page'
+        support_link='/fr/aide-et-verifications/'
+        support_label,sdk_label,source_label='Aide et vérifications','Paquets SDK','Code du site'
+    else:
+        footer_text='Documentation maintained with AI assistance. Individual project licences and tested limits apply. This is a publisher-operated catalogue.'
+        footer_label='Footer'
+        support_link='/about/evidence/'
+        support_label,sdk_label,source_label='About &amp; support','SDK packages','Website source'
     home_path='/fr/' if language=='fr' else '/'
     main=f'<main id="main" tabindex="-1" class="wrap article">{body}</main>' if article else f'<main id="main" tabindex="-1">{body}</main>'
-    return f'''<!doctype html><html lang="{language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title><meta name="description" content="{escape(description,quote=True)}"><link rel="canonical" href="{canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#194fd1"><link rel="icon" type="image/svg+xml" href="/assets/icon.svg"><link rel="stylesheet" href="/assets/site.css"><meta property="og:type" content="{'article' if article else 'website'}"><meta property="og:site_name" content="TitanCSA"><meta property="og:title" content="{escape(title,quote=True)}"><meta property="og:description" content="{escape(description,quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}{image_path}"><meta property="og:image:alt" content="{escape(image_alt,quote=True)}"><meta property="og:image:width" content="{PREVIEW_WIDTH}"><meta property="og:image:height" content="{PREVIEW_HEIGHT}"><meta name="twitter:card" content="summary_large_image">{structured}<script src="/assets/catalogue.js" defer></script></head><body><a class="skip" href="#main">{skip_label}</a><header class="header"><div class="wrap"><a class="brand" href="{home_path}"><span class="brand-mark" aria-hidden="true">T</span>TitanCSA</a><nav class="nav" aria-label="{nav_label}">{nav_links}<button type="button" class="theme-toggle" data-theme-toggle hidden aria-pressed="false">{theme_text}</button></nav></div></header>{main}<footer class="footer"{footer_lang}><div class="wrap"><p>© 2026 TitanCSA. Documentation maintained with AI assistance. Individual project licences and tested limits apply. This is a publisher-operated catalogue.</p><nav aria-label="Footer"><a href="/about/evidence/">About &amp; support</a><a href="https://github.com/TitanCSA/TitanCSA">GitHub</a><a href="https://github.com/TitanCSA/sdk-packages">SDK packages</a><a href="https://github.com/TitanCSA/TitanCSA.github.io">Website source</a></nav></div></footer></body></html>'''
+    return f'''<!doctype html><html lang="{language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(title)}</title><meta name="description" content="{escape(description,quote=True)}"><link rel="canonical" href="{canonical}"><meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#194fd1"><link rel="icon" type="image/svg+xml" href="/assets/icon.svg"><link rel="stylesheet" href="/assets/site.css"><meta property="og:type" content="{'article' if article else 'website'}"><meta property="og:site_name" content="TitanCSA"><meta property="og:title" content="{escape(title,quote=True)}"><meta property="og:description" content="{escape(description,quote=True)}"><meta property="og:url" content="{canonical}"><meta property="og:image" content="{BASE}{image_path}"><meta property="og:image:alt" content="{escape(image_alt,quote=True)}"><meta property="og:image:width" content="{PREVIEW_WIDTH}"><meta property="og:image:height" content="{PREVIEW_HEIGHT}"><meta name="twitter:card" content="summary_large_image">{structured}<script src="/assets/catalogue.js" defer></script></head><body><a class="skip" href="#main">{skip_label}</a><header class="header"><div class="wrap"><a class="brand" href="{home_path}"><span class="brand-mark" aria-hidden="true">T</span>TitanCSA</a><nav class="nav" aria-label="{nav_label}">{nav_links}<button type="button" class="theme-toggle" data-theme-toggle hidden aria-pressed="false">{theme_text}</button></nav></div></header>{main}<footer class="footer"><div class="wrap"><p>© 2026 TitanCSA. {footer_text}</p><nav aria-label="{footer_label}"><a href="{support_link}">{support_label}</a><a href="https://github.com/TitanCSA/TitanCSA">GitHub</a><a href="https://github.com/TitanCSA/sdk-packages">{sdk_label}</a><a href="https://github.com/TitanCSA/TitanCSA.github.io">{source_label}</a></nav></div></footer></body></html>'''
 for path,(title,description,source) in pages.items():
     body=(ROOT/'content'/source).read_text(encoding='utf8')
     for key,value in replacements.items():body=body.replace('{{'+key+'}}',value)
@@ -362,6 +374,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Paquets Java, PHP et Ruby]({BASE}fr/sdk-java-php-ruby/)',
     f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
     f'- [Vérifier un pilote Windows signé avant installation]({BASE}fr/verifier-pilote-windows/)',
+    f'- [Vérifications et assistance TitanCSA]({BASE}fr/aide-et-verifications/)',
     f'- [Physical gamepad quickstart]({BASE}guides/gamepad-controller-first-run/)',
     f'- [Tester une manette sous Windows]({BASE}fr/remapper-manette-windows/)',
     f'- [Titan Audio Link virtual microphone]({BASE}guides/titan-audio-link-first-run/)',
