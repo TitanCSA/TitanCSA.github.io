@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "checked": "2026-11-26",
-  "scope": "Catalogs, INF and kernel image membership were verified from exact Company setup resources using Windows SDK SignTool verify /kp. Each matching SDK was built with its included CMake settings on Windows x64. This record covers package signatures and compilation.",
+  "scope": "Catalogs, INF and kernel image membership were verified from exact Company setup resources using Windows SDK SignTool verify /kp. Each matching SDK was built with its included CMake settings on Windows x64. This record covers package signatures and compilation. An unelevated SDK probe also verified local format rejection without a key request. The check ran without these Release drivers installed.",
   "edition_control": "A null store-manifest field means current delivery metadata for that edition was not accessible to the checking account.",
   "editions": [
     {
@@ -44,7 +44,17 @@
           "inf_catalog_membership": true,
           "kernel_catalog_membership": true
         }
-      ]
+      ],
+      "offline_sdk_diagnostic": {
+        "stage": "key_format",
+        "reason": "invalid_key_format",
+        "windows_error": 87,
+        "version_lines": [
+          "Interceptor Release SDK: 1.6.1.1",
+          "Interceptor driver (installed): not detected"
+        ],
+        "license_service_called": false
+      }
     },
     {
       "project": "interceptor-keyboard-mouse",
@@ -86,7 +96,18 @@
           "inf_catalog_membership": true,
           "kernel_catalog_membership": true
         }
-      ]
+      ],
+      "offline_sdk_diagnostic": {
+        "stage": "key_format",
+        "reason": "invalid_key_format",
+        "windows_error": 87,
+        "version_lines": [
+          "Interceptor Keyboard & Mouse Release SDK: 1.0.2.6",
+          "Interceptor Keyboard & Mouse Release driver (installed): not detected",
+          "Interceptor Keyboard & Mouse Demo driver (installed): not detected"
+        ],
+        "license_service_called": false
+      }
     },
     {
       "project": "interceptor-gamepad-controller",
@@ -108,7 +129,18 @@
           "inf_catalog_membership": true,
           "kernel_catalog_membership": true
         }
-      ]
+      ],
+      "offline_sdk_diagnostic": {
+        "stage": "key_format",
+        "reason": "invalid_key_format",
+        "windows_error": 87,
+        "version_lines": [
+          "Interceptor Gamepad & Controller Release SDK: 1.0.1.1",
+          "Interceptor Gamepad & Controller Release driver (installed): not detected",
+          "Interceptor Gamepad & Controller Demo driver (installed): not detected"
+        ],
+        "license_service_called": false
+      }
     },
     {
       "project": "interception-v2",
@@ -150,7 +182,18 @@
           "inf_catalog_membership": true,
           "kernel_catalog_membership": true
         }
-      ]
+      ],
+      "offline_sdk_diagnostic": {
+        "stage": "key_format",
+        "reason": "invalid_key_format",
+        "windows_error": 87,
+        "version_lines": [
+          "Interception V2 Release SDK: 2.0.0.1",
+          "Interception V2 Release driver (installed): not detected",
+          "Interception V2 Demo driver (installed): not detected"
+        ],
+        "license_service_called": false
+      }
     }
   ]
 }
