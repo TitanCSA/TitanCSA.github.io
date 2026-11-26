@@ -1,10 +1,10 @@
 <h1>Verify a signed Windows driver package before installation</h1>
-<p class="article-lead">Use PowerShell to compare the ZIP against the release checksum, inspect the signed catalog and read the package version. This example uses the public Vdevice 1.0.6.0 demo.</p>
-<p class="byline">Verified with Windows PowerShell 5.1 and Windows SDK SignTool 10.0.26100.0 · 24 November 2026</p>
-<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Open the Vdevice 1.0.6.0 release</a><a class="button" href="/projects/vdevice/">Vdevice overview</a></div>
+<p class="article-lead">Use PowerShell to compare the ZIP against the release checksum, inspect the signed catalog and read the package version. This example uses the public Vdevice 1.0.6.1 demo.</p>
+<p class="byline">Verified with Windows PowerShell 5.1 and Windows SDK SignTool 10.0.26100.0 · 26 November 2026</p>
+<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo">Open the Vdevice 1.0.6.1 release</a><a class="button" href="/projects/vdevice/">Vdevice overview</a></div>
 <h2>Compare the ZIP to the publisher's SHA-256</h2>
-<p>Download <code>Vdevice-Driver-1.0.6.0.zip</code> and <code>SHA256SUMS.txt</code> from the release above. Save them in the same folder and open PowerShell in that folder.</p>
-<pre><code>$zip = 'Vdevice-Driver-1.0.6.0.zip'
+<p>Download <code>Vdevice-Driver-1.0.6.1.zip</code> and <code>SHA256SUMS.txt</code> from the release above. Save them in the same folder and open PowerShell in that folder.</p>
+<pre><code>$zip = 'Vdevice-Driver-1.0.6.1.zip'
 $namePattern = [regex]::Escape($zip)
 $line = Select-String -LiteralPath .\SHA256SUMS.txt `
     -Pattern "^([a-fA-F0-9]{64})\s+\*?$namePattern\s*$"
@@ -15,13 +15,13 @@ if ($actual -ne $expected) { throw 'The ZIP checksum differs from the release.' 
 &quot;SHA-256 matches: $actual&quot;</code></pre>
 <p>The match identifies the exact downloaded archive. The release page also supplies a separate SDK ZIP, examples and installers, each with its own filename and checksum.</p>
 <h2>Inspect the catalog and package version</h2>
-<pre><code>Expand-Archive -LiteralPath $zip -DestinationPath .\Vdevice-Driver-1.0.6.0
-Set-Location -LiteralPath .\Vdevice-Driver-1.0.6.0
+<pre><code>Expand-Archive -LiteralPath $zip -DestinationPath .\Vdevice-Driver-1.0.6.1
+Set-Location -LiteralPath .\Vdevice-Driver-1.0.6.1
 $signature = Get-AuthenticodeSignature -LiteralPath .\Vdevice.cat
 $signature.Status
 $signature.SignerCertificate.Subject
 Select-String -LiteralPath .\Vdevice.inf -Pattern '^DriverVer\s*=', '^CatalogFile\s*='</code></pre>
-<p>The checked archive returned <code>Valid</code> and identified Microsoft Windows Hardware Compatibility Publisher. The INF lists version <code>1.0.6.0</code> and catalog <code>Vdevice.cat</code>. Windows uses the catalog named by the INF to verify the package files when staging a Plug and Play package. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/install/catalog-files">Microsoft driver catalog documentation</a>.</p>
+<p>The checked archive returned <code>Valid</code> and identified Microsoft Windows Hardware Compatibility Publisher. The INF lists version <code>1.0.6.1</code> and catalog <code>Vdevice.cat</code>. Windows uses the catalog named by the INF to verify the package files when staging a Plug and Play package. <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/install/catalog-files">Microsoft driver catalog documentation</a>.</p>
 <h2>Check the driver files against the catalog</h2>
 <p>With the Windows SDK signing tools installed, run these commands in the extracted folder from a Developer PowerShell where <code>signtool.exe</code> is available.</p>
 <pre><code>signtool verify /kp /c Vdevice.cat Vdevice.sys

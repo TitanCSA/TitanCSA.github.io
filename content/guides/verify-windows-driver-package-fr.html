@@ -1,9 +1,9 @@
 <h1>Vérifier un pilote Windows avant de l’installer</h1>
-<p class="article-lead">Compare l’empreinte SHA-256 du fichier téléchargé, puis vérifie la signature du catalogue et la version du pilote. Voici un exemple avec la démo Vdevice 1.0.6.0.</p>
-<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/Vdevice-Driver-1.0.6.0.zip">Télécharger le ZIP du pilote</a><a class="button" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.0-demo/SHA256SUMS.txt">Télécharger SHA256SUMS.txt</a></div>
+<p class="article-lead">Compare l’empreinte SHA-256 du fichier téléchargé, puis vérifie la signature du catalogue et la version du pilote. Voici un exemple avec la démo Vdevice 1.0.6.1.</p>
+<div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/Vdevice-Driver-1.0.6.1.zip">Télécharger le ZIP du pilote</a><a class="button" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/SHA256SUMS.txt">Télécharger SHA256SUMS.txt</a></div>
 <h2>1. Vérifier le fichier téléchargé</h2>
 <p>Place les deux fichiers dans le même dossier. Ouvre ce dossier dans l’Explorateur, tape <code>powershell</code> dans la barre d’adresse et appuie sur Entrée. Colle ces commandes dans la fenêtre qui s’ouvre.</p>
-<pre><code>$zip = 'Vdevice-Driver-1.0.6.0.zip'
+<pre><code>$zip = 'Vdevice-Driver-1.0.6.1.zip'
 $nom = [regex]::Escape($zip)
 $ligne = Select-String -LiteralPath .\SHA256SUMS.txt -Pattern "^([a-fA-F0-9]{64})\s+\*?$nom\s*$"
 if (@($ligne).Count -ne 1) { throw 'Empreinte introuvable ou ambiguë.' }
@@ -13,17 +13,17 @@ if ($calculee -ne $attendue) { throw 'Empreinte différente. Télécharge de nou
 "SHA-256 OK : $calculee"</code></pre>
 <h2>2. Lire la signature et la version</h2>
 <p>Si PowerShell affiche <code>SHA-256 OK</code>, décompresse le ZIP dans un nouveau dossier. Le fichier <code>.cat</code> contient le catalogue signé du pilote. Le fichier <code>.inf</code> indique sa version.</p>
-<pre><code>Expand-Archive -LiteralPath $zip -DestinationPath .\Vdevice-Driver-1.0.6.0
-Set-Location -LiteralPath .\Vdevice-Driver-1.0.6.0
+<pre><code>Expand-Archive -LiteralPath $zip -DestinationPath .\Vdevice-Driver-1.0.6.1
+Set-Location -LiteralPath .\Vdevice-Driver-1.0.6.1
 $signature = Get-AuthenticodeSignature -LiteralPath .\Vdevice.cat
 $signature.Status
 $signature.SignerCertificate.Subject
 Select-String -LiteralPath .\Vdevice.inf -Pattern '^DriverVer\s*=', '^CatalogFile\s*='</code></pre>
-<p>Pour cette démo, tu dois voir <code>Valid</code>, <code>Microsoft Windows Hardware Compatibility Publisher</code> et la version <code>1.0.6.0</code>. Vérifie que le fichier INF nomme <code>Vdevice.cat</code>. <a href="https://learn.microsoft.com/fr-fr/windows-hardware/drivers/install/catalog-files">Documentation Microsoft sur les catalogues de pilotes</a>.</p>
+<p>Pour cette démo, tu dois voir <code>Valid</code>, <code>Microsoft Windows Hardware Compatibility Publisher</code> et la version <code>1.0.6.1</code>. Vérifie que le fichier INF nomme <code>Vdevice.cat</code>. <a href="https://learn.microsoft.com/fr-fr/windows-hardware/drivers/install/catalog-files">Documentation Microsoft sur les catalogues de pilotes</a>.</p>
 <details><summary>Vérifier aussi les deux fichiers du pilote avec SignTool</summary>
 <p>Si les outils de signature du SDK Windows sont installés, ouvre un PowerShell développeur dans le dossier décompressé. Attends un résultat de réussite pour chaque commande.</p>
 <pre><code>signtool verify /kp /c Vdevice.cat Vdevice.sys
 signtool verify /kp /c Vdevice.cat TitanDemoClock.sys</code></pre>
 </details>
 <p>Pour tester le pilote après la vérification, <a href="/fr/souris-usb-virtuelle-vdevice/">installe la démo et crée une souris virtuelle</a>.</p>
-<div class="related"><a href="/guides/verify-windows-driver-package/" lang="en">Read in English</a><a href="/fr/pilotes-entree-windows/">Comparer les démos Windows</a><a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Notes de version Vdevice 1.0.6.0</a></div>
+<div class="related"><a href="/guides/verify-windows-driver-package/" lang="en">Read in English</a><a href="/fr/pilotes-entree-windows/">Comparer les démos Windows</a><a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo">Notes de version Vdevice 1.0.6.1</a></div>
