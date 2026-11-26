@@ -140,10 +140,18 @@ def make_manifest(base, editions):
                 "archive", audio_archive["bundled_installer_member"], audio_archive["bundled_installer_sha256"],
                 base + audio_file)
         if slug == vdevice_proof["project"]:
-            demo_version = vdevice_proof["versions"]["demo"]["driver_version"]
-            if demo_version == edition["demo"]:
+            verified_demo = vdevice_proof["versions"]["demo"]
+            qualified_installers = {record["installer"]: record["installer_sha256"]
+                                    for record in verified_demo["installer_qualification"]}
+            if (verified_demo["package_version"] == edition["demo"]
+                    and verified_demo["public_notes_url"] == edition["demo_url"]
+                    and verified_demo["signed_driver_archive_sha256"] == digests.get("driver")
+                    and qualified_installers.get("graphical") == digests[setup_role]
+                    and qualified_installers.get("console") == digests.get("console_installer")):
                 row["demo"]["installer_verification_url"] = base + vdevice_proof_file
-                if "secure_boot_read_only_lab" in vdevice_proof["versions"]["demo"]:
+                lab = verified_demo.get("secure_boot_read_only_lab", {})
+                if (lab.get("sdk_archive_sha256") == edition["sdk_sha256"]
+                        and lab.get("installer_sha256") == digests.get("console_installer")):
                     row["sdk_check"]["tested_account"] = "Administrator on Windows 11 x64"
             commercial = edition["commercial"]
             verified_release = vdevice_proof["versions"]["release"]

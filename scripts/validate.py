@@ -338,6 +338,10 @@ for row in manifest['products']:
         assert verified['signed_driver_archive_sha256']==demo['assets']['driver']['sha256']
         assert verified['public_notes_url']==demo['notes_url']
         assert {record['windows_build'] for record in verified['installer_qualification']}=={19045,26100}
+        installers = {record['installer']: record['installer_sha256']
+                      for record in verified['installer_qualification']}
+        assert installers == {'graphical': demo['setup_download_sha256'],
+                              'console': demo['assets']['console_installer']['sha256']}
     if release_evidence := row.get('commercial_install_verification'):
         proof=json.loads((OUT/release_evidence['url'].removeprefix(BASE)).read_text(encoding='utf8'))
         assert proof['project']==row['id']

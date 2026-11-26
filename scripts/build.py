@@ -160,8 +160,7 @@ reviewed={
     **dict.fromkeys(demo_guides | {'','fr/pilotes-entree-windows/','projects/vdevice/','projects/interceptor-keyboard-mouse/','projects/interceptor-gamepad-controller/','about/evidence/','guides/read-benchmarks/'},'2026-11-24'),
     **dict.fromkeys(release_guides | {'','guides/choose-input/','about/evidence/',*(f'projects/{slug}/' for slug in editions)},release_date),
     **dict.fromkeys({'guides/first-run/','fr/essayer-sans-pilote/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/release-activation-help/','fr/activation-release/','fr/installer-sdk-windows/'},'2026-11-25'),
-    **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},commercial_checked),
-    'about/evidence/':'2026-11-26',
+    **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},max(commercial_checked,release_date)),
     'guides/release-activation-help/':'2026-11-26',
     'about/evidence/':'2026-11-26',
     'fr/activation-release/':'2026-11-26',
@@ -246,7 +245,7 @@ for path,(title,description,source) in pages.items():
         links=(
             f'<p>Commercial package <strong>{escape(edition["commercial"]["package_version"])}</strong> contains signed driver '
             f'<strong>{escape(edition["commercial"]["driver_version"])}</strong>. Package record checked {package_check}.</p>'
-            f'<p>Signed demo <a href="{edition["demo_url"]}">{edition["demo"]} release notes</a> · {downloads}.</p><p>'
+            f'<p>Signed demo <a href="{edition["demo_url"]}">{escape(edition["tag"])} release notes</a> · {downloads}.</p><p>'
             '<a href="/guides/windows-input-release-compare/">Compare editions</a> · '
             '<a href="/guides/release-activation-help/">Installation and activation help</a>.</p>'
         )
