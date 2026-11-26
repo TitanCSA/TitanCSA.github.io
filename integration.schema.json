@@ -203,7 +203,7 @@
       "required": ["edition", "ecosystem", "name", "version", "package_url", "metadata_url", "install_command", "install_context", "runtime", "architectures", "install_includes_driver_or_application", "first_check"],
       "properties": {
         "edition": { "$ref": "#/$defs/id" },
-        "ecosystem": { "enum": ["npm", "pypi", "nuget-managed", "nuget-native", "powershell", "maven", "packagist", "rubygems"] },
+        "ecosystem": { "enum": ["npm", "pypi", "nuget-managed", "nuget-native", "powershell", "maven", "packagist", "rubygems", "go"] },
         "name": { "type": "string", "minLength": 1 },
         "version": { "type": "string", "minLength": 1 },
         "package_url": { "$ref": "#/$defs/url" },
@@ -230,6 +230,7 @@
             "source_url": { "$ref": "#/$defs/url" },
             "source_sha256": { "$ref": "#/$defs/sha256" },
             "command_from_app_folder": { "type": "string", "minLength": 1 },
+            "without_driver_evidence_url": { "$ref": "#/$defs/url" },
             "after_setup_command_from_app_folder": { "type": "string", "minLength": 1 },
             "create_example_project_command": { "type": "string", "minLength": 1 },
             "save_as": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" }

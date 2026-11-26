@@ -133,6 +133,12 @@ with sync_playwright() as p:
     native_packages.locator('summary').click()
     assert native_packages.get_by_text(registry['nuget-native','Vdevice.Native'],exact=True).is_visible()
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Registry table causes horizontal page scrolling'
+    go_packages=page.locator('main details').filter(has=page.locator('summary').get_by_text('Go',exact=True))
+    assert not go_packages.locator('table').is_visible()
+    go_packages.locator('summary').click()
+    go_audio=registry['go','github.com/titanfyre/Titan-Audio-Link/Titan-Audio-Link-Go-modules']
+    assert go_packages.get_by_text(go_audio,exact=True).is_visible()
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Go table causes horizontal page scrolling'
     checks_help=page.locator('main details.first-run-more').filter(
         has=page.locator('a[href="/assets/python-interceptor-status.py"]'))
     assert not checks_help.locator('a[href="/assets/python-interceptor-status.py"]').is_visible()

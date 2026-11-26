@@ -1,7 +1,7 @@
 <h1>Installer les SDK d’entrée Windows de TitanCSA</h1>
 <p class="article-lead">Choisis un paquet pour ton langage. Installe le pilote de la même édition quand tu veux essayer ton code sur un périphérique.</p>
 <p><a href="/fr/installeur-et-sdk/">Quel fichier installer en premier ?</a></p>
-<p class="byline">Documentation de l’éditeur · Paquets et commandes vérifiés le 25 novembre 2026</p>
+<p class="byline">Documentation de l’éditeur · Paquets et commandes vérifiés les 24–26 novembre 2026</p>
 <p><a href="/guides/windows-input-sdk-packages/" hreflang="en" lang="en">English guide</a></p>
 <h2>Choisis ton langage</h2>
 <p>Ouvre un langage, choisis ton projet puis copie sa commande. Pour C/C++, lance-la dans la console du Gestionnaire de packages de Visual Studio.</p>
@@ -9,7 +9,7 @@
 <p>Le paquet donne à ton programme le code du SDK. Installe séparément le pilote ou l’application Windows du projet. <a href="/integration.json">Versions exactes et premiers appels d’API</a>.</p>
 <p>Le paquet NuGet Interception V2 compile la bibliothèque C dans ton application. Si elle charge <code>interception.dll</code>, prends les fichiers x86 ou x64 correspondants dans le <a href="/guides/interception-v2-migration/">ZIP de la démo Interception V2</a>.</p>
 <p><a href="/assets/sdk-registry-runtime-2026-11-25.json">Voir les résultats de neuf tests de paquets SDK sous Windows 11</a>. Node.js, PowerShell, Python et .NET ont lu l’état du pilote installé. Le compteur de démo est resté au repos.</p>
-<p><a href="/fr/sdk-java-php-ruby/">Trouver les paquets Java, PHP et Ruby</a>.</p>
+<p><a href="/fr/sdk-java-php-ruby/">Trouver les paquets Java, PHP et Ruby</a>. <a href="/assets/go-sdk-first-checks-2026-11-26.json">Voir les six essais Go sans pilote</a>.</p>
 <details class="first-run-more"><summary>Premiers appels d’API et archives Node.js 1.0.1</summary>
 <h2>Lire l’état du pilote depuis ton projet</h2>
 <p>Après la commande npm du tableau, enregistre <a href="/assets/node-sdk-status.cjs" download>node-sdk-status.cjs</a> dans le dossier de ton projet. Ouvre PowerShell dans ce dossier et lance la commande ci-dessous pour l’édition Interceptor combinée.</p>

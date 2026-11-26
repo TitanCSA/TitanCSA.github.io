@@ -251,7 +251,7 @@ rows = manifest['sdk_registry']
 other_registries={'maven','packagist','rubygems'}
 language_guide=by_canonical[BASE+'guides/windows-input-sdk-java-php-ruby/']
 language_guide_fr=by_canonical[BASE+'fr/sdk-java-php-ruby/']
-assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell'} | other_registries
+assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell','go'} | other_registries
 runtime_results={}
 clean_results={}
 for runtime_path, runtime_proof in runtime_reports(OUT/'assets'):
@@ -293,6 +293,15 @@ for row in rows:
         assert example.startswith(BASE+'assets/')
         example_file=OUT/example.removeprefix(BASE)
         assert sha256(example_file.read_bytes()).hexdigest()==row['first_check']['source_sha256']
+    if clean_evidence := row['first_check'].get('without_driver_evidence_url'):
+        assert row['ecosystem']=='go'
+        report=json.loads((OUT/clean_evidence.removeprefix(BASE)).read_text(encoding='utf8'))
+        record,=(item for item in report['checks'] if (item['name'],item['version'])==(row['name'],row['version']))
+        assert record['edition']==row['edition'] and record['package_sha256']==row['verified_archive']['sha256']
+        assert report['environment']=={'operating_system':'Windows','architecture':'x64','cgo_enabled':False}
+        assert record['go_checksum'].startswith('h1:')
+        expected={'interception-v2':{'valid':True,'keyboard':True,'mouse':False},'titan-audio-link':[]}
+        assert record['result']==expected.get(row['edition'],{'windows_error':2})
     if evidence := row.get('lab_verification'):
         runtime_path,observed=runtime_results[(row['ecosystem'],row['name'],row['version'])]
         assert evidence=={'source_url':BASE+runtime_path,'driver_version':observed['driver_version'],'runtime':observed['runtime']}
@@ -319,6 +328,9 @@ for row in rows:
             assert row['dependency_xml'].startswith('<dependency>')
         if row['ecosystem'] == 'rubygems':
             assert urlparse(archive['url']).netloc == 'rubygems.org'
+        if row['ecosystem'] == 'go':
+            assert urlparse(archive['url']).netloc == 'proxy.golang.org'
+            assert archive['url']==row['metadata_url'].removesuffix('.info')+'.zip'
 assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]

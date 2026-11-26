@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-26T20:35:36.754843+00:00",
+  "runtime": "go version go1.27.4 windows/amd64",
+  "environment": {
+    "operating_system": "Windows",
+    "architecture": "x64",
+    "cgo_enabled": false
+  },
+  "scope": "Six public Go modules fetched from the official Go proxy, verified by the Go checksum database and compiled in separate projects. Status calls used the embedded user-mode bindings. No driver was installed and no capture was started.",
+  "checks": [
+    {
+      "edition": "interceptor",
+      "name": "github.com/TitanCSA/Interceptor/Interceptor-Go-modules",
+      "version": "1.0.0",
+      "package_sha256": "717411d0be19cbc6c2e8df2bf0aad6d6d4c90aa6041dca070d10ac32051c4e57",
+      "go_checksum": "h1:I5ZuB4t+i+eoDz6xX5ywFenmN3A1BC5843wN+79yya0=",
+      "result": {
+        "windows_error": 2
+      }
+    },
+    {
+      "edition": "interceptor-keyboard-mouse",
+      "name": "github.com/TitanCSA/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-Go-modules",
+      "version": "1.0.0",
+      "package_sha256": "cedaf3f1943159471a24dc5198b3e3bd7fa61e761315ea371393a231989d3d55",
+      "go_checksum": "h1:0rwRF2HRrTMRXTp0tNti4TgbRHLpMaeblCksWLnKRj8=",
+      "result": {
+        "windows_error": 2
+      }
+    },
+    {
+      "edition": "interceptor-gamepad-controller",
+      "name": "github.com/TitanCSA/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-Go-modules",
+      "version": "1.0.0",
+      "package_sha256": "be9294a9c25f84a81240960b7bd8dc1667b9c2d82236cff47d3859013cbf90c5",
+      "go_checksum": "h1:4S71h3sImu7ZZPDqhdT9DfhBAqQnHnPue2k6/91WbVU=",
+      "result": {
+        "windows_error": 2
+      }
+    },
+    {
+      "edition": "vdevice",
+      "name": "github.com/TitanCSA/Vdevice/Vdevice-Go-modules",
+      "version": "1.0.0",
+      "package_sha256": "1cdfebde85054bc8ee2b0d76d826ea9e5c0f183e3848d6ef14d8fab02bc42c0e",
+      "go_checksum": "h1:vJy2MHA4hvGig3KjT8v2PKoCbPrDkFAuCMALQNzYECU=",
+      "result": {
+        "windows_error": 2
+      }
+    },
+    {
+      "edition": "interception-v2",
+      "name": "github.com/TitanCSA/Interception-V2/Interception-V2-Go-modules",
+      "version": "1.0.0",
+      "package_sha256": "f542be8fdb525b195bea4482e072dbcd136bf7ec67e52cc11945bdaef4af1e5d",
+      "go_checksum": "h1:yGOdakriYdH9bVH+kB/gGRUqbXtLWk3NDPGhMa0uYsI=",
+      "result": {
+        "keyboard": true,
+        "mouse": false,
+        "valid": true
+      }
+    },
+    {
+      "edition": "titan-audio-link",
+      "name": "github.com/titanfyre/Titan-Audio-Link/Titan-Audio-Link-Go-modules",
+      "version": "1.0.0",
+      "package_sha256": "c6b80d2f2002fd70accb09bd93250726570fc77d22e7e893e7f66c1e763e090d",
+      "go_checksum": "h1:LCvQvEpnKAALHDsMzBx/doUnP6PCH83qfQtpVHvoxWY=",
+      "result": []
+    }
+  ]
+}

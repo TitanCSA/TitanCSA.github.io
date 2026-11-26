@@ -45,6 +45,14 @@ REGISTRIES = {
         "page": "https://www.powershellgallery.com/packages/{name}/{version}",
         "metadata": "https://www.powershellgallery.com/api/v2/Packages(Id='{name}',Version='{version}')",
     },
+    "go": {
+        "label": "Go",
+        "runtime": "Go 1.22+ on Windows x64, without cgo",
+        "command": "go get {name}@v{version}",
+        "page": "https://pkg.go.dev/{name}@v{version}",
+        "metadata": "https://proxy.golang.org/{proxy_name}/@v/v{version}.info",
+        "context": "Go module directory with a go.mod file",
+    },
     "maven": {
         "label": "Java",
         "runtime": "JDK 22+ with Foreign Function and Memory API",
@@ -90,6 +98,9 @@ def registry_catalogue(manifest, base):
                           "url": base + "guides/first-run/#browser",
                           "release_url": browser["source"] + "/releases/tag/" + browser["tag"]}
     rows = json.loads((ROOT / "sdk-registry.json").read_text(encoding="utf-8"))
+    go_proof_file = "assets/go-sdk-first-checks-2026-11-26.json"
+    go_proof = json.loads((ROOT / go_proof_file).read_text(encoding="utf-8"))
+    go_checks = {(row["name"], row["version"]): row for row in go_proof["checks"]}
     lab_results = {}
     for proof_file, proof in runtime_reports(ROOT / "assets"):
         for observed in proof["checks"]:
@@ -100,7 +111,8 @@ def registry_catalogue(manifest, base):
         name, version = row["name"], row["version"]
         ecosystem = row["ecosystem"]
         key = (ecosystem, name.casefold(), version)
-        namespace = {"maven": r"io\.github\.titancsa:", "packagist": "titancsa/"}.get(ecosystem, "")
+        namespace = {"maven": r"io\.github\.titancsa:", "packagist": "titancsa/",
+                     "go": r"github\.com/(?:TitanCSA|titanfyre)/[A-Za-z0-9._-]+/"}.get(ecosystem, "")
         if (key in seen or not re.fullmatch(namespace + r"[A-Za-z0-9._-]+", name)
                 or not re.fullmatch(r"\d+\.\d+\.\d+", version)):
             raise ValueError(f"Unexpected SDK package identity {key}")
@@ -109,6 +121,11 @@ def registry_catalogue(manifest, base):
         project = targets[row["edition"]]
         artifact = name.rsplit(":", 1)[-1]
         arguments = {"name": name, "version": version, "lower_name": name.lower(), "artifact": artifact}
+        if ecosystem == "go":
+            arguments["proxy_name"] = "".join("!" + char.lower() if "A" <= char <= "Z" else char for char in name)
+            proof = go_checks.get((name, version))
+            if proof and proof["edition"] == row["edition"] and proof["package_sha256"] == row["verified_archive"]["sha256"]:
+                row["first_check"]["without_driver_evidence_url"] = base + go_proof_file
         row.update(
             project=project,
             language=registry["label"],
@@ -189,12 +206,14 @@ def registry_tables(rows, *, french=False):
     labels = ("Projet", "Paquet", "Commande") if french else ("Project", "Package", "Install command")
     columns = "".join(f'<th scope="col">{label}</th>' for label in labels)
     sections = []
-    for key in ("nuget-native", "pypi", "npm", "nuget-managed", "powershell"):
+    for key in ("nuget-native", "pypi", "npm", "nuget-managed", "powershell", "go"):
         registry = REGISTRIES[key]
         language = registry["label"]
         runtime = registry["runtime"]
         if key == "nuget-native" and french:
             runtime = "Visual Studio 2022 avec le développement de bureau en C++"
+        if key == "go" and french:
+            runtime = "Go 1.22 ou supérieur sous Windows x64, sans cgo"
         table = []
         for row in (item for item in rows if item["ecosystem"] == key):
             name = escape(row["project"]["name"])

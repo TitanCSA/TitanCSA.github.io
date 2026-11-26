@@ -73,6 +73,10 @@ def verify(row):
             available = any(entry["version"].removeprefix("v") == version
                             and entry["source"]["reference"] == row["source_reference"]
                             for entry in document["packages"][name])
+        elif registry == "go":
+            available = (document["Version"] == "v" + version
+                         and archive["url"] == row["metadata_url"].removesuffix(".info") + ".zip"
+                         and sha256(read(archive["url"])).hexdigest() == archive["sha256"])
         elif registry == "rubygems":
             available = (document["name"] == name and document["version"] == version
                          and document["gem_uri"] == archive["url"] and document["sha"] == archive["sha256"])

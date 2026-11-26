@@ -1,7 +1,7 @@
 <h1>Install TitanCSA Windows input SDK packages</h1>
-<p class="article-lead">Find published packages for Python, Node.js, .NET, PowerShell and native C++. Then install the matching Windows driver from the product's release.</p>
+<p class="article-lead">Find published packages for Python, Node.js, .NET, PowerShell, Go and native C++. Then install the matching Windows driver from the product's release.</p>
 <p><a href="/guides/installer-and-sdk/">What do I need to install first?</a></p>
-<p class="byline">Publisher documentation · Registry artifacts checked 24–25 November 2026</p>
+<p class="byline">Publisher documentation · Registry artifacts checked 24–26 November 2026</p>
 <p><a href="/fr/installer-sdk-windows/" hreflang="fr" lang="fr">Lire le guide en français</a></p>
 <h2>Choose your language</h2>
 <p>Open a language below, pick your project and copy its command. For native C/C++, run the command in the Visual Studio Package Manager Console.</p>
@@ -9,7 +9,7 @@
 <p>The SDK package gives you the files to develop your app. Install its matching driver or Windows application separately. <a href="/integration.json">Exact package versions and first API calls for integration</a>.</p>
 <p>The Interception V2 NuGet package compiles the C library into your app. If your app loads <code>interception.dll</code>, use the matching x86 or x64 files from the <a href="/guides/interception-v2-migration/">Interception V2 demo ZIP</a>.</p>
 <p><a href="/assets/sdk-registry-runtime-2026-11-25.json">See nine SDK package checks on Windows 11</a>. Node.js, PowerShell, Python and .NET read the matching installed demo driver’s status with the demo timer still idle.</p>
-<p><a href="/guides/windows-input-sdk-java-php-ruby/">Find the Java, PHP and Ruby packages</a>.</p>
+<p><a href="/guides/windows-input-sdk-java-php-ruby/">Find the Java, PHP and Ruby packages</a>. <a href="/assets/go-sdk-first-checks-2026-11-26.json">See the six Go checks without a driver</a>.</p>
 <details class="first-run-more"><summary>First API checks and the Node.js 1.0.1 archives</summary>
 <h2>Read driver status from your project</h2>
 <p>After running the npm command above, save <a href="/assets/node-sdk-status.cjs" download>node-sdk-status.cjs</a> in your project folder. Open PowerShell in that folder and run the command below for the combined Interceptor edition.</p>

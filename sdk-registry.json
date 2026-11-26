@@ -580,5 +580,113 @@
       "sha256": "71233547b5a1b84aeeaac513c82455c34d863340395bdbab24446b2d175eb757"
     },
     "registry_documentation_verified": true
+  },
+  {
+    "edition": "interceptor",
+    "ecosystem": "go",
+    "name": "github.com/TitanCSA/Interceptor/Interceptor-Go-modules",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.Info()",
+      "expected": "With a matching driver installed, Installed is 1. Windows error 2 means its interface was not found.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://pkg.go.dev/github.com/TitanCSA/Interceptor/Interceptor-Go-modules@v1.0.0",
+    "verified_archive": {
+      "url": "https://proxy.golang.org/github.com/!titan!c!s!a/!interceptor/!interceptor-!go-modules/@v/v1.0.0.zip",
+      "sha256": "717411d0be19cbc6c2e8df2bf0aad6d6d4c90aa6041dca070d10ac32051c4e57"
+    }
+  },
+  {
+    "edition": "interceptor-keyboard-mouse",
+    "ecosystem": "go",
+    "name": "github.com/TitanCSA/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-Go-modules",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.Info()",
+      "expected": "With a matching driver installed, Installed is 1. Windows error 2 means its interface was not found.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://pkg.go.dev/github.com/TitanCSA/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-Go-modules@v1.0.0",
+    "verified_archive": {
+      "url": "https://proxy.golang.org/github.com/!titan!c!s!a/!interceptor-!keyboard-!mouse/!interceptor-!keyboard-!mouse-!go-modules/@v/v1.0.0.zip",
+      "sha256": "cedaf3f1943159471a24dc5198b3e3bd7fa61e761315ea371393a231989d3d55"
+    }
+  },
+  {
+    "edition": "interceptor-gamepad-controller",
+    "ecosystem": "go",
+    "name": "github.com/TitanCSA/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-Go-modules",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.Info()",
+      "expected": "With a matching driver installed, Installed is 1. Windows error 2 means its interface was not found.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://pkg.go.dev/github.com/TitanCSA/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-Go-modules@v1.0.0",
+    "verified_archive": {
+      "url": "https://proxy.golang.org/github.com/!titan!c!s!a/!interceptor-!gamepad-!controller/!interceptor-!gamepad-!controller-!go-modules/@v/v1.0.0.zip",
+      "sha256": "be9294a9c25f84a81240960b7bd8dc1667b9c2d82236cff47d3859013cbf90c5"
+    }
+  },
+  {
+    "edition": "vdevice",
+    "ecosystem": "go",
+    "name": "github.com/TitanCSA/Vdevice/Vdevice-Go-modules",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.Call(\"status\", nil)",
+      "expected": "The call reports Windows error 2 if the Vdevice driver interface is absent.",
+      "requires_installed_driver": true,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://pkg.go.dev/github.com/TitanCSA/Vdevice/Vdevice-Go-modules@v1.0.0",
+    "verified_archive": {
+      "url": "https://proxy.golang.org/github.com/!titan!c!s!a/!vdevice/!vdevice-!go-modules/@v/v1.0.0.zip",
+      "sha256": "1cdfebde85054bc8ee2b0d76d826ea9e5c0f183e3848d6ef14d8fab02bc42c0e"
+    }
+  },
+  {
+    "edition": "interception-v2",
+    "ecosystem": "go",
+    "name": "github.com/TitanCSA/Interception-V2/Interception-V2-Go-modules",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.Call(\"check\", map[string]any{\"device\": 1})",
+      "expected": "Device number 1 is the first keyboard slot.",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://pkg.go.dev/github.com/TitanCSA/Interception-V2/Interception-V2-Go-modules@v1.0.0",
+    "verified_archive": {
+      "url": "https://proxy.golang.org/github.com/!titan!c!s!a/!interception-!v2/!interception-!v2-!go-modules/@v/v1.0.0.zip",
+      "sha256": "f542be8fdb525b195bea4482e072dbcd136bf7ec67e52cc11945bdaef4af1e5d"
+    }
+  },
+  {
+    "edition": "titan-audio-link",
+    "ecosystem": "go",
+    "name": "github.com/titanfyre/Titan-Audio-Link/Titan-Audio-Link-Go-modules",
+    "version": "1.0.0",
+    "first_check": {
+      "call": "client.Call(\"list\", nil)",
+      "expected": "An empty list means no Titan Audio Link endpoints were found.",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://pkg.go.dev/github.com/titanfyre/Titan-Audio-Link/Titan-Audio-Link-Go-modules@v1.0.0",
+    "verified_archive": {
+      "url": "https://proxy.golang.org/github.com/titanfyre/!titan-!audio-!link/!titan-!audio-!link-!go-modules/@v/v1.0.0.zip",
+      "sha256": "c6b80d2f2002fd70accb09bd93250726570fc77d22e7e893e7f66c1e763e090d"
+    }
   }
 ]
