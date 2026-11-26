@@ -10,6 +10,13 @@
 <li>Open the <a href="{{INTERCEPTOR_KEYBOARD_MOUSE_VIEWER_URL}}">input viewer</a>.</li>
 <li>Press a key or move the mouse. Check that the device appears. Click <strong>Stop</strong> when you finish.</li>
 </ol>
+<h2 id="switch-input-driver">Switch between Interceptor and the original driver</h2>
+<p>For compatible HID keyboards and mice, Setup records the original driver package before installing Interceptor. Restore that package when you need to access settings in the manufacturer’s software, then switch back to Interceptor to capture input.</p>
+<ul>
+<li><code>Get_Input_Driver_Bindings()</code> lists the current driver and Windows instance ID for each HID keyboard or mouse.</li>
+<li><code>Set_Input_Driver_Mode(instance, true)</code> restores the recorded original driver. Pass <code>false</code> to switch back to Interceptor.</li>
+</ul>
+<p>Both functions are in the C++ SDK for Demo and Release. Close capture and run the switch as administrator. If the switch returns <code>3010</code>, restart Windows before continuing. <a href="https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/blob/main/docs/API.md#switch-the-driver-for-a-keyboard-or-mouse">C++ API reference</a></p>
 {{RELEASE_TERMS}}
 <details class="more-info">
 <summary>Technical details and support</summary>
