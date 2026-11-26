@@ -17,6 +17,7 @@
 <p>The test opens the paired virtual microphone and generates its own signal. It leaves Windows default audio devices unchanged.</p>
 <h2>Verified results for the exact ZIP</h2>
 <p>The demo 0.2.0 ZIP installed signed driver 0.2.0.0 in a Windows 11 build 26100 guest with Secure Boot enabled. The installed INF, both SYS files and catalog matched the package manifest. The command-line test verified 72,000 complete stereo frames with both channels matching and correlation 1.000000. The log recorded one discontinuity flag and zero timestamp errors. After uninstall and restart, Windows reported no Titan endpoints, driver package or main kernel service. <a href="/assets/titan-audio-link-install-verification-2026-11-25.json">See the exact console installer, archive and test results</a>.</p>
+{{AUDIO_HVCI_EN}}
 <p>The earlier <a href="https://github.com/titanfyre/Titan-Audio-Link/releases/tag/v0.1.1">signed evaluation 0.1.1</a> has separate Windows 10 build 19045 evidence covering two-pair isolation and repeated stream opens. The 0.2.0 test covers one pair and a short generated signal in one Windows 11 guest.</p>
 <p>Developing an app? Start with the <a href="/guides/installer-and-sdk/">SDK inventory check</a> to count installed Titan audio endpoints before opening a stream.</p>
 <h2>Commercial Release</h2>

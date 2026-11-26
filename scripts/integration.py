@@ -44,6 +44,8 @@ def make_manifest(base, editions):
     inventory = json.loads((ROOT / inventory_file).read_text(encoding="utf-8"))
     audio_file = "assets/titan-audio-link-install-verification-2026-11-25.json"
     audio = json.loads((ROOT / audio_file).read_text(encoding="utf-8"))
+    audio_hvci_file = "assets/titan-audio-link-memory-integrity-2026-11-26.json"
+    audio_hvci = json.loads((ROOT / audio_hvci_file).read_text(encoding="utf-8"))
     vdevice_proof_file = "assets/vdevice-signed-versions-2026-11-25.json"
     vdevice_proof = json.loads((ROOT / vdevice_proof_file).read_text(encoding="utf-8"))
     mouse_switch_file = "assets/interceptor-mouse-driver-switch-2026-11-26.json"
@@ -146,6 +148,12 @@ def make_manifest(base, editions):
             row["demo"]["console_setup"] = console_setup(
                 "archive", audio_archive["bundled_installer_member"], audio_archive["bundled_installer_sha256"],
                 base + audio_file)
+            if (audio_hvci["edition"] == slug and audio_hvci["demo_version"] == edition["demo"]
+                    and audio_hvci["environment"]["memory_integrity"] is True
+                    and audio_hvci["demo_archive"] == audio_archive
+                    and audio_archive["url"] == edition["demo_download_url"]):
+                row["demo"]["installer_verification_url"] = base + audio_hvci_file
+                row["demo"]["console_setup"]["evidence_url"] = base + audio_hvci_file
         if slug == vdevice_proof["project"]:
             verified_demo = vdevice_proof["versions"]["demo"]
             qualified_installers = {record["installer"]: record["installer_sha256"]

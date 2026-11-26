@@ -109,6 +109,13 @@ for slug, edition in editions.items():
     replacements[f'{key}_DEMO_TAG']=escape(edition['tag'],quote=True)
     for role, url in edition['demo_assets'].items():
         replacements[f'{key}_{role.upper()}_URL']=escape(url,quote=True)
+audio_verified=next(row["demo"].get("installer_verification_url") for row in integration["products"]
+                    if row["id"]=="titan-audio-link")
+audio_proof_link=escape(audio_verified.removeprefix(BASE),quote=True) if audio_verified else ""
+replacements["AUDIO_HVCI_EN"]=(f'<p>The same archive also passed with Windows Memory Integrity enabled. '
+                               f'<a href="/{audio_proof_link}">See the second test</a>.</p>' if audio_proof_link else "")
+replacements["AUDIO_HVCI_FR"]=(f'<p>Le même ZIP a aussi réussi le test avec l’intégrité de la mémoire de Windows activée. '
+                               f'<a href="/{audio_proof_link}">Voir le deuxième essai</a>.</p>' if audio_proof_link else "")
 plain_by_slug={p['url'].split('#')[0].rsplit('/',1)[-1].lower():p['plain_purpose'] for p in projects}
 replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
     f'<tr role="row"><th scope="row" role="rowheader"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
@@ -181,11 +188,13 @@ publisher={
 
 published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','guides/installer-and-sdk/','fr/installeur-et-sdk/','fr/essayer-sans-pilote/','fr/sdk-java-php-ruby/')}
 reviewed.update(published_dates)
-reviewed.update(dict.fromkeys(('', 'fr/', 'guides/vdevice-virtual-usb-mouse/',
+reviewed.update(dict.fromkeys(('guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
 reviewed.update(dict.fromkeys((
+    '', 'fr/', 'fr/pilotes-entree-windows/',
     'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
     'guides/windows-input-sdk-java-php-ruby/', 'fr/sdk-java-php-ruby/',
+    'guides/titan-audio-link-first-run/', 'fr/micro-virtuel-titan-audio-link/',
 ), '2026-11-26'))
 
 
@@ -341,6 +350,9 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Per-device AutoHotkey tutorial]({BASE}guides/autohotkey-remap-second-keyboard/)',
     f'- [Deuxième clavier avec AutoHotkey v2]({BASE}fr/remapper-deuxieme-clavier-autohotkey/)',
     f'- [Benchmark results and scope]({BASE}TitanCSA-Benchmarks/)', '', '## Products']
+if audio_verified:
+    reference_links.insert(reference_links.index('## Products') - 1,
+                           f'- [Titan Audio Link verification with Windows Memory Integrity]({audio_verified})')
 reference_links.extend(
     f'- [{e["name"]}]({e["overview_url"]}): {e["use"]} Signed demo notes: {e["demo_url"]}. Demo download: {e["demo_download_url"]}. Release without the one-hour demo limit: contact titancsa on Discord. {e["release_contact"]["instructions_url"]}'
     for e in editions.values()

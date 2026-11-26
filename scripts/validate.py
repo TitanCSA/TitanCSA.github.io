@@ -382,16 +382,37 @@ for row in manifest['products']:
             assert phase['after_installation_and_reboot']['exit_code']==0
     if installer_evidence := demo.get('installer_verification_url'):
         proof=json.loads((OUT/installer_evidence.removeprefix(BASE)).read_text(encoding='utf8'))
-        assert proof['project']==row['id']
-        verified=proof['versions']['demo']
-        assert verified['driver_version']==verified['package_version']==demo['version']
-        assert verified['signed_driver_archive_sha256']==demo['assets']['driver']['sha256']
-        assert verified['public_notes_url']==demo['notes_url']
-        assert {record['windows_build'] for record in verified['installer_qualification']}=={19045,26100}
-        installers = {record['installer']: record['installer_sha256']
-                      for record in verified['installer_qualification']}
-        assert installers == {'graphical': demo['setup_download_sha256'],
-                              'console': demo['assets']['console_installer']['sha256']}
+        if row['id']=='titan-audio-link':
+            assert proof['edition']==row['id'] and proof['demo_version']==demo['version']
+            assert proof['demo_archive']['url']==demo['setup_download_url']
+            assert demo['console_setup']['evidence_url']==installer_evidence
+            environment=proof['environment']
+            assert environment['secure_boot'] is environment['memory_integrity'] is True
+            assert environment['windows_build']==26100
+            assert environment['security_check_stages']==[
+                'before_install','after_install_restart','after_uninstall_restart']
+            driver=proof['driver']
+            assert driver['catalogue_signature']=='Valid'
+            assert driver['installation_exit_code'] in (0,3010) and driver['uninstallation_exit_code'] in (0,3010)
+            assert driver['restart_after_install_verified'] is driver['restart_after_uninstall_verified'] is True
+            assert driver['kernel_service_registered_after_uninstall'] is driver['driver_package_present_after_uninstall'] is False
+            signal=proof['signal_test']
+            assert signal['verified_stereo_frames']==72000 and signal['matched_channels']==2
+            assert signal['timestamp_errors']==signal['exit_code']==0
+            assert signal['virtual_endpoints_after_install']==2 and signal['virtual_endpoints_after_uninstall']==0
+            for route in ('guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/'):
+                assert '/'+installer_evidence.removeprefix(BASE) in by_canonical[BASE+route].links
+        else:
+            assert proof['project']==row['id']
+            verified=proof['versions']['demo']
+            assert verified['driver_version']==verified['package_version']==demo['version']
+            assert verified['signed_driver_archive_sha256']==demo['assets']['driver']['sha256']
+            assert verified['public_notes_url']==demo['notes_url']
+            assert {record['windows_build'] for record in verified['installer_qualification']}=={19045,26100}
+            installers = {record['installer']: record['installer_sha256']
+                          for record in verified['installer_qualification']}
+            assert installers == {'graphical': demo['setup_download_sha256'],
+                                  'console': demo['assets']['console_installer']['sha256']}
     if switch_evidence := demo.get('mouse_driver_switch_verification_url'):
         report = json.loads((OUT/switch_evidence.removeprefix(BASE)).read_text(encoding='utf8'))
         record = report['editions'][row['id']]
