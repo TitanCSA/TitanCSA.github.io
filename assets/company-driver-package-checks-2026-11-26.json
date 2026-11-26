@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "checked": "2026-11-26",
-  "scope": "Catalogs, INF and kernel image membership were verified from exact Company setup resources using Windows SDK SignTool verify /kp. Each matching SDK was built with its included CMake settings on Windows x64. This record covers package signatures and compilation. An unelevated SDK probe also verified local format rejection without a key request. The check ran without these Release drivers installed. A windows_11_vm record shows a completed install, restart, SDK and offline version diagnostics, uninstall and restart for that exact Company console installer. VM cases stop before online key activation.",
+  "scope": "Catalogs, INF and kernel image membership were verified from exact Company setup resources using Windows SDK SignTool verify /kp. Each matching SDK was built with its included CMake settings on Windows x64. This record covers package signatures and compilation. An unelevated SDK probe also verified local format rejection without a key request. The check ran without these Release drivers installed. A windows_11_vm record shows a completed install, restart, SDK and offline version diagnostics, uninstall and restart for that exact Company console installer. VM cases stop before online key activation. The separately labelled Memory Integrity result required running HVCI at every boot of that test.",
   "edition_control": "The store-manifest match records delivery metadata when the listed archive was tested. A null value means the checking account could not read it. Compare the archive SHA-256 to identify the tested build when a version label is reused.",
   "editions": [
     {
@@ -131,6 +131,37 @@
           "windows_build": 26100,
           "secure_boot": true,
           "memory_integrity_running": false,
+          "install_exit_code": 0,
+          "installed_inf_names": [
+            "interceptorkeyboardmousereleasekeyboard.inf",
+            "interceptorkeyboardmousereleasemouse.inf",
+            "interceptorkeyboardmousereleasecontrol.inf"
+          ],
+          "running_kernel_sha256": "9da346aa43420dca02257311a2c344b379af24d0f3565c7704badfb2d4634eb9",
+          "restart_after_install_verified": true,
+          "sdk_status_before_activation": "License ABI 5, state 1",
+          "version_lines_with_driver_present": [
+            "Interceptor Keyboard & Mouse Release SDK: 1.0.2.6",
+            "Interceptor Keyboard & Mouse Release driver (installed): 1.0.2.6",
+            "Interceptor Keyboard & Mouse Demo driver (installed): not detected"
+          ],
+          "uninstall_exit_code": 0,
+          "restart_after_uninstall_verified": true,
+          "driver_service_present_after_uninstall": false,
+          "windows_error_after_uninstall": 2,
+          "version_lines_after_driver_removal": [
+            "Interceptor Keyboard & Mouse Release SDK: 1.0.2.6",
+            "Interceptor Keyboard & Mouse Release driver (installed): not detected",
+            "Interceptor Keyboard & Mouse Demo driver (installed): not detected"
+          ],
+          "paid_key_used": false
+        },
+        "windows_11_vm_memory_integrity": {
+          "windows_build": 26100,
+          "secure_boot": true,
+          "memory_integrity_running": true,
+          "memory_integrity_running_after_install": true,
+          "memory_integrity_running_after_uninstall": true,
           "install_exit_code": 0,
           "installed_inf_names": [
             "interceptorkeyboardmousereleasekeyboard.inf",

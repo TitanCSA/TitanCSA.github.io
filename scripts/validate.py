@@ -156,16 +156,24 @@ for entry in company_check['editions']:
         assert tested_archive['signed_driver_packages']
         for package in tested_archive['signed_driver_packages']:
             assert package['inf_catalog_membership'] is package['kernel_catalog_membership'] is True
-        vm = tested_archive['windows_11_vm']
-        assert vm['secure_boot'] is True and vm['paid_key_used'] is False
-        assert vm['restart_after_install_verified'] is vm['restart_after_uninstall_verified'] is True
-        assert vm['install_exit_code'] == vm['uninstall_exit_code'] == 0
-        assert vm['driver_service_present_after_uninstall'] is False and vm['windows_error_after_uninstall'] == 2
-        running_packages = {
-            package['inf'].lower() for package in tested_archive['signed_driver_packages']
-            if package['kernel_sha256'] == vm['running_kernel_sha256']
-        }
-        assert running_packages and set(vm['installed_inf_names']) == running_packages
+        reports = [tested_archive['windows_11_vm']]
+        if qualified := tested_archive.get('windows_11_vm_memory_integrity'):
+            assert qualified['memory_integrity_running'] is True
+            assert qualified['memory_integrity_running_after_install'] is True
+            assert qualified['memory_integrity_running_after_uninstall'] is True
+            reports.append(qualified)
+        for vm in reports:
+            assert vm['secure_boot'] is True and vm['paid_key_used'] is False
+            assert vm['restart_after_install_verified'] is vm['restart_after_uninstall_verified'] is True
+            assert vm['install_exit_code'] == vm['uninstall_exit_code'] == 0
+            assert vm['driver_service_present_after_uninstall'] is False and vm['windows_error_after_uninstall'] == 2
+            running_packages = {
+                package['inf'].lower() for package in tested_archive['signed_driver_packages']
+                if package['kernel_sha256'] == vm['running_kernel_sha256']
+            }
+            assert running_packages and set(vm['installed_inf_names']) == running_packages
+keyboard_mouse_evidence = next(entry for entry in company_check['editions'] if entry['project']=='interceptor-keyboard-mouse')
+assert 'windows_11_vm_memory_integrity' in keyboard_mouse_evidence['later_delivery']
 for edition in editions.values():
     overview=by_canonical[edition['overview_url']]
     repo=edition['repository'].rsplit('/',1)[1]
