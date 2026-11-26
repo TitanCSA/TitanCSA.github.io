@@ -127,6 +127,32 @@
         "uninstall_exit_code": 0,
         "windows_error_after_uninstall_and_restart": 2,
         "service_registered_after_uninstall_and_restart": false
+      },
+      "sdk_version_diagnostics": {
+        "checked": "2026-11-26",
+        "windows_build": 26100,
+        "secure_boot": true,
+        "memory_integrity_running": true,
+        "sdk_source_sha256": "b106d5f27322166eba9675518d98c3f01c48e2a7d598ec5c4f591e883ba477cb",
+        "scope": "The exact Company SDK rejected an empty key at local format validation. No key or request was sent to the license service. After removal and restart, the read-only status check returned Windows error 2.",
+        "format_error_with_release_driver_present": {
+          "stage": "key_format",
+          "reason": "invalid_key_format",
+          "windows_error": 87,
+          "version_lines": [
+            "Vdevice Release SDK: 1.0.4.1",
+            "Vdevice Release driver (installed): 1.0.4.1",
+            "Vdevice Demo driver (installed): 1.0.6.0"
+          ]
+        },
+        "status_error_after_release_driver_removal": {
+          "windows_error": 2,
+          "version_lines": [
+            "Vdevice Release SDK: 1.0.4.1",
+            "Vdevice Release driver (installed): not detected",
+            "Vdevice Demo driver (installed): 1.0.6.0"
+          ]
+        }
       }
     }
   }
