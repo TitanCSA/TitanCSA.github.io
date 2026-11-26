@@ -5,7 +5,7 @@
     {
       "slug": "interceptor",
       "demo": "1.4.23.0",
-      "tag": "v1.4.23.0-demo-r2",
+      "tag": "v1.4.23.0-demo-r3",
       "commercial": {
         "package_version": "1.6.1.1",
         "driver_version": "1.6.0.0"
@@ -22,12 +22,12 @@
         "viewer": "InterceptorExampleUI.exe",
         "console_installer": "InterceptorSetupConsole.exe"
       },
-      "sdk_sha256": "660b041f860a1c8d6181dc66f9cb79b1a74477a37e8b4704ee4145e33ac79e1b",
+      "sdk_sha256": "fc30b63dac6265ee4244d6efab189fa6c39eb31094b990938ae6e05ec1f0dc55",
       "demo_asset_sha256": {
         "installer": "bcc0356571febd2be61d1e66a270d4ebdad9470a1fda2cd9028a69873468bf1a",
-        "examples": "5a1e8d2552a6527918bf4634a3fd24d4fcd1c70a87ef13f09207db57b43452cd",
-        "sdk": "660b041f860a1c8d6181dc66f9cb79b1a74477a37e8b4704ee4145e33ac79e1b",
-        "checksums": "5259bc85b198b6740c987bcf5c2defc5753a96aad3523ef70af7d1134bcaf54a",
+        "examples": "e9db2163631d655a0c8a237732d9661d219f06a1a8ad63ca92a50a3f50f32f95",
+        "sdk": "fc30b63dac6265ee4244d6efab189fa6c39eb31094b990938ae6e05ec1f0dc55",
+        "checksums": "ddce24585c7bf59d9c52d782cb381b958f1922c9f89e05434356a5dfc49967d6",
         "viewer": "b5694e2221ce26d30e2fbb848b263fa7afcbdd03a7cab18885ccb9fd83f444b7",
         "console_installer": "bcb953083ba71e64d0c65524f068395601165953da2501fbd637b643fcf822c0"
       }
@@ -35,7 +35,7 @@
     {
       "slug": "interceptor-keyboard-mouse",
       "demo": "1.0.5.4",
-      "tag": "v1.0.5.4-demo-r2",
+      "tag": "v1.0.5.4-demo-r3",
       "commercial_checked": "2026-11-26",
       "commercial": {
         "package_version": "1.0.2.6",
@@ -53,12 +53,12 @@
         "viewer": "InterceptorExampleUI.exe",
         "console_installer": "InterceptorSetupConsole.exe"
       },
-      "sdk_sha256": "c80b62f4b2071c2b0bde9686a3b1499e67adac1b84d3ae194596848e2c0b349f",
+      "sdk_sha256": "fb3facceeeb4fc15bfdd7ae473bcfe2dcbe99044f0b7209c285e682c799acede",
       "demo_asset_sha256": {
         "installer": "80fc4a236111d259bc25a4addf26e39c886bf006832a504f30ca7125d61b6702",
-        "examples": "8ccf3619685e6c60fc9425ca4312aa9c89e072687aaa1a9459006e992d6e0134",
-        "sdk": "c80b62f4b2071c2b0bde9686a3b1499e67adac1b84d3ae194596848e2c0b349f",
-        "checksums": "372b04d1e2fc720beafc607d6a448c4acdbe35d3df246000fa9f66d4416b245f",
+        "examples": "8e5c73a91c79ec2e76f3879e1e3e760914b11747fca7eeca57dd15d4045cf793",
+        "sdk": "fb3facceeeb4fc15bfdd7ae473bcfe2dcbe99044f0b7209c285e682c799acede",
+        "checksums": "b4562993de26c2a439e9cedbf61b6f1c0094404a6acb5e650fa424194160b2a8",
         "viewer": "025d42f8f9107805226ed4f35ae2c6151d0a38a353a70934076b1b731690cc58",
         "console_installer": "f8a1a5b9607079630aa577a28441588d62839a5b37c9b846c9d2ea18fd166576"
       }
