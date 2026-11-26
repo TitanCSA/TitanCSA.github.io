@@ -2,7 +2,7 @@
   "schema_version": 1,
   "checked": "2026-11-26",
   "scope": "Catalogs, INF and kernel image membership were verified from exact Company setup resources using Windows SDK SignTool verify /kp. Each matching SDK was built with its included CMake settings on Windows x64. This record covers package signatures and compilation. An unelevated SDK probe also verified local format rejection without a key request. The check ran without these Release drivers installed. A windows_11_vm record shows a completed install, restart, SDK and offline version diagnostics, uninstall and restart for that exact Company console installer. VM cases stop before online key activation.",
-  "edition_control": "A null store-manifest field means current delivery metadata for that edition was not accessible to the checking account.",
+  "edition_control": "The store-manifest match records delivery metadata when the listed archive was tested. A null value means the checking account could not read it. Compare the archive SHA-256 to identify the tested build when a version label is reused.",
   "editions": [
     {
       "project": "interceptor",
@@ -88,6 +88,12 @@
       "package_version": "1.0.2.6",
       "driver_version": "1.0.2.6",
       "company_archive_sha256": "8b5357b06bbacdf6e54eb9a95db2c1cdc868853af290fb2410265c565c0f67bc",
+      "later_delivery": {
+        "checked": "2026-11-26",
+        "company_archive_sha256": "2f0d2904f415bb2249b99d2ddd33e6ef25eaefab8f143875ea946fa69847ee02",
+        "publisher_store_manifest_agrees": true,
+        "same_console_installer_and_sdk_as_vm_test": false
+      },
       "console_installer_sha256": "a6a59505152b6be3ee8a054f4228a0ef91fb64a72d28269a61897d387767da04",
       "publisher_store_manifest_agrees": true,
       "sdk_source_sha256": "941bfa98134973acab2acd3b231a235dc64f07cd26551b7aca90aec7f3888d2d",
