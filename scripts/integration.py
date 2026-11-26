@@ -46,6 +46,8 @@ def make_manifest(base, editions):
     audio = json.loads((ROOT / audio_file).read_text(encoding="utf-8"))
     vdevice_proof_file = "assets/vdevice-signed-versions-2026-11-25.json"
     vdevice_proof = json.loads((ROOT / vdevice_proof_file).read_text(encoding="utf-8"))
+    mouse_switch_file = "assets/interceptor-mouse-driver-switch-2026-11-26.json"
+    mouse_switch = json.loads((ROOT / mouse_switch_file).read_text(encoding="utf-8"))["editions"]
 
     rows = []
     for slug, edition in editions.items():
@@ -122,6 +124,11 @@ def make_manifest(base, editions):
             row["demo"]["console_setup"] = console_setup(
                 "console_installer", None, proof["installer_sha256"], base + proof_file)
             row["sdk_check"]["tested_account"] = "Administrator on Windows 11 x64"
+        switch = mouse_switch.get(slug)
+        if (switch and switch["tag"] == edition["tag"]
+                and switch["sdk_sha256"] == edition["sdk_sha256"]
+                and switch["console_installer_sha256"] == digests.get("console_installer")):
+            row["demo"]["mouse_driver_switch_verification_url"] = base + mouse_switch_file
         if (inventory["edition"] == slug and inventory["demo_version"] == edition["demo"]
                 and inventory["demo_archive"]["sha256"] == digests[setup_role]):
             row["demo"]["console_setup"] = console_setup(

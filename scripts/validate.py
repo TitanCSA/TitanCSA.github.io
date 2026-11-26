@@ -351,6 +351,18 @@ for row in manifest['products']:
                       for record in verified['installer_qualification']}
         assert installers == {'graphical': demo['setup_download_sha256'],
                               'console': demo['assets']['console_installer']['sha256']}
+    if switch_evidence := demo.get('mouse_driver_switch_verification_url'):
+        report = json.loads((OUT/switch_evidence.removeprefix(BASE)).read_text(encoding='utf8'))
+        record = report['editions'][row['id']]
+        assert report['environment'] == {'windows_build': 26100, 'architecture': 'x64', 'secure_boot': True}
+        assert record['tag'] == demo['tag'] and record['sdk_sha256'] == check['archive_sha256']
+        assert record['console_installer_sha256'] == demo['assets']['console_installer']['sha256']
+        assert record['restore_original_windows_code'] in (0,3010)
+        assert record['restore_interceptor_windows_code'] in (0,3010)
+        observed = record['observed_bindings']
+        assert [point['target']['mode'] for point in observed] == [
+            'windows_inbox', 'interceptor', 'windows_inbox', 'interceptor']
+        assert observed[1]['control'] == observed[2]['control'] == observed[3]['control']
     if release_evidence := row.get('commercial_install_verification'):
         proof=json.loads((OUT/release_evidence['url'].removeprefix(BASE)).read_text(encoding='utf8'))
         assert proof['project']==row['id']

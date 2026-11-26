@@ -22,6 +22,7 @@
 </ul>
 <p>Both functions are in the C++ SDK for Demo and Release. Close capture and run the switch as administrator. If the switch returns <code>3010</code>, restart Windows before continuing. <a href="https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/blob/main/docs/API.md#switch-the-driver-for-a-keyboard-or-mouse">C++ API reference</a></p>
 <p>Use the <a href="/assets/interceptor-input-driver-bindings.cpp">read-only C++ example</a> to list the current driver for each compatible input device before switching. Compile it with the two-file SDK. Instance IDs can contain serial numbers, so review the output before sharing it.</p>
+<p>In a Windows 11 VM with Secure Boot, demo <code>v1.0.5.4-demo-r3</code> switched one virtual USB mouse to its Windows driver and back to Interceptor. A second virtual mouse stayed on Interceptor. <a href="/assets/interceptor-mouse-driver-switch-2026-11-26.json">See the recorded driver bindings</a>.</p>
 <h2>When to use it</h2>
 <p>Use a second keyboard for accessibility shortcuts or a macro pad while keeping your main keyboard’s normal behavior. Device attribution lets the same key have a different role on each keyboard.</p>
 <h2>First validation</h2>

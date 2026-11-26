@@ -107,6 +107,7 @@
             "supported_driver_architecture": { "enum": ["x64", "x86", "arm64"] },
             "trial_starts_on": { "type": "string", "minLength": 1 },
             "installer_verification_url": { "$ref": "#/$defs/url" },
+            "mouse_driver_switch_verification_url": { "$ref": "#/$defs/url" },
             "console_setup": { "$ref": "#/$defs/consoleSetup" },
             "live_inventory_verification": {
               "type": "object",

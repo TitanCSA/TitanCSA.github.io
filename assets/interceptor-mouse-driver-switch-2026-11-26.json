@@ -1,0 +1,122 @@
+{
+  "checked": "2026-11-26",
+  "scope": "Windows driver reassociation for one synthetic USB HID mouse while a second synthetic mouse stays on its current driver. No physical manufacturer device was tested.",
+  "environment": {
+    "windows_build": 26100,
+    "architecture": "x64",
+    "secure_boot": true
+  },
+  "synthetic_mouse_driver": {
+    "project": "vdevice",
+    "tag": "v1.0.6.1-demo",
+    "console_installer_sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848"
+  },
+  "editions": {
+    "interceptor": {
+      "tag": "v1.4.23.0-demo-r3",
+      "sdk_sha256": "fc30b63dac6265ee4244d6efab189fa6c39eb31094b990938ae6e05ec1f0dc55",
+      "console_installer_sha256": "bcb953083ba71e64d0c65524f068395601165953da2501fbd637b643fcf822c0",
+      "restore_original_windows_code": 0,
+      "restore_interceptor_windows_code": 0,
+      "observed_bindings": [
+        {
+          "phase": "windows",
+          "target": {
+            "mode": "windows_inbox",
+            "service": "mouhid"
+          },
+          "control": {
+            "mode": "windows_inbox",
+            "service": "mouhid"
+          }
+        },
+        {
+          "phase": "interceptor",
+          "target": {
+            "mode": "interceptor",
+            "service": "Interceptor"
+          },
+          "control": {
+            "mode": "interceptor",
+            "service": "Interceptor"
+          }
+        },
+        {
+          "phase": "original_again",
+          "target": {
+            "mode": "windows_inbox",
+            "service": "mouhid"
+          },
+          "control": {
+            "mode": "interceptor",
+            "service": "Interceptor"
+          }
+        },
+        {
+          "phase": "interceptor_again",
+          "target": {
+            "mode": "interceptor",
+            "service": "Interceptor"
+          },
+          "control": {
+            "mode": "interceptor",
+            "service": "Interceptor"
+          }
+        }
+      ]
+    },
+    "interceptor-keyboard-mouse": {
+      "tag": "v1.0.5.4-demo-r3",
+      "sdk_sha256": "fb3facceeeb4fc15bfdd7ae473bcfe2dcbe99044f0b7209c285e682c799acede",
+      "console_installer_sha256": "f8a1a5b9607079630aa577a28441588d62839a5b37c9b846c9d2ea18fd166576",
+      "restore_original_windows_code": 0,
+      "restore_interceptor_windows_code": 0,
+      "observed_bindings": [
+        {
+          "phase": "windows",
+          "target": {
+            "mode": "windows_inbox",
+            "service": "mouhid"
+          },
+          "control": {
+            "mode": "windows_inbox",
+            "service": "mouhid"
+          }
+        },
+        {
+          "phase": "interceptor",
+          "target": {
+            "mode": "interceptor",
+            "service": "InterceptorKeyboardMouse"
+          },
+          "control": {
+            "mode": "interceptor",
+            "service": "InterceptorKeyboardMouse"
+          }
+        },
+        {
+          "phase": "original_again",
+          "target": {
+            "mode": "windows_inbox",
+            "service": "mouhid"
+          },
+          "control": {
+            "mode": "interceptor",
+            "service": "InterceptorKeyboardMouse"
+          }
+        },
+        {
+          "phase": "interceptor_again",
+          "target": {
+            "mode": "interceptor",
+            "service": "InterceptorKeyboardMouse"
+          },
+          "control": {
+            "mode": "interceptor",
+            "service": "InterceptorKeyboardMouse"
+          }
+        }
+      ]
+    }
+  }
+}

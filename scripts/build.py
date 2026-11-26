@@ -299,6 +299,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Integration JSON schema]({BASE}integration.schema.json)',
     f'- [Vdevice signed Demo and Release validation]({BASE}assets/vdevice-signed-versions-2026-11-25.json)',
     f'- [Four Company installation and removal tests on Windows 11]({BASE}assets/company-driver-package-checks-2026-11-26.json)',
+    f'- [Windows mouse driver switching test with two synthetic USB HID devices]({BASE}assets/interceptor-mouse-driver-switch-2026-11-26.json)',
     f'- [First Windows app runs without a driver]({BASE}guides/first-run/)',
     f'- [Essayer un outil sans ajouter de pilote]({BASE}fr/essayer-sans-pilote/)',
     f'- [Compare editions]({BASE}guides/windows-input-release-compare/)',
