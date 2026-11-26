@@ -181,7 +181,10 @@ published_dates={route:'2026-11-25' for route in ('fr/installer-sdk-windows/','g
 reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('', 'fr/', 'guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
-reviewed.update(dict.fromkeys(('guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/'), '2026-11-26'))
+reviewed.update(dict.fromkeys((
+    'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
+    'guides/windows-input-sdk-java-php-ruby/', 'fr/sdk-java-php-ruby/',
+), '2026-11-26'))
 
 
 def render(title,description,path,body,article=False):
@@ -318,6 +321,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Installation des SDK Windows en français]({BASE}fr/installer-sdk-windows/)',
     f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
     f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
+    f'- [npm and RubyGems package runtime checks]({BASE}assets/sdk-registry-runtime-2026-11-26.json)',
     f'- [Java, PHP and Ruby SDK packages]({BASE}guides/windows-input-sdk-java-php-ruby/)',
     f'- [Paquets Java, PHP et Ruby]({BASE}fr/sdk-java-php-ruby/)',
     f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',

@@ -5,6 +5,7 @@ from hashlib import sha256
 from struct import unpack
 from urllib.parse import urlparse,unquote
 import json,re,xml.etree.ElementTree as ET
+from registry import runtime_reports
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 class Page(HTMLParser):
@@ -240,16 +241,25 @@ other_registries={'maven','packagist','rubygems'}
 language_guide=by_canonical[BASE+'guides/windows-input-sdk-java-php-ruby/']
 language_guide_fr=by_canonical[BASE+'fr/sdk-java-php-ruby/']
 assert {row['ecosystem'] for row in rows} == {'npm','pypi','nuget-managed','nuget-native','powershell'} | other_registries
-runtime_path='assets/sdk-registry-runtime-2026-11-25.json'
-runtime_proof=json.loads((OUT/runtime_path).read_text(encoding='utf8'))
-for record in runtime_proof['reproduced_examples']:
-    assert sha256((OUT/'assets'/record['file']).read_bytes()).hexdigest()==record['sha256']
-runtime_checks=runtime_proof['checks']
-runtime_results={(item['ecosystem'],item['name'],item['version']):item for item in runtime_checks}
-assert len(runtime_results) == len(runtime_checks)
-clean_results={(item['ecosystem'],item['name'],item['version']):item
-               for item in runtime_proof['without_driver']['checks']}
-assert len(clean_results) == len(runtime_proof['without_driver']['checks'])
+runtime_results={}
+clean_results={}
+for runtime_path, runtime_proof in runtime_reports(OUT/'assets'):
+    for record in runtime_proof.get('reproduced_examples', []):
+        assert sha256((OUT/'assets'/record['file']).read_bytes()).hexdigest()==record['sha256']
+    checks=runtime_proof['checks']
+    observed={(item['ecosystem'],item['name'],item['version']):(runtime_path,item) for item in checks}
+    assert len(observed)==len(checks)
+    runtime_results.update(observed)
+    clean=runtime_proof.get('without_driver', {}).get('checks', [])
+    checked_clean={(item['ecosystem'],item['name'],item['version']):item for item in clean}
+    assert len(checked_clean)==len(clean)
+    clean_results.update(checked_clean)
+    if runtime_proof['environment'].get('memory_integrity_running'):
+        assert runtime_proof['environment']['secure_boot'] is True
+        for item in checks:
+            assert item['before']==item['after']=={'windows_error':2}
+            assert item['install_exit']==item['uninstall_exit']==0
+            assert item['result']=={'installed':True,'active':False,'trial_state':0}
 installed_driver_checks=json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').read_text(encoding='utf8'))['editions']
 for row in rows:
     if row['ecosystem'] in other_registries:
@@ -260,6 +270,8 @@ for row in rows:
             expected = ({'windows_error':2} if row['first_check']['requires_installed_driver']
                         else {'valid':True,'keyboard':True,'mouse':False})
             assert clean['result']==expected
+            if clean.get('public_consumer_install_verified'):
+                assert clean['package_sha256']==row['verified_archive']['sha256']
     else:
         assert row['package_url'] in packages_en.links and row['package_url'] in packages_fr.links
     assert row['install_includes_driver_or_application'] is False
@@ -271,7 +283,7 @@ for row in rows:
         example_file=OUT/example.removeprefix(BASE)
         assert sha256(example_file.read_bytes()).hexdigest()==row['first_check']['source_sha256']
     if evidence := row.get('lab_verification'):
-        observed=runtime_results[(row['ecosystem'],row['name'],row['version'])]
+        runtime_path,observed=runtime_results[(row['ecosystem'],row['name'],row['version'])]
         assert evidence=={'source_url':BASE+runtime_path,'driver_version':observed['driver_version'],'runtime':observed['runtime']}
         assert observed['edition']==row['edition'] and observed['demo_timer_started'] is False
         if 'verified_archive' in row:
@@ -283,6 +295,8 @@ for row in rows:
         assert re.fullmatch(r'[a-f0-9]{64}', observed['driver_sha256'])
         if observed['driver_version']==installation['version']:
             assert observed['driver_sha256']==installation['installed_kernel_sha256']
+            if 'setup_sha256' in observed:
+                assert observed['setup_sha256']==installation['installer_sha256']
     if archive := row.get('verified_archive'):
         assert re.fullmatch(r'[a-f0-9]{64}', archive['sha256'])
         if row['ecosystem'].startswith('nuget-'):

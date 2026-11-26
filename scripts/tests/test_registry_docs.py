@@ -33,6 +33,25 @@ class RegistryDocumentationChecks(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "different SDK guide"):
                 registry.verify(row)
 
+    def test_rubygems_documentation_matches_when_declared(self):
+        row = {
+            "name": "vdevice", "version": "1.0.1", "ecosystem": "rubygems",
+            "metadata_url": "https://rubygems.org/api/v2/rubygems/vdevice/versions/1.0.1.json",
+            "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Vdevice/Vdevice-Ruby-rubygems#readme",
+            "registry_documentation_verified": True,
+            "verified_archive": {"url": "https://rubygems.org/gems/vdevice-1.0.1.gem", "sha256": "a" * 64},
+        }
+        doc = {
+            "name": row["name"], "version": row["version"], "documentation_uri": row["documentation_url"],
+            "gem_uri": row["verified_archive"]["url"], "sha": row["verified_archive"]["sha256"],
+        }
+        with patch.object(registry, "read", return_value=json.dumps(doc).encode()):
+            self.assertEqual(registry.verify(row), "vdevice 1.0.1 (rubygems)")
+        doc["documentation_uri"] = "https://github.com/TitanCSA/Vdevice/tree/main/Vdevice-Ruby-rubygems/docs"
+        with patch.object(registry, "read", return_value=json.dumps(doc).encode()):
+            with self.assertRaisesRegex(ValueError, "different SDK guide"):
+                registry.verify(row)
+
     def test_recovers_from_transient_github_view_error(self):
         with patch.object(registry, "read", side_effect=[self.failure(self.documentation, 503), b"# Python SDK"]) as read:
             registry.verify_documentation(self.documentation)

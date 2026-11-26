@@ -396,7 +396,7 @@
     "edition": "interceptor-keyboard-mouse",
     "ecosystem": "rubygems",
     "name": "interceptor-keyboard-mouse",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "first_check": {
       "call": "client.info",
       "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
@@ -408,9 +408,10 @@
     },
     "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Keyboard-Mouse/Interceptor-Keyboard-Mouse-Ruby-rubygems#readme",
     "verified_archive": {
-      "url": "https://rubygems.org/gems/interceptor-keyboard-mouse-1.0.0.gem",
-      "sha256": "f06122390129745891cf8436dbdcb982ea6a62a427718a4f3716e8e0f62c5c43"
-    }
+      "url": "https://rubygems.org/gems/interceptor-keyboard-mouse-1.0.1.gem",
+      "sha256": "ce33701e429e2c59ac8e2932fa806b5c2c53625f3f2a39df57be95477523b7d5"
+    },
+    "registry_documentation_verified": true
   },
   {
     "edition": "interceptor-gamepad-controller",
@@ -451,7 +452,7 @@
     "edition": "interceptor-gamepad-controller",
     "ecosystem": "rubygems",
     "name": "interceptor-gamepad-controller",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "first_check": {
       "call": "client.info",
       "expected": "Driver status with the matching edition installed, or Windows 2 when its interface is absent.",
@@ -463,9 +464,10 @@
     },
     "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interceptor-Gamepad-Controller/Interceptor-Gamepad-Controller-Ruby-rubygems#readme",
     "verified_archive": {
-      "url": "https://rubygems.org/gems/interceptor-gamepad-controller-1.0.0.gem",
-      "sha256": "f1b8f9d9a065a57a405e497339a3c06a3b7909b65f2caa4fe098d9199629ab1b"
-    }
+      "url": "https://rubygems.org/gems/interceptor-gamepad-controller-1.0.1.gem",
+      "sha256": "a42206dc6a4109fc3167a25e52ab1d1d9a9be9c1986b0c5dd3b35d82249d59d4"
+    },
+    "registry_documentation_verified": true
   },
   {
     "edition": "vdevice",
@@ -506,7 +508,7 @@
     "edition": "vdevice",
     "ecosystem": "rubygems",
     "name": "vdevice",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "first_check": {
       "call": "client.call('status')",
       "expected": "Driver status with Vdevice installed, or Windows 2 when its interface is absent.",
@@ -518,9 +520,10 @@
     },
     "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Vdevice/Vdevice-Ruby-rubygems#readme",
     "verified_archive": {
-      "url": "https://rubygems.org/gems/vdevice-1.0.0.gem",
-      "sha256": "61a611c1571deeaa174b17b6b4a916595ae6f1b53dfd8e67507f706c01c5a88c"
-    }
+      "url": "https://rubygems.org/gems/vdevice-1.0.1.gem",
+      "sha256": "eb8ab3ec7a293623a3b0661daea78a242c554a81c9ff2e38d1c3e16f4720fa5f"
+    },
+    "registry_documentation_verified": true
   },
   {
     "edition": "interception-v2",
@@ -561,7 +564,7 @@
     "edition": "interception-v2",
     "ecosystem": "rubygems",
     "name": "interception-v2",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "first_check": {
       "call": "client.call('check', {device: 1})",
       "expected": "Device number 1 is the first keyboard slot.",
@@ -573,8 +576,9 @@
     },
     "documentation_url": "https://github.com/TitanCSA/sdk-packages/tree/main/projects/Interception-V2/Interception-V2-Ruby-rubygems#readme",
     "verified_archive": {
-      "url": "https://rubygems.org/gems/interception-v2-1.0.0.gem",
-      "sha256": "bbe64d6b0aca40ce80ea5b0d90f8e8f8645b9feddaaaae7489a8e5367f58f618"
-    }
+      "url": "https://rubygems.org/gems/interception-v2-1.0.1.gem",
+      "sha256": "71233547b5a1b84aeeaac513c82455c34d863340395bdbab24446b2d175eb757"
+    },
+    "registry_documentation_verified": true
   }
 ]

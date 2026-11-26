@@ -71,6 +71,8 @@ def verify(row):
         elif registry == "rubygems":
             available = (document["name"] == name and document["version"] == version
                          and document["gem_uri"] == archive["url"] and document["sha"] == archive["sha256"])
+            if row.get("registry_documentation_verified") and document.get("documentation_uri") != row["documentation_url"]:
+                raise ValueError(f"{name} {version} lists a different SDK guide on RubyGems")
         else:
             available = version in document["versions"]
             if archive:

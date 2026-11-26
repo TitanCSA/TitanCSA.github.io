@@ -72,6 +72,13 @@ REGISTRIES = {
 SECONDARY_REGISTRIES = ("maven", "packagist", "rubygems")
 
 
+def runtime_reports(assets):
+    """Read dated package reports from oldest to newest."""
+    for path in sorted(assets.glob("sdk-registry-runtime-*.json")):
+        if re.fullmatch(r"sdk-registry-runtime-\d{4}-\d{2}-\d{2}\.json", path.name):
+            yield "assets/" + path.name, json.loads(path.read_text(encoding="utf-8"))
+
+
 def registry_catalogue(manifest, base):
     targets = {
         row["id"]: {"name": row["name"], "url": row["overview_url"], "type": "driver",
@@ -83,9 +90,11 @@ def registry_catalogue(manifest, base):
                           "url": base + "guides/first-run/#browser",
                           "release_url": browser["source"] + "/releases/tag/" + browser["tag"]}
     rows = json.loads((ROOT / "sdk-registry.json").read_text(encoding="utf-8"))
-    proof_file = "assets/sdk-registry-runtime-2026-11-25.json"
-    evidence = json.loads((ROOT / proof_file).read_text(encoding="utf-8"))["checks"]
-    lab_results = {(row["ecosystem"], row["name"].casefold(), row["version"]): row for row in evidence}
+    lab_results = {}
+    for proof_file, proof in runtime_reports(ROOT / "assets"):
+        for observed in proof["checks"]:
+            key = (observed["ecosystem"], observed["name"].casefold(), observed["version"])
+            lab_results[key] = (proof_file, observed)
     seen = set()
     for row in rows:
         name, version = row["name"], row["version"]
@@ -116,7 +125,8 @@ def registry_catalogue(manifest, base):
                 "<dependency>\n  <groupId>io.github.titancsa</groupId>\n"
                 f"  <artifactId>{artifact}</artifactId>\n  <version>{version}</version>\n</dependency>"
             )
-        if result := lab_results.get(key):
+        if lab := lab_results.get(key):
+            proof_file, result = lab
             if result["edition"] != row["edition"]:
                 raise ValueError(f"Lab result uses a different edition for {name}")
             row["lab_verification"] = {

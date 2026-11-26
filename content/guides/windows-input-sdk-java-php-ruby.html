@@ -1,6 +1,6 @@
 <h1>Use TitanCSA Windows input SDKs from Java, PHP or Ruby</h1>
 <p class="article-lead">Find the published language packages, their Windows requirements and the matching driver edition.</p>
-<p class="byline">Registry archives checked 24–25 November 2026</p>
+<p class="byline">Registry archives checked 24–26 November 2026</p>
 <p><a href="/fr/sdk-java-php-ruby/" lang="fr">Lire en français</a></p>
 <h2>Choose the package for your edition</h2>
 <div class="table-scroll"><table><thead><tr><th scope="col">Driver edition</th><th scope="col">Maven Central</th><th scope="col">Packagist</th><th scope="col">RubyGems</th></tr></thead><tbody>{{OTHER_SDK_REGISTRY_ROWS}}</tbody></table></div>
@@ -15,6 +15,7 @@
 <h2>Ruby</h2>
 <p>The checked gems require Ruby 3.1 or later. Use the package matching the installed Windows driver. For Vdevice, use the following command.</p>
 <pre><code>{{VDEVICE_RUBYGEMS_COMMAND}}</code></pre>
+<p>The four RubyGems 1.0.1 packages list their maintained SDK guides and passed the first check after installation from RubyGems on Windows x64. <a href="/assets/sdk-registry-runtime-2026-11-26.json">See the exact versions and results</a>.</p>
 <h2>What was verified</h2>
 <p>All 15 published bindings passed a first run with the matching driver absent. After installing the matching signed demo in Windows 11 x64 with Secure Boot, the three languages read status for Vdevice and the three Interceptor editions. All 12 installed-driver checks left the demo timer idle. For Interception V2, the check only classifies a device slot and requires no driver. <a href="/assets/sdk-registry-runtime-2026-11-25.json">Runtime versions and exact package evidence</a></p>
 <div class="related"><a href="/guides/windows-input-sdk-packages/">Python, Node.js, PowerShell and native packages</a><a href="/guides/windows-input-release-compare/">Compare the signed demos and Release editions</a></div>

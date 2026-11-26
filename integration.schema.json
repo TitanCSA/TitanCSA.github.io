@@ -208,6 +208,11 @@
         "version": { "type": "string", "minLength": 1 },
         "package_url": { "$ref": "#/$defs/url" },
         "metadata_url": { "$ref": "#/$defs/url" },
+        "documentation_url": { "$ref": "#/$defs/url" },
+        "registry_documentation_verified": {
+          "const": true,
+          "description": "The package registry metadata links to documentation_url."
+        },
         "install_command": { "type": "string", "minLength": 1 },
         "install_context": { "type": "string", "minLength": 1 },
         "runtime": { "type": "string", "minLength": 1 },
@@ -244,6 +249,9 @@
           },
           "oneOf": [{ "required": ["url"] }, { "required": ["filename"] }]
         }
+      },
+      "dependentRequired": {
+        "registry_documentation_verified": ["documentation_url"]
       }
     }
   }

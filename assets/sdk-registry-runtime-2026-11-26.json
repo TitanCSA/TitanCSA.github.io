@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-26",
+  "scope": "Read-only status calls with each matching signed demo under Secure Boot and Memory Integrity. Official npm archive hashes were compared to the tested package bytes. No capture session was started.",
+  "environment": {
+    "windows_build": 26100,
+    "architecture": "x64",
+    "secure_boot": true,
+    "memory_integrity_running": true,
+    "virtual_machine": "Hyper-V"
+  },
+  "checks": [
+    {
+      "ecosystem": "npm",
+      "edition": "interceptor",
+      "name": "interceptor-sdk",
+      "version": "1.0.1",
+      "package_sha256": "d03b1416060b1cfaccd474ffebcb17f5785182895c6292dfb14fbab912ce6fd1",
+      "runtime": "Node.js 24.21.0 x64",
+      "driver_version": "1.4.23.0",
+      "setup_sha256": "bcb953083ba71e64d0c65524f068395601165953da2501fbd637b643fcf822c0",
+      "demo_timer_started": false,
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      },
+      "before": {
+        "windows_error": 2
+      },
+      "after": {
+        "windows_error": 2
+      },
+      "install_exit": 0,
+      "uninstall_exit": 0,
+      "driver_sha256": "07acd1cd68780e59411a4f1cb8145519644503d007a50fdb63ab2373026749f5",
+      "package_url": "https://registry.npmjs.org/interceptor-sdk/-/interceptor-sdk-1.0.1.tgz",
+      "metadata_and_documentation_changed_only": true,
+      "runtime_source_archive_sha256": "151ffeb073f6dffcb6b0ca8b7370bd78f863df9703537035d36e73fa89cd3ac6"
+    },
+    {
+      "ecosystem": "npm",
+      "edition": "interceptor-keyboard-mouse",
+      "name": "interceptor-keyboard-mouse-sdk",
+      "version": "1.0.1",
+      "package_sha256": "9bc0320593bf342ab026877c5ad4d462a3dd776400955c1dd54d8a8c880310c3",
+      "runtime": "Node.js 24.21.0 x64",
+      "driver_version": "1.0.5.4",
+      "setup_sha256": "f8a1a5b9607079630aa577a28441588d62839a5b37c9b846c9d2ea18fd166576",
+      "demo_timer_started": false,
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      },
+      "before": {
+        "windows_error": 2
+      },
+      "after": {
+        "windows_error": 2
+      },
+      "install_exit": 0,
+      "uninstall_exit": 0,
+      "driver_sha256": "9f132ad0ed76dd80dbc7c0902b00a684668d11c11c7eff3e9b42f955e25eabcb",
+      "package_url": "https://registry.npmjs.org/interceptor-keyboard-mouse-sdk/-/interceptor-keyboard-mouse-sdk-1.0.1.tgz",
+      "metadata_and_documentation_changed_only": true,
+      "runtime_source_archive_sha256": "dfcc0df6cbf05f7a8f07ab2e9adeba50576bc14d2757d3eb0593c571c5fca0b7"
+    },
+    {
+      "ecosystem": "npm",
+      "edition": "interceptor-gamepad-controller",
+      "name": "interceptor-gamepad-controller",
+      "version": "1.0.1",
+      "package_sha256": "5f4654cc05d7f77a66a06dff37459062c933152de8114523da01ffaa3b3b6d44",
+      "runtime": "Node.js 24.21.0 x64",
+      "driver_version": "1.0.13.0",
+      "setup_sha256": "bd07d14597b33fdd1255bd43476d84171b9c86819100d7d925ab6a82785d1e13",
+      "demo_timer_started": false,
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      },
+      "before": {
+        "windows_error": 2
+      },
+      "after": {
+        "windows_error": 2
+      },
+      "install_exit": 0,
+      "uninstall_exit": 0,
+      "driver_sha256": "2b792a9d6398de9cf46ddbb7db6075e70e2e4812d1e2083248205db04873a727",
+      "package_url": "https://registry.npmjs.org/interceptor-gamepad-controller/-/interceptor-gamepad-controller-1.0.1.tgz",
+      "metadata_and_documentation_changed_only": true,
+      "runtime_source_archive_sha256": "eb7146cdbacd487250350eec7908acc9cffd50bd885458dd102ca898ffd17de2"
+    }
+  ],
+  "without_driver": {
+    "scope": "Fresh RubyGems installations on Windows x64. Read-only driver status or offline keyboard-slot classification.",
+    "checks": [
+      {
+        "edition": "interceptor-keyboard-mouse",
+        "ecosystem": "rubygems",
+        "name": "interceptor-keyboard-mouse",
+        "version": "1.0.1",
+        "package_sha256": "ce33701e429e2c59ac8e2932fa806b5c2c53625f3f2a39df57be95477523b7d5",
+        "runtime": "Ruby 4.0.9 x64",
+        "result": {
+          "windows_error": 2
+        },
+        "public_consumer_install_verified": true,
+        "runtime_source_archive_sha256": "f06122390129745891cf8436dbdcb982ea6a62a427718a4f3716e8e0f62c5c43"
+      },
+      {
+        "edition": "interceptor-gamepad-controller",
+        "ecosystem": "rubygems",
+        "name": "interceptor-gamepad-controller",
+        "version": "1.0.1",
+        "package_sha256": "a42206dc6a4109fc3167a25e52ab1d1d9a9be9c1986b0c5dd3b35d82249d59d4",
+        "runtime": "Ruby 4.0.9 x64",
+        "result": {
+          "windows_error": 2
+        },
+        "public_consumer_install_verified": true,
+        "runtime_source_archive_sha256": "f1b8f9d9a065a57a405e497339a3c06a3b7909b65f2caa4fe098d9199629ab1b"
+      },
+      {
+        "edition": "vdevice",
+        "ecosystem": "rubygems",
+        "name": "vdevice",
+        "version": "1.0.1",
+        "package_sha256": "eb8ab3ec7a293623a3b0661daea78a242c554a81c9ff2e38d1c3e16f4720fa5f",
+        "runtime": "Ruby 4.0.9 x64",
+        "result": {
+          "windows_error": 2
+        },
+        "public_consumer_install_verified": true,
+        "runtime_source_archive_sha256": "61a611c1571deeaa174b17b6b4a916595ae6f1b53dfd8e67507f706c01c5a88c"
+      },
+      {
+        "edition": "interception-v2",
+        "ecosystem": "rubygems",
+        "name": "interception-v2",
+        "version": "1.0.1",
+        "package_sha256": "71233547b5a1b84aeeaac513c82455c34d863340395bdbab24446b2d175eb757",
+        "runtime": "Ruby 4.0.9 x64",
+        "result": {
+          "valid": true,
+          "keyboard": true,
+          "mouse": false
+        },
+        "public_consumer_install_verified": true,
+        "runtime_source_archive_sha256": "bbe64d6b0aca40ce80ea5b0d90f8e8f8645b9feddaaaae7489a8e5367f58f618"
+      }
+    ]
+  }
+}
