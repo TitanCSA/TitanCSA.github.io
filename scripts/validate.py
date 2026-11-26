@@ -2,15 +2,17 @@ from zipfile import ZipFile
 from pathlib import Path
 from html.parser import HTMLParser
 from hashlib import sha256
+from email.utils import parsedate_to_datetime
 from struct import unpack
 from urllib.parse import urlparse,unquote
 import json,re,xml.etree.ElementTree as ET
+from feeds import ATOM, DC, DCTERMS
 from registry import runtime_reports
 from render_social_previews import PREVIEWS, WIDTH as PREVIEW_WIDTH, HEIGHT as PREVIEW_HEIGHT
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 class Page(HTMLParser):
-    def __init__(self):super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[];self.google_verification=None;self.language=None;self.alternates={};self.og_image=None;self.og_image_alt=None
+    def __init__(self):super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[];self.google_verification=None;self.language=None;self.alternates={};self.rss_feed=None;self.og_image=None;self.og_image_alt=None
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
         if 'id' in a:self.ids.append(a['id'])
@@ -22,6 +24,9 @@ class Page(HTMLParser):
         if tag=='meta' and a.get('property')=='og:image:alt':self.og_image_alt=a.get('content')
         if tag=='link' and a.get('rel')=='canonical':self.canonical=a.get('href','')
         if tag=='html':self.language=a.get('lang')
+        if tag=='link' and a.get('rel')=='alternate' and a.get('type')=='application/rss+xml':
+            assert self.rss_feed is None
+            self.rss_feed=a['href']
         if tag=='link' and a.get('rel')=='alternate' and 'hreflang' in a:
             assert a['hreflang'] not in self.alternates
             self.alternates[a['hreflang']]=a['href']
@@ -71,8 +76,9 @@ for route in ('','fr/'):
     assert html.count('data-project data-category=')==len(projects)
     assert html.count(' data-project-group ')==len(categories)
     assert {p['url'] for p in projects} <= set(landing.links)
-    assert BASE+'rss.xml' in landing.links and '/rss.xml' in landing.links
+    assert '/'+route+'rss.xml' in landing.links
 for page in by_canonical.values():
+    assert page.rss_feed==BASE+('fr/' if page.language=='fr' else '')+'rss.xml'
     if page.alternates:
         assert page.alternates[page.language]==page.canonical
         for language,url in page.alternates.items():
@@ -142,14 +148,34 @@ assert set(xml_sitemap_urls) == {
 }
 assert len(xml_sitemap_urls)==len(set(xml_sitemap_urls))
 assert (OUT/'sitemap.txt').read_text(encoding='utf8').splitlines()==xml_sitemap_urls
-feed=ET.parse(OUT/'rss.xml').getroot()
-entries=feed.findall('channel/item')
-assert feed.tag=='rss' and feed.get('version')=='2.0' and len(entries)>=10
-assert len(entries)==len({item.findtext('guid') for item in entries})
-for item in entries:
-    url=item.findtext('link')
-    assert item.findtext('guid')==url and url in by_canonical
-    assert item.findtext('title')==by_canonical[url].title
+feeds={}
+article_urls={url for url in by_canonical if url.startswith((BASE+'guides/',BASE+'fr/')) and url!=BASE+'fr/'}
+for prefix in ('','fr/'):
+    route=prefix+'rss.xml'
+    feed=ET.parse(OUT/route).getroot()
+    channel=feed.find('channel')
+    entries=channel.findall('item')
+    assert feed.tag=='rss' and feed.get('version')=='2.0' and entries
+    assert channel.findtext('link')==BASE+prefix
+    assert channel.find(f'{{{ATOM}}}link').attrib=={
+        'href':BASE+route,'rel':'self','type':'application/rss+xml'}
+    urls=[item.findtext('guid') for item in entries]
+    assert len(urls)==len(set(urls)) and set(urls)=={url for url in article_urls if url.startswith(BASE+prefix)}
+    changes=[]
+    for item,url in zip(entries,urls):
+        page=by_canonical[url]
+        schema=next(row for row in page.schemas if row['@type']=='TechArticle')
+        assert item.findtext('link')==url and item.find('guid').get('isPermaLink')=='true'
+        assert item.findtext('title')==page.title and item.findtext('description')==page.description
+        assert item.findtext(f'{{{DC}}}language')==page.language
+        assert item.findtext(f'{{{DCTERMS}}}modified')==schema['dateModified']
+        if published:=item.findtext('pubDate'):
+            assert parsedate_to_datetime(published).date().isoformat()==schema['datePublished']
+        changes.append(schema['dateModified'])
+    assert changes==sorted(changes,reverse=True)
+    assert parsedate_to_datetime(channel.findtext('lastBuildDate')).date().isoformat()==changes[0]
+    feeds[prefix]=urls
+assert feeds['fr/']==[url for url in feeds[''] if url.startswith(BASE+'fr/')]
 project_pages={path for path in parsed if path.parent.parent.name=='projects'}
 assert len(project_pages)==5
 editions={row['slug']:row for row in json.loads((OUT/'releases.json').read_text(encoding='utf8'))['editions']}

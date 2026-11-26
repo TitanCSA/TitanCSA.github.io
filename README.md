@@ -8,6 +8,8 @@ Static, public project selection and first-run documentation for Windows applica
 
 **Website:** https://titancsa.github.io/
 
+Follow updates with the [guide RSS feed](https://titancsa.github.io/rss.xml) or the [French RSS feed](https://titancsa.github.io/fr/rss.xml).
+
 The catalogue groups project and SDK entries by what users want to do. It distinguishes application prerequisites, SDK-only sources and engineering previews. Known limits, including the Vdevice controller teardown report and its fix, remain visible. Package mirrors and account forks are not counted as separate finished products.
 
 ## Build

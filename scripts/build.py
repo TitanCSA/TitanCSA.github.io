@@ -1,7 +1,7 @@
 """Build a public, dependency-free static catalogue from curated project evidence."""
 from pathlib import Path
 from html import escape
-from xml.etree import ElementTree as ET
+from feeds import write_feeds
 import json,re,shutil
 from integration import app_cards, make_manifest, sdk_rows, write_starter
 from go_samples import write_go_samples
@@ -236,9 +236,9 @@ def render(title,description,path,body,article=False):
         structured+=''.join(f'<link rel="alternate" hreflang="{lang}" href="{BASE}{route}">' for lang,route in localized.items())
     if path in ('','fr/','guides/installer-and-sdk/','fr/installeur-et-sdk/','guides/first-run/','fr/essayer-sans-pilote/') or path.startswith('projects/'):
         structured+=f'<link rel="alternate" type="application/json" href="{BASE}integration.json" title="SDK integration manifest">'
-    if path in ('','fr/'):
-        feed_title='Guides TitanCSA' if language=='fr' else 'TitanCSA guides'
-        structured+=f'<link rel="alternate" type="application/rss+xml" title="{feed_title}" href="{BASE}rss.xml">'
+    if path in pages:
+        feed_title,feed_path=('Guides TitanCSA','fr/rss.xml') if language=='fr' else ('TitanCSA guides','rss.xml')
+        structured+=f'<link rel="alternate" type="application/rss+xml" title="{feed_title}" href="{BASE}{feed_path}">'
     if not path and verification:structured+='<meta name="google-site-verification" content="'+escape(verification,quote=True)+'">'
     skip_label,nav_label,theme_text=(
         ('Aller au contenu','Navigation principale','Mode sombre')
@@ -299,23 +299,7 @@ for path,(title,description,source) in pages.items():
 urls=''.join(f'<url><loc>{BASE+path}</loc><lastmod>{reviewed.get(path,checked)}</lastmod></url>' for path in pages)
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls+'</urlset>',encoding='utf8')
 (OUT/'sitemap.txt').write_text(''.join(BASE+path+'\n' for path in pages),encoding='utf8',newline='\n')
-feed=ET.Element('rss', version='2.0')
-channel=ET.SubElement(feed,'channel')
-ET.SubElement(channel,'title').text='TitanCSA guides'
-ET.SubElement(channel,'link').text=BASE
-ET.SubElement(channel,'description').text='Practical Windows input and device SDK guides from TitanCSA.'
-ET.register_namespace('atom','http://www.w3.org/2005/Atom')
-ET.SubElement(channel,'{http://www.w3.org/2005/Atom}link',href=BASE+'rss.xml',rel='self',type='application/rss+xml')
-for path,(title,description,_) in reversed(pages.items()):
-    if path not in demo_guides | release_guides:
-        continue
-    item=ET.SubElement(channel,'item')
-    ET.SubElement(item,'title').text=title
-    ET.SubElement(item,'link').text=BASE+path
-    ET.SubElement(item,'guid',isPermaLink='true').text=BASE+path
-    ET.SubElement(item,'description').text=description
-ET.indent(feed)
-ET.ElementTree(feed).write(OUT/'rss.xml',encoding='utf-8',xml_declaration=True)
+write_feeds(OUT, BASE, pages, reviewed, published_dates, checked)
 search_robots=['OAI-SearchBot','Claude-SearchBot','Claude-User']
 (OUT/'robots.txt').write_text(
     'User-agent: *\nAllow: /\n\n'
@@ -332,6 +316,8 @@ shutil.copyfile(ROOT/'integration.schema.json', OUT/'integration.schema.json')
 reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documentation from the publisher.', '',
     '## Choose, try and activate',
     f'- [Catalogue des projets en français]({BASE}fr/)',
+    f'- [Guide updates RSS feed]({BASE}rss.xml)',
+    f'- [Flux RSS des guides français]({BASE}fr/rss.xml)',
     f'- [Installer, driver and SDK]({BASE}guides/installer-and-sdk/)',
     f'- [Installateur, pilote et SDK]({BASE}fr/installeur-et-sdk/)',
     f'- [SDK integration manifest]({BASE}integration.json)',
