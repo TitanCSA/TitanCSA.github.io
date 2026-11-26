@@ -13,7 +13,8 @@ with urlopen(base+'projects.json',timeout=15) as response:
 with urlopen(base+'releases.json',timeout=15) as response:
     editions=json.load(response)['editions']
 with urlopen(base+'integration.json',timeout=15) as response:
-    registry={(row['ecosystem'],row['name']):row['install_command'] for row in json.load(response)['sdk_registry']}
+    sdk_manifest=json.load(response)
+    registry={(row['ecosystem'],row['name']):row['install_command'] for row in sdk_manifest['sdk_registry']}
 edition_routes={urlsplit(row['overview_url']).path.lstrip('/'):row for row in editions}
 project_count=len(projects)
 assert project_count
@@ -151,6 +152,13 @@ with sync_playwright() as p:
     with page.expect_download() as rust_file:
         rust_download.click()
     assert rust_file.value.suggested_filename=='main.rs' and rust_file.value.failure() is None
+    for item in sdk_manifest['sdk_quickstarts']:
+        link=rust_packages.locator('#rust-quickstarts + p').get_by_role('link', name=item['name'], exact=True)
+        assert link.get_attribute('href')==item['download_url']
+    assert rust_packages.get_by_text('cargo run --locked', exact=True).is_visible()
+    page.goto(base+'fr/installer-sdk-windows/?check=link#rust-quickstarts',wait_until='domcontentloaded')
+    assert page.locator('#rust-quickstarts').is_visible()
+    page.goto(base+'fr/installer-sdk-windows/',wait_until='domcontentloaded')
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Rust table causes horizontal page scrolling'
     checks_help=page.locator('main details.first-run-more').filter(
         has=page.locator('a[href="/assets/python-interceptor-status.py"]'))

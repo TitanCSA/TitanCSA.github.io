@@ -38,6 +38,24 @@
       "type": "array",
       "minItems": 1,
       "items": { "$ref": "#/$defs/registryPackage" }
+    },
+    "sdk_quickstarts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["edition", "name", "language", "download_url", "release_url", "sha256", "command", "expected_output", "evidence_url"],
+        "properties": {
+          "edition": { "$ref": "#/$defs/id" },
+          "name": { "type": "string", "minLength": 1 },
+          "language": { "const": "Rust" },
+          "download_url": { "$ref": "#/$defs/url" },
+          "release_url": { "$ref": "#/$defs/url" },
+          "sha256": { "$ref": "#/$defs/sha256" },
+          "command": { "const": "cargo run --locked" },
+          "expected_output": { "type": ["object", "array"] },
+          "evidence_url": { "$ref": "#/$defs/url" }
+        }
+      }
     }
   },
   "$defs": {

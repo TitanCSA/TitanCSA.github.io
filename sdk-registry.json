@@ -760,5 +760,23 @@
       "url": "https://static.crates.io/crates/vdevice/vdevice-1.0.1.crate",
       "sha256": "3e1dda32c5fa365ec550bff5aad1da0e680b79b9b0ba01d94489ae023dcde0cc"
     }
+  },
+  {
+    "edition": "titan-audio-link",
+    "ecosystem": "cargo",
+    "name": "titan-audio-link",
+    "version": "1.0.1",
+    "first_check": {
+      "call": "client.call(\"list\", serde_json::json!({}))",
+      "expected": "An empty list means no Titan Audio Link endpoints were found.",
+      "requires_installed_driver": false,
+      "requires_application": false,
+      "opens_input_context": false
+    },
+    "documentation_url": "https://github.com/TitanCSA/sdk-packages/blob/main/projects/Titan-Audio-Link/Titan-Audio-Link-Rust-cargo/README.md",
+    "verified_archive": {
+      "url": "https://static.crates.io/crates/titan-audio-link/titan-audio-link-1.0.1.crate",
+      "sha256": "13017422e54d2d6d1528aa07e5dda2120b81c10e8f72cc4e62c5dc40b1bbdaa0"
+    }
   }
 ]

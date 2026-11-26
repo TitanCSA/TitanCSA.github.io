@@ -217,7 +217,7 @@ def secondary_registry_rows(rows, edition_order):
     return "\n".join(table)
 
 
-def registry_tables(rows, *, french=False):
+def registry_tables(rows, *, french=False, rust_quickstarts=()):
     labels = ("Projet", "Paquet", "Commande") if french else ("Project", "Package", "Install command")
     columns = "".join(f'<th scope="col">{label}</th>' for label in labels)
     sections = []
@@ -268,7 +268,15 @@ def registry_tables(rows, *, french=False):
                             "and run <code>cargo run</code>. When distributing the <code>.exe</code>, "
                             "place the crate’s DLL beside it.")
             steps = f"<p>{instructions}</p>"
+        bundles = ""
+        if key == "cargo" and rust_quickstarts:
+            links = " · ".join(f'<a href="{escape(item["download_url"], quote=True)}">{escape(item["name"])}</a>'
+                               for item in rust_quickstarts)
+            instructions = ("Exemples ZIP prêts à lancer. Décompresse le ZIP et lance <code>cargo run --locked</code> "
+                            "dans son dossier.") if french else ("Standalone ZIP examples. Extract the ZIP and run "
+                            "<code>cargo run --locked</code> in its folder.")
+            bundles = f'<p id="rust-quickstarts">{instructions}</p><p>{links}</p>'
         sections.append(f'<details class="first-run-more"><summary>{language}</summary><p>{escape(runtime)}</p>{steps}'
                         f'<div class="table-scroll"><table><thead><tr>{columns}</tr></thead>'
-                        '<tbody>' + "\n".join(table) + '</tbody></table></div></details>')
+                        '<tbody>' + "\n".join(table) + f'</tbody></table></div>{bundles}</details>')
     return "\n".join(sections)

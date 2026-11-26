@@ -176,7 +176,8 @@ def main():
         count = check_edition(edition, recipes[edition["slug"]]["asset_role"], args.verify_downloads)
         print(f"{edition['slug']} {edition['tag']}: {count} official assets and exact SDK digest")
         checked += count
-    apps = json.loads((ROOT / "dist" / "integration.json").read_text(encoding="utf-8"))["applications"]
+    integration = json.loads((ROOT / "dist" / "integration.json").read_text(encoding="utf-8"))
+    apps = integration["applications"]
     for app in apps:
         edition = {"slug": app["id"], "repository": app["source"]}
         archive = official_assets(edition, app["tag"], {"zip": app["zip"]})["zip"]
@@ -187,6 +188,19 @@ def main():
         print(f"{app['id']} {app['tag']}: exact app ZIP digest")
     scope = "downloaded files" if args.verify_downloads else "asset references"
     print(f"Verified {checked + len(apps)} {scope} across {len(editions) + len(apps)} pinned releases.")
+    quickstarts = integration.get("sdk_quickstarts", [])
+    for release_url in sorted({item["release_url"] for item in quickstarts}):
+        repository, separator, tag = release_url.rpartition("/releases/tag/")
+        if not separator:
+            raise ValueError("A quickstart must link to its GitHub release.")
+        pinned = {item["edition"]: item for item in quickstarts if item["release_url"] == release_url}
+        filenames = {key: row["download_url"].rsplit("/", 1)[-1] for key, row in pinned.items()}
+        assets = official_assets({"slug": "rust quickstarts", "repository": repository}, tag, filenames)
+        for key, (url, digest) in assets.items():
+            if (url, digest) != (pinned[key]["download_url"], pinned[key]["sha256"]):
+                raise ValueError(f"{key}: pinned quickstart differs from the official release.")
+            verify_download(url, digest)
+        print(f"{tag}: verified {len(assets)} public quickstart archives and their SHA-256 values.")
 
 
 if __name__ == "__main__":

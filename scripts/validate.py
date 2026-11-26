@@ -247,6 +247,17 @@ assert schema['properties']['schema_version']['const']==manifest['schema_version
 preview = json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').read_text(encoding='utf8'))['setup_preview']
 assert preview['preview_exit_code'] == 0 and preview['secure_boot'] is True
 assert sha256((OUT/preview['screenshot_url'].removeprefix(BASE)).read_bytes()).hexdigest() == preview['screenshot_sha256']
+quickstart_path='assets/rust-sdk-quickstarts-2026-11-26.json'
+quickstart_proof=json.loads((OUT/quickstart_path).read_text(encoding='utf8'))
+quickstarts=manifest['sdk_quickstarts']
+assert quickstarts==quickstart_proof['checks'] and len(quickstarts)==2
+outputs={'interception-v2':{'keyboard':True,'mouse':False,'valid':True},'titan-audio-link':[]}
+assert {row['edition'] for row in quickstarts}==outputs.keys()
+for row in quickstarts:
+    assert row['command']=='cargo run --locked' and row['expected_output']==outputs[row['edition']]
+    assert row['evidence_url']==BASE+quickstart_path and re.fullmatch(r'[a-f0-9]{64}',row['sha256'])
+    assert row['download_url'] in packages_en.links and row['download_url'] in packages_fr.links
+    assert row['download_url'].startswith(row['release_url'].replace('/releases/tag/','/releases/download/')+'/')
 rows = manifest['sdk_registry']
 other_registries={'maven','packagist','rubygems'}
 language_guide=by_canonical[BASE+'guides/windows-input-sdk-java-php-ruby/']

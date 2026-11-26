@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-26T21:07:26.533567+00:00",
+  "runtime": "cargo 1.100.0 (3acc79c0c 2026-11-05)",
+  "minimum_runtime": "cargo 1.82.0 (8f40fc59f 2024-08-21)",
+  "platform": "Windows x64 with MSVC",
+  "source_commit": "8867298effed59394c731db4cd3393fc5837e9f8",
+  "checksums": {
+    "url": "https://github.com/TitanCSA/sdk-packages/releases/download/rust-quickstarts-v1.0.1/SHA256SUMS.txt",
+    "sha256": "2cdf480472f6bb3ec7a4767825af84b9706a7171fd08380f78504dde12ddc00f"
+  },
+  "scope": "The two published ZIPs were run from fresh folders with no driver installed. Cargo used the included local SDKs and fetched locked JSON dependencies. No capture was started.",
+  "checks": [
+    {
+      "edition": "interception-v2",
+      "name": "Interception V2",
+      "language": "Rust",
+      "download_url": "https://github.com/TitanCSA/sdk-packages/releases/download/rust-quickstarts-v1.0.1/interception-v2-1.0.1-rust-first-check.zip",
+      "release_url": "https://github.com/TitanCSA/sdk-packages/releases/tag/rust-quickstarts-v1.0.1",
+      "sha256": "561b8725be815e33f92e94abe5d4f416be3865617e12ffc8d276c65b1c875aae",
+      "command": "cargo run --locked",
+      "expected_output": {
+        "keyboard": true,
+        "mouse": false,
+        "valid": true
+      },
+      "evidence_url": "https://titancsa.github.io/assets/rust-sdk-quickstarts-2026-11-26.json"
+    },
+    {
+      "edition": "titan-audio-link",
+      "name": "Titan Audio Link",
+      "language": "Rust",
+      "download_url": "https://github.com/TitanCSA/sdk-packages/releases/download/rust-quickstarts-v1.0.1/titan-audio-link-1.0.1-rust-first-check.zip",
+      "release_url": "https://github.com/TitanCSA/sdk-packages/releases/tag/rust-quickstarts-v1.0.1",
+      "sha256": "b9f122d3718a2ef44e86d10ef48445eb221c22ca540166e1b765e61b2667a9f9",
+      "command": "cargo run --locked",
+      "expected_output": [],
+      "evidence_url": "https://titancsa.github.io/assets/rust-sdk-quickstarts-2026-11-26.json"
+    }
+  ]
+}

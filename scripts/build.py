@@ -66,6 +66,9 @@ editions_by_overview={edition['overview_url']:edition for edition in editions.va
 input_editions={slug:editions[slug] for slug in featured}
 integration=make_manifest(BASE,editions)
 integration['sdk_registry']=registry_catalogue(integration,BASE)
+rust_proof_path='assets/rust-sdk-quickstarts-2026-11-26.json'
+rust_quickstarts=json.loads((ROOT/rust_proof_path).read_text(encoding='utf8'))['checks']
+integration['sdk_quickstarts']=rust_quickstarts
 assert projects and len({p['url'].lower() for p in projects})==len(projects)
 assert all(p['url'].startswith(('https://github.com/TitanCSA/','https://github.com/titanfyre/')) for p in projects)
 OUT.mkdir(exist_ok=True)
@@ -83,8 +86,8 @@ for french in (False, True):
 replacements['RELEASE_REVIEW_DATE']=release_date
 replacements['INSTALLER_SDK_ROWS_EN']=sdk_rows(integration)
 replacements['INSTALLER_SDK_ROWS_FR']=sdk_rows(integration,french=True)
-replacements['REGISTRY_TABLES_EN']=registry_tables(integration['sdk_registry'])
-replacements['REGISTRY_TABLES_FR']=registry_tables(integration['sdk_registry'],french=True)
+replacements['REGISTRY_TABLES_EN']=registry_tables(integration['sdk_registry'],rust_quickstarts=rust_quickstarts)
+replacements['REGISTRY_TABLES_FR']=registry_tables(integration['sdk_registry'],french=True,rust_quickstarts=rust_quickstarts)
 browser_package=next(row for row in integration['sdk_registry'] if row['name']=='browser-control-sdk')
 replacements['BROWSER_PYPI_URL']=escape(browser_package['package_url'],quote=True)
 replacements['BROWSER_PYPI_INSTALL']=escape(browser_package['install_command'])
@@ -341,6 +344,7 @@ reference_links=['# TitanCSA','', '> Public Windows input driver and SDK documen
     f'- [Installation des SDK Windows en français]({BASE}fr/installer-sdk-windows/)',
     f'- [Migration from the original Interception API]({BASE}guides/interception-v2-migration/)',
     f'- [Verified registry SDK packages]({BASE}guides/windows-input-sdk-packages/)',
+    f'- [Standalone Rust ZIP quickstarts]({BASE}{rust_proof_path})',
     f'- [Rust crate checks with exact package hashes]({BASE}assets/rust-sdk-first-checks-2026-11-26.json)',
     f'- [Go module checks with exact package hashes]({BASE}assets/go-sdk-first-checks-2026-11-26.json)',
     f'- [npm and RubyGems package runtime checks]({BASE}assets/sdk-registry-runtime-2026-11-26.json)',
