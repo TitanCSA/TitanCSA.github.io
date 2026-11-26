@@ -1,11 +1,11 @@
 {
-  "reviewed": "2026-11-25",
+  "reviewed": "2026-11-26",
   "commercial_checked": "2026-11-25",
   "editions": [
     {
       "slug": "interceptor",
       "demo": "1.4.23.0",
-      "tag": "v1.4.23.0-demo",
+      "tag": "v1.4.23.0-demo-r2",
       "commercial": {
         "package_version": "1.6.1.1",
         "driver_version": "1.6.0.0"
@@ -22,20 +22,20 @@
         "viewer": "InterceptorExampleUI.exe",
         "console_installer": "InterceptorSetupConsole.exe"
       },
-      "sdk_sha256": "734fde1cbe20fd3d99250174432af50ee5690848b92daba0e8a984fb291bceb7",
+      "sdk_sha256": "660b041f860a1c8d6181dc66f9cb79b1a74477a37e8b4704ee4145e33ac79e1b",
       "demo_asset_sha256": {
-        "installer": "688a07b52fb20d359ae0bab36e7734fb53fb1ed2bf7dc11be3626b0ccabb608d",
-        "examples": "2a4b85cd72193ee03fa5f9f26605d2d77ba539750ba84fbf7db9fe572a0d3844",
-        "sdk": "734fde1cbe20fd3d99250174432af50ee5690848b92daba0e8a984fb291bceb7",
-        "checksums": "c40203355e8b73c78d14d84243a464bd67800d5e4abbfcb5633a3da737a74e78",
-        "viewer": "d8c61016f4252c8c5d94e969b77e9841729328e70a623fd5cc211998f7616e10",
-        "console_installer": "d2f0346bfb4e2b2ef06324d5072e2fe7ed55241cc0c93a8c8a4cfa4cd46256fd"
+        "installer": "bcc0356571febd2be61d1e66a270d4ebdad9470a1fda2cd9028a69873468bf1a",
+        "examples": "5a1e8d2552a6527918bf4634a3fd24d4fcd1c70a87ef13f09207db57b43452cd",
+        "sdk": "660b041f860a1c8d6181dc66f9cb79b1a74477a37e8b4704ee4145e33ac79e1b",
+        "checksums": "5259bc85b198b6740c987bcf5c2defc5753a96aad3523ef70af7d1134bcaf54a",
+        "viewer": "b5694e2221ce26d30e2fbb848b263fa7afcbdd03a7cab18885ccb9fd83f444b7",
+        "console_installer": "bcb953083ba71e64d0c65524f068395601165953da2501fbd637b643fcf822c0"
       }
     },
     {
       "slug": "interceptor-keyboard-mouse",
       "demo": "1.0.5.4",
-      "tag": "v1.0.5.4-demo",
+      "tag": "v1.0.5.4-demo-r2",
       "commercial_checked": "2026-11-26",
       "commercial": {
         "package_version": "1.0.2.6",
@@ -53,14 +53,14 @@
         "viewer": "InterceptorExampleUI.exe",
         "console_installer": "InterceptorSetupConsole.exe"
       },
-      "sdk_sha256": "ef0515b2ca1240dd5d2cdea781eb60dbe177e84cfd868bbfe5933db1f3484834",
+      "sdk_sha256": "c80b62f4b2071c2b0bde9686a3b1499e67adac1b84d3ae194596848e2c0b349f",
       "demo_asset_sha256": {
-        "installer": "ecd19ed92ef39114bd17a4cec8f5d26be18ca08af341b00b11905b0f0ba96788",
-        "examples": "5048d2827a93ea807746be9cd6c7568c306ebaa90c1380bac103e4c8a7a89134",
-        "sdk": "ef0515b2ca1240dd5d2cdea781eb60dbe177e84cfd868bbfe5933db1f3484834",
-        "checksums": "91d901a9ee57ebb67417aa9e7deb6f8c4ccc1d54ddc144af6b9f2ab1fe81e13e",
-        "viewer": "88464e8b6668f4da96edbd6c99aa79f73c05b8802c4f703e862276941d3312d9",
-        "console_installer": "f7650e55e45d1a60f74a464e7be194a2772829711c2433fb992969d693856009"
+        "installer": "80fc4a236111d259bc25a4addf26e39c886bf006832a504f30ca7125d61b6702",
+        "examples": "8ccf3619685e6c60fc9425ca4312aa9c89e072687aaa1a9459006e992d6e0134",
+        "sdk": "c80b62f4b2071c2b0bde9686a3b1499e67adac1b84d3ae194596848e2c0b349f",
+        "checksums": "372b04d1e2fc720beafc607d6a448c4acdbe35d3df246000fa9f66d4416b245f",
+        "viewer": "025d42f8f9107805226ed4f35ae2c6151d0a38a353a70934076b1b731690cc58",
+        "console_installer": "f8a1a5b9607079630aa577a28441588d62839a5b37c9b846c9d2ea18fd166576"
       }
     },
     {
