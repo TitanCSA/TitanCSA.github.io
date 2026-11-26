@@ -6,10 +6,11 @@ from struct import unpack
 from urllib.parse import urlparse,unquote
 import json,re,xml.etree.ElementTree as ET
 from registry import runtime_reports
+from render_social_previews import PREVIEWS, WIDTH as PREVIEW_WIDTH, HEIGHT as PREVIEW_HEIGHT
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 class Page(HTMLParser):
-    def __init__(self):super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[];self.google_verification=None;self.language=None;self.alternates={}
+    def __init__(self):super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[];self.google_verification=None;self.language=None;self.alternates={};self.og_image=None;self.og_image_alt=None
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
         if 'id' in a:self.ids.append(a['id'])
@@ -17,6 +18,8 @@ class Page(HTMLParser):
         if tag=='title':self.in_title=True
         if tag=='meta' and a.get('name')=='description':self.description=a.get('content','')
         if tag=='meta' and a.get('name')=='google-site-verification':self.google_verification=a.get('content')
+        if tag=='meta' and a.get('property')=='og:image':self.og_image=a.get('content')
+        if tag=='meta' and a.get('property')=='og:image:alt':self.og_image_alt=a.get('content')
         if tag=='link' and a.get('rel')=='canonical':self.canonical=a.get('href','')
         if tag=='html':self.language=a.get('lang')
         if tag=='link' and a.get('rel')=='alternate' and 'hreflang' in a:
@@ -108,7 +111,15 @@ for path,page in parsed.items():
         target=target.resolve()
         assert target.exists(),(path.name,link)
         if url.fragment and target in parsed:assert unquote(url.fragment) in parsed[target].ids,(path.name,link)
-assert (OUT/'assets/social.png').is_file()
+for route,page in by_canonical.items():
+    preview=PREVIEWS.get(route.removeprefix(BASE))
+    filename=f'social-{preview[0]}.png' if preview else 'social.png'
+    assert page.og_image==BASE+'assets/'+filename and page.og_image_alt
+    image=(OUT/'assets'/filename).read_bytes()
+    assert image[:8]==b'\x89PNG\r\n\x1a\n' and len(image)<200_000
+    assert unpack('>II',image[16:24])==(PREVIEW_WIDTH,PREVIEW_HEIGHT)
+    if preview:
+        assert page.og_image_alt==f'{preview[1]}. {preview[2]}'
 assert (OUT/'assets/site.css').stat().st_size<50_000
 assert (OUT/'assets/catalogue.js').stat().st_size<15_000
 hid_result=json.loads((OUT/'assets/vdevice-hid-test-20261124.json').read_text(encoding='utf8'))
