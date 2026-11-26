@@ -36,9 +36,10 @@
       "slug": "interceptor-keyboard-mouse",
       "demo": "1.0.5.4",
       "tag": "v1.0.5.4-demo",
+      "commercial_checked": "2026-11-26",
       "commercial": {
-        "package_version": "1.0.2.2",
-        "driver_version": "1.0.2.2"
+        "package_version": "1.0.2.6",
+        "driver_version": "1.0.2.6"
       },
       "use": "Distinguish physical keyboards and mice and remap input from selected devices.",
       "api": "C++17 SDK and optional AutoHotInterceptor integration",
@@ -96,6 +97,7 @@
       "slug": "vdevice",
       "demo": "1.0.6.1",
       "tag": "v1.0.6.1-demo",
+      "commercial_checked": "2026-11-26",
       "commercial": {
         "package_version": "1.0.4.1",
         "driver_version": "1.0.4.1"

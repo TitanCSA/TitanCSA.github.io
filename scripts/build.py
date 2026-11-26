@@ -236,6 +236,7 @@ for path,(title,description,source) in pages.items():
     if path.startswith('projects/'):
         slug=path.split('/')[1]
         edition=editions[slug]
+        package_check=escape(edition.get('commercial_checked',commercial_checked))
         demo_assets=edition['demo_assets']
         downloads=' · '.join(f'<a href="{demo_assets[role]}">{label}</a>'
                              for role,label in [('console_installer','Console installer'),('driver','Signed driver ZIP'),
@@ -243,7 +244,7 @@ for path,(title,description,source) in pages.items():
                              if role in demo_assets)
         links=(
             f'<p>Commercial package <strong>{escape(edition["commercial"]["package_version"])}</strong> contains signed driver '
-            f'<strong>{escape(edition["commercial"]["driver_version"])}</strong>. Delivery verified {commercial_checked}.</p>'
+            f'<strong>{escape(edition["commercial"]["driver_version"])}</strong>. Package record checked {package_check}.</p>'
             f'<p>Signed demo <a href="{edition["demo_url"]}">{edition["demo"]} release notes</a> · {downloads}.</p><p>'
             '<a href="/guides/windows-input-release-compare/">Compare editions</a> · '
             '<a href="/guides/release-activation-help/">Installation and activation help</a>.</p>'

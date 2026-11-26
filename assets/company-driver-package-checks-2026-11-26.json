@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-26",
+  "scope": "Catalogs, INF and kernel image membership were verified from exact Company setup resources using Windows SDK SignTool verify /kp. Each matching SDK was built with its included CMake settings on Windows x64. This record covers package signatures and compilation.",
+  "edition_control": "A null store-manifest field means current delivery metadata for that edition was not accessible to the checking account.",
+  "editions": [
+    {
+      "project": "interceptor",
+      "package_version": "1.6.1.1",
+      "driver_version": "1.6.0.0",
+      "company_archive_sha256": "e6a225ab2d7411855d2ca8b8b5b99008f651a331ffbfb929245f762b1a4ccd62",
+      "console_installer_sha256": "5ca60264e4d2831f9108f4a5b71b27bcb3f89d24cc046ff1552da5dd7fa1b8c9",
+      "publisher_store_manifest_agrees": null,
+      "sdk_source_sha256": "fed3b8e72a214feff1cbf881dd18b891cbb2666aceadad384bde2f96548b8e13",
+      "compiled_sdk_source_x64": true,
+      "signed_driver_packages": [
+        {
+          "inf": "InterceptorControl.inf",
+          "kernel": "Interceptor.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "4cfdc6c5a3420cd97921e40d073deb04bc8c2e48adcd456b15384aad164a1ef7",
+          "kernel_sha256": "016fce32c0af3641932bbad5fa73df3ef7a79269026aff0552fdda28a1f187ea",
+          "catalogue_sha256": "28e00137039834ab46a8e6bc804cc605d8b34ecf8c2620c6e030e607a659c45f",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        },
+        {
+          "inf": "InterceptorKeyboard.inf",
+          "kernel": "Interceptor.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "05d27f358a4933b99ee2007775740f06a876251ab0bf69065999d8b80a8476bd",
+          "kernel_sha256": "016fce32c0af3641932bbad5fa73df3ef7a79269026aff0552fdda28a1f187ea",
+          "catalogue_sha256": "1f448cb2330cbee247b88ddb4930eea83fd17a1a1d35a3e7537a1cf3d6afa2bf",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        },
+        {
+          "inf": "InterceptorMouse.inf",
+          "kernel": "Interceptor.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "0cc71e20b027fdbfd7cfdc2b3839b2fa08e53a15fc4a38f5472d9f836fab1317",
+          "kernel_sha256": "016fce32c0af3641932bbad5fa73df3ef7a79269026aff0552fdda28a1f187ea",
+          "catalogue_sha256": "8d0ce6443a0acd7ae4fc005de8652932eacf5610b4234be3cbc6517912402a22",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        }
+      ]
+    },
+    {
+      "project": "interceptor-keyboard-mouse",
+      "package_version": "1.0.2.6",
+      "driver_version": "1.0.2.6",
+      "company_archive_sha256": "8b5357b06bbacdf6e54eb9a95db2c1cdc868853af290fb2410265c565c0f67bc",
+      "console_installer_sha256": "a6a59505152b6be3ee8a054f4228a0ef91fb64a72d28269a61897d387767da04",
+      "publisher_store_manifest_agrees": true,
+      "sdk_source_sha256": "941bfa98134973acab2acd3b231a235dc64f07cd26551b7aca90aec7f3888d2d",
+      "compiled_sdk_source_x64": true,
+      "signed_driver_packages": [
+        {
+          "inf": "InterceptorKeyboardMouseReleaseControl.inf",
+          "kernel": "InterceptorKeyboardMouseRelease.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "d9f142f322f970abac2c32ec3d2409d7d340e1204bc07d28e9f8a369b8645f1c",
+          "kernel_sha256": "9da346aa43420dca02257311a2c344b379af24d0f3565c7704badfb2d4634eb9",
+          "catalogue_sha256": "0d614fe4dac1cb0a7e63d6e4a667d97a5a00a7f48ffb54110408385677d042e6",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        },
+        {
+          "inf": "InterceptorKeyboardMouseReleaseKeyboard.inf",
+          "kernel": "InterceptorKeyboardMouseRelease.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "e0ae503d3d9b1a442ad1eb1659c12caedea6889f487bccdd193c7a9a05d5dea4",
+          "kernel_sha256": "9da346aa43420dca02257311a2c344b379af24d0f3565c7704badfb2d4634eb9",
+          "catalogue_sha256": "c7ee2ea7911365b5e817a3dcccdf0ad675cc18e77fcfdb4a7eda9eab51d71d74",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        },
+        {
+          "inf": "InterceptorKeyboardMouseReleaseMouse.inf",
+          "kernel": "InterceptorKeyboardMouseRelease.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "a347cd855dc77537d5adf8f2fda2a49ab1974f968cbe468adde37a5ab48956d7",
+          "kernel_sha256": "9da346aa43420dca02257311a2c344b379af24d0f3565c7704badfb2d4634eb9",
+          "catalogue_sha256": "f94ecacabb86b6986319fa9838e54b24110203e1e98dd1fa08da53966cd3544c",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        }
+      ]
+    },
+    {
+      "project": "interceptor-gamepad-controller",
+      "package_version": "1.0.1.1",
+      "driver_version": "1.0.0.0",
+      "company_archive_sha256": "b841b7b7f374b0952450f5cd993666c3820578feaa3ad6212f4db13dad0c6fdf",
+      "console_installer_sha256": "b5061c76a2c6170b4241c789241925c9b8709ea178cb3a0021189c7e468e0488",
+      "publisher_store_manifest_agrees": true,
+      "sdk_source_sha256": "dc26c4279cdc2842b0503d0a1496f5d3d7968a97c0167f72f5c7f9e02b6fb1e0",
+      "compiled_sdk_source_x64": true,
+      "signed_driver_packages": [
+        {
+          "inf": "InterceptorGamepadControllerReleaseControl.inf",
+          "kernel": "InterceptorGamepadControllerRelease.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "d1a5f5d9e8a94aabbd7c184c725e6c36e9c07c4cd39b1c0d6c1153ff54b0a010",
+          "kernel_sha256": "69283eb634108bcbe811d980de8d6afe2646ba053aac5bdc375d8fd2c2a64d3f",
+          "catalogue_sha256": "e768e0ceefc20713cba529a849a58da7da80b7b0699e26ebc1666158f68370b6",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        }
+      ]
+    },
+    {
+      "project": "interception-v2",
+      "package_version": "2.0.0.1",
+      "driver_version": "2.0.0.0",
+      "company_archive_sha256": "040dd63fb3f648563a225438d1031ceb146b79055898a19cf8c834ef3adbeb53",
+      "console_installer_sha256": "63efbaf515af73e5bf37bb587b58c0629d83b59399e9c588975c89590d185f2e",
+      "publisher_store_manifest_agrees": true,
+      "sdk_source_sha256": "8c21fb6b1d061e0ead7b920e181ad0983f0f081aeddda3d724eb0f1b823302a7",
+      "compiled_sdk_source_x64": true,
+      "signed_driver_packages": [
+        {
+          "inf": "InterceptionV2ReleaseControl.inf",
+          "kernel": "InterceptionV2Release.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "75885f9cee008a13c0e92eed72632af9b521c3d99671e767bcab10edbd673b23",
+          "kernel_sha256": "f9fd7328d1225fcd44a7b29b71f5ac9aacb56784c361782eda7cf8127c3425e1",
+          "catalogue_sha256": "0103b19b77fc3ec818560f2f906353c9b655ca6a463559a2cef7526312f2811a",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        },
+        {
+          "inf": "InterceptionV2ReleaseKeyboard.inf",
+          "kernel": "InterceptionV2Release.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "d4349b914df8ae6b9b63d4c72bad2af3189c3f2aff823f717623c5ea20a14c4f",
+          "kernel_sha256": "f9fd7328d1225fcd44a7b29b71f5ac9aacb56784c361782eda7cf8127c3425e1",
+          "catalogue_sha256": "f68a5ff79208ae779905401694c525fc8d7a4165f56f3529c7026486fe8a1af8",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        },
+        {
+          "inf": "InterceptionV2ReleaseMouse.inf",
+          "kernel": "InterceptionV2Release.sys",
+          "catalogue_signature": "Valid",
+          "inf_sha256": "0a9424ca870912f6880278220bec5597df90624c310aa53ab572259e209a8306",
+          "kernel_sha256": "f9fd7328d1225fcd44a7b29b71f5ac9aacb56784c361782eda7cf8127c3425e1",
+          "catalogue_sha256": "81c8366b43f85f780388b7937690f3f6a9e3089e9b38993137c9e758de117816",
+          "inf_catalog_membership": true,
+          "kernel_catalog_membership": true
+        }
+      ]
+    }
+  ]
+}
