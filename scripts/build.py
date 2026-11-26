@@ -106,6 +106,7 @@ replacements['SUPPORT_ISSUE_FORMS']=''.join(
     for e in input_editions.values()
 )
 replacements['OTHER_SDK_REGISTRY_ROWS']=secondary_registry_rows(integration['sdk_registry'],input_editions)
+replacements['OTHER_SDK_REGISTRY_ROWS_FR']=secondary_registry_rows(integration['sdk_registry'],input_editions,french=True)
 for row in integration['sdk_registry']:
     if row['edition']=='vdevice' and row['ecosystem'] in ('maven','packagist','rubygems'):
         key='VDEVICE_'+row['ecosystem'].upper()+'_COMMAND'

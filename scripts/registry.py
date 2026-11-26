@@ -87,6 +87,10 @@ REGISTRIES = {
 }
 
 SECONDARY_REGISTRIES = ("maven", "packagist", "rubygems")
+PACKAGE_GUIDES = {
+    "primary": {"en": "guides/windows-input-sdk-packages/", "fr": "fr/installer-sdk-windows/"},
+    "secondary": {"en": "guides/windows-input-sdk-java-php-ruby/", "fr": "fr/sdk-java-php-ruby/"},
+}
 
 
 def runtime_reports(assets):
@@ -133,6 +137,8 @@ def registry_catalogue(manifest, base):
         seen.add(key)
         registry = REGISTRIES[ecosystem]
         project = targets[row["edition"]]
+        anchor = "package-" + ecosystem + "-" + re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+        guides = PACKAGE_GUIDES["secondary" if ecosystem in SECONDARY_REGISTRIES else "primary"]
         artifact = name.rsplit(":", 1)[-1]
         arguments = {"name": name, "version": version, "lower_name": name.lower(), "artifact": artifact}
         if ecosystem == "go":
@@ -147,6 +153,7 @@ def registry_catalogue(manifest, base):
             runtime=registry["runtime"],
             architectures=row.get("architectures", ["x64"]),
             package_url=registry["page"].format(**arguments),
+            guide_urls={locale: f"{base}{route}#{anchor}" for locale, route in guides.items()},
             metadata_url=registry["metadata"].format(**arguments),
             install_command=registry["command"].format(**arguments),
             install_context=registry.get("context", registry["label"] + " environment"),
@@ -200,7 +207,14 @@ def registry_catalogue(manifest, base):
     return rows
 
 
-def secondary_registry_rows(rows, edition_order):
+def package_documentation_link(row, french):
+    if url := row.get("documentation_url"):
+        label = "Guide SDK" if french else "SDK guide"
+        return f'<br><a href="{escape(url, quote=True)}">{label}</a>'
+    return ""
+
+
+def secondary_registry_rows(rows, edition_order, *, french=False):
     packages = {(row["edition"], row["ecosystem"]): row for row in rows}
     table = []
     for edition in edition_order:
@@ -212,7 +226,9 @@ def secondary_registry_rows(rows, edition_order):
             row = packages[edition, ecosystem]
             label = escape(f'{row["name"]} {row["version"]}')
             url = escape(row["package_url"], quote=True)
-            cells.append(f'<td><a href="{url}"><code>{label}</code></a></td>')
+            anchor = urlsplit(row["guide_urls"]["en"]).fragment
+            guide = package_documentation_link(row, french)
+            cells.append(f'<td id="{anchor}"><a href="{url}"><code>{label}</code></a>{guide}</td>')
         table.append(f'<tr><th scope="row"><a href="{project_url}">{name}</a></th>{"".join(cells)}</tr>')
     return "\n".join(table)
 
@@ -238,6 +254,8 @@ def registry_tables(rows, *, french=False, rust_quickstarts=()):
             package = escape(row["name"]) + " " + escape(row["version"])
             package_url = escape(row["package_url"], quote=True)
             command = escape(row["install_command"])
+            anchor = urlsplit(row["guide_urls"]["en"]).fragment
+            guide = package_documentation_link(row, french)
             sample = ""
             if key in ("go", "cargo"):
                 check = row["first_check"]
@@ -246,8 +264,8 @@ def registry_tables(rows, *, french=False, rust_quickstarts=()):
                 label = f"Fichier {filename}" if french else f"Download {filename}"
                 sample = f'<br><a href="{source}" download="{filename}">{label}</a>'
             table.append(
-                f'<tr><th scope="row"><a href="{project_url}">{name}</a></th>'
-                f'<td><a href="{package_url}">{package}</a></td><td><code>{command}</code>{sample}</td></tr>'
+                f'<tr id="{anchor}"><th scope="row"><a href="{project_url}">{name}</a></th>'
+                f'<td><a href="{package_url}">{package}</a>{guide}</td><td><code>{command}</code>{sample}</td></tr>'
             )
         steps = ""
         if key == "go":

@@ -324,6 +324,13 @@ for runtime_path, runtime_proof in runtime_reports(OUT/'assets'):
             assert item['result']=={'installed':True,'active':False,'trial_state':0}
 installed_driver_checks=json.loads((OUT/'assets/demo-install-verification-2026-11-25.json').read_text(encoding='utf8'))['editions']
 for row in rows:
+    local_guides = ((language_guide, language_guide_fr) if row['ecosystem'] in other_registries
+                    else (packages_en, packages_fr))
+    for guide in local_guides:
+        page_url, anchor = row['guide_urls'][guide.language].split('#')
+        assert page_url == guide.canonical and anchor in guide.ids, row['name']
+        if reference := row.get('documentation_url'):
+            assert reference in guide.links, row['name']
     if row['ecosystem'] in other_registries:
         assert row['package_url'] in language_guide.links and row['package_url'] in language_guide_fr.links
         assert row['first_check']['sdk_type']

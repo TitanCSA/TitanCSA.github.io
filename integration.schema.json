@@ -226,6 +226,16 @@
         "version": { "type": "string", "minLength": 1 },
         "package_url": { "$ref": "#/$defs/url" },
         "metadata_url": { "$ref": "#/$defs/url" },
+        "guide_urls": {
+          "type": "object",
+          "description": "Direct links to this package's row in the English and French installation guides.",
+          "required": ["en", "fr"],
+          "properties": {
+            "en": { "$ref": "#/$defs/url" },
+            "fr": { "$ref": "#/$defs/url" }
+          },
+          "additionalProperties": false
+        },
         "documentation_url": { "$ref": "#/$defs/url" },
         "registry_documentation_verified": {
           "const": true,

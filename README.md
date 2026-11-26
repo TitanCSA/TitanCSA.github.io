@@ -34,6 +34,8 @@ Guides are in `content/`; presentation and local interactions are in `src/`. The
 
 The [public integration manifest](https://titancsa.github.io/integration.json) lists the setup download, SDK archive, app architectures, exact first check and expected output. Its bilingual download table and JSON use the same source data.
 
+Each `sdk_registry` entry has `guide_urls.en` and `guide_urls.fr` linking to the exact package in the installation tables. Use `documentation_url` when available for that package's API instructions.
+
 When a version has a verified console setup, `demo.console_setup` gives the asset role, any path inside its ZIP, the executable SHA-256, install and uninstall arguments, restart handling and the test record. Run setup with administrator approval in a separate test environment before querying the installed driver.
 
 The [JSON schema](https://titancsa.github.io/integration.schema.json) defines the fields used by tools consuming the manifest. Both files also ship in the portable starter ZIP. Keep existing fields compatible when adding an optional detail.
