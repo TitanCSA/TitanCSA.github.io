@@ -5,6 +5,7 @@ from hashlib import sha256
 from pathlib import Path
 import json
 import re
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRIES = {
@@ -221,11 +222,25 @@ def registry_tables(rows, *, french=False):
             package = escape(row["name"]) + " " + escape(row["version"])
             package_url = escape(row["package_url"], quote=True)
             command = escape(row["install_command"])
+            sample = ""
+            if key == "go":
+                source = escape(urlsplit(row["first_check"]["source_url"]).path, quote=True)
+                label = "Fichier main.go" if french else "Download main.go"
+                sample = f'<br><a href="{source}" download="main.go">{label}</a>'
             table.append(
                 f'<tr><th scope="row"><a href="{project_url}">{name}</a></th>'
-                f'<td><a href="{package_url}">{package}</a></td><td><code>{command}</code></td></tr>'
+                f'<td><a href="{package_url}">{package}</a></td><td><code>{command}</code>{sample}</td></tr>'
             )
-        sections.append(f'<details class="first-run-more"><summary>{language}</summary><p>{escape(runtime)}</p>'
+        steps = ""
+        if key == "go":
+            instructions = ("Dans un dossier vide, lance <code>go mod init example.com/titancsa-check</code>. "
+                            "Copie la commande du tableau, enregistre le fichier sous <code>main.go</code> "
+                            "puis lance <code>go run .</code>.") if french else (
+                            "In an empty folder, run <code>go mod init example.com/titancsa-check</code>. "
+                            "Copy the command from the table, save its sample as <code>main.go</code> "
+                            "and run <code>go run .</code>.")
+            steps = f"<p>{instructions}</p>"
+        sections.append(f'<details class="first-run-more"><summary>{language}</summary><p>{escape(runtime)}</p>{steps}'
                         f'<div class="table-scroll"><table><thead><tr>{columns}</tr></thead>'
                         '<tbody>' + "\n".join(table) + '</tbody></table></div></details>')
     return "\n".join(sections)

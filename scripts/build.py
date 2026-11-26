@@ -4,6 +4,7 @@ from html import escape
 from xml.etree import ElementTree as ET
 import json,re,shutil
 from integration import app_cards, make_manifest, sdk_rows, write_starter
+from go_samples import write_go_samples
 from catalogue import catalogue_sections
 from registry import registry_catalogue, registry_tables, secondary_registry_rows
 from render_social_previews import PREVIEWS, WIDTH as PREVIEW_WIDTH, HEIGHT as PREVIEW_HEIGHT
@@ -71,6 +72,7 @@ for folder in ['src','assets']:
     target=OUT/('assets' if folder=='src' else folder);target.mkdir(exist_ok=True)
     for p in (ROOT/folder).iterdir():
         if p.is_file():shutil.copyfile(p,target/p.name)
+write_go_samples(integration['sdk_registry'], OUT/'assets', BASE)
 app_sections={row['repository'].split('/')[-1]:row['id'] for row in integration['applications']}
 replacements={'PROJECT_COUNT':str(len(projects)), 'CHECKED_DATE':checked}
 for french in (False, True):

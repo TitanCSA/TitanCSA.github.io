@@ -138,6 +138,10 @@ with sync_playwright() as p:
     go_packages.locator('summary').click()
     go_audio=registry['go','github.com/titanfyre/Titan-Audio-Link/Titan-Audio-Link-Go-modules']
     assert go_packages.get_by_text(go_audio,exact=True).is_visible()
+    go_download=go_packages.get_by_role('row',name='Titan Audio Link').get_by_role('link',name='Fichier main.go')
+    with page.expect_download() as go_file:
+        go_download.click()
+    assert go_file.value.suggested_filename=='main.go' and go_file.value.failure() is None
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'Go table causes horizontal page scrolling'
     checks_help=page.locator('main details.first-run-more').filter(
         has=page.locator('a[href="/assets/python-interceptor-status.py"]'))

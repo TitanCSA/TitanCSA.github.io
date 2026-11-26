@@ -16,6 +16,8 @@ on:
       - 'sdk-registry.json'
       - 'integration.schema.json'
       - 'scripts/registry.py'
+      - 'scripts/go_samples.py'
+      - 'assets/go-sdk-first-checks-*.json'
       - 'scripts/verify_registry.py'
       - 'scripts/verify_integration_schema.py'
       - 'assets/browser-sdk-first-run.py'
@@ -45,6 +47,8 @@ on:
       - 'sdk-registry.json'
       - 'integration.schema.json'
       - 'scripts/registry.py'
+      - 'scripts/go_samples.py'
+      - 'assets/go-sdk-first-checks-*.json'
       - 'scripts/verify_registry.py'
       - 'scripts/verify_integration_schema.py'
       - 'assets/browser-sdk-first-run.py'
@@ -116,3 +120,9 @@ jobs:
           package-manager-cache: false
       - name: Run the documented npm status checks on clean Windows
         run: python scripts/verify_registry.py --check-node-on-clean-windows
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version: '1.27.4'
+          cache: false
+      - name: Run the published Go programs on clean Windows
+        run: python scripts/verify_registry.py --check-go-on-clean-windows
