@@ -92,7 +92,70 @@
         "checked": "2026-11-26",
         "company_archive_sha256": "2f0d2904f415bb2249b99d2ddd33e6ef25eaefab8f143875ea946fa69847ee02",
         "publisher_store_manifest_agrees": true,
-        "same_console_installer_and_sdk_as_vm_test": false
+        "same_console_installer_and_sdk_as_vm_test": false,
+        "console_installer_sha256": "d30453c7430423cf160eace891e15fc753eae1a4e958d7d582e8b95cf76a9009",
+        "sdk_source_sha256": "5487e8208a53efaa528a19fcdf1fd1a2a2fe2108f83080ade187f636c733f829",
+        "signed_driver_packages": [
+          {
+            "inf": "InterceptorKeyboardMouseReleaseControl.inf",
+            "kernel": "InterceptorKeyboardMouseRelease.sys",
+            "inf_sha256": "d9f142f322f970abac2c32ec3d2409d7d340e1204bc07d28e9f8a369b8645f1c",
+            "kernel_sha256": "9da346aa43420dca02257311a2c344b379af24d0f3565c7704badfb2d4634eb9",
+            "catalogue_sha256": "0d614fe4dac1cb0a7e63d6e4a667d97a5a00a7f48ffb54110408385677d042e6",
+            "catalogue_signature": "Valid",
+            "kernel_catalog_membership": true,
+            "inf_catalog_membership": true
+          },
+          {
+            "inf": "InterceptorKeyboardMouseReleaseKeyboard.inf",
+            "kernel": "InterceptorKeyboardMouseRelease.sys",
+            "inf_sha256": "e0ae503d3d9b1a442ad1eb1659c12caedea6889f487bccdd193c7a9a05d5dea4",
+            "kernel_sha256": "9da346aa43420dca02257311a2c344b379af24d0f3565c7704badfb2d4634eb9",
+            "catalogue_sha256": "c7ee2ea7911365b5e817a3dcccdf0ad675cc18e77fcfdb4a7eda9eab51d71d74",
+            "catalogue_signature": "Valid",
+            "kernel_catalog_membership": true,
+            "inf_catalog_membership": true
+          },
+          {
+            "inf": "InterceptorKeyboardMouseReleaseMouse.inf",
+            "kernel": "InterceptorKeyboardMouseRelease.sys",
+            "inf_sha256": "a347cd855dc77537d5adf8f2fda2a49ab1974f968cbe468adde37a5ab48956d7",
+            "kernel_sha256": "9da346aa43420dca02257311a2c344b379af24d0f3565c7704badfb2d4634eb9",
+            "catalogue_sha256": "f94ecacabb86b6986319fa9838e54b24110203e1e98dd1fa08da53966cd3544c",
+            "catalogue_signature": "Valid",
+            "kernel_catalog_membership": true,
+            "inf_catalog_membership": true
+          }
+        ],
+        "windows_11_vm": {
+          "windows_build": 26100,
+          "secure_boot": true,
+          "memory_integrity_running": false,
+          "install_exit_code": 0,
+          "installed_inf_names": [
+            "interceptorkeyboardmousereleasekeyboard.inf",
+            "interceptorkeyboardmousereleasemouse.inf",
+            "interceptorkeyboardmousereleasecontrol.inf"
+          ],
+          "running_kernel_sha256": "9da346aa43420dca02257311a2c344b379af24d0f3565c7704badfb2d4634eb9",
+          "restart_after_install_verified": true,
+          "sdk_status_before_activation": "License ABI 5, state 1",
+          "version_lines_with_driver_present": [
+            "Interceptor Keyboard & Mouse Release SDK: 1.0.2.6",
+            "Interceptor Keyboard & Mouse Release driver (installed): 1.0.2.6",
+            "Interceptor Keyboard & Mouse Demo driver (installed): not detected"
+          ],
+          "uninstall_exit_code": 0,
+          "restart_after_uninstall_verified": true,
+          "driver_service_present_after_uninstall": false,
+          "windows_error_after_uninstall": 2,
+          "version_lines_after_driver_removal": [
+            "Interceptor Keyboard & Mouse Release SDK: 1.0.2.6",
+            "Interceptor Keyboard & Mouse Release driver (installed): not detected",
+            "Interceptor Keyboard & Mouse Demo driver (installed): not detected"
+          ],
+          "paid_key_used": false
+        }
       },
       "console_installer_sha256": "a6a59505152b6be3ee8a054f4228a0ef91fb64a72d28269a61897d387767da04",
       "publisher_store_manifest_agrees": true,

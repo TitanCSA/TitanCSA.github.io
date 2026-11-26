@@ -137,19 +137,24 @@ for entry in company_check['editions']:
     commercial=editions[entry['project']]['commercial']
     if entry['package_version']==commercial['package_version']:
         assert entry['driver_version']==commercial['driver_version']
-    assert entry['signed_driver_packages']
-    for package in entry['signed_driver_packages']:
-        assert package['inf_catalog_membership'] is package['kernel_catalog_membership'] is True
-    vm = entry['windows_11_vm']
-    assert vm['secure_boot'] is True and vm['paid_key_used'] is False
-    assert vm['restart_after_install_verified'] is vm['restart_after_uninstall_verified'] is True
-    assert vm['install_exit_code'] == vm['uninstall_exit_code'] == 0
-    assert vm['driver_service_present_after_uninstall'] is False and vm['windows_error_after_uninstall'] == 2
-    running_packages = {
-        package['inf'].lower() for package in entry['signed_driver_packages']
-        if package['kernel_sha256'] == vm['running_kernel_sha256']
-    }
-    assert running_packages and set(vm['installed_inf_names']) == running_packages
+    later = entry.get('later_delivery')
+    if later:
+        assert later['company_archive_sha256'] != entry['company_archive_sha256']
+        assert later['publisher_store_manifest_agrees'] is True
+    for tested_archive in ((entry, later) if later else (entry,)):
+        assert tested_archive['signed_driver_packages']
+        for package in tested_archive['signed_driver_packages']:
+            assert package['inf_catalog_membership'] is package['kernel_catalog_membership'] is True
+        vm = tested_archive['windows_11_vm']
+        assert vm['secure_boot'] is True and vm['paid_key_used'] is False
+        assert vm['restart_after_install_verified'] is vm['restart_after_uninstall_verified'] is True
+        assert vm['install_exit_code'] == vm['uninstall_exit_code'] == 0
+        assert vm['driver_service_present_after_uninstall'] is False and vm['windows_error_after_uninstall'] == 2
+        running_packages = {
+            package['inf'].lower() for package in tested_archive['signed_driver_packages']
+            if package['kernel_sha256'] == vm['running_kernel_sha256']
+        }
+        assert running_packages and set(vm['installed_inf_names']) == running_packages
 for edition in editions.values():
     overview=by_canonical[edition['overview_url']]
     repo=edition['repository'].rsplit('/',1)[1]
