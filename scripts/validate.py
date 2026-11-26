@@ -95,10 +95,11 @@ assert packages_en.alternates['fr']==packages_fr.canonical
 audio_routes=('guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/')
 audio_catalogue=json.loads((OUT/'releases.json').read_text(encoding='utf8'))
 audio=next(edition for edition in audio_catalogue['editions'] if edition['slug']=='titan-audio-link')
+contact_routes={'en':'/about/evidence/#release-contact','fr':'/fr/pilotes-entree-windows/#contact-release'}
 for path, language, alternate in zip(audio_routes, ('en','fr'), reversed(audio_routes)):
     page=by_canonical[BASE+path]
     assert page.language==language and audio['demo_download_url'] in page.links
-    assert '/'+alternate in page.links and '/about/evidence/#release-contact' in page.links
+    assert '/'+alternate in page.links and contact_routes[language] in page.links
 assert '/'+audio_routes[1] in by_canonical[BASE+'fr/'].links
 controller_routes=('guides/gamepad-controller-first-run/','fr/remapper-manette-windows/')
 controller=next(edition for edition in audio_catalogue['editions'] if edition['slug']=='interceptor-gamepad-controller')
@@ -106,7 +107,7 @@ for route in controller_routes:
     page=by_canonical[BASE+route]
     expected={controller['demo_assets'][role] for role in ('installer','examples','checksums')}
     assert expected <= set(page.links)
-    assert '/about/evidence/#release-contact' in page.links
+    assert contact_routes[page.language] in page.links
 assert '/'+controller_routes[1] in by_canonical[BASE+'fr/'].links
 assert '/'+controller_routes[1] in by_canonical[BASE+'fr/pilotes-entree-windows/'].links
 if (ROOT/'site-verification.json').exists():

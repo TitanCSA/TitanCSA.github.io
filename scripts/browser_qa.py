@@ -110,6 +110,18 @@ with sync_playwright() as p:
         assert page.url.endswith('/'+pad_en)
         assert page.locator('.actions a.primary').get_attribute('href')==pad['demo_download_url']
         page.close()
+    with browser.new_context(permissions=['clipboard-read','clipboard-write']) as contact_context:
+        contact_page=contact_context.new_page()
+        for route,status in (
+            ('about/evidence/#release-contact','Discord username copied.'),
+            ('fr/pilotes-entree-windows/#contact-release','Nom Discord copié.'),
+        ):
+            contact_page.goto(base+route,wait_until='load')
+            copy=contact_page.locator('[data-copy-discord]')
+            copy.focus()
+            copy.press('Enter')
+            contact_page.wait_for_function('(status) => document.querySelector("[data-copy-discord]").nextElementSibling.textContent === status',arg=status)
+            assert contact_page.evaluate('navigator.clipboard.readText()')=='titancsa'
     page=browser.new_page(java_script_enabled=False,viewport={'width':390,'height':844})
     page.goto(base,wait_until='networkidle');assert page.locator('[data-project]:visible').count()==project_count
     assert not page.locator('[data-theme-toggle]').is_visible()
@@ -203,6 +215,8 @@ with sync_playwright() as p:
     first_trial.locator('summary').click()
     assert first_trial.locator('p').is_visible()
     assert 'titancsa' in page.locator('main').inner_text()
+    assert page.locator('main a[href="https://discord.com/app"]').is_visible()
+    assert not page.locator('[data-copy-discord]').is_visible()
     page.goto(base+'fr/installeur-et-sdk/',wait_until='domcontentloaded')
     page.locator('a[href="/fr/pilotes-entree-windows/#installer-interception-v2"]').click()
     v2_setup=page.locator('#installer-interception-v2')

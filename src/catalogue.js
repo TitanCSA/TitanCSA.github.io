@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const root = document.documentElement;
+  const french = root.lang === 'fr';
   const toggle = document.querySelector('[data-theme-toggle]');
   try { const saved = localStorage.getItem('titancsa-theme'); if (saved === 'light' || saved === 'dark') root.dataset.theme = saved; } catch (_) {}
   const systemTheme = matchMedia('(prefers-color-scheme: dark)');
@@ -17,6 +18,19 @@
     updateThemeState();
     toggle.hidden = false;
   }
+  const copyDiscord = document.querySelector('[data-copy-discord]');
+  if (copyDiscord && navigator.clipboard?.writeText) {
+    const status = copyDiscord.nextElementSibling;
+    copyDiscord.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(copyDiscord.dataset.copyDiscord);
+        status.textContent = french ? 'Nom Discord copié.' : 'Discord username copied.';
+      } catch (_) {
+        status.textContent = french ? 'Copie manuelle · titancsa' : 'Copy manually · titancsa';
+      }
+    });
+    copyDiscord.hidden = false;
+  }
   const search = document.querySelector('#project-search');
   if (!search) return;
   const category = document.querySelector('#category-filter');
@@ -26,7 +40,6 @@
   const groups = [...document.querySelectorAll('[data-project-group]')];
   const counter = document.querySelector('#result-count');
   const empty = document.querySelector('#empty-results');
-  const french = root.lang === 'fr';
   const countLabel = count => french ? `${count} ${count === 1 ? 'projet' : 'projets'}` : `${count} ${count === 1 ? 'entry' : 'entries'}`;
   const normalize = value => value.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   function filter() {
