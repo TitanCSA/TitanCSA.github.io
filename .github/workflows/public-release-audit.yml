@@ -1,0 +1,34 @@
+name: Audit published downloads
+
+on:
+  schedule:
+    - cron: '37 4 * * *'
+  workflow_dispatch:
+    inputs:
+      verify_downloads:
+        description: Download every pinned file and hash its contents
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  public-release-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build the public catalogue
+        run: python scripts/build.py
+      - name: Verify published assets and their SHA-256
+        run: python scripts/verify_release_assets.py ${{ inputs.verify_downloads && '--verify-downloads' || '' }}
+        env:
+          TITANCSA_CATALOGUE_TOKEN: ${{ github.token }}
+      - name: Verify published SDK versions and documentation
+        run: python scripts/verify_registry.py --documentation
