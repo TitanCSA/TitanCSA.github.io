@@ -181,6 +181,7 @@
             "trial_duration_minutes": { "type": "integer", "minimum": 1 },
             "trial_scope": { "const": "windows_kernel_boot" },
             "trial_starts_on": { "type": "string", "minLength": 1 },
+            "trial_window_verification_url": { "$ref": "#/$defs/url" },
             "installer_verification_url": { "$ref": "#/$defs/url" },
             "archive_revision_evidence_url": { "$ref": "#/$defs/url" },
             "mouse_driver_switch_verification_url": { "$ref": "#/$defs/url" },

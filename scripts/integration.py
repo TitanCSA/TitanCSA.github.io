@@ -60,6 +60,10 @@ def make_manifest(base, editions):
     keyboard_package = keyboard_capture["interceptor_keyboard_mouse"]
     audio_pair_file = "assets/titan-audio-link-sdk-pair-check-2026-11-26.json"
     audio_pair = json.loads((ROOT / audio_pair_file).read_text(encoding="utf-8"))
+    trial_reports = []
+    for path in sorted((ROOT / "assets").glob("*-demo-window-????-??-??.json"), reverse=True):
+        report = json.loads(path.read_text(encoding="utf-8"))
+        trial_reports.append((path.relative_to(ROOT).as_posix(), report))
     python_wheels = {}
     for path in sorted((ROOT / "assets").glob("*-python-wheel-check-*.json")):
         report = json.loads(path.read_text(encoding="utf-8"))
@@ -242,6 +246,13 @@ def make_manifest(base, editions):
             verified_release = vdevice_proof["versions"]["release"]
             if all(verified_release[key] == commercial[key] for key in ("package_version", "driver_version")):
                 row["commercial_install_verification"] = {"url": base + vdevice_proof_file, **commercial}
+        for path, report in trial_reports:
+            assets = report["pinned_assets"]
+            if (report["edition"] == slug and report["demo_tag"] == edition["tag"]
+                    and report["demo_version"] == edition["demo"] and assets
+                    and all(row["demo"]["assets"].get(role) == asset for role, asset in assets.items())):
+                row["demo"]["trial_window_verification_url"] = base + path
+                break
         rows.append(row)
     applications = json.loads((ROOT / "starter-apps.json").read_text(encoding="utf-8"))
     for app in applications:

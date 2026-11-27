@@ -512,6 +512,9 @@ reference_links.extend([
 ])
 if audio_verified:
     reference_links.append(f'- [Titan Audio Link verification with Windows Memory Integrity]({audio_verified})')
+for product in integration['products']:
+    if report := product['demo'].get('trial_window_verification_url'):
+        reference_links.append(f'- [{product["name"]} timed demo test]({report})')
 (OUT/'llms.txt').write_text('\n'.join(reference_links)+'\n',encoding='utf8')
 for language, guide in integration['guides'].items():
     write_sdk_reference(OUT/guide.removeprefix(BASE)/'quick-reference.md', BASE, integration, language)

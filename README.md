@@ -36,6 +36,8 @@ The [public integration manifest](https://titancsa.github.io/integration.json) l
 
 Each `sdk_registry` entry has `guide_urls.en` and `guide_urls.fr` linking to the exact package in the installation tables. Use `documentation_url` when available for that package's API instructions.
 
+When a demo has a timed verification report, `demo.trial_window_verification_url` links to the observations and their scope. The link is published when the measured version, release tag and package hashes match the current demo.
+
 Each driver product's `first_run_guides` links to its English and French demo instructions. Use `overview_url` for the general product page.
 
 Use `demo.setup_requirements` for the minimum Windows 10 build, setup elevation and documented overlapping editions. Use `demo.supported_driver_architecture` for the Windows host and `sdk_check.app_architectures` to select the application library. For example, an Interception V2 x86 app uses the x86 DLL on an x64 Windows driver host.

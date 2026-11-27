@@ -1,0 +1,184 @@
+{
+  "edition": "vdevice",
+  "checked_utc": "2026-11-27T05:55:03.9515792Z",
+  "demo_tag": "v1.0.6.1-demo",
+  "demo_version": "1.0.6.1",
+  "pinned_assets": {
+    "console_installer": {
+      "url": "https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/VdeviceSetupConsole.exe",
+      "sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848"
+    },
+    "sdk": {
+      "url": "https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/Vdevice-SDK-1.0.6.1.zip",
+      "sha256": "b0c8ceec0f872a8eb05e0281c87b6f30b3da23d35d94899fc220cce78efe5236"
+    }
+  },
+  "environment": {
+    "secure_boot": true,
+    "architecture": "x64",
+    "network": "offline",
+    "windows_build": 26100,
+    "hypervisor": "Hyper-V"
+  },
+  "method": {
+    "monotonic_timer": "Elapsed host wall time checked against guest uptime",
+    "boot_method": "Kernel-General event 12 record ID",
+    "fixture": "One vendor-defined virtual USB HID device",
+    "kernel_sha256": "5b8669478581b463b5218c47a274c71107309ec037b2a26ae79c34273f04cee4",
+    "probe_source_sha256": "fcf50ca01ac31da963c37cec6124cff400a3454e7265dd2401f7e2c527294292",
+    "probe_executable_sha256": "0af03cbefeaed527a4ce98f3346d2c04929e1cbcf021ea22fcf98fdb38c56aa1",
+    "probe_source_url": "https://titancsa.github.io/assets/vdevice-trial-probe.cpp"
+  },
+  "scope": "Fresh device creation, wait for readiness and deletion. Continuing or disconnecting an already open device at expiry was outside this run.",
+  "without_driver_windows_error": 2,
+  "setup_exit": 0,
+  "after_setup": {
+    "error": 0,
+    "abi": 1,
+    "trial_started": false,
+    "trial_expired": false,
+    "remaining_100ns": 36000000000,
+    "session_devices": 0
+  },
+  "first_device": {
+    "before": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": false,
+      "trial_expired": false,
+      "remaining_100ns": 36000000000,
+      "session_devices": 0
+    },
+    "after_create": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": true,
+      "trial_expired": false,
+      "remaining_100ns": 35999999896,
+      "session_devices": 1
+    },
+    "create_error": 0,
+    "ready_error": 0,
+    "close_error": 0,
+    "after_close": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": true,
+      "trial_expired": false,
+      "remaining_100ns": 35998187242,
+      "session_devices": 0
+    }
+  },
+  "before_limit": {
+    "same_windows_boot": true,
+    "host_elapsed_seconds": 3550.01,
+    "guest_elapsed_seconds": 3550.25,
+    "device_cycle": {
+      "before": {
+        "error": 0,
+        "abi": 1,
+        "trial_started": true,
+        "trial_expired": false,
+        "remaining_100ns": 498428562,
+        "session_devices": 0
+      },
+      "after_create": {
+        "error": 0,
+        "abi": 1,
+        "trial_started": true,
+        "trial_expired": false,
+        "remaining_100ns": 498427814,
+        "session_devices": 1
+      },
+      "create_error": 0,
+      "ready_error": 0,
+      "close_error": 0,
+      "after_close": {
+        "error": 0,
+        "abi": 1,
+        "trial_started": true,
+        "trial_expired": false,
+        "remaining_100ns": 496315340,
+        "session_devices": 0
+      }
+    }
+  },
+  "after_limit": {
+    "same_windows_boot": true,
+    "host_elapsed_seconds": 3635,
+    "guest_elapsed_seconds": 3634.828,
+    "device_cycle": {
+      "before": {
+        "error": 0,
+        "abi": 1,
+        "trial_started": true,
+        "trial_expired": true,
+        "remaining_100ns": 0,
+        "session_devices": 0
+      },
+      "after_create": {
+        "error": 0,
+        "abi": 1,
+        "trial_started": true,
+        "trial_expired": true,
+        "remaining_100ns": 0,
+        "session_devices": 0
+      },
+      "create_error": 5,
+      "ready_error": 5,
+      "close_error": 5,
+      "after_close": {
+        "error": 0,
+        "abi": 1,
+        "trial_started": true,
+        "trial_expired": true,
+        "remaining_100ns": 0,
+        "session_devices": 0
+      }
+    }
+  },
+  "after_restart": {
+    "new_windows_boot": true,
+    "initial_status": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": false,
+      "trial_expired": false,
+      "remaining_100ns": 36000000000,
+      "session_devices": 0
+    },
+    "device_cycle": {
+      "before": {
+        "error": 0,
+        "abi": 1,
+        "trial_started": false,
+        "trial_expired": false,
+        "remaining_100ns": 36000000000,
+        "session_devices": 0
+      },
+      "after_create": {
+        "error": 0,
+        "abi": 1,
+        "trial_started": true,
+        "trial_expired": false,
+        "remaining_100ns": 35999999935,
+        "session_devices": 1
+      },
+      "create_error": 0,
+      "ready_error": 0,
+      "close_error": 0,
+      "after_close": {
+        "error": 0,
+        "abi": 1,
+        "trial_started": true,
+        "trial_expired": false,
+        "remaining_100ns": 35998169233,
+        "session_devices": 0
+      }
+    }
+  },
+  "uninstall": {
+    "exit_code": 0,
+    "windows_error_after_restart": 2
+  }
+}
