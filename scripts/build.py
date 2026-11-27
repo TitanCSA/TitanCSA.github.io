@@ -280,7 +280,7 @@ reviewed.update(dict.fromkeys((
     'guides/verify-windows-driver-package/', 'fr/installeur-et-sdk/', 'fr/souris-usb-virtuelle-vdevice/',
 ), '2026-11-26'))
 reviewed.update(dict.fromkeys((
-    'about/evidence/', 'fr/aide-et-verifications/', 'guides/release-activation-help/', 'fr/activation-release/',
+    '', 'fr/', 'about/evidence/', 'fr/aide-et-verifications/', 'guides/release-activation-help/', 'fr/activation-release/',
     'guides/windows-input-release-compare/',
     'fr/pilotes-entree-windows/', 'guides/verify-windows-driver-package/', 'fr/verifier-pilote-windows/',
     'guides/installer-and-sdk/', 'fr/installeur-et-sdk/',

@@ -139,7 +139,7 @@ with sync_playwright() as p:
     page=browser.new_page(java_script_enabled=False,viewport={'width':390,'height':844})
     page.goto(base,wait_until='networkidle');assert page.locator('[data-project]:visible').count()==project_count
     assert not page.locator('[data-theme-toggle]').is_visible()
-    page.locator('main a[href="/fr/"]').click()
+    page.locator('header a[lang="fr"][href="/fr/"]').click()
     assert page.locator('html').get_attribute('lang')=='fr' and page.locator('[data-project]:visible').count()==project_count
     page.locator('#project-vdevice summary').click()
     assert 'Create device' in page.locator('#project-vdevice details').inner_text()
@@ -147,7 +147,7 @@ with sync_playwright() as p:
     assert page.url.endswith('/fr/souris-usb-virtuelle-vdevice/')
     assert page.locator('main .button.primary').get_attribute('href')==edition_routes['projects/vdevice/']['demo_download_url']
     page.go_back(wait_until='domcontentloaded')
-    page.locator('main a[lang="en"][href="/"]').click()
+    page.locator('header a[lang="en"][href="/"]').click()
     page.locator('#project-vdevice h3 a').press('Enter')
     assert page.url.endswith('/projects/vdevice/')
     page.go_back(wait_until='domcontentloaded')
@@ -213,7 +213,7 @@ with sync_playwright() as p:
     for language,home,route in (('en','','guides/windows-input-release-compare/'),
                                 ('fr','fr/','fr/pilotes-entree-windows/')):
         page.goto(base+home,wait_until='load')
-        page.locator(f'#projects a[href="/{route}"]').click()
+        page.locator(f'.hero a[href="/{route}"]').click()
         assert page.url==base+route and page.locator('html').get_attribute('lang')==language
         assert page.locator('main .edition-grid .guide-card').count()==len(editions)
         for edition in editions:
