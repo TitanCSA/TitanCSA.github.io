@@ -494,6 +494,7 @@ reference_links.extend([
     f'- [Vérifier le pilote Gamepad & Controller avec Python]({BASE}fr/remapper-manette-windows/#python-sdk)',
     f'- [Titan Audio Link Python wheel and virtual audio inventory]({BASE}guides/titan-audio-link-first-run/#python-sdk)',
     f'- [Titan Audio Link demo r2 archive and byte-identical SDK and driver evidence]({BASE}assets/titan-audio-link-demo-archive-revision-2026-11-27.json)',
+    f'- [Titan Audio Link capture at 57 minutes 30 seconds on the same Windows boot]({BASE}assets/titan-audio-link-extended-session-2026-11-27.json)',
     f'- [Paquet Python Titan Audio Link et vérification de la paire audio]({BASE}fr/micro-virtuel-titan-audio-link/#python-sdk)',
     f'- [Route Windows app audio into OBS with Titan Audio Link]({BASE}guides/titan-audio-link-obs/)',
     f'- [Envoyer le son d’une application Windows dans OBS]({BASE}fr/audio-application-obs/)',

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-27T04:29:29.6819335Z",
+  "edition": "0.2.0.0",
+  "project": "titan-audio-link",
+  "environment": {
+    "windows_build": 26100,
+    "secure_boot": true,
+    "virtual_machine": "Hyper-V"
+  },
+  "tested_original_archive_sha256": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37",
+  "current_archive_revision_evidence_url": "https://titancsa.github.io/assets/titan-audio-link-demo-archive-revision-2026-11-27.json",
+  "cli": {
+    "member": "AudioLinkCLI.exe",
+    "sha256": "1cd12d8e4415bac290a459ad8317cd31156df832b5c99e97a7435ad9735ae138",
+    "argument": "--test"
+  },
+  "first_capture": {
+    "exit_code": 0,
+    "verified_stereo_frames": 72000,
+    "matched_channels": 2
+  },
+  "repeat_capture": {
+    "host_elapsed_seconds": 3450.02,
+    "guest_elapsed_seconds": 3450.39,
+    "same_windows_boot": true,
+    "boot_identity_method": "Kernel-General event 12 record ID",
+    "exit_code": 0,
+    "verified_stereo_frames": 72000,
+    "matched_channels": 2
+  },
+  "expiry_measurement": {
+    "status": "interrupted_by_guest_os",
+    "measured": false,
+    "guest_shutdown_utc": "2026-11-27T04:29:08.2062875Z",
+    "guest_shutdown_process": "wlms.exe",
+    "windows_evaluation_grace_period_remaining_minutes": 0
+  },
+  "removal": {
+    "installer_exit_code": 0,
+    "driver_services_absent": true
+  }
+}
