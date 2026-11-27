@@ -29,6 +29,7 @@
   <li>If the report asks for a restart, restart Windows. If the driver is missing or the interface still does not respond, open <code>VdeviceReleaseSetup.exe</code> in <strong>Installers</strong> and select <strong>Reinstall / repair</strong>. Restart if prompted, then run the check again.</li>
   <li>When the report shows <strong>Release activation interface: ready</strong>, open <code>VdeviceActivation.exe</code> from the same ZIP to activate the driver. If the check still fails, <a href="/about/evidence/">send support</a> the PnP code, error and displayed SDK and driver versions. Keep your key private.</li>
 </ol>
+<p>If diagnostics return <strong>1306</strong> and report a configured <code>.sys</code> that differs from the ZIP, run setup from the current ZIP to reinstall. In the test below, the service was still running driver 1.0.3.0 and the 1.0.4.1 diagnostics stopped before checking activation. <a href="/assets/vdevice-release-package-mismatch-2026-11-27.json">See the version mismatch test</a>.</p>
 <h2>Read the stage, reason and Windows error</h2>
 <div class="table-scroll"><table><thead><tr><th scope="col">What you see</th><th scope="col">What to check</th></tr></thead><tbody>
 <tr><td>Vdevice <code>driver_open</code> / <code>activation_interface_unavailable</code> with Windows error 2</td><td><a href="#vdevice-error-2">Check the interface and repair the Vdevice Release installation</a>.</td></tr>

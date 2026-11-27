@@ -28,6 +28,7 @@
   <li>Si le rapport demande un redémarrage, redémarre. Si le pilote est absent ou si l’interface ne répond toujours pas, ouvre <code>VdeviceReleaseSetup.exe</code> dans <strong>Installers</strong> et choisis <strong>Reinstall / repair</strong>. Redémarre si demandé, puis relance le diagnostic.</li>
   <li>Quand le rapport affiche <strong>Release activation interface: ready</strong>, ouvre <code>VdeviceActivation.exe</code> depuis le même ZIP pour activer le pilote. Si le contrôle échoue encore, <a href="/fr/aide-et-verifications/#signaler">envoie au support</a> le code PnP, l’erreur et les versions du SDK et du pilote affichées, sans ta clé.</li>
 </ol>
+<p>Si le diagnostic renvoie <strong>1306</strong> et indique que le fichier <code>.sys</code> configuré diffère de celui du ZIP, réinstalle avec l’installateur du ZIP actuel. Dans l’essai ci-dessous, le service tournait encore avec le pilote 1.0.3.0 et le diagnostic 1.0.4.1 s’est arrêté avant le contrôle d’activation. <a href="/assets/vdevice-release-package-mismatch-2026-11-27.json">Voir le test du décalage de versions</a>.</p>
 <h2>Comprendre le message</h2>
 <div class="table-scroll"><table><thead><tr><th scope="col">Message</th><th scope="col">Vérification</th></tr></thead><tbody>
 <tr><td>Vdevice, erreur Windows 2, <code>driver_open</code> / <code>activation_interface_unavailable</code></td><td><a href="#vdevice-erreur-2">Vérifier l’interface et réparer l’installation Vdevice Release</a>.</td></tr>

@@ -1,0 +1,24 @@
+{
+  "checked_utc": "2026-11-27T01:59:14.1192268Z",
+  "product": "Vdevice Release",
+  "windows_build": 26100,
+  "secure_boot": true,
+  "command": ".\\Installers\\VdeviceReleaseSetupConsole.exe /diagnose",
+  "console_package": {
+    "version": "1.0.4.1",
+    "archive_sha256": "0132816b1c6b847febd589cfaf68febaa9b010ecc006fad51d4c04483784e9c1",
+    "installer_sha256": "874831ce4701db666aba9e3d120422457b60809f86d413a15cb0c1a544bf2fa7"
+  },
+  "installed_driver": {
+    "version": "1.0.3.0",
+    "configured_and_loaded_sys_sha256": "b759735e01a59003e0c3195f317493e862eec3f10487da3b37ffb2169e62402e",
+    "service_running": true,
+    "pnp_problem_code": 0
+  },
+  "diagnostic": {
+    "exit_code": 1306,
+    "configured_sys_matches_package": false,
+    "activation_interface_test_reached": false
+  },
+  "scope": "Read-only comparison in an isolated Windows 11 VM. No licence key was used. The installed driver was left in place."
+}
