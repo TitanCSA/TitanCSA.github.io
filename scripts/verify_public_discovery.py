@@ -56,7 +56,7 @@ class Guide(HTMLParser):
             self.links.add(urljoin(self.address, attrs["href"]))
         if tag == "option" and "data-sha256" in attrs:
             assert attrs["value"] not in self.download_options, self.address
-            self.download_options[attrs["value"]] = attrs["data-sha256"]
+            self.download_options[attrs["value"]] = {"sha256": attrs["data-sha256"], "url": attrs["data-download"]}
         if tag == "meta" and attrs.get("name", "").lower() in ("robots", *map(str.lower, SEARCH_AGENTS)):
             assert "noindex" not in attrs.get("content", "").lower(), self.address
         if "id" in attrs:
@@ -146,7 +146,7 @@ def main():
         assert page.canonicals == [address] and "first-sdk-check" in page.ids, address
 
     expected_options = {
-        f'{product["id"]}:{role}': asset["sha256"]
+        f'{product["id"]}:{role}': asset
         for product in manifest["products"]
         for role, asset in product["demo"]["assets"].items()
     }

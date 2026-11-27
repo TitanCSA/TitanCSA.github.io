@@ -4,7 +4,7 @@
 <p>Choisis le projet et le fichier dans la liste, puis sélectionne la copie sur ton ordinateur. Le fichier reste dans ton navigateur.</p>
 <form class="download-check" data-demo-check hidden
       data-working="Calcul du SHA-256…" data-match="Le fichier correspond à la démo publiée."
-      data-mismatch="Le fichier diffère. Vérifie ton choix et télécharge de nouveau le fichier depuis la publication officielle."
+      data-mismatch="Le fichier diffère. Vérifie que tu as choisi le bon projet et le bon fichier."
       data-error="Impossible de lire le fichier. Sélectionne-le à nouveau ou utilise PowerShell ci-dessous.">
   <label for="demo-check-reference">Fichier officiel à comparer</label>
   <select id="demo-check-reference" required>
@@ -15,6 +15,7 @@
   <input id="demo-check-file" type="file" required>
   <div><button class="button primary" type="submit" disabled>Vérifier le fichier</button></div>
   <p role="status"></p>
+  <a class="button" data-official-download hidden>Télécharger le fichier officiel</a>
   <dl hidden>
     <dt>SHA-256 publié</dt><dd><code data-expected></code></dd>
     <dt>SHA-256 calculé</dt><dd><code data-actual></code></dd>

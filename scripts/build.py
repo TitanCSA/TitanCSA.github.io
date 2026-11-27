@@ -174,7 +174,8 @@ replacements["AUDIO_HVCI_FR"]=(f'<p>Le même ZIP a aussi réussi le test avec l�
 replacements['RELEASE_COMPARISON_CARDS_EN']=edition_cards(editions.values(),projects,french_copy,BASE)
 replacements['RELEASE_COMPARISON_CARDS_FR']=edition_cards(editions.values(),projects,french_copy,BASE,french=True)
 replacements['DEMO_CHECK_OPTIONS']='\n'.join(
-    f'<option value="{slug}:{role}" data-sha256="{edition["demo_asset_sha256"][role]}">'
+    f'<option value="{slug}:{role}" data-sha256="{edition["demo_asset_sha256"][role]}"'
+    f' data-download="{escape(edition["demo_assets"][role])}">'
     f'{escape(edition["name"])} · {escape(edition["tag"])} · {escape(filename)}</option>'
     for slug,edition in editions.items()
     for role,filename in edition['demo_files'].items()

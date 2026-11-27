@@ -70,5 +70,6 @@
 .download-check select{font:inherit;padding:8px}
 .download-check [role="status"]{margin:0}
 .download-check button:disabled{opacity:.55;cursor:default}
+.download-check [data-official-download]{justify-self:start}
 .download-check dl{margin:0}
 .download-check dd{margin:0 0 6px;overflow-wrap:anywhere}

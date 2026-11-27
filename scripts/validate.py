@@ -20,7 +20,7 @@ class Page(HTMLParser):
         if 'id' in a:self.ids.append(a['id'])
         if tag=='option' and 'data-sha256' in a:
             assert a['value'] not in self.download_options
-            self.download_options[a['value']]=a['data-sha256']
+            self.download_options[a['value']]={'sha256':a['data-sha256'],'url':a['data-download']}
         if tag=='h1':self.h1+=1
         if tag=='title':self.in_title=True
         if tag=='meta' and a.get('name')=='description':self.description=a.get('content','')
@@ -221,7 +221,7 @@ project_pages={path for path in parsed if path.parent.parent.name=='projects'}
 assert len(project_pages)==5
 editions={row['slug']:row for row in json.loads((OUT/'releases.json').read_text(encoding='utf8'))['editions']}
 expected_download_options={
-    f'{slug}:{role}':edition['demo_asset_sha256'][role]
+    f'{slug}:{role}':{'sha256':edition['demo_asset_sha256'][role],'url':edition['demo_assets'][role]}
     for slug,edition in editions.items()
     for role in edition['demo_files']
 }

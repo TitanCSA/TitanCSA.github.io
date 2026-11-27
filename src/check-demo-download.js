@@ -13,10 +13,12 @@
     const button = form.querySelector("button");
     const status = form.querySelector('[role="status"]');
     const fingerprints = form.querySelector("dl");
+    const download = form.querySelector("[data-official-download]");
 
     function updateSelection() {
         status.textContent = "";
         fingerprints.hidden = true;
+        download.hidden = true;
         button.disabled = !reference.value || !localFile.files.length;
     }
 
@@ -26,9 +28,11 @@
         if (button.disabled) return;
 
         const file = localFile.files[0];
-        const expected = reference.selectedOptions[0].dataset.sha256;
+        const published = reference.selectedOptions[0].dataset;
+        const expected = published.sha256;
         button.disabled = reference.disabled = localFile.disabled = true;
         fingerprints.hidden = true;
+        download.hidden = true;
         status.textContent = form.dataset.working;
 
         try {
@@ -40,7 +44,12 @@
             fingerprints.querySelector("[data-expected]").textContent = expected;
             fingerprints.querySelector("[data-actual]").textContent = actual;
             fingerprints.hidden = false;
-            status.textContent = actual === expected ? form.dataset.match : form.dataset.mismatch;
+            const matches = actual === expected;
+            status.textContent = matches ? form.dataset.match : form.dataset.mismatch;
+            if (!matches) {
+                download.href = published.download;
+                download.hidden = false;
+            }
         } catch {
             status.textContent = form.dataset.error;
         } finally {
