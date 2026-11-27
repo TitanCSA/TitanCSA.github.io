@@ -21,9 +21,9 @@ PACKAGE_GUIDES = {
 }
 
 
-def fetch(address, content_type=None):
+def fetch(address, content_type=None, *, host="titancsa.github.io"):
     parsed = urlsplit(address)
-    assert (parsed.scheme, parsed.netloc) == ("https", "titancsa.github.io"), address
+    assert (parsed.scheme, parsed.netloc) == ("https", host), address
     request = Request(address, headers={"User-Agent": "TitanCSA-Public-Documentation-Audit"})
     with urlopen(request, timeout=15) as response:
         assert response.status == 200 and response.geturl() == address, address
@@ -53,6 +53,29 @@ class Guide(HTMLParser):
             assert "noindex" not in attrs.get("content", "").lower(), self.address
         if "id" in attrs:
             self.ids.add(attrs["id"])
+
+
+def verify_project_readme(product, contact):
+    source = urlsplit(product["source"])
+    assert source.scheme == "https" and source.netloc == "github.com", source.geturl()
+    assert re.fullmatch(r"/[\w.-]+/[\w.-]+", source.path), source.geturl()
+    host = "raw.githubusercontent.com"
+    address = f"https://{host}{source.path}/refs/heads/main/README.md"
+    readme = fetch(address, "text/plain", host=host)
+    first_steps = re.search(r"<!-- simple-start:start -->(.*?)<!-- simple-start:end -->", readme, re.S)
+    assert first_steps, address
+    demo = product["demo"]
+    links = (demo["setup_download_url"], product["first_run_guides"]["fr"], contact["contact_guide_url"])
+    assert all(link in first_steps[1] for link in links), address
+    viewer = demo["assets"].get("viewer")
+    assert not viewer or viewer["url"] in first_steps[1], address
+    contact_block = re.search(r"<!-- full-version-contact:start -->(.*?)<!-- full-version-contact:end -->",
+                              "\n".join(readme.splitlines()[:35]), re.S)
+    assert contact_block, address
+    assert contact["username"] in contact_block[1] and "one-hour demo limit" in contact_block[1], address
+    assert "## SDK and packages" in readme and product["first_run_guides"]["en"] + "#first-sdk-check" in readme, address
+    if wheel := product.get("python_wheel"):
+        assert wheel["guide_urls"]["en"] in readme, address
 
 
 def verify_python_wheel(product, guides, package_guides):
@@ -89,6 +112,8 @@ def main():
     contact_page = fetch(contact_url, "text/html")
     assert contact["contact_guide_url"] in references and contact["username"] in contact_page
     assert contact_anchor in Guide(contact_url, contact_page).ids
+    with ThreadPoolExecutor(max_workers=5) as pool:
+        list(pool.map(lambda product: verify_project_readme(product, contact), manifest["products"]))
 
     robots = RobotFileParser()
     robots.parse(fetch(BASE + "robots.txt", "text/plain").splitlines())
@@ -145,6 +170,7 @@ def main():
     print(json.dumps({
         "checked_utc": datetime.now(timezone.utc).isoformat(),
         "products": len(manifest["products"]),
+        "github_readmes_with_verified_first_steps": len(manifest["products"]),
         "canonical_sdk_pages": len(guides),
         "sdk_sources_with_verified_hash": len(sources),
         "archived_python_wheels_with_verified_guides_and_sources": len(wheel_products),
