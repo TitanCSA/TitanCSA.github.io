@@ -1,9 +1,12 @@
 import json
 import sys
 import unittest
+from hashlib import sha256
+from io import BytesIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
+from zipfile import ZipFile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import verify_release_assets as checker
@@ -82,6 +85,24 @@ class ReleaseAssetChecks(unittest.TestCase):
         self.assertEqual(row["demo_files"]["sdk"], filename)
         self.assertEqual(row["setup_requirements"], self.edition["setup_requirements"])
         self.assertEqual(self.edition["tag"], self.tag)
+
+    def test_download_audits_zip_documentation_but_keeps_sdk_service_endpoints(self):
+        url = self.edition["demo_assets"][self.role]
+        examples = ("Contact TitanCSA on Discord.", "Guide: https://licences.configcsa.com/private-guide")
+        for index, document in enumerate(examples):
+            with self.subTest(document=index):
+                copy = BytesIO()
+                with ZipFile(copy, "w") as archive:
+                    archive.writestr("START-HERE.txt", document.encode("utf-16"))
+                    archive.writestr("SDK/Client.cpp", 'const auto service = "https://licences.configcsa.com";')
+                snapshot = copy.getvalue()
+                with patch.object(checker, "urlopen", return_value=BytesIO(snapshot)):
+                    digest = sha256(snapshot).hexdigest()
+                    if index:
+                        with self.assertRaisesRegex(ValueError, "archive documentation contains a checkout link.*START-HERE"):
+                            checker.verify_download(url, digest, check_contact=True)
+                    else:
+                        checker.verify_download(url, digest, check_contact=True)
         self.assertEqual(self.edition["demo_files"]["sdk"], self.name)
 
     def test_installer_digest_is_checked_even_when_the_sdk_is_unchanged(self):

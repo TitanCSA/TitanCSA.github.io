@@ -1,6 +1,7 @@
 """Check pinned GitHub assets or preview the metadata for a candidate tag."""
 
 from argparse import ArgumentParser
+from contextlib import nullcontext
 from datetime import datetime, timezone
 from hashlib import sha256
 import json
@@ -8,10 +9,11 @@ import os
 from pathlib import Path
 import re
 import time
-from tempfile import NamedTemporaryFile
+from tempfile import NamedTemporaryFile, TemporaryFile
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlparse
 from urllib.request import Request, urlopen
+from zipfile import ZipFile
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -81,14 +83,27 @@ def official_assets(edition, tag, filenames, *, check_contact=False):
     return result
 
 
-def verify_download(url, expected):
+def verify_download(url, expected, *, check_contact=False):
     request = Request(url, headers={"User-Agent": "TitanCSA-Catalogue-Download-Check"})
     digest = sha256()
-    with urlopen(request, timeout=30) as response:
-        for chunk in iter(lambda: response.read(1 << 20), b""):
-            digest.update(chunk)
-    if digest.hexdigest() != expected:
-        raise ValueError(f"Downloaded bytes differ from the expected SHA-256: {url}")
+    check_zip = check_contact and urlparse(url).path.lower().endswith(".zip")
+    with (TemporaryFile() if check_zip else nullcontext()) as copy:
+        with urlopen(request, timeout=30) as response:
+            for chunk in iter(lambda: response.read(1 << 20), b""):
+                digest.update(chunk)
+                if check_zip:
+                    copy.write(chunk)
+        if digest.hexdigest() != expected:
+            raise ValueError(f"Downloaded bytes differ from the expected SHA-256: {url}")
+        if check_zip:
+            with ZipFile(copy) as archive:
+                for member in archive.infolist():
+                    if Path(member.filename).suffix.lower() not in {".txt", ".md", ".htm", ".html"}:
+                        continue
+                    data = archive.read(member)
+                    encoding = "utf-16" if data.startswith((b"\xff\xfe", b"\xfe\xff")) else "utf-8-sig"
+                    if PUBLIC_CHECKOUT.search(data.decode(encoding, errors="replace")):
+                        raise ValueError(f"Public archive documentation contains a checkout link: {url} > {member.filename}")
 
 
 def check_edition(edition, sdk_role, verify_bytes=False, *, check_contact=False):
@@ -107,7 +122,7 @@ def check_edition(edition, sdk_role, verify_bytes=False, *, check_contact=False)
         raise ValueError(f"{edition['slug']} {edition['tag']}: unexpected pinned asset roles")
     if verify_bytes:
         for url, digest in assets.values():
-            verify_download(url, digest)
+            verify_download(url, digest, check_contact=check_contact)
     return len(assets)
 
 
@@ -123,7 +138,7 @@ def candidate(edition, tag, version, sdk_role, overrides, verify_bytes=False):
     assets = official_assets(edition, tag, filenames)
     if verify_bytes:
         for url, digest in assets.values():
-            verify_download(url, digest)
+            verify_download(url, digest, check_contact=True)
     source_fields = {"slug", "demo", "tag", "commercial", "use", "api", "trial_starts", "note", "demo_files", "sdk_sha256",
                      "setup_member", "setup_requirements"}
     row = {name: value for name, value in edition.items() if name in source_fields}
@@ -168,7 +183,7 @@ def main():
     parser.add_argument("--apply", action="store_true", help="Write the checked candidate revision to releases.json")
     parser.add_argument("--verify-downloads", action="store_true", help="Download each public file and hash its bytes")
     parser.add_argument("--check-public-contact", action="store_true",
-                        help="Audit the pinned demo notes for private purchase contact and first-run guide links")
+                        help="Audit demo notes and any downloaded ZIP documentation for public purchase links")
     args = parser.parse_args()
     if (args.asset or args.apply) and not args.candidate:
         parser.error("--asset and --apply require --candidate")
@@ -202,12 +217,14 @@ def main():
         if archive != (app["download_url"], app["sha256"]):
             raise ValueError(f"{app['id']}: pinned app ZIP differs from the official release")
         if args.verify_downloads:
-            verify_download(*archive)
+            verify_download(*archive, check_contact=args.check_public_contact)
         print(f"{app['id']} {app['tag']}: exact app ZIP digest")
     scope = "downloaded files" if args.verify_downloads else "asset references"
     print(f"Verified {checked + len(apps)} {scope} across {len(editions) + len(apps)} pinned releases.")
     if args.check_public_contact:
         print(f"Verified the Discord contact and first-run guides in all {len(editions)} pinned driver demo notes.")
+        if args.verify_downloads:
+            print("Checked downloaded demo and application ZIP documentation for checkout links.")
     quickstarts = integration.get("sdk_quickstarts", [])
     for release_url in sorted({item["release_url"] for item in quickstarts}):
         repository, separator, tag = release_url.rpartition("/releases/tag/")
@@ -219,7 +236,7 @@ def main():
         for key, (url, digest) in assets.items():
             if (url, digest) != (pinned[key]["download_url"], pinned[key]["sha256"]):
                 raise ValueError(f"{key}: pinned quickstart differs from the official release.")
-            verify_download(url, digest)
+            verify_download(url, digest, check_contact=args.check_public_contact)
         print(f"{tag}: verified {len(assets)} public quickstart archives and their SHA-256 values.")
 
 
