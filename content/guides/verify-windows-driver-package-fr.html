@@ -23,6 +23,10 @@
 </form>
 <p data-demo-check-fallback><a href="#manual-check">Vérifier un téléchargement avec PowerShell</a>.</p>
 <script src="/assets/check-demo-download.js" defer></script>
+<details class="more-info" id="signature-installateur">
+<summary>Signature de l’installateur et du pilote</summary>
+<p>PowerShell a renvoyé <code>NotSigned</code> pour les 11 exécutables d’installation de démo testés. Utilise le vérificateur ci-dessus pour confirmer que ton fichier correspond à celui de GitHub. Windows contrôle le pilote par son catalogue signé pendant l’installation. <a href="/assets/demo-installer-authenticode-2026-11-27.json">Voir les versions et empreintes des installateurs testés</a>.</p>
+</details>
 <details id="manual-check" class="more-info">
 <summary>Vérifier une archive et la signature d’un pilote dans PowerShell</summary>
 <div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/Vdevice-Driver-1.0.6.1.zip">Télécharger le ZIP du pilote</a><a class="button" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/SHA256SUMS.txt">Télécharger SHA256SUMS.txt</a></div>

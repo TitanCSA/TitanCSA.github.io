@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-27T03:41:17.115209+00:00",
+  "method": "Get-AuthenticodeSignature -LiteralPath <installer.exe>",
+  "environment": {
+    "windows_build": 19045,
+    "powershell_version": "5.1.19041.6456"
+  },
+  "scope": "Windows Authenticode status of the identified installer executables. The signed kernel driver payloads have separate catalog and installation verification.",
+  "editions": [
+    {
+      "edition": "interceptor",
+      "tag": "v1.4.23.0-demo-r3",
+      "files": [
+        {
+          "role": "installer",
+          "sha256": "bcc0356571febd2be61d1e66a270d4ebdad9470a1fda2cd9028a69873468bf1a",
+          "authenticode_status": "NotSigned",
+          "file": "InterceptorSetup.exe",
+          "download_url": "https://github.com/TitanCSA/Interceptor/releases/download/v1.4.23.0-demo-r3/InterceptorSetup.exe"
+        },
+        {
+          "role": "console_installer",
+          "sha256": "bcb953083ba71e64d0c65524f068395601165953da2501fbd637b643fcf822c0",
+          "authenticode_status": "NotSigned",
+          "file": "InterceptorSetupConsole.exe",
+          "download_url": "https://github.com/TitanCSA/Interceptor/releases/download/v1.4.23.0-demo-r3/InterceptorSetupConsole.exe"
+        }
+      ],
+      "release_notes_url": "https://github.com/TitanCSA/Interceptor/releases/tag/v1.4.23.0-demo-r3"
+    },
+    {
+      "edition": "interceptor-keyboard-mouse",
+      "tag": "v1.0.5.4-demo-r3",
+      "files": [
+        {
+          "role": "installer",
+          "sha256": "80fc4a236111d259bc25a4addf26e39c886bf006832a504f30ca7125d61b6702",
+          "authenticode_status": "NotSigned",
+          "file": "InterceptorSetup.exe",
+          "download_url": "https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/releases/download/v1.0.5.4-demo-r3/InterceptorSetup.exe"
+        },
+        {
+          "role": "console_installer",
+          "sha256": "f8a1a5b9607079630aa577a28441588d62839a5b37c9b846c9d2ea18fd166576",
+          "authenticode_status": "NotSigned",
+          "file": "InterceptorSetupConsole.exe",
+          "download_url": "https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/releases/download/v1.0.5.4-demo-r3/InterceptorSetupConsole.exe"
+        }
+      ],
+      "release_notes_url": "https://github.com/TitanCSA/Interceptor-Keyboard-Mouse/releases/tag/v1.0.5.4-demo-r3"
+    },
+    {
+      "edition": "interceptor-gamepad-controller",
+      "tag": "v1.0.13.0-demo",
+      "files": [
+        {
+          "role": "installer",
+          "sha256": "229838fd7b613fde86cedb53b05dbb991c84b406ca7a224a583c105b4fcba48d",
+          "authenticode_status": "NotSigned",
+          "file": "InterceptorSetup.exe",
+          "download_url": "https://github.com/TitanCSA/Interceptor-Gamepad-Controller/releases/download/v1.0.13.0-demo/InterceptorSetup.exe"
+        },
+        {
+          "role": "console_installer",
+          "sha256": "bd07d14597b33fdd1255bd43476d84171b9c86819100d7d925ab6a82785d1e13",
+          "authenticode_status": "NotSigned",
+          "file": "InterceptorSetupConsole.exe",
+          "download_url": "https://github.com/TitanCSA/Interceptor-Gamepad-Controller/releases/download/v1.0.13.0-demo/InterceptorSetupConsole.exe"
+        }
+      ],
+      "release_notes_url": "https://github.com/TitanCSA/Interceptor-Gamepad-Controller/releases/tag/v1.0.13.0-demo"
+    },
+    {
+      "edition": "vdevice",
+      "tag": "v1.0.6.1-demo",
+      "files": [
+        {
+          "role": "installer",
+          "sha256": "b5a3969cad34066bff9bba42fa7913d06afbfef87461617d45bc4b4a54e40311",
+          "authenticode_status": "NotSigned",
+          "file": "VdeviceSetup.exe",
+          "download_url": "https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/VdeviceSetup.exe"
+        },
+        {
+          "role": "console_installer",
+          "sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848",
+          "authenticode_status": "NotSigned",
+          "file": "VdeviceSetupConsole.exe",
+          "download_url": "https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/VdeviceSetupConsole.exe"
+        }
+      ],
+      "release_notes_url": "https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo"
+    },
+    {
+      "edition": "interception-v2",
+      "tag": "v2.0.0",
+      "files": [
+        {
+          "member": "Interception/command line installer/install-interception.exe",
+          "sha256": "102dea2e28907d0a6bb92db7a8aefbfac8277d488201d89f9f3560870f7de3d3",
+          "authenticode_status": "NotSigned",
+          "file": "install-interception.exe",
+          "archive_url": "https://github.com/TitanCSA/Interception-V2/releases/download/v2.0.0/Interception-V2.zip"
+        }
+      ],
+      "archive_sha256": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9",
+      "release_notes_url": "https://github.com/TitanCSA/Interception-V2/releases/tag/v2.0.0"
+    },
+    {
+      "edition": "titan-audio-link",
+      "tag": "v0.2.0-demo",
+      "files": [
+        {
+          "member": "Installers/TitanAudioLinkSetup.exe",
+          "sha256": "a4eec5e44efd75a1a69917f45ce6be90aec4cb2dbda817e4846c184729c96f65",
+          "authenticode_status": "NotSigned",
+          "file": "TitanAudioLinkSetup.exe",
+          "archive_url": "https://github.com/titanfyre/Titan-Audio-Link/releases/download/v0.2.0-demo/Titan-Audio-Link-0.2.0-Demo-Windows-x64.zip"
+        },
+        {
+          "member": "Installers/TitanAudioLinkSetupConsole.exe",
+          "sha256": "4efb8deec1ebc494188d22ded019224ff8ae1d125fc068f551814457b64bb5e5",
+          "authenticode_status": "NotSigned",
+          "file": "TitanAudioLinkSetupConsole.exe",
+          "archive_url": "https://github.com/titanfyre/Titan-Audio-Link/releases/download/v0.2.0-demo/Titan-Audio-Link-0.2.0-Demo-Windows-x64.zip"
+        }
+      ],
+      "archive_sha256": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37",
+      "release_notes_url": "https://github.com/titanfyre/Titan-Audio-Link/releases/tag/v0.2.0-demo"
+    }
+  ]
+}

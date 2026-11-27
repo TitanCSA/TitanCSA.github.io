@@ -23,6 +23,10 @@
 </form>
 <p data-demo-check-fallback><a href="#manual-check">Use PowerShell to check a download</a>.</p>
 <script src="/assets/check-demo-download.js" defer></script>
+<details class="more-info" id="installer-signature">
+<summary>Installer and driver signatures</summary>
+<p>PowerShell returned <code>NotSigned</code> for the 11 tested demo installer executables. Use the file check above to confirm your download matches GitHub. Windows checks the kernel driver against its signed catalog during installation. <a href="/assets/demo-installer-authenticode-2026-11-27.json">See the tested installer versions and hashes</a>.</p>
+</details>
 <details id="manual-check" class="more-info">
 <summary>Check an archive and a driver signature in PowerShell</summary>
 <p class="byline">Verified with Windows PowerShell 5.1 and Windows SDK SignTool 10.0.26100.0 · 26 November 2026</p>
