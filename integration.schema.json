@@ -182,6 +182,7 @@
             "trial_scope": { "const": "windows_kernel_boot" },
             "trial_starts_on": { "type": "string", "minLength": 1 },
             "installer_verification_url": { "$ref": "#/$defs/url" },
+            "archive_revision_evidence_url": { "$ref": "#/$defs/url" },
             "mouse_driver_switch_verification_url": { "$ref": "#/$defs/url" },
             "keyboard_capture_verification_url": { "$ref": "#/$defs/url" },
             "console_setup": { "$ref": "#/$defs/consoleSetup" },

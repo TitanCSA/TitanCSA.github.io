@@ -4,7 +4,7 @@
 <div class="actions"><a class="button primary" href="{{TITAN_AUDIO_LINK_DEMO_URL}}">Download signed demo {{TITAN_AUDIO_LINK_DEMO_VERSION}}</a><a class="button" href="/about/evidence/#release-contact">Ask titancsa for the version without the demo limit</a></div>
 <h2 id="first-steps">Install and test one virtual cable</h2>
 <ol>
-<li>Extract the complete Windows x64 demo ZIP. Run <code>Installers\TitanAudioLinkSetup.exe</code> with administrator approval. Restart Windows if setup requests it.</li>
+<li>Use Windows 10 version 2004 or later or Windows 11 x64. Extract the demo ZIP, then run <code>Installers\TitanAudioLinkSetup.exe</code> as administrator. Restart Windows if setup requests it.</li>
 <li>Open <code>TitanAudioLink.exe</code>, refresh the endpoint list and select playback and recording endpoints from the same adapter.</li>
 <li>Click <strong>Test virtual cable</strong>. The app sends a generated stereo signal into that virtual playback endpoint and checks the corresponding virtual recording endpoint.</li>
 <li>Select the pair's playback endpoint in the source app and its recording endpoint in the receiving app. Windows microphone permissions can affect access to the virtual recording endpoint. Use the installer's Uninstall option to remove the pair.</li>
@@ -16,7 +16,8 @@
 <pre><code>.\AudioLinkCLI.exe --list
 .\AudioLinkCLI.exe --test</code></pre>
 <p>The test opens the paired virtual microphone and generates its own signal. It leaves Windows default audio devices unchanged.</p>
-<h2>Verified results for the exact ZIP</h2>
+<h2>Verified setup and signal tests</h2>
+<p>Revision r2 updates <code>START-HERE.txt</code> with the public guides and Discord contact. The driver, installers, SDK and examples match the original lab package byte for byte. <a href="/assets/titan-audio-link-demo-archive-revision-2026-11-27.json">See the archive and member hashes</a>.</p>
 <p>The demo 0.2.0 ZIP installed signed driver 0.2.0.0 in a Windows 11 build 26100 guest with Secure Boot enabled. The installed INF, both SYS files and catalog matched the package manifest. The command-line test verified 72,000 complete stereo frames with both channels matching and correlation 1.000000. The log recorded one discontinuity flag and zero timestamp errors. After uninstall and restart, Windows reported no Titan endpoints, driver package or main kernel service. <a href="/assets/titan-audio-link-install-verification-2026-11-25.json">See the exact console installer, archive and test results</a>.</p>
 {{AUDIO_HVCI_EN}}
 <p>The earlier <a href="https://github.com/titanfyre/Titan-Audio-Link/releases/tag/v0.1.1">signed evaluation 0.1.1</a> has separate Windows 10 build 19045 evidence covering two-pair isolation and repeated stream opens. The 0.2.0 test covers one pair and a short generated signal in one Windows 11 guest.</p>

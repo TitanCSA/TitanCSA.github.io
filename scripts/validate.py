@@ -505,6 +505,21 @@ assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]
     demo, check = row['demo'], row['sdk_check']
+    archive_revision_url = demo.get('archive_revision_evidence_url')
+    archive_revision = None
+    if archive_revision_url:
+        archive_revision = json.loads((OUT/archive_revision_url.removeprefix(BASE)).read_text(encoding='utf8'))
+        assert archive_revision['edition'] == row['id'] and archive_revision['tag'] == demo['tag']
+        assert archive_revision['demo_version'] == demo['version']
+        current = archive_revision['demo_archive']
+        previous = archive_revision['previous_demo_archive']
+        assert (current['url'], current['sha256']) == (demo['setup_download_url'], demo['setup_download_sha256'])
+        assert (current['url'], current['sha256']) != (previous['url'], previous['sha256'])
+        assert current['bundled_installer_member'] == previous['bundled_installer_member']
+        assert current['bundled_installer_sha256'] == previous['bundled_installer_sha256']
+        assert archive_revision['identical_members_sha256'][demo['setup_member']]
+        assert archive_revision['identical_members_sha256'][current['bundled_installer_member']] == current['bundled_installer_sha256']
+        assert archive_revision['updated_member']['file'] not in archive_revision['identical_members_sha256']
     setup = demo['setup_requirements']
     assert setup == {'windows_client_versions':['10','11'], 'requires_administrator':True,
                      **edition['setup_requirements']}
@@ -565,7 +580,9 @@ for row in manifest['products']:
     if evidence_url := check.get('installed_validation_url'):
         proof = json.loads((OUT/evidence_url.removeprefix(BASE)).read_text(encoding='utf8'))
         assert proof['edition'] == row['id'] == 'titan-audio-link'
-        assert proof['demo_tag'] == demo['tag'] and proof['sdk_archive_sha256'] == check['archive_sha256']
+        tested_tag = archive_revision['previous_tag'] if archive_revision else demo['tag']
+        tested_digest = archive_revision['previous_demo_archive']['sha256'] if archive_revision else check['archive_sha256']
+        assert proof['demo_tag'] == tested_tag and proof['sdk_archive_sha256'] == tested_digest
         assert proof['source_sha256'] == check['source_sha256']
         assert proof['console_installer_sha256'] == demo['console_setup']['installer_sha256']
         stages = proof['observations']
@@ -650,8 +667,12 @@ for row in manifest['products']:
         proof=json.loads((OUT/installer_evidence.removeprefix(BASE)).read_text(encoding='utf8'))
         if row['id']=='titan-audio-link':
             assert proof['edition']==row['id'] and proof['demo_version']==demo['version']
-            assert proof['demo_archive']['url']==demo['setup_download_url']
-            assert demo['console_setup']['evidence_url']==installer_evidence
+            if archive_revision:
+                assert proof['demo_archive']==archive_revision['previous_demo_archive']
+                assert demo['console_setup']['evidence_url']==archive_revision_url
+            else:
+                assert proof['demo_archive']['url']==demo['setup_download_url']
+                assert demo['console_setup']['evidence_url']==installer_evidence
             environment=proof['environment']
             assert environment['secure_boot'] is environment['memory_integrity'] is True
             assert environment['windows_build']==26100

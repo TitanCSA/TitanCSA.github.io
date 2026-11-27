@@ -3,7 +3,7 @@
 <div class="actions"><a class="button primary" href="{{TITAN_AUDIO_LINK_DEMO_URL}}">Télécharger la démo signée {{TITAN_AUDIO_LINK_DEMO_VERSION}}</a><a class="button" href="/fr/pilotes-entree-windows/#contact-release">Discord titancsa · Version sans limite de démo</a></div>
 <h2 id="first-steps">Installer et tester en trois étapes</h2>
 <ol>
-<li><strong>Installer.</strong> Sous Windows 10 ou 11 x64, extrais le ZIP puis lance <code>Installers\TitanAudioLinkSetup.exe</code>. Accepte les droits administrateur et redémarre si l’installateur le demande.</li>
+<li><strong>Installer.</strong> Sous Windows 10 version 2004 ou ultérieure, ou Windows 11 x64, extrais le ZIP puis lance <code>Installers\TitanAudioLinkSetup.exe</code>. Accepte les droits administrateur et redémarre si l’installateur le demande.</li>
 <li><strong>Tester.</strong> Ouvre <code>TitanAudioLink.exe</code>, actualise la liste puis choisis la sortie et le micro du même adaptateur. Clique sur <strong>Test virtual cable</strong> pour vérifier que le signal arrive dans le micro.</li>
 <li><strong>Relier tes applications.</strong> Dans l’application qui émet le son, choisis la sortie Titan Audio Link. Dans l’application qui doit le recevoir, choisis le micro virtuel associé.</li>
 </ol>
@@ -19,6 +19,7 @@
   <pre><code>.\AudioLinkCLI.exe --list
 .\AudioLinkCLI.exe --test</code></pre>
   <p>Le test du ZIP démo 0.2.0 a vérifié 72 000 trames stéréo sur une paire dans une VM Windows 11 x64 avec démarrage sécurisé. Après désinstallation et redémarrage, la paire et le pilote avaient été retirés. <a href="/assets/titan-audio-link-install-verification-2026-11-25.json">Voir le rapport de test</a>.</p>
+  <p>La révision r2 met à jour le fichier <code>START-HERE.txt</code> avec les guides publics et le contact Discord. Le pilote, les installateurs, le SDK et les exemples correspondent octet par octet au ZIP testé. <a href="/assets/titan-audio-link-demo-archive-revision-2026-11-27.json">Voir les empreintes du ZIP et des fichiers</a>.</p>
   <p><a href="/assets/titan-audio-link-sdk-pair-check-2026-11-26.json">Résultats du contrôle SDK avant installation, avec une paire et après désinstallation</a>.</p>
   {{AUDIO_HVCI_FR}}
 </details>

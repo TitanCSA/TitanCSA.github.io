@@ -47,6 +47,10 @@ def make_manifest(base, editions):
     audio = json.loads((ROOT / audio_file).read_text(encoding="utf-8"))
     audio_hvci_file = "assets/titan-audio-link-memory-integrity-2026-11-26.json"
     audio_hvci = json.loads((ROOT / audio_hvci_file).read_text(encoding="utf-8"))
+    audio_revision_file = "assets/titan-audio-link-demo-archive-revision-2026-11-27.json"
+    audio_revision = json.loads((ROOT / audio_revision_file).read_text(encoding="utf-8"))
+    audio_archive = audio["demo_archive"]
+    revised_archive = audio_revision["demo_archive"]
     vdevice_proof_file = "assets/vdevice-signed-versions-2026-11-25.json"
     vdevice_proof = json.loads((ROOT / vdevice_proof_file).read_text(encoding="utf-8"))
     mouse_switch_file = "assets/interceptor-mouse-driver-switch-2026-11-26.json"
@@ -73,6 +77,12 @@ def make_manifest(base, editions):
         app_architectures = recipe["app_architectures"]
         setup_role = "installer" if "installer" in edition["demo_assets"] else "archive"
         digests = edition["demo_asset_sha256"]
+        has_audio_revision = (
+            audio_revision["edition"] == slug and audio_revision["demo_version"] == edition["demo"]
+            and audio_revision["tag"] == edition["tag"] and audio_revision["previous_demo_archive"] == audio_archive
+            and revised_archive["url"] == edition["demo_download_url"] and revised_archive["sha256"] == digests[setup_role]
+            and revised_archive["bundled_installer_sha256"] == audio_archive["bundled_installer_sha256"]
+        )
         row = {
             "id": slug,
             "name": edition["name"],
@@ -139,8 +149,10 @@ def make_manifest(base, editions):
         if recipe["expected_after_setup"] != recipe["expected_without_driver"]:
             row["sdk_check"]["build_verification"]["command_after_setup"] = (
                 f"python scripts/test_first_sdk.py {slug} --expect-installed")
-        if (audio_pair["edition"] == slug and audio_pair["demo_tag"] == edition["tag"]
-                and audio_pair["sdk_archive_sha256"] == edition["sdk_sha256"]
+        tested_tag = audio_revision["previous_tag"] if has_audio_revision else edition["tag"]
+        tested_sdk_digest = audio_archive["sha256"] if has_audio_revision else edition["sdk_sha256"]
+        if (audio_pair["edition"] == slug and audio_pair["demo_tag"] == tested_tag
+                and audio_pair["sdk_archive_sha256"] == tested_sdk_digest
                 and audio_pair["source_sha256"] == row["sdk_check"]["source_sha256"]):
             row["sdk_check"]["installed_validation_url"] = base + audio_pair_file
         if wheel_report := python_wheels.get(slug):
@@ -197,18 +209,21 @@ def make_manifest(base, editions):
                 "app_architectures": app_architectures,
                 "opens_input_context": True,
             }
-        audio_archive = audio["demo_archive"]
+        if has_audio_revision:
+            row["demo"]["archive_revision_evidence_url"] = base + audio_revision_file
         if (audio["edition"] == slug and audio["demo_version"] == edition["demo"]
-                and audio_archive["sha256"] == digests[setup_role]):
+                and (audio_archive["sha256"] == digests[setup_role] or has_audio_revision)):
+            console_evidence = audio_revision_file if has_audio_revision else audio_file
             row["demo"]["console_setup"] = console_setup(
                 "archive", audio_archive["bundled_installer_member"], audio_archive["bundled_installer_sha256"],
-                base + audio_file)
+                base + console_evidence)
             if (audio_hvci["edition"] == slug and audio_hvci["demo_version"] == edition["demo"]
                     and audio_hvci["environment"]["memory_integrity"] is True
                     and audio_hvci["demo_archive"] == audio_archive
-                    and audio_archive["url"] == edition["demo_download_url"]):
+                    and (audio_archive["url"] == edition["demo_download_url"] or has_audio_revision)):
                 row["demo"]["installer_verification_url"] = base + audio_hvci_file
-                row["demo"]["console_setup"]["evidence_url"] = base + audio_hvci_file
+                if not has_audio_revision:
+                    row["demo"]["console_setup"]["evidence_url"] = base + audio_hvci_file
         if slug == vdevice_proof["project"]:
             verified_demo = vdevice_proof["versions"]["demo"]
             qualified_installers = {record["installer"]: record["installer_sha256"]

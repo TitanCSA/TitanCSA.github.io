@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-27T03:48:03.908459+00:00",
+  "edition": "titan-audio-link",
+  "demo_version": "0.2.0.0",
+  "previous_tag": "v0.2.0-demo",
+  "previous_demo_archive": {
+    "url": "https://github.com/titanfyre/Titan-Audio-Link/releases/download/v0.2.0-demo/Titan-Audio-Link-0.2.0-Demo-Windows-x64.zip",
+    "sha256": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37",
+    "bundled_installer_member": "Installers/TitanAudioLinkSetupConsole.exe",
+    "bundled_installer_sha256": "4efb8deec1ebc494188d22ded019224ff8ae1d125fc068f551814457b64bb5e5"
+  },
+  "tag": "v0.2.0-demo-r2",
+  "demo_archive": {
+    "url": "https://github.com/titanfyre/Titan-Audio-Link/releases/download/v0.2.0-demo-r2/Titan-Audio-Link-0.2.0-Demo-r2-Windows-x64.zip",
+    "sha256": "e154212b16444e26f70e1cd0876b3ae80e32eaed43529c2c09b1a547d0129c0e",
+    "bundled_installer_member": "Installers/TitanAudioLinkSetupConsole.exe",
+    "bundled_installer_sha256": "4efb8deec1ebc494188d22ded019224ff8ae1d125fc068f551814457b64bb5e5"
+  },
+  "updated_member": {
+    "file": "START-HERE.txt",
+    "sha256": "9f22d286edf0a3c2d5f8c078ea14907bd986c7b2db1c6409b6787e06407e13f5"
+  },
+  "identical_members_sha256": {
+    "TitanAudioLink.exe": "0bd48c31976a67f7ea873a4d086183b218914197a39768e7b3575b4cf15a422f",
+    "AudioLinkCLI.exe": "1cd12d8e4415bac290a459ad8317cd31156df832b5c99e97a7435ad9735ae138",
+    "AudioLinkExample.exe": "d65c7dd9908390352739b30aad6cb0047131240c05a594080786cfc8c3f63f93",
+    "AudioLinkToneExample.exe": "6bd32318be82defb1ff1bd6bb4c8791a242fcadbce99a413de809c4be4f5b538",
+    "Installers/TitanAudioLinkSetup.exe": "a4eec5e44efd75a1a69917f45ce6be90aec4cb2dbda817e4846c184729c96f65",
+    "Installers/TitanAudioLinkSetupConsole.exe": "4efb8deec1ebc494188d22ded019224ff8ae1d125fc068f551814457b64bb5e5",
+    "SDK/AudioLink.cpp": "3b524e830c472913d59a83a32936d34b0df6e1aace949fc46a7f49bec97891b8",
+    "SDK/AudioLink.h": "394e2d66023cac2bc277291a3d8ae8f0d33e8630e32ddd0760eb285ccd3ff8d6",
+    "Examples/GenerateTone.cpp": "985d364bf216b54150c7851908aa991ef33ac8ba55e5ffe6bffde028d1034d27",
+    "Examples/ListAndTest.cpp": "fa8c794959519d41e5ec94b3efd7bc739ae549bf032777346ea32743f63fb7ff",
+    "LICENSE": "97d13a8ed3554d436e95b77725f6ed4bda475316d135a2b8e003f27c77ec74f3",
+    "THIRD-PARTY-NOTICES.md": "bd74fe58e35c321c52e478c65c2f4128cb6dcf99743eacd3e333fc8db28c2ff9",
+    "docs/LICENSE-Microsoft-Sample.txt": "507cee67cffb838349ee0e6209debd40686f81d5d1073088ab80c5fd8a17c5eb",
+    "docs/SDK.md": "150b2310f19304ee64fef2d827dc61803feee3287b70405312647a47e8969da2",
+    "PACKAGE.json": "3f6bc3e436d2833d212b833da818717ce8e9d3e79071f126a4d4ff143c5d2b62"
+  },
+  "scope": "Each ZIP member was compared byte for byte. Only START-HERE.txt differs. The prior lab results record the original ZIP and the exact binaries shared with this revision."
+}

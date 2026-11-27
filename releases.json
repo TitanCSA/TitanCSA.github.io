@@ -175,7 +175,7 @@
         "documented_conflicts": []
       },
       "demo": "0.2.0.0",
-      "tag": "v0.2.0-demo",
+      "tag": "v0.2.0-demo-r2",
       "commercial": {
         "package_version": "0.2.1.2",
         "driver_version": "0.2.1.0"
@@ -185,12 +185,12 @@
       "trial_starts": "first successful capture",
       "note": "The complete demo ZIP contains the installer, app and C++ SDK.",
       "demo_files": {
-        "archive": "Titan-Audio-Link-0.2.0-Demo-Windows-x64.zip"
+        "archive": "Titan-Audio-Link-0.2.0-Demo-r2-Windows-x64.zip"
       },
-      "sdk_sha256": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37",
+      "sdk_sha256": "e154212b16444e26f70e1cd0876b3ae80e32eaed43529c2c09b1a547d0129c0e",
       "setup_member": "Installers/TitanAudioLinkSetup.exe",
       "demo_asset_sha256": {
-        "archive": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37"
+        "archive": "e154212b16444e26f70e1cd0876b3ae80e32eaed43529c2c09b1a547d0129c0e"
       }
     }
   ]

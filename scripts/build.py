@@ -167,9 +167,9 @@ for slug, edition in editions.items():
 audio_verified=next(row["demo"].get("installer_verification_url") for row in integration["products"]
                     if row["id"]=="titan-audio-link")
 audio_proof_link=escape(audio_verified.removeprefix(BASE),quote=True) if audio_verified else ""
-replacements["AUDIO_HVCI_EN"]=(f'<p>The same archive also passed with Windows Memory Integrity enabled. '
+replacements["AUDIO_HVCI_EN"]=(f'<p>The driver and installers also passed setup and removal with Windows Memory Integrity enabled. '
                                f'<a href="/{audio_proof_link}">See the second test</a>.</p>' if audio_proof_link else "")
-replacements["AUDIO_HVCI_FR"]=(f'<p>Le même ZIP a aussi réussi le test avec l’intégrité de la mémoire de Windows activée. '
+replacements["AUDIO_HVCI_FR"]=(f'<p>Le pilote a aussi été installé et retiré avec l’intégrité de la mémoire de Windows activée. '
                                f'<a href="/{audio_proof_link}">Voir le deuxième essai</a>.</p>' if audio_proof_link else "")
 replacements['RELEASE_COMPARISON_CARDS_EN']=edition_cards(editions.values(),projects,french_copy,BASE)
 replacements['RELEASE_COMPARISON_CARDS_FR']=edition_cards(editions.values(),projects,french_copy,BASE,french=True)
@@ -490,6 +490,7 @@ reference_links.extend([
     f'- [Interceptor Gamepad & Controller driver status with Python]({BASE}guides/gamepad-controller-first-run/#python-sdk)',
     f'- [Vérifier le pilote Gamepad & Controller avec Python]({BASE}fr/remapper-manette-windows/#python-sdk)',
     f'- [Titan Audio Link Python wheel and virtual audio inventory]({BASE}guides/titan-audio-link-first-run/#python-sdk)',
+    f'- [Titan Audio Link demo r2 archive and byte-identical SDK and driver evidence]({BASE}assets/titan-audio-link-demo-archive-revision-2026-11-27.json)',
     f'- [Paquet Python Titan Audio Link et vérification de la paire audio]({BASE}fr/micro-virtuel-titan-audio-link/#python-sdk)',
     f'- [Route Windows app audio into OBS with Titan Audio Link]({BASE}guides/titan-audio-link-obs/)',
     f'- [Envoyer le son d’une application Windows dans OBS]({BASE}fr/audio-application-obs/)',
