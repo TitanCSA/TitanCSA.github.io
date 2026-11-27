@@ -145,6 +145,24 @@ def main():
     for address, page in guides.items():
         assert page.canonicals == [address] and "first-sdk-check" in page.ids, address
 
+    trial_reports = 0
+    for product in manifest["products"]:
+        demo = product["demo"]
+        if not (address := demo.get("trial_window_verification_url")):
+            continue
+        assert address in references and all(robots.can_fetch(agent, address) for agent in SEARCH_AGENTS), address
+        report = json.loads(fetch(address, "application/json"))
+        assert (report["edition"], report["demo_tag"], report["demo_version"]) == (
+            product["id"], demo["tag"], demo["version"]), address
+        pinned = report["pinned_assets"]
+        assert pinned and all(demo["assets"].get(role) == asset for role, asset in pinned.items()), address
+        assert all(address in guides[urldefrag(url).url].links for url in product["first_run_guides"].values()), address
+        method = report["method"]
+        for evidence in ("probe", "inventory"):
+            if source_url := method.get(f"{evidence}_source_url"):
+                assert sha256(fetch(source_url).encode("utf-8")).hexdigest() == method[f"{evidence}_source_sha256"], source_url
+        trial_reports += 1
+
     expected_options = {
         f'{product["id"]}:{role}': asset
         for product in manifest["products"]
@@ -202,6 +220,7 @@ def main():
         "canonical_sdk_pages": len(guides),
         "sdk_sources_with_verified_hash": len(sources),
         "archived_python_wheels_with_verified_guides_and_sources": len(wheel_products),
+        "timed_demo_reports_with_verified_pins": trial_reports,
         "markdown_languages": sorted(manifest["guides"]),
         "search_agents_allowed_by_robots": list(SEARCH_AGENTS),
     }))
