@@ -60,7 +60,7 @@ Add `--verify-downloads` to fetch the public files and hash their actual bytes. 
 
 In the GitHub demo notes, link both `first_run_guides` URLs and include the Discord contact for the full version. Share purchase details privately.
 
-The [Audit published downloads](https://github.com/TitanCSA/TitanCSA.github.io/actions/workflows/public-release-audit.yml) workflow runs daily at 04:37 UTC. It checks the pinned release assets against GitHub metadata, verifies the contact and both guide links, hashes the public Rust quickstarts and checks the SDK versions and documentation. Run it on demand with `verify_downloads` to download and hash every pinned file. Results are reported in GitHub Actions.
+The [Audit published downloads](https://github.com/TitanCSA/TitanCSA.github.io/actions/workflows/public-release-audit.yml) workflow runs daily at 04:37 UTC. Each scheduled run downloads and hashes the pinned assets, scans text documentation inside the ZIPs for public checkout links, verifies the Discord contact and guide links, and checks the SDK registries. For the same download checks on demand, enable `verify_downloads` when running the workflow. Results are reported in GitHub Actions.
 
 If an existing release replaces a file, the check reports the filename and leaves the pin in place. Compare the new download with the previously verified package before applying the candidate. For an installer, verify the signed driver files and repeat the install and removal checks. The integration manifest links to console installer evidence only while its exact SHA-256 and SDK match the catalogue.
 

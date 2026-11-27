@@ -235,7 +235,7 @@ def secondary_registry_rows(rows, edition_order, *, french=False):
             url = escape(row["package_url"], quote=True)
             anchor = urlsplit(row["guide_urls"]["en"]).fragment
             guide = package_documentation_link(row, french)
-            cells.append(f'<td id="{anchor}"><a href="{url}"><code>{label}</code></a>{guide}</td>')
+            cells.append(f'<td id="{anchor}" class="package-links"><a href="{url}"><code>{label}</code></a>{guide}</td>')
         table.append(f'<tr><th scope="row"><a href="{project_url}">{name}</a></th>{"".join(cells)}</tr>')
     return "\n".join(table)
 
@@ -272,7 +272,7 @@ def registry_tables(rows, *, french=False, rust_quickstarts=()):
                 sample = f'<br><a href="{source}" download="{filename}">{label}</a>'
             table.append(
                 f'<tr id="{anchor}"><th scope="row"><a href="{project_url}">{name}</a></th>'
-                f'<td><a href="{package_url}">{package}</a>{guide}</td><td><code>{command}</code>{sample}</td></tr>'
+                f'<td class="package-links"><a href="{package_url}">{package}</a>{guide}</td><td><code>{command}</code>{sample}</td></tr>'
             )
         steps = ""
         if key == "go":

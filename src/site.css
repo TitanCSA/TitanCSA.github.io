@@ -61,6 +61,7 @@
 .article .guide-card h3{margin-top:0}
 .article .first-run-image{display:block;width:100%;height:auto;margin-top:10px}
 .article .first-run-more{margin-top:22px}
+.article .package-links a{display:inline-flex;align-items:center;min-height:24px}
 .article .first-run-more .guide-grid{margin-top:14px}
 @media(max-width:740px){.article .guide-grid{grid-template-columns:minmax(0,1fr)}}
 .edition-grid .guide-card:target{outline:2px solid var(--focus);outline-offset:3px;scroll-margin-block-start:20px}
