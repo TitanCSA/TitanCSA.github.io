@@ -266,6 +266,23 @@ for language, page in (('en',comparison),('fr',french_comparison)):
     for edition in editions.values():
         guide = '/' + edition['first_run_guides'][language].removeprefix(BASE)
         assert {edition['demo_download_url'],edition['demo_url'],guide} <= set(page.links)
+for edition in editions.values():
+    overview=by_canonical[edition['overview_url']]
+    demo_id,release_id=overview.canonical+'#demo',overview.canonical+'#release'
+    editions_for_search=[item for item in overview.schemas if item.get('@type')=='SoftwareApplication']
+    assert [item['@id'] for item in editions_for_search]==[demo_id,release_id]
+    demo_node,release_node=editions_for_search
+    assert demo_node['softwareVersion']==edition['demo'] and demo_node['isAccessibleForFree'] is True
+    assert demo_node['downloadUrl']==edition['demo_download_url'] and demo_node['releaseNotes']==edition['demo_url']
+    assert {demo_node['downloadUrl'],demo_node['releaseNotes']} <= set(overview.links)
+    assert f"build {edition['setup_requirements']['windows_10_minimum_build']}" in demo_node['operatingSystem']
+    assert release_node['softwareVersion']==edition['commercial']['package_version']
+    assert release_node['acquireLicensePage']==edition['release_contact']['instructions_url']
+    assert release_node['isAccessibleForFree'] is False
+    assert {'downloadUrl','offers'}.isdisjoint(release_node)
+    article,=[item for item in overview.schemas if item.get('@type')=='TechArticle']
+    assert article['about']==[{'@id':demo_id},{'@id':release_id}]
+    assert all(re.fullmatch(r'\d+\.\d+\.\d+\.\d+', value) for value in edition['commercial'].values())
 mouse_path='assets/vdevice-mouse-panel-2026-11-25.json'
 mouse_panel=json.loads((OUT/mouse_path).read_text(encoding='utf8'))
 assert mouse_panel['environment']['secure_boot'] is True and mouse_panel['driver']['signature_status']=='Valid'
@@ -310,10 +327,6 @@ for path in project_pages:
     for role, filename in edition['demo_files'].items():
         assert re.fullmatch(r'[A-Za-z0-9._-]+',filename)
         assert edition['demo_assets'][role] == f'{edition["repository"]}/releases/download/{edition["tag"]}/{filename}'
-    app,=[item for item in page.schemas if item.get('@type')=='SoftwareApplication']
-    assert app['softwareVersion']==edition['commercial']['package_version']
-    assert all(re.fullmatch(r'\d+\.\d+\.\d+\.\d+', value) for value in edition['commercial'].values())
-    assert 'offers' not in app
 for public_text in [*OUT.rglob('*.html'), OUT/'llms.txt', OUT/'releases.json', OUT/'projects.json']:
     assert 'licences.configcsa.com' not in public_text.read_text(encoding='utf8').lower(), public_text
 manifest = json.loads((OUT/'integration.json').read_text(encoding='utf8'))

@@ -291,16 +291,28 @@ def render(title,description,path,body,article=False):
         modified=reviewed.get(path,checked)
         schema.update(datePublished=published_dates.get(path,published),dateModified=modified,author={'@id':publisher['@id']})
     schemas=[schema]
-    if path.startswith('projects/'):
-        edition=editions[path.split('/')[1]]
-        schemas.append({
+    if edition := editions_by_overview.get(canonical):
+        package={
             '@context':'https://schema.org','@type':'SoftwareApplication',
-            '@id':canonical+'#release','name':edition['name']+' Release','url':canonical,
-            'applicationCategory':'DeveloperApplication','operatingSystem':'Microsoft Windows x64',
-            'softwareVersion':edition['commercial']['package_version'],
-            'description':edition['use'],
+            'url':canonical,'description':edition['use'],
+            'applicationCategory':'MultimediaApplication' if edition['slug']=='titan-audio-link' else 'DeveloperApplication',
+            'operatingSystem':'Microsoft Windows x64',
             'publisher':{'@id':publisher['@id']},
-        })
+        }
+        minimum_build=edition['setup_requirements']['windows_10_minimum_build']
+        demo={
+            **package,'@id':canonical+'#demo','name':edition['name']+' Demo',
+            'softwareVersion':edition['demo'],'downloadUrl':edition['demo_download_url'],
+            'releaseNotes':edition['demo_url'],'isAccessibleForFree':True,
+            'operatingSystem':f'Windows 10 x64 from build {minimum_build} or Windows 11 x64',
+        }
+        release={
+            **package,'@id':canonical+'#release','name':edition['name']+' Release',
+            'softwareVersion':edition['commercial']['package_version'],
+            'acquireLicensePage':edition['release_contact']['instructions_url'],'isAccessibleForFree':False,
+        }
+        schema['about']=[{'@id':demo['@id']},{'@id':release['@id']}]
+        schemas.extend((demo,release))
     if path in ('','fr/'):
         name='Catalogue public TitanCSA' if language=='fr' else 'TitanCSA public project catalogue'
         schemas.append({'@context':'https://schema.org','@type':'ItemList','name':name,'numberOfItems':len(projects),'itemListElement':[{'@type':'ListItem','position':i,'name':p['name'],'url':p['url']} for i,p in enumerate(projects,1)]})
