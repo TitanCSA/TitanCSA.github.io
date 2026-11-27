@@ -13,7 +13,7 @@
     "automation": "Automatisation locale"
   },
   "projects": {
-    "Interception-V2": ["Continue d’utiliser un logiciel de clavier ou souris prévu pour la bibliothèque Interception d’origine.", "Décompresse la démo et suis ses étapes d’installation. Désinstalle l’ancien pilote Interception avant de commencer."],
+    "Interception-V2": ["Continue d’utiliser un logiciel qui demande l’ancien pilote Interception.", "Décompresse la démo et suis ses étapes d’installation. Désinstalle l’ancien pilote Interception avant de commencer."],
     "Interceptor": ["Lis ou modifie les entrées de ton clavier, de ta souris ou d’une manette compatible.", "Installe la démo, ouvre le visualiseur fourni et vérifie que ton périphérique y apparaît."],
     "Interceptor-Keyboard-Mouse": ["Lis ou modifie les entrées d’un clavier ou d’une souris que tu choisis.", "Installe la démo, ouvre le visualiseur et appuie sur une touche ou bouge la souris."],
     "Interceptor-Gamepad-Controller": ["Lis ou modifie les boutons et sticks d’une manette compatible.", "Installe la démo, branche ta manette, ouvre le visualiseur et bouge un stick."],

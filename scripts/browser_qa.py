@@ -200,24 +200,23 @@ with sync_playwright() as p:
     assert page.get_by_text(registry['packagist','titancsa/vdevice'],exact=True).is_visible()
     assert page.get_by_text(registry['rubygems','vdevice'],exact=True).is_visible()
     assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1'), 'SDK commands cause horizontal page scrolling'
-    page.goto(base+'guides/windows-input-release-compare/',wait_until='domcontentloaded')
-    contacts=page.locator('main a[href="/about/evidence/#release-contact"]')
-    assert contacts.first.is_visible()
-    assert page.locator('tbody a[href*="/releases/download/"]').count()==5
-    assert 'What it does' in page.locator('thead').inner_text()
-    assert page.get_by_role('table',name='Windows input driver editions').get_by_role('rowheader').count()==5
-    for link in page.locator('tbody a[href*="/releases/download/"]').all():
-        box=link.bounding_box()
-        assert box and box['x']>=0 and box['x']+box['width']<=390, 'Contact link is clipped on mobile'
-    assert page.locator('main details summary').is_visible()
-    page.locator('main a[lang="fr"]').click()
-    assert page.url.endswith('/fr/pilotes-entree-windows/') and page.locator('html').get_attribute('lang')=='fr'
-    assert page.locator('main .guide-card a.button.primary[href*="/releases/download/"]').count()==5
+    for language,home,route in (('en','','guides/windows-input-release-compare/'),
+                                ('fr','fr/','fr/pilotes-entree-windows/')):
+        page.goto(base+home,wait_until='load')
+        page.locator(f'#projects a[href="/{route}"]').click()
+        assert page.url==base+route and page.locator('html').get_attribute('lang')==language
+        assert page.locator('main .edition-grid .guide-card').count()==len(editions)
+        for edition in editions:
+            card=page.locator(f'#edition-{edition["slug"]}')
+            guide=urlsplit(edition["first_run_guides"][language])
+            guide_href=guide.path+('#'+guide.fragment if guide.fragment else '')
+            assert card.locator(f'a[href="{guide_href}"]').is_visible()
+            assert card.locator(f'a[href="{edition["demo_url"]}"]').is_visible()
+            demo=card.locator(f'a[href="{edition["demo_download_url"]}"]')
+            box=demo.bounding_box()
+            assert box and box['x']>=0 and box['x']+box['width']<=390, 'Demo link is clipped on mobile'
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth+1')
     assert page.locator('main a[href="#contact-release"]').is_visible()
-    first_trial=page.locator('main .guide-card details').first
-    assert not first_trial.locator('p').is_visible()
-    first_trial.locator('summary').click()
-    assert first_trial.locator('p').is_visible()
     assert 'titancsa' in page.locator('main').inner_text()
     assert page.locator('main a[href="https://discord.com/app"]').is_visible()
     assert not page.locator('[data-copy-discord]').is_visible()

@@ -7,7 +7,7 @@ from integration import (app_cards, first_sdk_check, make_manifest, python_statu
                          sdk_rows, write_sdk_reference, write_starter)
 from go_samples import write_go_samples
 from rust_samples import write_rust_samples
-from catalogue import catalogue_sections
+from catalogue import catalogue_sections, edition_cards
 from registry import registry_catalogue, registry_tables, secondary_registry_rows
 from render_social_previews import PREVIEWS, WIDTH as PREVIEW_WIDTH, HEIGHT as PREVIEW_HEIGHT
 
@@ -171,14 +171,8 @@ replacements["AUDIO_HVCI_EN"]=(f'<p>The same archive also passed with Windows Me
                                f'<a href="/{audio_proof_link}">See the second test</a>.</p>' if audio_proof_link else "")
 replacements["AUDIO_HVCI_FR"]=(f'<p>Le même ZIP a aussi réussi le test avec l’intégrité de la mémoire de Windows activée. '
                                f'<a href="/{audio_proof_link}">Voir le deuxième essai</a>.</p>' if audio_proof_link else "")
-plain_by_slug={p['url'].split('#')[0].rsplit('/',1)[-1].lower():p['plain_purpose'] for p in projects}
-replacements['RELEASE_COMPARISON_ROWS']='\n'.join(
-    f'<tr role="row"><th scope="row" role="rowheader"><a href="{e["overview_url"]}">{escape(e["name"])}</a></th>'
-    f'<td role="cell">{escape(plain_by_slug[e["slug"]])}</td>'
-    f'<td role="cell"><a href="{e["demo_download_url"]}">Download {escape(e["name"])} demo {e["demo"]}</a><br>'
-    f'<a href="{e["demo_url"]}">Release notes</a></td></tr>'
-    for e in input_editions.values()
-)
+replacements['RELEASE_COMPARISON_CARDS_EN']=edition_cards(editions.values(),projects,french_copy,BASE)
+replacements['RELEASE_COMPARISON_CARDS_FR']=edition_cards(editions.values(),projects,french_copy,BASE,french=True)
 pages={
  '':('TitanCSA — Windows tools, device SDKs and practical guides','Find Windows input tools, virtual devices, diagnostics and SDKs by workflow. Clear first-run guides, project licences, public evidence and known limits.','index.html'),
  'fr/':('TitanCSA — Outils Windows, pilotes et SDK','Trouve ton outil Windows par usage. Chaque fiche explique son rôle et le premier essai, avec les liens vers les démos et les SDK.','index-fr.html'),
@@ -188,7 +182,7 @@ pages={
  'guides/read-benchmarks/':('How to read Windows input latency benchmarks — TitanCSA','Understand QPC endpoints, HID/Raw Input/XInput/WinMM receiver contracts, warm-up, tails, invalid runs and the difference between virtual and physical latency.','guides/read-benchmarks.html'),
  'guides/vdevice-virtual-usb-mouse/':('Create a virtual USB mouse on Windows with Vdevice — TitanCSA','Try a signed Windows 10/11 virtual USB mouse. Follow the mouse panel, verify movement and find the C++ example.','guides/vdevice-virtual-usb-mouse.html'),
  'guides/autohotkey-remap-second-keyboard/':('Remap a second keyboard with AutoHotkey v2 on Windows — TitanCSA','Remap A to B on one selected keyboard. Download the AutoHotkey v2 script and compare results on both keyboards.','guides/autohotkey-remap-second-keyboard.html'),
- 'guides/windows-input-release-compare/':('Compare Windows input drivers and Release editions — TitanCSA','Compare Interceptor, Vdevice and Interception V2. Find the matching API, signed demo, device scope and commercial edition.','guides/windows-input-release-compare.html'),
+ 'guides/windows-input-release-compare/':('Compare Windows input and audio drivers — TitanCSA','Compare signed Windows demos. Choose Interceptor, Vdevice, Interception V2 or Titan Audio Link and follow the matching setup guide.','guides/windows-input-release-compare.html'),
  'guides/release-activation-help/':('Install and activate a TitanCSA Windows Release — error help','Resolve missing activation interfaces, invalid keys and HTTPS failures. Find the correct Windows Release ZIP, SDK and driver version.','guides/release-activation-help.html'),
  'guides/interception-v2-migration/':('Migrate an Interception application to Interception V2 — TitanCSA','Migrate an application using interception.dll, check x86 or x64 library compatibility and list keyboard and mouse hardware IDs.','guides/interception-v2-migration.html'),
  'fr/migrer-interception-v2/':('Migrer une application vers Interception V2 sous Windows — TitanCSA','Installe la démo du pilote clavier et souris, essaie ton application existante, puis trouve les fichiers SDK Interception x86 et x64.','guides/interception-v2-migration-fr.html'),
@@ -215,7 +209,7 @@ pages={
  'fr/remapper-deuxieme-clavier-autohotkey/':('Remapper un deuxième clavier avec AutoHotkey v2 sous Windows','Téléchargez AutoHotInterceptor et un script AutoHotkey v2 pour remapper A vers B sur un seul des deux claviers.','guides/autohotkey-remap-second-keyboard-fr.html'),
  'about/evidence/':('About TitanCSA projects, evidence and support','Understand TitanCSA project evidence, separate SDK and driver licences, engineering previews, known issues, support and private vulnerability reporting.','about/evidence.html'),
  'fr/aide-et-verifications/':('Aide, tests et vérifications des pilotes Windows — TitanCSA','Retrouve les rapports d’installation, vérifie ton téléchargement et signale un problème d’installation ou d’activation du bon projet TitanCSA.','about/evidence-fr.html'),
- 'fr/pilotes-entree-windows/':('Pilotes d’entrée Windows · Choisir une édition et l’essayer | TitanCSA','Comparez Interceptor, Interceptor Keyboard & Mouse, Interceptor Gamepad & Controller, Vdevice et Interception V2. Démonstrations, compatibilité et licences.','guides/windows-input-fr.html')}
+ 'fr/pilotes-entree-windows/':('Pilotes Windows pour clavier, souris, manette et audio | TitanCSA','Compare les démos signées pour clavier, souris, manette, USB virtuel et audio. Retrouve les guides d’Interceptor, Vdevice, Interception V2 et Titan Audio Link.','guides/windows-input-fr.html')}
 for slug,(_,title,description) in featured.items():
     pages[f'projects/{slug}/']=(title,description,f'projects/{slug}.html')
 updated={'','guides/choose-input/','fr/pilotes-entree-windows/',*(f'projects/{slug}/' for slug in featured)}
@@ -277,6 +271,7 @@ reviewed.update(dict.fromkeys((
 ), '2026-11-26'))
 reviewed.update(dict.fromkeys((
     'about/evidence/', 'fr/aide-et-verifications/', 'guides/release-activation-help/', 'fr/activation-release/',
+    'guides/windows-input-release-compare/',
     'guides/first-run/', 'fr/essayer-sans-pilote/', 'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
     'guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/', 'projects/vdevice/',
     'guides/interception-v2-migration/', 'fr/migrer-interception-v2/', 'projects/interception-v2/',

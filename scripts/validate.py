@@ -260,7 +260,12 @@ for edition in editions.values():
 comparison=parsed[(OUT/'guides/windows-input-release-compare/index.html').resolve()]
 french_comparison=by_canonical[BASE+'fr/pilotes-entree-windows/']
 assert comparison.alternates=={'en':comparison.canonical,'fr':french_comparison.canonical}
-assert editions['vdevice']['demo_assets']['examples'] in french_comparison.links
+assert contact_routes['en'] in comparison.links and '#contact-release' in french_comparison.links
+for language, page in (('en',comparison),('fr',french_comparison)):
+    assert {f'edition-{slug}' for slug in editions} <= set(page.ids)
+    for edition in editions.values():
+        guide = '/' + edition['first_run_guides'][language].removeprefix(BASE)
+        assert {edition['demo_download_url'],edition['demo_url'],guide} <= set(page.links)
 mouse_path='assets/vdevice-mouse-panel-2026-11-25.json'
 mouse_panel=json.loads((OUT/mouse_path).read_text(encoding='utf8'))
 assert mouse_panel['environment']['secure_boot'] is True and mouse_panel['driver']['signature_status']=='Valid'
@@ -300,10 +305,7 @@ for path in project_pages:
     edition=editions[path.parent.name]
     page=parsed[path]
     assert page.canonical==edition['overview_url']
-    assert edition['demo_url'] in page.links and edition['demo_url'] in comparison.links
-    assert '/about/evidence/#release-contact' in page.links and '/about/evidence/#release-contact' in comparison.links
-    assert edition['demo_download_url'] in page.links and edition['demo_download_url'] in comparison.links
-    assert edition['demo_download_url'] in french_comparison.links and '#contact-release' in french_comparison.links
+    assert {edition['demo_url'], edition['demo_download_url'], '/about/evidence/#release-contact'} <= set(page.links)
     assert set(edition['demo_assets'].values()) <= set(page.links)
     for role, filename in edition['demo_files'].items():
         assert re.fullmatch(r'[A-Za-z0-9._-]+',filename)
@@ -349,7 +351,7 @@ quickstarts=manifest['sdk_quickstarts']
 assert quickstarts==quickstart_proof['checks'] and len(quickstarts)==2
 outputs={'interception-v2':{'keyboard':True,'mouse':False,'valid':True},'titan-audio-link':[]}
 quickstart_routes={
-    'interception-v2':('projects/interception-v2/','guides/interception-v2-migration/','fr/migrer-interception-v2/','fr/pilotes-entree-windows/'),
+    'interception-v2':('projects/interception-v2/','guides/interception-v2-migration/','fr/migrer-interception-v2/'),
     'titan-audio-link':('guides/titan-audio-link-first-run/','fr/micro-virtuel-titan-audio-link/'),
 }
 assert {row['edition'] for row in quickstarts}==outputs.keys()

@@ -1,33 +1,31 @@
-<p class="eyebrow">SDK et pilotes Windows</p>
 <h1>Quel pilote Windows choisir ?</h1>
-<p class="article-lead">Choisis le projet qui fait ce dont tu as besoin, puis essaie sa démo.</p>
+<p class="article-lead">Choisis le pilote selon ce que tu veux faire. Télécharge sa démo signée et suis les premiers pas sous Windows 64 bits.</p>
 <p class="byline">Documentation TitanCSA · Démonstrations vérifiées le {{RELEASE_REVIEW_DATE}} · ZIP commerciaux vérifiés le {{COMMERCIAL_CHECK_DATE}}</p>
+<p><a href="/guides/windows-input-release-compare/" lang="en">Read in English</a></p>
 <h2>Choisir et essayer une édition</h2>
 <p><strong>Version sans la limite d’une heure</strong> · <a href="#contact-release">Contacter titancsa sur Discord</a>.</p>
-<div class="guide-grid edition-grid">
-  <article class="guide-card" id="edition-interceptor"><h3>Interceptor</h3><p>Lire ou modifier les actions d’un clavier, d’une souris ou d’une manette.</p><div class="actions"><a class="button primary" href="{{INTERCEPTOR_DEMO_URL}}">Démo {{INTERCEPTOR_DEMO_VERSION}}</a></div><details><summary>Comment l’essayer</summary><p>Installe la démo. Ouvre le <a href="{{INTERCEPTOR_VIEWER_URL}}">visualiseur</a> et appuie sur une touche ou bouge une manette. Clique sur <strong>Stop</strong> quand tu as fini. <a href="/fr/essayer-interceptor/">Guide Interceptor pas à pas</a>.</p></details></article>
-  <article class="guide-card" id="edition-interceptor-keyboard-mouse"><h3>Interceptor Keyboard &amp; Mouse</h3><p>Choisir le clavier ou la souris dont tu veux modifier les actions.</p><div class="actions"><a class="button primary" href="{{INTERCEPTOR_KEYBOARD_MOUSE_DEMO_URL}}">Démo {{INTERCEPTOR_KEYBOARD_MOUSE_DEMO_VERSION}}</a></div><details><summary>Comment l’essayer</summary><p>Installe la démo. Ouvre le <a href="{{INTERCEPTOR_KEYBOARD_MOUSE_VIEWER_URL}}">visualiseur</a>. Appuie sur une touche ou bouge la souris. Clique sur <strong>Stop</strong> quand tu as fini. <a href="/fr/tester-deux-claviers-windows/">Guide pour distinguer deux claviers</a>.</p></details></article>
-  <article class="guide-card" id="edition-interceptor-gamepad-controller"><h3>Interceptor Gamepad &amp; Controller</h3><p>Lire ou modifier les boutons et les sticks d’une manette.</p><div class="actions"><a class="button primary" href="{{INTERCEPTOR_GAMEPAD_CONTROLLER_DEMO_URL}}">Démo {{INTERCEPTOR_GAMEPAD_CONTROLLER_DEMO_VERSION}}</a></div><details><summary>Comment l’essayer</summary><p>Installe la démo. Branche ta manette et ouvre le <a href="{{INTERCEPTOR_GAMEPAD_CONTROLLER_VIEWER_URL}}">visualiseur</a>. Bouge un stick pour vérifier qu’il réagit. Clique sur <strong>Stop</strong> quand tu as fini. <a href="/fr/remapper-manette-windows/">Guide manette pas à pas</a>.</p></details></article>
-  <article class="guide-card" id="edition-vdevice"><h3>Vdevice</h3><p>Faire apparaître un clavier, une souris ou une manette virtuelle dans Windows.</p><div class="actions"><a class="button primary" href="{{VDEVICE_DEMO_URL}}">Démo {{VDEVICE_DEMO_VERSION}}</a></div><details><summary>Comment l’essayer</summary><p>Installe la démo. Décompresse le <a href="{{VDEVICE_EXAMPLES_URL}}">ZIP d’exemples</a> et ouvre <code>VdeviceMouseUI.exe</code>. Clique sur <strong>Create device</strong>, mets <code>x</code> à 32 et <code>y</code> à 0, puis clique sur <strong>Send state</strong>.</p></details></article>
-  <article class="guide-card" id="edition-interception-v2"><h3>Interception V2</h3><p>Continuer à utiliser un programme qui dépend de l’ancien pilote Interception.</p><div class="actions"><a class="button primary" href="{{INTERCEPTION_V2_DEMO_URL}}">Démo {{INTERCEPTION_V2_DEMO_VERSION}}</a></div><details><summary>Comment l’essayer</summary><div id="installer-interception-v2"><ol>
+<div class="guide-grid edition-grid">{{RELEASE_COMPARISON_CARDS_FR}}</div>
+<p>Pour changer d’édition Interceptor, désinstalle d’abord celle qui est installée.</p>
+<details class="more-info">
+<summary>Installer Interception V2 en ligne de commande</summary>
+<div id="installer-interception-v2"><ol>
     <li>Si tu as déjà un pilote Interception ou Interceptor pour le clavier et la souris, désinstalle-le et redémarre Windows.</li>
     <li>Décompresse la démo. Ouvre une invite de commandes en administrateur dans le dossier <code>Interception</code> et lance la commande.</li>
   </ol>
   <pre><code>"command line installer\install-interception.exe" /install</code></pre>
-  <p>Redémarre si l’installateur le demande, puis essaie le clavier ou la souris dans ton programme. <a href="/fr/migrer-interception-v2/">Guide Interception V2 pas à pas</a>.</p></div><p>Pour tester le SDK Rust, décompresse le <a href="{{INTERCEPTION_V2_RUST_QUICKSTART_URL}}">ZIP d’exemple Rust</a> et lance <code>cargo run --locked</code>.</p></details></article>
-</div>
-<p>Utilise un PC Windows 64 bits avec un compte administrateur. Si l’installateur te le demande, redémarre Windows. Avant de changer d’édition Interceptor, désinstalle l’ancienne.</p>
+  <p>Redémarre si l’installateur le demande, puis essaie le clavier ou la souris dans ton programme. <a href="/fr/migrer-interception-v2/">Guide Interception V2 pas à pas</a>.</p></div>
+</details>
 <h2 id="contact-release">Demander la version sans la limite d’une heure</h2>
 <p>Ajoute <strong>titancsa</strong> sur Discord. Sur ordinateur, ouvre <strong>Amis → Ajouter un ami</strong>. Sur téléphone, ouvre les messages, puis choisis <strong>Ajouter des amis → Ajouter par nom d’utilisateur</strong>.</p>
 <p>Envoie le nom du projet et demande la version sans la limite d’une heure. TitanCSA t’enverra le lien d’achat en privé.</p>
 <div class="actions"><a class="button" href="https://discord.com/app">Ouvrir Discord</a><button class="button" type="button" data-copy-discord="titancsa" hidden>Copier le nom Discord</button><span role="status"></span></div>
 <details class="more-info">
 <summary>Compatibilité, activation et résultats des tests</summary>
-<p>Après un redémarrage de Windows ou un rechargement du pilote, effectue une nouvelle activation avec accès à Internet.</p>
+<p>Avec une édition Release, effectue une nouvelle activation en ligne après un redémarrage de Windows ou un rechargement du pilote.</p>
 <h2>Retrouver la bonne révision d’une démo</h2>
 <p>Au téléchargement, vérifie le tag de la publication GitHub. Une révision comme <code>-r3</code> peut garder le même numéro de version Windows. Prends l’installateur, le visualiseur et le SDK dans la même publication. <a href="{{INTERCEPTOR_DEMO_NOTES_URL}}">Publications Interceptor</a> · <a href="{{INTERCEPTOR_KEYBOARD_MOUSE_DEMO_NOTES_URL}}">Publications Keyboard &amp; Mouse</a></p>
 <h2>Quand commence l’heure de démonstration ?</h2>
-<p>Chaque démo dure une heure par démarrage du noyau Windows. Le compteur démarre au premier périphérique virtuel créé avec Vdevice, au premier contexte ouvert avec Interception V2 ou à la première capture pour les filtres Interceptor. Avec Interceptor et Interceptor Gamepad &amp; Controller, un abonnement au moniteur de manette peut aussi démarrer le compteur. Consultez l’édition pour les diagnostics concernés. Utilisez la commande <strong>Redémarrer</strong> de Windows pour une nouvelle session de démo.</p>
+<p>Chaque démo dure une heure par démarrage du noyau Windows. Le compteur démarre à la création du premier périphérique virtuel avec Vdevice, à l’ouverture du premier contexte avec Interception V2 ou à la première capture pour les filtres Interceptor et Titan Audio Link. Avec Interceptor et Interceptor Gamepad &amp; Controller, un abonnement au moniteur de manette peut aussi démarrer le compteur. Les notes de version indiquent les autres cas. Utilise la commande <strong>Redémarrer</strong> de Windows pour une nouvelle session de démo.</p>
 <h2>Vérifier la compatibilité avant l’achat</h2>
 <p>Le correctif WDF-001 est intégré à la <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo">démo signée Vdevice 1.0.6.1</a> et à la Release signée 1.0.4.1. Les mises à jour et les désinstallations ont réussi dans les VM Windows 10 et 11. <a href="/assets/vdevice-signed-versions-2026-11-25.json">Voir les versions et les résultats</a>.</p>
 <ul>
@@ -36,5 +34,4 @@
   <li><a href="/fr/souris-usb-virtuelle-vdevice/">Créer une souris USB virtuelle avec Vdevice</a>.</li>
   </ul>
 <p>Les données du banc d’essai décrivent les profils et les versions réellement mesurés. Vérifiez votre matériel, le mode de connexion et le comportement dans l’application cible. <a href="https://titancsa.github.io/TitanCSA-Benchmarks/">Voir les résultats et la méthodologie</a>.</p>
-<div class="related"><a href="/guides/windows-input-release-compare/" lang="en">Read the edition comparison in English</a></div>
 </details>

@@ -14,6 +14,32 @@ KIND_FR = {
 }
 
 
+def edition_cards(editions, projects, french_copy, base, *, french=False):
+    projects_by_name = {project["name"]: project for project in projects}
+    language = "fr" if french else "en"
+    download = "Démo" if french else "Demo"
+    first_run = "Premiers pas" if french else "First steps"
+    notes = "Notes de version" if french else "Release notes"
+    cards = []
+    for edition in editions:
+        repo = edition["repository"].rsplit("/", 1)[-1]
+        purpose = french_copy["projects"][repo][0] if french else projects_by_name[repo]["plain_purpose"]
+        slug = escape(edition["slug"], quote=True)
+        name = escape(edition["name"])
+        version = escape(edition["demo"])
+        setup = escape(edition["demo_download_url"], quote=True)
+        guide = "/" + escape(edition["first_run_guides"][language].removeprefix(base), quote=True)
+        release = escape(edition["demo_url"], quote=True)
+        cards.append(
+            f'<article class="guide-card" id="edition-{slug}" aria-labelledby="edition-title-{slug}">'
+            f'<h3 id="edition-title-{slug}">{name}</h3><p>{escape(purpose)}</p>'
+            f'<div class="actions"><a class="button primary" href="{setup}">{download} {version}</a>'
+            f'<a class="button" href="{guide}">{first_run}</a></div>'
+            f'<a href="{release}">{notes}</a></article>'
+        )
+    return "\n".join(cards)
+
+
 def catalogue_sections(projects, french_copy, featured_paths, app_sections, *, french=False):
     groups = defaultdict(list)
     for project in projects:
