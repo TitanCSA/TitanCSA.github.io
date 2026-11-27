@@ -3,6 +3,18 @@
 <p><a href="/guides/release-activation-help/" lang="en">Read the English version</a></p>
 <h2 id="apres-paiement">Récupérer le ZIP et la clé après l’achat</h2>
 <ol><li>Reviens de Stripe avec le profil de navigateur qui a ouvert le paiement. Garde la page de livraison ouverte pendant la confirmation.</li><li>Quand <strong>Payment confirmed</strong> s’affiche, clique sur <strong>Download ZIP</strong> pour télécharger le ZIP et sur <strong>Copy key</strong> pour copier la clé. Garde les deux en lieu sûr avant de fermer la page.</li><li>Si tu as déjà payé et que la livraison tarde, clique sur <strong>Check again</strong> dans ce navigateur. Si tu as perdu la session, contacte le vendeur avec le reçu Stripe avant de payer à nouveau.</li></ol>
+<details class="more-info">
+  <summary>Résilier un abonnement mensuel</summary>
+  <div id="resilier-abonnement">
+    <ol>
+      <li>Rouvre la page d’achat que TitanCSA t’a envoyée en privé pour ce projet. Dans l’onglet <strong>Monthly</strong>, clique sur <strong>Revoke licence</strong>.</li>
+      <li>Saisis ta clé mensuelle et clique sur <strong>Continue</strong>, puis sur <strong>Confirm cancellation</strong>. La clé suffit pour faire la demande.</li>
+      <li>Une fois l’annulation confirmée à l’écran, clique sur <strong>Download confirmation</strong> pour garder une copie.</li>
+    </ol>
+    <p>La révocation arrête les prochains prélèvements et bloque les nouvelles activations dès la confirmation. Un pilote déjà autorisé continue jusqu’à son prochain rechargement.</p>
+    <p>Si un renouvellement échoue, les nouvelles activations sont bloquées à l’expiration de la période payée. Si Stripe confirme ensuite le paiement, la même clé redevient utilisable.</p>
+  </div>
+</details>
 <h2>Installer le bon ZIP</h2>
 <ol><li>Extrais le ZIP commercial fourni après l’achat. Utilise son installateur, son outil d’activation et son SDK.</li><li>Lance l’installation en administrateur. Redémarre Windows si l’installateur le demande. Avant de changer entre éditions Interceptor qui se chevauchent, suis la procédure de désinstallation de l’ancienne édition.</li><li>Ouvre l’outil d’activation et utilise la clé de cette édition. La vérification en ligne autorise le chargement actuel du pilote. Répète-la après un redémarrage ou un rechargement du pilote.</li></ol>
 <p>La version du ZIP et celle du pilote signé peuvent différer. Pour quatre éditions, nous avons vérifié sous Windows 11 l’installation, les versions affichées et la désinstallation. <a href="/assets/company-driver-package-checks-2026-11-26.json">Voir les versions exactes et les résultats des tests</a>.</p>

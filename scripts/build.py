@@ -256,6 +256,9 @@ reviewed.update(dict.fromkeys((
     'guides/titan-audio-link-first-run/', 'fr/micro-virtuel-titan-audio-link/', 'guides/gamepad-controller-first-run/',
     'guides/verify-windows-driver-package/', 'fr/installeur-et-sdk/', 'fr/souris-usb-virtuelle-vdevice/',
 ), '2026-11-26'))
+reviewed.update(dict.fromkeys((
+    'about/evidence/', 'fr/aide-et-verifications/', 'guides/release-activation-help/', 'fr/activation-release/',
+), '2026-11-27'))
 
 
 def render(title,description,path,body,article=False):
@@ -419,6 +422,8 @@ reference_links.extend([
     f'- [Version sans la limite d’une heure]({BASE}fr/pilotes-entree-windows/#contact-release): Contacte titancsa sur Discord et indique l’édition. Le lien d’achat est communiqué en privé.',
     f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
+    f'- [Cancel a monthly licence]({BASE}guides/release-activation-help/#cancel-subscription)',
+    f'- [Résilier un abonnement mensuel]({BASE}fr/activation-release/#resilier-abonnement)',
     f'- [Evidence and support]({BASE}about/evidence/)',
     f'- [Vérifications et assistance TitanCSA]({BASE}fr/aide-et-verifications/)',
     '', '## Optional', '',
