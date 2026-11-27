@@ -26,7 +26,7 @@
     <pre><code>.\Installers\VdeviceReleaseSetupConsole.exe /diagnose</code></pre>
   </li>
   <li>Si le rapport demande un redémarrage, redémarre. Si le pilote est absent ou si l’interface ne répond toujours pas, ouvre <code>VdeviceReleaseSetup.exe</code> dans <strong>Installers</strong> et choisis <strong>Reinstall / repair</strong>. Redémarre si demandé, puis relance le diagnostic.</li>
-  <li>Quand le rapport affiche <strong>Release activation interface: ready</strong>, ouvre <code>VdeviceActivation.exe</code> depuis le même ZIP pour activer le pilote. Si le contrôle échoue encore, <a href="/fr/aide-et-verifications/#signaler">envoie au support</a> le code PnP, l’erreur et les versions du SDK et du pilote affichées, sans ta clé.</li>
+  <li>Quand le rapport affiche <strong>Release activation interface: ready</strong>, ouvre <code>VdeviceActivation.exe</code> depuis le même ZIP pour activer le pilote. Si le contrôle échoue encore, <a href="#rapport-support">prépare un rapport de support</a> avec le code PnP, l’erreur et les versions du SDK et du pilote affichées.</li>
 </ol>
 <p>Si le diagnostic renvoie <strong>1306</strong> et indique que le fichier <code>.sys</code> configuré diffère de celui du ZIP, réinstalle avec l’installateur du ZIP actuel. Dans l’essai ci-dessous, le service tournait encore avec le pilote 1.0.3.0 et le diagnostic 1.0.4.1 s’est arrêté avant le contrôle d’activation. <a href="/assets/vdevice-release-package-mismatch-2026-11-27.json">Voir le test du décalage de versions</a>.</p>
 <h2>Comprendre le message</h2>
@@ -41,6 +41,18 @@
 <p><code>VdeviceRelease</code> est le nom sous lequel Windows enregistre le pilote noyau <code>VdeviceRelease.sys</code>. L’installateur prépare et enregistre le package signé. Windows charge le pilote et expose son interface d’activation. Dans le diagnostic, <strong>Service: running</strong> décrit le chargement du pilote. <strong>Release activation interface: ready</strong> confirme que son interface répond.</p>
 <p>Dans une VM Windows 11 avec Secure Boot et l’intégrité de la mémoire actifs, le ZIP Company 1.0.3.2 a installé le pilote 1.0.3.0. Le ZIP Company 1.0.4.1 l’a ensuite mis à jour. Après redémarrage, le SDK correspondant a lu l’état du pilote et l’installateur a confirmé que l’interface d’activation répondait. <a href="/assets/vdevice-signed-versions-2026-11-25.json">Voir les résultats avant activation et après désinstallation</a>.</p>
 <p>Pour une deuxième vérification locale, <a href="https://github.com/titanfyre/Driver-Readiness-Inspector/releases/tag/v0.1.0">Driver Readiness Inspector 0.1.0</a> affiche le nœud Vdevice Release, la version du pilote et l’état du service. Lors de l’essai précédent du pilote 1.0.3.0, le nœud affichait le code PnP <code>0</code>, le package <code>1.0.3.0</code> et le service <code>running</code>. Utilise <code>/diagnose</code> pour savoir si l’interface d’activation répond. <a href="/assets/vdevice-release-inspector-20261125.json">Voir le relevé avant et après</a>.</p>
-<h2>Préparer un rapport de support</h2>
-<p>Indique le nom du ZIP, la version et le build de Windows, la version du pilote installé, celle du SDK et les champs <code>stage</code>, <code>reason</code> et <code>error</code>. Pour Vdevice, l’installateur console accepte <code>VdeviceReleaseSetupConsole.exe /diagnose</code>. Retire la clé et les données personnelles du rapport partagé.</p>
+<h2 id="rapport-support">Préparer un rapport de support</h2>
+<ol>
+  <li>Appuie sur <kbd>Windows</kbd> + <kbd>R</kbd>, tape <code>winver</code> et appuie sur Entrée. Note la version et le build de Windows.</li>
+  <li>Copie et complète le modèle. Pour le pilote et le SDK, reprends les versions affichées dans l’erreur ou le diagnostic. Écris « inconnue » si une version manque. Garde ta clé de licence privée.</li>
+  <li><a href="/fr/pilotes-entree-windows/#contact-release">Envoie le rapport à titancsa sur Discord</a> pour une Release payante ou <a href="/fr/aide-et-verifications/#signaler">utilise le formulaire GitHub de ton projet</a> pour une démo.</li>
+</ol>
+<pre id="report-template">Projet et édition (Démo ou Release) :
+Nom du ZIP ou de l’installateur :
+Version et build de Windows (winver) :
+Version du pilote installé :
+Version du SDK :
+Étapes pour reproduire :
+Erreur exacte (stage, reason, code Windows) :</pre>
+<div class="actions"><button class="button" type="button" data-copy-report="report-template" hidden>Copier le modèle de rapport</button><span role="status"></span></div>
 <div class="related"><a href="/fr/pilotes-entree-windows/">Choisir une édition</a><a href="/fr/aide-et-verifications/#signaler">Signaler un problème d’installation ou d’activation</a></div>

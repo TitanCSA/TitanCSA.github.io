@@ -462,6 +462,8 @@ reference_links.extend([
     f'- [Version sans la limite d’une heure]({BASE}fr/pilotes-entree-windows/#contact-release): Contacte titancsa sur Discord et indique l’édition. Le lien d’achat est communiqué en privé.',
     f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
+    f'- [Prepare a report with the driver version, SDK version and error]({BASE}guides/release-activation-help/#support-report)',
+    f'- [Préparer un rapport avec les versions du pilote et du SDK]({BASE}fr/activation-release/#rapport-support)',
     f'- [Vdevice Release Windows error 2]({BASE}guides/release-activation-help/#vdevice-error-2)',
     f'- [Vdevice Release erreur Windows 2]({BASE}fr/activation-release/#vdevice-erreur-2)',
     f'- [Cancel a monthly licence]({BASE}guides/release-activation-help/#cancel-subscription)',

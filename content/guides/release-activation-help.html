@@ -27,7 +27,7 @@
     <pre><code>.\Installers\VdeviceReleaseSetupConsole.exe /diagnose</code></pre>
   </li>
   <li>If the report asks for a restart, restart Windows. If the driver is missing or the interface still does not respond, open <code>VdeviceReleaseSetup.exe</code> in <strong>Installers</strong> and select <strong>Reinstall / repair</strong>. Restart if prompted, then run the check again.</li>
-  <li>When the report shows <strong>Release activation interface: ready</strong>, open <code>VdeviceActivation.exe</code> from the same ZIP to activate the driver. If the check still fails, <a href="/about/evidence/">send support</a> the PnP code, error and displayed SDK and driver versions. Keep your key private.</li>
+  <li>When the report shows <strong>Release activation interface: ready</strong>, open <code>VdeviceActivation.exe</code> from the same ZIP to activate the driver. If the check still fails, <a href="#support-report">prepare a support report</a> with the PnP code, error and displayed SDK and driver versions.</li>
 </ol>
 <p>If diagnostics return <strong>1306</strong> and report a configured <code>.sys</code> that differs from the ZIP, run setup from the current ZIP to reinstall. In the test below, the service was still running driver 1.0.3.0 and the 1.0.4.1 diagnostics stopped before checking activation. <a href="/assets/vdevice-release-package-mismatch-2026-11-27.json">See the version mismatch test</a>.</p>
 <h2>Read the stage, reason and Windows error</h2>
@@ -42,6 +42,18 @@
 <p><code>VdeviceRelease</code> is the name Windows uses to register the <code>VdeviceRelease.sys</code> kernel driver. The installer stages and registers the signed driver package. Windows loads the driver and exposes its activation interface. In the diagnostic report, <strong>Service: running</strong> describes the driver load. <strong>Release activation interface: ready</strong> confirms the interface is responding.</p>
 <p>In a Windows 11 VM with Secure Boot and Memory Integrity active, the archived Company ZIP 1.0.3.2 installed driver 1.0.3.0. The Company ZIP 1.0.4.1 then upgraded the driver. After restart, the matching SDK read its status and the installer confirmed the activation interface was ready. <a href="/assets/vdevice-signed-versions-2026-11-25.json">See the results before activation and after uninstall</a>.</p>
 <p>For a second local check, <a href="https://github.com/titanfyre/Driver-Readiness-Inspector/releases/tag/v0.1.0">Driver Readiness Inspector 0.1.0</a> can show the Vdevice Release PnP node, driver version and service state. In the earlier test with driver 1.0.3.0, the node appeared after setup with PnP code <code>0</code>, package <code>1.0.3.0</code> and service <code>running</code>. Use the installer’s <code>/diagnose</code> to check if the activation interface responds. <a href="/assets/vdevice-release-inspector-20261125.json">Read the before and after test record</a>.</p>
-<h2>Send a report support can reproduce</h2>
-<p>Include the project and edition, ZIP name, Windows version and build, installed driver version, SDK version and complete error stage, reason and Windows code. For Vdevice, the bundled console installer supports <code>VdeviceReleaseSetupConsole.exe /diagnose</code>. Share the diagnostic report after removing personal details and the activation key.</p>
+<h2 id="support-report">Send a report support can reproduce</h2>
+<ol>
+  <li>Press <kbd>Windows</kbd> + <kbd>R</kbd>, type <code>winver</code> and press Enter. Note the Windows version and build.</li>
+  <li>Copy and fill in the template. Use the driver and SDK versions shown in the error or diagnostic. Write “unknown” if a version is missing. Keep your licence key private.</li>
+  <li><a href="/about/evidence/#release-contact">Send the report to titancsa on Discord</a> for a paid Release, or <a href="/about/evidence/#report-installation">use the GitHub form for your project</a> for a demo.</li>
+</ol>
+<pre id="report-template">Project and edition (Demo or Release):
+ZIP or installer name:
+Windows version and build (winver):
+Installed driver version:
+SDK version:
+Steps to reproduce:
+Exact error (stage, reason, Windows code):</pre>
+<div class="actions"><button class="button" type="button" data-copy-report="report-template" hidden>Copy report template</button><span role="status"></span></div>
 <p><a href="/about/evidence/">Find official support</a> · <a href="/guides/windows-input-release-compare/">Compare editions</a></p>

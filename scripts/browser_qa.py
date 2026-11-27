@@ -126,6 +126,16 @@ with sync_playwright() as p:
             copy.press('Enter')
             contact_page.wait_for_function('(status) => document.querySelector("[data-copy-discord]").nextElementSibling.textContent === status',arg=status)
             assert contact_page.evaluate('navigator.clipboard.readText()')=='titancsa'
+        for route,status in (
+            ('guides/release-activation-help/#support-report','Template copied.'),
+            ('fr/activation-release/#rapport-support','Modèle copié.'),
+        ):
+            contact_page.goto(base+route,wait_until='load')
+            template=contact_page.locator('#report-template').inner_text().strip()
+            assert 'winver' in template and 'SDK' in template and len(template.splitlines())==7
+            contact_page.locator('[data-copy-report]').press('Enter')
+            contact_page.wait_for_function('(status) => document.querySelector("[data-copy-report]").nextElementSibling.textContent === status',arg=status)
+            assert contact_page.evaluate('navigator.clipboard.readText()').splitlines()==template.splitlines()
     page=browser.new_page(java_script_enabled=False,viewport={'width':390,'height':844})
     page.goto(base,wait_until='networkidle');assert page.locator('[data-project]:visible').count()==project_count
     assert not page.locator('[data-theme-toggle]').is_visible()

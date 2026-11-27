@@ -18,18 +18,32 @@
     updateThemeState();
     toggle.hidden = false;
   }
-  const copyDiscord = document.querySelector('[data-copy-discord]');
-  if (copyDiscord && navigator.clipboard?.writeText) {
-    const status = copyDiscord.nextElementSibling;
-    copyDiscord.addEventListener('click', async () => {
+  function enableCopy(button, text, copied, manual) {
+    const status = button.nextElementSibling;
+    button.addEventListener('click', async () => {
       try {
-        await navigator.clipboard.writeText(copyDiscord.dataset.copyDiscord);
-        status.textContent = french ? 'Nom Discord copié.' : 'Discord username copied.';
+        await navigator.clipboard.writeText(text);
+        status.textContent = copied;
       } catch (_) {
-        status.textContent = french ? 'Copie manuelle · titancsa' : 'Copy manually · titancsa';
+        status.textContent = manual;
       }
     });
-    copyDiscord.hidden = false;
+    button.hidden = false;
+  }
+  if (navigator.clipboard?.writeText) {
+    const copyDiscord = document.querySelector('[data-copy-discord]');
+    if (copyDiscord) {
+      enableCopy(copyDiscord, copyDiscord.dataset.copyDiscord,
+        french ? 'Nom Discord copié.' : 'Discord username copied.',
+        french ? 'Copie manuelle · titancsa' : 'Copy manually · titancsa');
+    }
+    const copyReport = document.querySelector('[data-copy-report]');
+    if (copyReport) {
+      const template = document.getElementById(copyReport.dataset.copyReport);
+      enableCopy(copyReport, template.textContent.trim(),
+        french ? 'Modèle copié.' : 'Template copied.',
+        french ? 'Sélectionne et copie le modèle ci-dessus.' : 'Select and copy the template above.');
+    }
   }
   const search = document.querySelector('#project-search');
   if (!search) return;
