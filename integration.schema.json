@@ -123,7 +123,15 @@
             "tested_demo_version": { "type": "string", "minLength": 1 },
             "tested_demo_tag": { "type": "string", "minLength": 1 },
             "guide_urls": { "$ref": "#/$defs/guideUrls" },
-            "evidence_url": { "$ref": "#/$defs/url" }
+            "evidence_url": { "$ref": "#/$defs/url" },
+            "installed_inventory": {
+              "type": "object",
+              "required": ["command", "starts_demo_timer"],
+              "properties": {
+                "command": { "type": "string", "minLength": 1 },
+                "starts_demo_timer": { "const": true }
+              }
+            }
           }
         },
         "commercial_install_verification": {

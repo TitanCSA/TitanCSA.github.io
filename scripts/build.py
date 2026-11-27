@@ -80,7 +80,6 @@ assert set(editions)==set(featured)|{'titan-audio-link'} and len(editions)==len(
 editions_by_overview={edition['overview_url']:edition for edition in editions.values()}
 input_editions={slug:editions[slug] for slug in featured}
 integration=make_manifest(BASE,editions)
-python_wheel=next(row["python_wheel"] for row in integration["products"] if row["id"]=="vdevice")
 sdk_first_check_routes={
     url.removeprefix(BASE): product
     for product in integration["products"]
@@ -110,9 +109,12 @@ for french in (False, True):
 replacements['RELEASE_REVIEW_DATE']=release_date
 replacements['INSTALLER_SDK_ROWS_EN']=sdk_rows(integration)
 replacements['INSTALLER_SDK_ROWS_FR']=sdk_rows(integration,french=True)
-replacements['VDEVICE_PYTHON_WHEEL_URL']=escape(python_wheel['url'],quote=True)
-replacements['VDEVICE_PYTHON_WHEEL_FILE']=escape(python_wheel['filename'])
-replacements['VDEVICE_PYTHON_TESTED_DEMO']=escape(python_wheel['tested_demo_version'])
+for product in integration["products"]:
+    if wheel := product.get("python_wheel"):
+        key=product["id"].upper().replace("-","_")
+        replacements[f'{key}_PYTHON_WHEEL_URL']=escape(wheel['url'],quote=True)
+        replacements[f'{key}_PYTHON_WHEEL_FILE']=escape(wheel['filename'])
+        replacements[f'{key}_PYTHON_TESTED_DEMO']=escape(wheel['tested_demo_version'])
 replacements['REGISTRY_TABLES_EN']=registry_tables(integration['sdk_registry'],rust_quickstarts=rust_quickstarts)
 replacements['REGISTRY_TABLES_FR']=registry_tables(integration['sdk_registry'],french=True,rust_quickstarts=rust_quickstarts)
 browser_package=next(row for row in integration['sdk_registry'] if row['name']=='browser-control-sdk')
@@ -264,6 +266,7 @@ reviewed.update(dict.fromkeys((
     'about/evidence/', 'fr/aide-et-verifications/', 'guides/release-activation-help/', 'fr/activation-release/',
     'guides/first-run/', 'fr/essayer-sans-pilote/', 'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
     'guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/', 'projects/vdevice/',
+    'guides/interception-v2-migration/', 'fr/migrer-interception-v2/', 'projects/interception-v2/',
 ), '2026-11-27'))
 
 
@@ -443,6 +446,8 @@ reference_links.extend([
     f'- [Interceptor PyPI status check before setup, after setup and after removal]({BASE}assets/sdk-registry-runtime-2026-11-27.json)',
     f'- [Vdevice Python wheel from GitHub and its driver status test]({BASE}guides/vdevice-virtual-usb-mouse/#python-sdk)',
     f'- [Paquet Python Vdevice et vérification du pilote]({BASE}fr/souris-usb-virtuelle-vdevice/#python-sdk)',
+    f'- [Interception V2 Python wheel and device inventory]({BASE}guides/interception-v2-migration/#python-sdk)',
+    f'- [Paquet Python Interception V2 et inventaire des périphériques]({BASE}fr/migrer-interception-v2/#python-sdk)',
     f'- [Standalone Rust ZIP quickstarts]({BASE}{rust_proof_path})',
     f'- [Rust crate checks with exact package hashes]({BASE}assets/rust-sdk-first-checks-2026-11-26.json)',
     f'- [Go module checks with exact package hashes]({BASE}assets/go-sdk-first-checks-2026-11-26.json)',

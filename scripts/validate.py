@@ -477,16 +477,24 @@ for row in manifest['products']:
     demo, check = row['demo'], row['sdk_check']
     if wheel := row.get('python_wheel'):
         proof = json.loads((OUT/wheel['evidence_url'].removeprefix(BASE)).read_text(encoding='utf8'))
-        assert proof['edition'] == row['id'] == 'vdevice'
+        assert proof['edition'] == row['id']
         assert all(wheel[key] == value for key, value in proof['wheel'].items())
         assert wheel['url'].startswith('https://raw.githubusercontent.com/TitanCSA/sdk-packages/')
         assert wheel['install_command'] == f'python -m pip install "{wheel["url"]}#sha256={wheel["sha256"]}"'
         assert wheel['tested_demo_version'] == proof['driver_demo']['version']
         assert wheel['tested_demo_tag'] == proof['driver_demo']['tag']
         assert wheel['source_sha256'] == proof['source_sha256']
+        assert wheel['source_url'] == BASE + 'assets/' + proof['source_file']
         assert sha256((OUT/wheel['source_url'].removeprefix(BASE)).read_bytes()).hexdigest() == wheel['source_sha256']
-        assert proof['before_setup']['windows_error'] == proof['after_removal']['windows_error'] == 2
-        assert proof['after_setup']['trial_started'] is False and proof['after_setup']['virtual_devices'] == 0
+        if row['id'] == 'vdevice':
+            assert proof['before_setup']['windows_error'] == proof['after_removal']['windows_error'] == 2
+            assert proof['after_setup']['trial_started'] is False and proof['after_setup']['virtual_devices'] == 0
+        if row['id'] == 'interception-v2':
+            assert proof['before_setup'] == proof['after_removal']['slot_check']
+            assert proof['inventory']['devices_with_hardware_id'] > 0
+            assert proof['after_removal']['driver_service_absent']
+            assert wheel['installed_inventory']['command'] == wheel['check_command'] + ' --inventory'
+            assert wheel['installed_inventory']['starts_demo_timer'] is True
         for language, guide in wheel['guide_urls'].items():
             address, fragment = guide.split('#', 1)
             assert address == row['first_run_guides'][language]

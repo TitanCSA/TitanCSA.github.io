@@ -21,4 +21,15 @@ copy /y library\x64\interception.dll .</code></pre>
 <p>Run the sample as administrator after installing the demo. A supported fixture should produce a line with its device class, number and hardware ID. The sample compiled against both import libraries in the signed-demo ZIP. Compatibility with a specific application still needs a live test with that application's devices and filters.</p>
 <p>In Windows 11 build 26100 with Secure Boot, the signed 2.0.0.0 demo installed and restarted successfully. Both x86 and x64 builds of this sample listed one mouse after setup. After uninstall and restart, the driver service was gone and both samples returned their expected context-open error. <a href="/assets/interception-v2-install-verification-2026-11-25.json">See the exact archive, DLLs and test results</a></p>
 <p>The <a href="{{INTERCEPTION_V2_RUST_QUICKSTART_URL}}">Rust example ZIP</a> classifies the first keyboard slot. Extract it and run <code>cargo run --locked</code>.</p>
+<details>
+<summary>Try the Python SDK</summary>
+<div id="python-sdk">
+  <p>Use 64-bit Python 3.10 or later on Windows. Put the <a href="{{INTERCEPTION_V2_PYTHON_WHEEL_URL}}">Python wheel</a> and the <a href="/assets/python-interception-v2-check.py" download>check script</a> in one folder, then open PowerShell there.</p>
+  <pre><code>python -m pip install .\{{INTERCEPTION_V2_PYTHON_WHEEL_FILE}}
+python .\python-interception-v2-check.py</code></pre>
+  <p>The first check classifies reserved library slot 1 as keyboard and slot 11 as mouse. It can run before you install the driver.</p>
+  <p>After installing demo {{INTERCEPTION_V2_PYTHON_TESTED_DEMO}}, run the script as administrator with <code>--inventory</code> to count devices with a hardware ID. Opening the driver context starts the demo timer.</p>
+  <p><a href="/assets/interception-v2-python-wheel-check-2026-11-27.json">Test results and wheel SHA-256</a></p>
+</div>
+</details>
 <div class="related"><a href="/fr/migrer-interception-v2/" lang="fr">Lire en français</a><a href="/projects/interception-v2/">Interception V2 overview</a><a href="/about/evidence/#release-contact">Ask titancsa for the version without the demo limit</a><a href="/guides/windows-input-release-compare/">Compare driver editions</a></div>

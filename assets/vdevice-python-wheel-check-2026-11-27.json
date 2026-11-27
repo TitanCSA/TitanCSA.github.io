@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "edition": "vdevice",
+  "source_file": "python-vdevice-status.py",
   "checked_utc": "2026-11-27T01:18:06.821137+00:00",
   "scope": "The Python wheel reads the demo driver status. The test creates no virtual device and does not start the trial.",
   "windows": {

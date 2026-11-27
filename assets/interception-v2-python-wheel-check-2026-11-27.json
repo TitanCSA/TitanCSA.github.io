@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "edition": "interception-v2",
+  "source_file": "python-interception-v2-check.py",
+  "source_sha256": "d7bc4138519b7e9dcf6ce3c81703f2ffa2b296f9a7594a8f7fe226f50bc7d951",
+  "checked_utc": "2026-11-27T01:26:15.141856+00:00",
+  "scope": "The default check classifies reserved slots. The optional live inventory opens the driver context and counts nonempty hardware IDs with no filter changes.",
+  "windows": {
+    "architecture": "x64",
+    "build": 26100,
+    "secure_boot": true
+  },
+  "runtimes": {
+    "clean_install_from_url": "Python 3.10.11 x64",
+    "driver_lifecycle": "Python 3.14.9 x64"
+  },
+  "wheel": {
+    "name": "interception-v2",
+    "version": "1.0.0",
+    "filename": "interception_v2-1.0.0-py3-none-win_amd64.whl",
+    "url": "https://raw.githubusercontent.com/TitanCSA/sdk-packages/f6abf965e5a3e229c1b450322212aa07ec5a4cfc/release-assets/Interception-V2/language-sdks-v1.0.0/interception_v2-1.0.0-py3-none-win_amd64.whl",
+    "sha256": "c4903aa42eae9c6754e09abf838ce37458fd682f1d448220af035f27f04bf86b"
+  },
+  "driver_demo": {
+    "tag": "v2.0.0",
+    "version": "2.0.0.0",
+    "archive_sha256": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9",
+    "console_installer_sha256": "102dea2e28907d0a6bb92db7a8aefbfac8277d488201d89f9f3560870f7de3d3",
+    "kernel_sha256": "0c9a06fb336d3e1a375d182f312c4c86680a5bf1005fdfbd637602521c82e0af"
+  },
+  "before_setup": {
+    "wheel_version": "1.0.0",
+    "slot_1": {
+      "keyboard": true,
+      "mouse": false,
+      "valid": true
+    },
+    "slot_11": {
+      "keyboard": false,
+      "mouse": true,
+      "valid": true
+    }
+  },
+  "inventory": {
+    "devices_with_hardware_id": 1,
+    "sets_filter": false,
+    "opens_driver_context": true
+  },
+  "after_removal": {
+    "driver_service_absent": true,
+    "slot_check": {
+      "wheel_version": "1.0.0",
+      "slot_1": {
+        "keyboard": true,
+        "mouse": false,
+        "valid": true
+      },
+      "slot_11": {
+        "keyboard": false,
+        "mouse": true,
+        "valid": true
+      }
+    }
+  }
+}

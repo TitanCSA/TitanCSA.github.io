@@ -19,5 +19,16 @@ copy /y library\x64\interception.dll .</code></pre>
 <p>Après installation de la démo 2.0.0.0 dans une VM Windows 11, les deux versions de l’exemple ont chacune détecté une souris. <a href="/assets/interception-v2-install-verification-2026-11-25.json">Rapport d’installation et de désinstallation</a>.</p>
 <p>Tu peux aussi décompresser le <a href="{{INTERCEPTION_V2_RUST_QUICKSTART_URL}}">ZIP d’exemple Rust</a> et lancer <code>cargo run --locked</code> pour vérifier le premier emplacement clavier.</p>
 </details>
+<details>
+<summary>Essayer le SDK Python</summary>
+<div id="python-sdk">
+  <p>Sous Windows, utilise Python 3.10 ou plus récent en 64 bits. Place le <a href="{{INTERCEPTION_V2_PYTHON_WHEEL_URL}}">paquet Python</a> et le <a href="/assets/python-interception-v2-check.py" download>script de test</a> dans le même dossier. Ouvre PowerShell dans ce dossier.</p>
+  <pre><code>python -m pip install .\{{INTERCEPTION_V2_PYTHON_WHEEL_FILE}}
+python .\python-interception-v2-check.py</code></pre>
+  <p>Le test classe l’emplacement 1 comme clavier et le 11 comme souris. Ce sont des emplacements réservés par la bibliothèque. Cette étape fonctionne avant l’installation du pilote.</p>
+  <p>Après installation de la démo {{INTERCEPTION_V2_PYTHON_TESTED_DEMO}}, ajoute <code>--inventory</code> pour compter les périphériques détectés. Lance cette commande en administrateur. L’ouverture du contexte démarre le compteur de démo.</p>
+  <p><a href="/assets/interception-v2-python-wheel-check-2026-11-27.json">Résultats et SHA-256 du paquet Python</a></p>
+</div>
+</details>
 <p>Pour la version sans la limite d’une heure, <a href="/fr/pilotes-entree-windows/#contact-release">contacte <strong>titancsa</strong> sur Discord</a> et indique <strong>Interception V2</strong>.</p>
 <div class="related"><a href="/guides/interception-v2-migration/" lang="en">Read in English</a><a href="{{INTERCEPTION_V2_DEMO_NOTES_URL}}">Notes de version</a><a href="https://github.com/oblitum/Interception">Projet Interception original</a></div>

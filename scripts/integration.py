@@ -55,8 +55,10 @@ def make_manifest(base, editions):
     keyboard_package = keyboard_capture["interceptor_keyboard_mouse"]
     audio_pair_file = "assets/titan-audio-link-sdk-pair-check-2026-11-26.json"
     audio_pair = json.loads((ROOT / audio_pair_file).read_text(encoding="utf-8"))
-    python_wheel_file = "assets/vdevice-python-wheel-check-2026-11-27.json"
-    python_wheel = json.loads((ROOT / python_wheel_file).read_text(encoding="utf-8"))
+    python_wheels = {}
+    for path in sorted((ROOT / "assets").glob("*-python-wheel-check-*.json")):
+        report = json.loads(path.read_text(encoding="utf-8"))
+        python_wheels[report["edition"]] = (path.relative_to(ROOT).as_posix(), report)
 
     rows = []
     for slug, edition in editions.items():
@@ -135,22 +137,29 @@ def make_manifest(base, editions):
                 and audio_pair["sdk_archive_sha256"] == edition["sdk_sha256"]
                 and audio_pair["source_sha256"] == row["sdk_check"]["source_sha256"]):
             row["sdk_check"]["installed_validation_url"] = base + audio_pair_file
-        if python_wheel["edition"] == slug:
+        if wheel_report := python_wheels.get(slug):
+            python_wheel_file, python_wheel = wheel_report
             package = python_wheel["wheel"]
+            source = python_wheel["source_file"]
             guides = {lang: url + "#python-sdk" for lang, url in row["first_run_guides"].items()}
             row["python_wheel"] = {
                 **package,
                 "python_requires": ">=3.10",
                 "architecture": "x64",
                 "install_command": f'python -m pip install "{package["url"]}#sha256={package["sha256"]}"',
-                "source_url": base + "assets/python-vdevice-status.py",
+                "source_url": base + "assets/" + source,
                 "source_sha256": python_wheel["source_sha256"],
-                "check_command": "python python-vdevice-status.py",
+                "check_command": "python " + source,
                 "tested_demo_version": python_wheel["driver_demo"]["version"],
                 "tested_demo_tag": python_wheel["driver_demo"]["tag"],
                 "guide_urls": guides,
                 "evidence_url": base + python_wheel_file,
             }
+            if "inventory" in python_wheel:
+                row["python_wheel"]["installed_inventory"] = {
+                    "command": f"python {source} --inventory",
+                    "starts_demo_timer": True,
+                }
         proof = installed_evidence.get(slug)
         if (proof and proof["version"] == edition["demo"]
                 and proof["sdk_archive_sha256"] == edition["sdk_sha256"]
