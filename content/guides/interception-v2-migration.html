@@ -1,6 +1,6 @@
 <h1>Migrate an original Interception application to Interception V2</h1>
 <p class="article-lead">Check the driver, DLL architecture and input sources before trying your existing Windows application.</p>
-<p class="byline">Publisher documentation · Demo ZIP and inventory checked 25 November 2026</p>
+<p class="byline">Publisher documentation · Demo ZIP and inventory checked 25–27 November 2026</p>
 <div class="actions"><a class="button primary" href="{{INTERCEPTION_V2_DEMO_URL}}">Download Interception V2 demo {{INTERCEPTION_V2_DEMO_VERSION}}</a><a class="button" href="/assets/interception-device-inventory.c" download>Download C hardware-ID example</a></div>
 <p>Interception V2 is TitanCSA’s Windows compatibility driver for applications built with the C SDK from <a href="https://github.com/oblitum/Interception">Francisco Lopes’s original Interception project</a>. V2 packages that SDK and the original examples with its own driver.</p>
 <h2 id="install-the-demo">Check requirements and install the demo</h2>
@@ -20,6 +20,7 @@ copy /y library\x64\interception.dll .</code></pre>
 <p>The <code>/MT</code> option builds the example with a static C runtime so it can start on a clean VM with the matching <code>interception.dll</code>.</p>
 <p>Run the sample as administrator after installing the demo. A supported fixture should produce a line with its device class, number and hardware ID. The sample compiled against both import libraries in the signed-demo ZIP. Compatibility with a specific application still needs a live test with that application's devices and filters.</p>
 <p>In Windows 11 build 26100 with Secure Boot, the signed 2.0.0.0 demo installed and restarted successfully. Both x86 and x64 builds of this sample listed one mouse after setup. After uninstall and restart, the driver service was gone and both samples returned their expected context-open error. <a href="/assets/interception-v2-install-verification-2026-11-25.json">See the exact archive, DLLs and test results</a></p>
+<p>In a separate Windows 11 test of demo 2.0.0.0, the x64 inventory opened a context at 59 min 10 s. At 60 min 50 s the running driver refused a new context. Windows Restart restored access. <a href="/assets/interception-v2-demo-window-2026-11-27.json">See the context and uninstall results</a>.</p>
 <p>The <a href="{{INTERCEPTION_V2_RUST_QUICKSTART_URL}}">Rust example ZIP</a> classifies the first keyboard slot. Extract it and run <code>cargo run --locked</code>.</p>
 <details>
 <summary>Try the Python SDK</summary>

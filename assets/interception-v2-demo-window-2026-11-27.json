@@ -1,0 +1,86 @@
+{
+  "edition": "interception-v2",
+  "checked_utc": "2026-11-27T06:20:07.9047758Z",
+  "demo_tag": "v2.0.0",
+  "demo_version": "2.0.0.0",
+  "pinned_assets": {
+    "archive": {
+      "url": "https://github.com/TitanCSA/Interception-V2/releases/download/v2.0.0/Interception-V2.zip",
+      "sha256": "9ae137ca05055fbd038606be578a8da1ffd5b0fe16714290b6a0f17fb20f15c9"
+    }
+  },
+  "environment": {
+    "secure_boot": true,
+    "architecture": "x64",
+    "network": "offline",
+    "windows_build": 26100,
+    "hypervisor": "Hyper-V"
+  },
+  "method": {
+    "monotonic_timer": "Elapsed host time checked against guest uptime",
+    "boot_method": "Kernel-General event 12 record ID",
+    "installer_sha256": "102dea2e28907d0a6bb92db7a8aefbfac8277d488201d89f9f3560870f7de3d3",
+    "kernel_sha256": "0c9a06fb336d3e1a375d182f312c4c86680a5bf1005fdfbd637602521c82e0af",
+    "sdk_x64_dll_sha256": "0e54e31e0e25ce7f710bcc72aee3e1ed7d8bffbf992ea16d68155c37d001d6b9",
+    "inventory_executable_sha256": "2767bcbf02edeef34cc99f174caf099969a987e1553c5685e52bf9b2597aa30f",
+    "inventory_source_sha256": "0db908d022bc694e8842857c266c0944c225a4d05f7c7b31a1d47a6362e20878",
+    "inventory_source_url": "https://titancsa.github.io/assets/interception-device-inventory.c"
+  },
+  "scope": "Fresh x64 inventory context in a Hyper-V guest. The probe counts reported IDs and closes without setting an input filter. Input capture, injection, and existing open contexts were outside this run.",
+  "setup_exit": 0,
+  "before_install": {
+    "exit_code": 1,
+    "context_available": false,
+    "keyboards_with_hardware_id": 0,
+    "mice_with_hardware_id": 0
+  },
+  "first_context": {
+    "exit_code": 2,
+    "context_available": true,
+    "keyboards_with_hardware_id": 0,
+    "mice_with_hardware_id": 0
+  },
+  "before_limit": {
+    "same_windows_boot": true,
+    "host_elapsed_seconds": 3550,
+    "guest_elapsed_seconds": 3550.265,
+    "exit_code": 2,
+    "context_available": true,
+    "keyboards_with_hardware_id": 0,
+    "mice_with_hardware_id": 0
+  },
+  "after_limit": {
+    "same_windows_boot": true,
+    "host_elapsed_seconds": 3650.01,
+    "guest_elapsed_seconds": 3649.968,
+    "exit_code": 1,
+    "context_available": false,
+    "keyboards_with_hardware_id": 0,
+    "mice_with_hardware_id": 0,
+    "repeat": {
+      "exit_code": 1,
+      "context_available": false,
+      "keyboards_with_hardware_id": 0,
+      "mice_with_hardware_id": 0
+    },
+    "driver_still_running": true
+  },
+  "after_restart": {
+    "new_windows_boot": true,
+    "exit_code": 2,
+    "context_available": true,
+    "keyboards_with_hardware_id": 0,
+    "mice_with_hardware_id": 0
+  },
+  "uninstall": {
+    "exit_code": 0,
+    "driver_absent_after_restart": true,
+    "inventory": {
+      "exit_code": 1,
+      "context_available": false,
+      "keyboards_with_hardware_id": 0,
+      "mice_with_hardware_id": 0
+    }
+  },
+  "context_refused_after_limit": true
+}

@@ -17,6 +17,7 @@
 copy /y library\x64\interception.dll .</code></pre>
 <p>Une fois le pilote installé, lance <code>interception-device-inventory.exe</code> en tant qu’administrateur. L’exemple liste les identifiants matériels accessibles sans activer de filtre. L’ouverture réussie du contexte démarre la démo. Réidentifie ton périphérique après un redémarrage ou une reconnexion.</p>
 <p>Après installation de la démo 2.0.0.0 dans une VM Windows 11, les deux versions de l’exemple ont chacune détecté une souris. <a href="/assets/interception-v2-install-verification-2026-11-25.json">Rapport d’installation et de désinstallation</a>.</p>
+<p>Lors d’un essai distinct de la démo 2.0.0.0 sous Windows 11, l’inventaire x64 a ouvert un contexte à 59 min 10 s. À 60 min 50 s, le pilote chargé a refusé un nouveau contexte. Le redémarrage a rétabli l’accès. <a href="/assets/interception-v2-demo-window-2026-11-27.json">Voir les mesures et la désinstallation</a>.</p>
 <p>Tu peux aussi décompresser le <a href="{{INTERCEPTION_V2_RUST_QUICKSTART_URL}}">ZIP d’exemple Rust</a> et lancer <code>cargo run --locked</code> pour vérifier le premier emplacement clavier.</p>
 </details>
 <details>
