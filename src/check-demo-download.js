@@ -18,7 +18,7 @@
     function updateSelection() {
         status.textContent = "";
         fingerprints.hidden = true;
-        download.hidden = true;
+        if (download) download.hidden = true;
         button.disabled = !reference.value || !localFile.files.length;
     }
 
@@ -32,7 +32,7 @@
         const expected = published.sha256;
         button.disabled = reference.disabled = localFile.disabled = true;
         fingerprints.hidden = true;
-        download.hidden = true;
+        if (download) download.hidden = true;
         status.textContent = form.dataset.working;
 
         try {
@@ -46,7 +46,7 @@
             fingerprints.hidden = false;
             const matches = actual === expected;
             status.textContent = matches ? form.dataset.match : form.dataset.mismatch;
-            if (!matches) {
+            if (!matches && download && published.download) {
                 download.href = published.download;
                 download.hidden = false;
             }
