@@ -1,6 +1,7 @@
 <h1>Installer et activer une édition Release TitanCSA</h1>
 <p class="article-lead">Vérifie le ZIP, l’état du pilote et la réponse du serveur pour identifier la cause d’un échec d’activation.</p>
 <p><a href="/guides/release-activation-help/" lang="en">Read the English version</a></p>
+<p><a href="#vdevice-erreur-2">Vdevice Release affiche Windows 2 ou <code>activation_interface_unavailable</code></a></p>
 <h2 id="apres-paiement">Récupérer le ZIP et la clé après l’achat</h2>
 <ol><li>Reviens de Stripe avec le profil de navigateur qui a ouvert le paiement. Garde la page de livraison ouverte pendant la confirmation.</li><li>Quand <strong>Payment confirmed</strong> s’affiche, clique sur <strong>Download ZIP</strong> pour télécharger le ZIP et sur <strong>Copy key</strong> pour copier la clé. Garde les deux en lieu sûr avant de fermer la page.</li><li>Si tu as déjà payé et que la livraison tarde, clique sur <strong>Check again</strong> dans ce navigateur. Si tu as perdu la session, contacte le vendeur avec le reçu Stripe avant de payer à nouveau.</li></ol>
 <details class="more-info">
@@ -18,16 +19,25 @@
 <h2>Installer le bon ZIP</h2>
 <ol><li>Extrais le ZIP commercial fourni après l’achat. Utilise son installateur, son outil d’activation et son SDK.</li><li>Lance l’installation en administrateur. Redémarre Windows si l’installateur le demande. Avant de changer entre éditions Interceptor qui se chevauchent, suis la procédure de désinstallation de l’ancienne édition.</li><li>Ouvre l’outil d’activation et utilise la clé de cette édition. La vérification en ligne autorise le chargement actuel du pilote. Répète-la après un redémarrage ou un rechargement du pilote.</li></ol>
 <p>La version du ZIP et celle du pilote signé peuvent différer. Pour quatre éditions, nous avons vérifié sous Windows 11 l’installation, les versions affichées et la désinstallation. <a href="/assets/company-driver-package-checks-2026-11-26.json">Voir les versions exactes et les résultats des tests</a>.</p>
+<h2 id="vdevice-erreur-2">Vdevice Release · erreur Windows 2</h2>
+<p>Avec <code>driver_open</code> et <code>activation_interface_unavailable</code>, l’application échoue au moment de trouver l’interface du pilote Release sur ce PC. C’est avant la vérification de la clé en ligne.</p>
+<ol>
+  <li>Décompresse ton ZIP commercial Vdevice. Ouvre PowerShell en administrateur dans le dossier qui contient <strong>Installers</strong>, puis lance ce diagnostic sans saisir de clé.
+    <pre><code>.\Installers\VdeviceReleaseSetupConsole.exe /diagnose</code></pre>
+  </li>
+  <li>Si le rapport demande un redémarrage, redémarre. Si le pilote est absent ou si l’interface ne répond toujours pas, ouvre <code>VdeviceReleaseSetup.exe</code> dans <strong>Installers</strong> et choisis <strong>Reinstall / repair</strong>. Redémarre si demandé, puis relance le diagnostic.</li>
+  <li>Quand le rapport affiche <strong>Release activation interface: ready</strong>, ouvre <code>VdeviceActivation.exe</code> depuis le même ZIP pour activer le pilote. Si le contrôle échoue encore, <a href="/fr/aide-et-verifications/#signaler">envoie au support</a> le code PnP, l’erreur et les versions du SDK et du pilote affichées, sans ta clé.</li>
+</ol>
 <h2>Comprendre le message</h2>
 <div class="table-scroll"><table><thead><tr><th scope="col">Message</th><th scope="col">Vérification</th></tr></thead><tbody>
-<tr><td>Vdevice, erreur Windows 2, <code>driver_open</code> / <code>activation_interface_unavailable</code></td><td>Windows ne trouve pas l’interface d’activation Release. Vérifie l’édition du pilote détecté. Ouvre <code>VdeviceReleaseSetup.exe</code> depuis le ZIP commercial, choisis la réparation ou la réinstallation, puis redémarre si nécessaire.</td></tr>
+<tr><td>Vdevice, erreur Windows 2, <code>driver_open</code> / <code>activation_interface_unavailable</code></td><td><a href="#vdevice-erreur-2">Vérifier l’interface et réparer l’installation Vdevice Release</a>.</td></tr>
 <tr><td>Vdevice, erreur Windows <code>7054</code> pendant la création ou l’utilisation d’un périphérique</td><td>Le pilote Release demande une activation depuis son dernier chargement. Lance <code>VdeviceActivation.exe</code> depuis le ZIP commercial avec ta clé, puis réessaie. Un ancien SDK peut afficher le texte générique de Windows sur une limite de connexions pour ce code.</td></tr>
 <tr><td><code>invalid_key_format</code></td><td>Recopie la clé complète remise après l’achat et vérifie qu’elle correspond à l’édition installée.</td></tr>
 <tr><td><code>invalid_license</code> ou clé désactivée</td><td>Reprends la clé depuis la livraison de cette édition. Si tu as un abonnement, vérifie que Stripe a confirmé le dernier renouvellement. Si la clé est toujours refusée, contacte le support avec le message exact et ton reçu Stripe.</td></tr>
 <tr><td>Erreur HTTPS, de proxy ou délai dépassé</td><td>Vérifie la connexion et les paramètres de certificats du PC. Lance le diagnostic réseau sans clé si l’aide de l’outil le propose.</td></tr>
 </tbody></table></div>
 <h2>Le service de pilote Vdevice Release</h2>
-<p><code>VdeviceRelease</code> est le service de pilote noyau Windows associé à <code>VdeviceRelease.sys</code>. L’installateur prépare et enregistre le package signé. Windows charge le pilote et expose son interface d’activation. <code>VdeviceReleaseSetupConsole.exe /diagnose</code> vérifie séparément l’état du service et la réponse de l’interface.</p>
+<p><code>VdeviceRelease</code> est le nom sous lequel Windows enregistre le pilote noyau <code>VdeviceRelease.sys</code>. L’installateur prépare et enregistre le package signé. Windows charge le pilote et expose son interface d’activation. Dans le diagnostic, <strong>Service: running</strong> décrit le chargement du pilote. <strong>Release activation interface: ready</strong> confirme que son interface répond.</p>
 <p>Dans une VM Windows 11 avec Secure Boot et l’intégrité de la mémoire actifs, le ZIP Company 1.0.3.2 a installé le pilote 1.0.3.0. Le ZIP Company 1.0.4.1 l’a ensuite mis à jour. Après redémarrage, le SDK correspondant a lu l’état du pilote et l’installateur a confirmé que l’interface d’activation répondait. <a href="/assets/vdevice-signed-versions-2026-11-25.json">Voir les résultats avant activation et après désinstallation</a>.</p>
 <p>Pour une deuxième vérification locale, <a href="https://github.com/titanfyre/Driver-Readiness-Inspector/releases/tag/v0.1.0">Driver Readiness Inspector 0.1.0</a> affiche le nœud Vdevice Release, la version du pilote et l’état du service. Lors de l’essai précédent du pilote 1.0.3.0, le nœud affichait le code PnP <code>0</code>, le package <code>1.0.3.0</code> et le service <code>running</code>. Utilise <code>/diagnose</code> pour savoir si l’interface d’activation répond. <a href="/assets/vdevice-release-inspector-20261125.json">Voir le relevé avant et après</a>.</p>
 <h2>Préparer un rapport de support</h2>

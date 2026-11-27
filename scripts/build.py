@@ -244,9 +244,9 @@ reviewed={
     **dict.fromkeys({'guides/first-run/','fr/essayer-sans-pilote/','guides/windows-input-sdk-packages/','guides/windows-input-sdk-java-php-ruby/','guides/gamepad-controller-first-run/','guides/release-activation-help/','fr/activation-release/','fr/installer-sdk-windows/'},'2026-11-25'),
     **dict.fromkeys({'guides/windows-input-release-compare/','fr/pilotes-entree-windows/','guides/titan-audio-link-first-run/',*(f'projects/{slug}/' for slug in editions)},max(commercial_checked,release_date)),
     'fr/micro-virtuel-titan-audio-link/':'2026-11-26',
-    'guides/release-activation-help/':'2026-11-26',
+    'guides/release-activation-help/':'2026-11-27',
     'about/evidence/':'2026-11-26',
-    'fr/activation-release/':'2026-11-26',
+    'fr/activation-release/':'2026-11-27',
 }
 release_terms='<p><strong><a href="/about/evidence/#release-contact">Version without the one-hour demo limit</a></strong> · Add <strong>titancsa</strong> on Discord and message the project name.</p>'
 publisher={
@@ -443,6 +443,8 @@ reference_links.extend([
     f'- [Version sans la limite d’une heure]({BASE}fr/pilotes-entree-windows/#contact-release): Contacte titancsa sur Discord et indique l’édition. Le lien d’achat est communiqué en privé.',
     f'- [Installation and activation help]({BASE}guides/release-activation-help/)',
     f'- [Dépannage de l’activation en français]({BASE}fr/activation-release/)',
+    f'- [Vdevice Release Windows error 2]({BASE}guides/release-activation-help/#vdevice-error-2)',
+    f'- [Vdevice Release erreur Windows 2]({BASE}fr/activation-release/#vdevice-erreur-2)',
     f'- [Cancel a monthly licence]({BASE}guides/release-activation-help/#cancel-subscription)',
     f'- [Résilier un abonnement mensuel]({BASE}fr/activation-release/#resilier-abonnement)',
     f'- [Evidence and support]({BASE}about/evidence/)',
