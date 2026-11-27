@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "edition": "titan-audio-link",
+  "source_file": "python-titan-audio-link-check.py",
+  "source_sha256": "10455edb59fb2a029c0b79972b537e9c18a8e824595f039cf81e7d6c21dbe7f8",
+  "check_after_setup_args": [
+    "--expect-installed"
+  ],
+  "checked_utc": "2026-11-27T01:42:55.586791+00:00",
+  "scope": "Read-only enumeration of active Titan playback and recording pairs on the same adapter.",
+  "windows": {
+    "architecture": "x64",
+    "build": 26100,
+    "secure_boot": true
+  },
+  "runtimes": {
+    "clean_install_from_url": "Python 3.10.11 x64",
+    "driver_lifecycle": "Python 3.14.9 x64"
+  },
+  "wheel": {
+    "name": "titan-audio-link",
+    "version": "1.0.0",
+    "filename": "titan_audio_link-1.0.0-py3-none-win_amd64.whl",
+    "url": "https://raw.githubusercontent.com/TitanCSA/sdk-packages/f6abf965e5a3e229c1b450322212aa07ec5a4cfc/release-assets/Titan-Audio-Link/language-sdks-v1.0.0/titan_audio_link-1.0.0-py3-none-win_amd64.whl",
+    "sha256": "c614aeee0e7b296f6113bb594b3bc707fc5aa162ccca0c076774f0f5e7d83e75"
+  },
+  "driver_demo": {
+    "tag": "v0.2.0-demo",
+    "version": "0.2.0.0",
+    "archive_sha256": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37",
+    "console_installer_sha256": "4efb8deec1ebc494188d22ded019224ff8ae1d125fc068f551814457b64bb5e5"
+  },
+  "before_setup": {
+    "wheel_version": "1.0.0",
+    "titan_endpoints": 0,
+    "active_pairs": 0
+  },
+  "after_setup": {
+    "wheel_version": "1.0.0",
+    "titan_endpoints": 2,
+    "active_pairs": 1
+  },
+  "after_removal": {
+    "service_absent": true,
+    "reading": {
+      "wheel_version": "1.0.0",
+      "titan_endpoints": 0,
+      "active_pairs": 0
+    }
+  },
+  "strict_exit_codes": {
+    "before_setup": 1,
+    "after_setup": 0,
+    "after_removal": 1
+  }
+}

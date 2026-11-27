@@ -278,6 +278,7 @@ reviewed.update(dict.fromkeys((
     'guides/interception-v2-migration/', 'fr/migrer-interception-v2/', 'projects/interception-v2/',
     'guides/keyboard-mouse-first-run/', 'fr/tester-deux-claviers-windows/', 'projects/interceptor-keyboard-mouse/',
     'guides/gamepad-controller-first-run/', 'fr/remapper-manette-windows/', 'projects/interceptor-gamepad-controller/',
+    'guides/titan-audio-link-first-run/', 'fr/micro-virtuel-titan-audio-link/',
 ), '2026-11-27'))
 
 
@@ -463,6 +464,8 @@ reference_links.extend([
     f'- [Vérifier le pilote Keyboard & Mouse avec Python]({BASE}fr/tester-deux-claviers-windows/#python-sdk)',
     f'- [Interceptor Gamepad & Controller driver status with Python]({BASE}guides/gamepad-controller-first-run/#python-sdk)',
     f'- [Vérifier le pilote Gamepad & Controller avec Python]({BASE}fr/remapper-manette-windows/#python-sdk)',
+    f'- [Titan Audio Link Python wheel and virtual audio inventory]({BASE}guides/titan-audio-link-first-run/#python-sdk)',
+    f'- [Paquet Python Titan Audio Link et vérification de la paire audio]({BASE}fr/micro-virtuel-titan-audio-link/#python-sdk)',
     f'- [Standalone Rust ZIP quickstarts]({BASE}{rust_proof_path})',
     f'- [Rust crate checks with exact package hashes]({BASE}assets/rust-sdk-first-checks-2026-11-26.json)',
     f'- [Go module checks with exact package hashes]({BASE}assets/go-sdk-first-checks-2026-11-26.json)',

@@ -161,6 +161,8 @@ def make_manifest(base, editions):
                     "command": f"python {source} --inventory",
                     "starts_demo_timer": True,
                 }
+            if args := python_wheel.get("check_after_setup_args"):
+                row["python_wheel"]["command_after_setup"] = " ".join(("python", source, *args))
         proof = installed_evidence.get(slug)
         if (proof and proof["version"] == edition["demo"]
                 and proof["sdk_archive_sha256"] == edition["sdk_sha256"]

@@ -130,7 +130,7 @@ def check_python_examples(rows, archives):
     environment = os.environ.copy()
     for name in ("INTERCEPTOR_NATIVE_PATH", "INTERCEPTOR_KEYBOARD_MOUSE_NATIVE_PATH",
                  "INTERCEPTOR_GAMEPAD_CONTROLLER_NATIVE_PATH", "VDEVICE_SDK_NATIVE_PATH",
-                 "INTERCEPTION_V2_SDK_NATIVE_PATH"):
+                 "INTERCEPTION_V2_SDK_NATIVE_PATH", "TITAN_AUDIO_LINK_SDK_NATIVE_PATH"):
         environment.pop(name, None)
     with TemporaryDirectory(prefix="titancsa-python-sdk-") as directory:
         project = Path(directory)

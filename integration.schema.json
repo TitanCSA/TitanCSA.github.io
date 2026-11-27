@@ -120,6 +120,7 @@
             "source_url": { "$ref": "#/$defs/url" },
             "source_sha256": { "$ref": "#/$defs/sha256" },
             "check_command": { "type": "string", "minLength": 1 },
+            "command_after_setup": { "type": "string", "minLength": 1 },
             "tested_demo_version": { "type": "string", "minLength": 1 },
             "tested_demo_tag": { "type": "string", "minLength": 1 },
             "guide_urls": { "$ref": "#/$defs/guideUrls" },

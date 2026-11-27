@@ -11,7 +11,7 @@
 <p>La démo fonctionne pendant une heure par démarrage Windows à partir de la première capture réussie. Le bouton de test démarre cette heure.</p>
 <h2>Intégrer Titan Audio Link dans une application</h2>
 <p>L’installateur ajoute la paire de périphériques à Windows. Le test SDK C++ ci-dessous vérifie qu’une sortie et un micro actifs appartiennent au même adaptateur. Tu pourras ensuite utiliser le SDK pour ouvrir les flux WASAPI.</p>
-<p><a href="#first-sdk-check">Premier essai SDK en C++</a> · <a href="{{TITAN_AUDIO_LINK_RUST_QUICKSTART_URL}}">Exemple Rust à télécharger</a>. Pour lancer l’exemple Rust, décompresse le ZIP et exécute <code>cargo run --locked</code>.</p>
+<p>Vérifie la paire avec <a href="#first-sdk-check">C++</a> ou <a href="#python-sdk">Python</a>. Pour lancer l’<a href="{{TITAN_AUDIO_LINK_RUST_QUICKSTART_URL}}">exemple Rust</a>, décompresse le ZIP et exécute <code>cargo run --locked</code>.</p>
 <details>
   <summary>Test en ligne de commande et résultat vérifié</summary>
   <p>Dans le dossier extrait, liste les périphériques puis lance le test quand une seule paire Titan Audio Link est active.</p>
@@ -20,6 +20,16 @@
   <p>Le test du ZIP démo 0.2.0 a vérifié 72 000 trames stéréo sur une paire dans une VM Windows 11 x64 avec démarrage sécurisé. Après désinstallation et redémarrage, la paire et le pilote avaient été retirés. <a href="/assets/titan-audio-link-install-verification-2026-11-25.json">Voir le rapport de test</a>.</p>
   <p><a href="/assets/titan-audio-link-sdk-pair-check-2026-11-26.json">Résultats du contrôle SDK avant installation, avec une paire et après désinstallation</a>.</p>
   {{AUDIO_HVCI_FR}}
+</details>
+<details class="more-info">
+  <summary>Vérifier la paire installée avec Python</summary>
+  <div id="python-sdk">
+    <p>Utilise Python 3.10 ou plus récent en 64 bits sous Windows. Télécharge le <a href="{{TITAN_AUDIO_LINK_PYTHON_WHEEL_URL}}">paquet Python</a> et le <a href="/assets/python-titan-audio-link-check.py" download>script de test</a> dans le même dossier, puis ouvre PowerShell dans ce dossier.</p>
+    <pre><code>python -m pip install .\{{TITAN_AUDIO_LINK_PYTHON_WHEEL_FILE}}
+python .\python-titan-audio-link-check.py --expect-installed</code></pre>
+    <p>Après installation de la démo {{TITAN_AUDIO_LINK_PYTHON_TESTED_DEMO}}, <code>active_pairs: 1</code> confirme qu’une sortie et un micro actifs sont sur le même adaptateur. Pour lire le nombre avant installation, lance le script seul, sans l’option. L’inventaire laisse le compteur de démo arrêté.</p>
+    <p><a href="/assets/titan-audio-link-python-wheel-check-2026-11-27.json">Résultats et SHA-256 du paquet</a></p>
+  </div>
 </details>
 <h2>Version sans limite de démo</h2>
 <p>Ajoute <strong>titancsa</strong> sur Discord et indique <strong>Titan Audio Link</strong>. Tu recevras les informations pour obtenir l’édition Release avec sa clé d’activation.</p>

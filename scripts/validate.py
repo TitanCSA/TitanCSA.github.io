@@ -496,6 +496,11 @@ for row in manifest['products']:
             assert proof['after_removal']['driver_service_absent']
             assert wheel['installed_inventory']['command'] == wheel['check_command'] + ' --inventory'
             assert wheel['installed_inventory']['starts_demo_timer'] is True
+        if row['id'] == 'titan-audio-link':
+            assert proof['before_setup'] == proof['after_removal']['reading']
+            assert proof['after_removal']['service_absent']
+            assert proof['after_setup']['titan_endpoints'] == 2 and proof['after_setup']['active_pairs'] == 1
+            assert wheel['command_after_setup'] == wheel['check_command'] + ' --expect-installed'
         if row['id'] in ('interceptor-keyboard-mouse', 'interceptor-gamepad-controller'):
             assert proof['check_args'] == [row['id']]
             assert proof['before_setup']['windows_error'] == proof['after_removal']['windows_error'] == 2
