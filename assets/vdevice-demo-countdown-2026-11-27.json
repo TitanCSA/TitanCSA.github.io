@@ -1,0 +1,134 @@
+{
+  "checked_at_utc": "2026-11-27T04:47:13.7856962Z",
+  "scope": "Vdevice Demo only. First creation, five-minute countdown, restart, and uninstall. Expiration at one hour was outside this test.",
+  "environment": {
+    "secure_boot": true,
+    "architecture": "x64",
+    "network": "offline",
+    "windows_build": 26100
+  },
+  "release_url": "https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo",
+  "driver_version": "1.0.6.1",
+  "sha256": {
+    "kernel_sha256": "5b8669478581b463b5218c47a274c71107309ec037b2a26ae79c34273f04cee4",
+    "installer_sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848",
+    "sdk_archive_sha256": "b0c8ceec0f872a8eb05e0281c87b6f30b3da23d35d94899fc220cce78efe5236",
+    "probe_source_sha256": "fcf50ca01ac31da963c37cec6124cff400a3454e7265dd2401f7e2c527294292",
+    "probe_exe_sha256": "0af03cbefeaed527a4ce98f3346d2c04929e1cbcf021ea22fcf98fdb38c56aa1"
+  },
+  "method": {
+    "same_boot_check": "Kernel-General event 12 record ID",
+    "clock": "Host elapsed time and the driver's reported remaining time",
+    "fixture": "One virtual mouse with the Vdevice C++ SDK"
+  },
+  "without_driver_windows_error": 2,
+  "setup_exit": 0,
+  "after_setup": {
+    "error": 0,
+    "abi": 1,
+    "trial_started": false,
+    "trial_expired": false,
+    "remaining_100ns": 36000000000,
+    "session_devices": 0
+  },
+  "first_fixture": {
+    "before": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": false,
+      "trial_expired": false,
+      "remaining_100ns": 36000000000,
+      "session_devices": 0
+    },
+    "after_create": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": true,
+      "trial_expired": false,
+      "remaining_100ns": 35999999939,
+      "session_devices": 1
+    },
+    "create_error": 0,
+    "ready_error": 0,
+    "close_error": 0,
+    "after_close": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": true,
+      "trial_expired": false,
+      "remaining_100ns": 35998076686,
+      "session_devices": 0
+    }
+  },
+  "host_elapsed_seconds": 300.01,
+  "observed_countdown_seconds": 300.11,
+  "fixture_after_five_minutes": {
+    "before": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": true,
+      "trial_expired": false,
+      "remaining_100ns": 32998864259,
+      "session_devices": 0
+    },
+    "after_create": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": true,
+      "trial_expired": false,
+      "remaining_100ns": 32998863442,
+      "session_devices": 1
+    },
+    "create_error": 0,
+    "ready_error": 0,
+    "close_error": 0,
+    "after_close": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": true,
+      "trial_expired": false,
+      "remaining_100ns": 32996684155,
+      "session_devices": 0
+    }
+  },
+  "after_windows_restart": {
+    "error": 0,
+    "abi": 1,
+    "trial_started": false,
+    "trial_expired": false,
+    "remaining_100ns": 36000000000,
+    "session_devices": 0
+  },
+  "fixture_after_restart": {
+    "before": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": false,
+      "trial_expired": false,
+      "remaining_100ns": 36000000000,
+      "session_devices": 0
+    },
+    "after_create": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": true,
+      "trial_expired": false,
+      "remaining_100ns": 35999999934,
+      "session_devices": 1
+    },
+    "create_error": 0,
+    "ready_error": 0,
+    "close_error": 0,
+    "after_close": {
+      "error": 0,
+      "abi": 1,
+      "trial_started": true,
+      "trial_expired": false,
+      "remaining_100ns": 35998106713,
+      "session_devices": 0
+    }
+  },
+  "uninstall_exit": 0,
+  "after_removal_and_restart_windows_error": 2,
+  "expiration_measured": false
+}

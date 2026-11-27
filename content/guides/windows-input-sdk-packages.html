@@ -19,6 +19,7 @@
 <pre><code>node node-sdk-status.cjs interceptor</code></pre>
 <p>The script prints driver status. Windows 2 means this call could not find the driver interface. Use the edition ID and command in the <a href="/integration.json">integration manifest</a> for the other bindings.</p>
 <p>For a Gallery module, use the <a href="/assets/gallery-sdk-status.ps1">PowerShell status sample</a> after installing the matching module. The Interception V2 check classifies a library slot and works before driver installation.</p>
+<p>On Windows 11, Gallery modules 1.0.0 for the three Interceptor editions and Vdevice reported Windows error 2 before installation and after removal. With the matching demos installed, they read status without starting the demo timer. <a href="/assets/sdk-registry-runtime-2026-11-27.json">See the exact modules and driver builds</a>.</p>
 <h2>Use the reviewed Node.js 1.0.1 packages</h2>
 <p>Run the npm command for your edition in the table. In <code>client.info()</code>, <code>installed</code> and <code>active</code> use numeric flags, with <code>1</code> for yes and <code>0</code> for no.</p>
 <p>All three npm 1.0.1 packages read their matching signed demo’s status on Windows 11 with Secure Boot and Memory Integrity active. The demo timer stayed idle. <a href="/assets/sdk-registry-runtime-2026-11-26.json">See the exact package and driver results</a>.</p>

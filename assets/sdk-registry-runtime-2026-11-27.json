@@ -8,7 +8,7 @@
     "secure_boot": true,
     "account": "administrator"
   },
-  "scope": "Read-only status using the published PyPI wheel in an offline Windows 11 VM, before installing the exact signed demo, after setup, and after removal.",
+  "scope": "Read-only SDK status using the public PyPI wheel and PowerShell Gallery modules in offline Windows 11 VM tests before installing the exact signed demos, after setup and after removal.",
   "checks": [
     {
       "edition": "interceptor",
@@ -37,6 +37,123 @@
         "windows_error": 2,
         "driver_service_absent": true
       }
+    },
+    {
+      "edition": "interceptor",
+      "driver_tag": "v1.4.23.0-demo-r3",
+      "driver_version": "1.4.23.0",
+      "driver_sha256": "07acd1cd68780e59411a4f1cb8145519644503d007a50fdb63ab2373026749f5",
+      "setup_sha256": "bcb953083ba71e64d0c65524f068395601165953da2501fbd637b643fcf822c0",
+      "demo_timer_started": false,
+      "ecosystem": "powershell",
+      "name": "Interceptor",
+      "version": "1.0.0",
+      "runtime": "PowerShell 7.6.6 x64",
+      "package_sha256": "5ebe68306ba190a18ef4be13d2182f250bcd1fcdf430ea188d45a30bdd2f53ab",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      },
+      "before": {
+        "windows_error": 2
+      },
+      "after": {
+        "windows_error": 2,
+        "driver_service_absent": true
+      },
+      "install_exit": 0,
+      "uninstall_exit": 0,
+      "test_source_sha256": "5a73c07bc06d7dbd36953c6ef3a8b3696907031a959dab624c1a3b6e307c9a0c",
+      "checked_utc": "2026-11-27T04:43:52.6156071Z"
+    },
+    {
+      "edition": "interceptor-keyboard-mouse",
+      "driver_tag": "v1.0.5.4-demo-r3",
+      "driver_version": "1.0.5.4",
+      "driver_sha256": "9f132ad0ed76dd80dbc7c0902b00a684668d11c11c7eff3e9b42f955e25eabcb",
+      "setup_sha256": "f8a1a5b9607079630aa577a28441588d62839a5b37c9b846c9d2ea18fd166576",
+      "demo_timer_started": false,
+      "ecosystem": "powershell",
+      "name": "InterceptorKeyboardMouse",
+      "version": "1.0.0",
+      "runtime": "PowerShell 7.6.6 x64",
+      "package_sha256": "8b8738dc19666c8c8aa92155abce950ce5ad6dacd5313782d7c5841daa7bac1f",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      },
+      "before": {
+        "windows_error": 2
+      },
+      "after": {
+        "windows_error": 2,
+        "driver_service_absent": true
+      },
+      "install_exit": 0,
+      "uninstall_exit": 0,
+      "test_source_sha256": "5a73c07bc06d7dbd36953c6ef3a8b3696907031a959dab624c1a3b6e307c9a0c",
+      "checked_utc": "2026-11-27T04:43:52.6156071Z"
+    },
+    {
+      "edition": "interceptor-gamepad-controller",
+      "driver_tag": "v1.0.13.0-demo",
+      "driver_version": "1.0.13.0",
+      "driver_sha256": "2b792a9d6398de9cf46ddbb7db6075e70e2e4812d1e2083248205db04873a727",
+      "setup_sha256": "bd07d14597b33fdd1255bd43476d84171b9c86819100d7d925ab6a82785d1e13",
+      "demo_timer_started": false,
+      "ecosystem": "powershell",
+      "name": "InterceptorGamepadController",
+      "version": "1.0.0",
+      "runtime": "PowerShell 7.6.6 x64",
+      "package_sha256": "55e350e139e01b844c1fa8970812f55222f26b1367d5c3132f9c87a741245dd1",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      },
+      "before": {
+        "windows_error": 2
+      },
+      "after": {
+        "windows_error": 2,
+        "driver_service_absent": true
+      },
+      "install_exit": 0,
+      "uninstall_exit": 0,
+      "test_source_sha256": "5a73c07bc06d7dbd36953c6ef3a8b3696907031a959dab624c1a3b6e307c9a0c",
+      "checked_utc": "2026-11-27T04:43:52.6156071Z"
+    },
+    {
+      "edition": "vdevice",
+      "driver_tag": "v1.0.6.1-demo",
+      "driver_version": "1.0.6.1",
+      "driver_sha256": "5b8669478581b463b5218c47a274c71107309ec037b2a26ae79c34273f04cee4",
+      "setup_sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848",
+      "demo_timer_started": false,
+      "ecosystem": "powershell",
+      "name": "Vdevice",
+      "version": "1.0.0",
+      "runtime": "PowerShell 7.6.6 x64",
+      "package_sha256": "2ff84af92a6913e70bd1679e263c627559014b57fdd173646fa7e26504fad40f",
+      "result": {
+        "driver_abi": 1,
+        "trial_started": false,
+        "trial_expired": false,
+        "max_devices": 16
+      },
+      "before": {
+        "windows_error": 2
+      },
+      "after": {
+        "windows_error": 2,
+        "driver_service_absent": true
+      },
+      "install_exit": 0,
+      "uninstall_exit": 0,
+      "test_source_sha256": "5a73c07bc06d7dbd36953c6ef3a8b3696907031a959dab624c1a3b6e307c9a0c",
+      "checked_utc": "2026-11-27T04:43:52.6156071Z"
     }
   ]
 }
