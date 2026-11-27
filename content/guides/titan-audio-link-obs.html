@@ -4,7 +4,7 @@
 <h2 id="first-steps">Set up the OBS source</h2>
 <ol>
   <li>Extract the demo ZIP. Run <code>TitanAudioLinkSetup.exe</code> from <strong>Installers</strong> and restart Windows if requested.</li>
-  <li>In your OBS scene, click <strong>+</strong> under <strong>Sources</strong> and choose <strong>Audio Input Capture</strong>. In <strong>Device</strong>, select the Titan Audio Link microphone.</li>
+  <li>In your OBS scene, click <strong>+</strong> under <strong>Sources</strong> and choose <strong>Audio Input Capture</strong>. In <strong>Device</strong>, select the Titan Audio Link microphone. On English Windows it appeared as <strong>Line In (Titan Audio Link)</strong>.</li>
   <li>Run <code>AudioLinkToneExample.exe</code> from the demo ZIP. While it plays its two-second tone, watch the level meter for that source in OBS. When the meter reacts, choose the matching Titan Audio Link speakers as the output in the app you want to capture. In Windows 11, you can also choose it for a running app under <strong>Settings → System → Sound → Volume mixer</strong>.</li>
 </ol>
 <details class="more-info">
@@ -13,4 +13,5 @@
   <p><a href="https://obsproject.com/kb/audio-sources">OBS documentation about audio input sources</a>.</p>
 </details>
 <p>The demo allows one hour per Windows boot starting with the first successful capture.</p>
+<p>In our Windows 11 VM, the OBS 33.0.3 meter showed silence, received the demo’s 440 Hz tone and returned to silence. <a href="/assets/titan-audio-link-obs-check-2026-11-27.json">See the meter readings and exact versions</a>.</p>
 <div class="related"><a href="/guides/titan-audio-link-first-run/">Titan Audio Link first run and SDK</a><a href="/about/evidence/#release-contact">Full version · Discord titancsa</a></div>

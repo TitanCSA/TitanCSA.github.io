@@ -4,7 +4,7 @@
 <h2 id="first-steps">Ajouter la source dans OBS</h2>
 <ol>
   <li>Décompresse le ZIP. Lance <code>TitanAudioLinkSetup.exe</code> dans <strong>Installers</strong> et redémarre Windows si demandé.</li>
-  <li>Dans ta scène OBS, clique sur <strong>+</strong> sous <strong>Sources</strong>, puis sur <strong>Capture audio (entrée)</strong>. Dans <strong>Périphérique</strong>, choisis le micro Titan Audio Link.</li>
+  <li>Dans ta scène OBS, clique sur <strong>+</strong> sous <strong>Sources</strong>, puis sur <strong>Capture audio (entrée)</strong>. Dans <strong>Périphérique</strong>, choisis le micro Titan Audio Link. Sur notre Windows en anglais, il s’appelait <strong>Line In (Titan Audio Link)</strong>.</li>
   <li>Lance <code>AudioLinkToneExample.exe</code> depuis le ZIP de la démo. Pendant les deux secondes du signal, regarde si la jauge de cette source bouge dans OBS. Choisis ensuite les haut-parleurs Titan Audio Link de la même paire comme sortie dans ton application. Sous Windows 11, ce réglage est aussi accessible pour une application ouverte dans <strong>Paramètres → Système → Son → Mélangeur de volume</strong>.</li>
 </ol>
 <details class="more-info">
@@ -13,4 +13,5 @@
   <p><a href="https://obsproject.com/kb/audio-sources" lang="en">Documentation OBS sur les sources audio</a>.</p>
 </details>
 <p>La démo dure une heure par démarrage de Windows, à partir de la première capture réussie.</p>
+<p>Dans notre VM Windows 11, le vumètre d’OBS 33.0.3 a affiché le silence, reçu le signal de 440 Hz de la démo, puis est revenu au silence. <a href="/assets/titan-audio-link-obs-check-2026-11-27.json">Voir les mesures et les versions exactes</a>.</p>
 <div class="related"><a href="/fr/micro-virtuel-titan-audio-link/">Premier essai et SDK Titan Audio Link</a><a href="/fr/pilotes-entree-windows/#contact-release">Version complète · Discord titancsa</a></div>

@@ -1,0 +1,44 @@
+{
+  "checked_utc": "2026-11-27T02:21:59.6750811Z",
+  "windows": {
+    "build": 26100,
+    "secure_boot": true
+  },
+  "audio_link": {
+    "version": "0.2.0.0",
+    "release_url": "https://github.com/titanfyre/Titan-Audio-Link/releases/tag/v0.2.0-demo",
+    "archive_sha256": "04ac8a9c88d6ab02889f790d3202d5867ffe196b660dfc6d2e642baa01cc4b37",
+    "setup_sha256": "4efb8deec1ebc494188d22ded019224ff8ae1d125fc068f551814457b64bb5e5"
+  },
+  "obs": {
+    "version": "33.0.3",
+    "websocket_version": "5.7.6",
+    "release_url": "https://github.com/obsproject/obs-studio/releases/tag/33.0.3",
+    "archive_sha256": "18a68c325adbda6f6082d5281021a8d1e35a6432842800618e8690b71925c107",
+    "source_kind": "wasapi_input_capture",
+    "capture_endpoint": "Line In (Titan Audio Link)"
+  },
+  "tone": {
+    "executable": "AudioLinkToneExample.exe",
+    "sha256": "6bd32318be82defb1ff1bd6bb4c8791a242fcadbce99a413de809c4be4f5b538",
+    "frequency_hz": 440,
+    "configured_duration_seconds": 2,
+    "stereo_frames_sent": 96480
+  },
+  "meter": {
+    "baseline": {
+      "channel_peak_samples": 118,
+      "peak_linear_amplitude": 0.0
+    },
+    "during_tone": {
+      "channel_peak_samples": 156,
+      "peak_linear_amplitude": 0.100037
+    },
+    "after_tone": {
+      "channel_peak_samples": 48,
+      "peak_linear_amplitude": 0.0
+    }
+  },
+  "driver_service_absent_after_uninstall_and_restart": true,
+  "scope": "OBS Studio measured its WASAPI input meter for the explicit virtual capture endpoint in an isolated Windows 11 VM. The bundled example supplied the generated tone. No OBS recording or livestream was started."
+}
