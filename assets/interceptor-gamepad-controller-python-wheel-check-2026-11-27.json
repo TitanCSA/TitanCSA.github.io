@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "edition": "interceptor-gamepad-controller",
+  "source_file": "python-interceptor-edition-status.py",
+  "source_sha256": "c850c688d1fcc12c00b4118267b0764d4013f412ae53a0c75048e34ed7aed2fb",
+  "check_args": [
+    "interceptor-gamepad-controller"
+  ],
+  "checked_utc": "2026-11-27T01:34:02.373427+00:00",
+  "scope": "Status-only Python calls with the two specialized drivers installed separately and together. The calls did not start either demo timer.",
+  "windows": {
+    "architecture": "x64",
+    "build": 26100,
+    "secure_boot": true
+  },
+  "runtimes": {
+    "clean_install_from_url": "Python 3.10.11 x64",
+    "driver_lifecycle": "Python 3.14.9 x64"
+  },
+  "wheel": {
+    "name": "interceptor-gamepad-controller",
+    "version": "1.0.0",
+    "filename": "interceptor_gamepad_controller-1.0.0-py3-none-win_amd64.whl",
+    "url": "https://raw.githubusercontent.com/TitanCSA/sdk-packages/f6abf965e5a3e229c1b450322212aa07ec5a4cfc/release-assets/Interceptor-Gamepad-Controller/input-language-sdks-v1.0.0/interceptor_gamepad_controller-1.0.0-py3-none-win_amd64.whl",
+    "sha256": "0d9b1b0e058893891567a1d3ff986d4cb3bee0dfa339b8434c9b4d00be7e5e8c"
+  },
+  "driver_demo": {
+    "tag": "v1.0.13.0-demo",
+    "version": "1.0.13.0",
+    "console_installer_sha256": "bd07d14597b33fdd1255bd43476d84171b9c86819100d7d925ab6a82785d1e13",
+    "kernel_sha256": "2b792a9d6398de9cf46ddbb7db6075e70e2e4812d1e2083248205db04873a727"
+  },
+  "before_setup": {
+    "exit_code": 2,
+    "windows_error": 2
+  },
+  "after_setup": {
+    "exit_code": 0,
+    "wheel_version": "1.0.0",
+    "installed": true,
+    "active": false,
+    "trial_state": 0
+  },
+  "after_removal": {
+    "exit_code": 2,
+    "windows_error": 2,
+    "service_absent": true
+  },
+  "coexistence": {
+    "without_drivers": {
+      "interceptor-keyboard-mouse": 2,
+      "interceptor-gamepad-controller": 2
+    },
+    "keyboard_mouse_only": {
+      "interceptor-keyboard-mouse": 0,
+      "interceptor-gamepad-controller": 2
+    },
+    "both_installed": {
+      "interceptor-keyboard-mouse": 0,
+      "interceptor-gamepad-controller": 0
+    },
+    "gamepad_only": {
+      "interceptor-keyboard-mouse": 2,
+      "interceptor-gamepad-controller": 0
+    },
+    "after_removal": {
+      "interceptor-keyboard-mouse": 2,
+      "interceptor-gamepad-controller": 2
+    }
+  }
+}

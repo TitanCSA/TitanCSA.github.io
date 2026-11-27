@@ -3,7 +3,8 @@ from pathlib import Path
 from html import escape
 from feeds import write_feeds
 import json,re,shutil
-from integration import app_cards, first_sdk_check, make_manifest, sdk_rows, write_sdk_reference, write_starter
+from integration import (app_cards, first_sdk_check, make_manifest, python_status_wheel_details,
+                         sdk_rows, write_sdk_reference, write_starter)
 from go_samples import write_go_samples
 from rust_samples import write_rust_samples
 from catalogue import catalogue_sections
@@ -115,6 +116,14 @@ for product in integration["products"]:
         replacements[f'{key}_PYTHON_WHEEL_URL']=escape(wheel['url'],quote=True)
         replacements[f'{key}_PYTHON_WHEEL_FILE']=escape(wheel['filename'])
         replacements[f'{key}_PYTHON_TESTED_DEMO']=escape(wheel['tested_demo_version'])
+        if product["id"] in ("interceptor-keyboard-mouse", "interceptor-gamepad-controller"):
+            for language in ("en", "fr"):
+                replacements[f'{key}_PYTHON_GUIDE_{language.upper()}']=python_status_wheel_details(wheel,language)
+for language in ("en", "fr"):
+    links = (f'<li><a href="/{product["python_wheel"]["guide_urls"][language].removeprefix(BASE)}">'
+             f'{escape(product["name"])}</a></li>'
+             for product in integration["products"] if "python_wheel" in product)
+    replacements[f'ARCHIVED_PYTHON_GUIDES_{language.upper()}'] = "\n".join(links)
 replacements['REGISTRY_TABLES_EN']=registry_tables(integration['sdk_registry'],rust_quickstarts=rust_quickstarts)
 replacements['REGISTRY_TABLES_FR']=registry_tables(integration['sdk_registry'],french=True,rust_quickstarts=rust_quickstarts)
 browser_package=next(row for row in integration['sdk_registry'] if row['name']=='browser-control-sdk')
@@ -267,6 +276,8 @@ reviewed.update(dict.fromkeys((
     'guides/first-run/', 'fr/essayer-sans-pilote/', 'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
     'guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/', 'projects/vdevice/',
     'guides/interception-v2-migration/', 'fr/migrer-interception-v2/', 'projects/interception-v2/',
+    'guides/keyboard-mouse-first-run/', 'fr/tester-deux-claviers-windows/', 'projects/interceptor-keyboard-mouse/',
+    'guides/gamepad-controller-first-run/', 'fr/remapper-manette-windows/', 'projects/interceptor-gamepad-controller/',
 ), '2026-11-27'))
 
 
@@ -448,6 +459,10 @@ reference_links.extend([
     f'- [Paquet Python Vdevice et vérification du pilote]({BASE}fr/souris-usb-virtuelle-vdevice/#python-sdk)',
     f'- [Interception V2 Python wheel and device inventory]({BASE}guides/interception-v2-migration/#python-sdk)',
     f'- [Paquet Python Interception V2 et inventaire des périphériques]({BASE}fr/migrer-interception-v2/#python-sdk)',
+    f'- [Interceptor Keyboard & Mouse driver status with Python]({BASE}guides/keyboard-mouse-first-run/#python-sdk)',
+    f'- [Vérifier le pilote Keyboard & Mouse avec Python]({BASE}fr/tester-deux-claviers-windows/#python-sdk)',
+    f'- [Interceptor Gamepad & Controller driver status with Python]({BASE}guides/gamepad-controller-first-run/#python-sdk)',
+    f'- [Vérifier le pilote Gamepad & Controller avec Python]({BASE}fr/remapper-manette-windows/#python-sdk)',
     f'- [Standalone Rust ZIP quickstarts]({BASE}{rust_proof_path})',
     f'- [Rust crate checks with exact package hashes]({BASE}assets/rust-sdk-first-checks-2026-11-26.json)',
     f'- [Go module checks with exact package hashes]({BASE}assets/go-sdk-first-checks-2026-11-26.json)',

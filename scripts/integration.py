@@ -4,6 +4,7 @@ from hashlib import sha256
 from html import escape
 import json
 from pathlib import Path
+from urllib.parse import urlsplit
 from zipfile import ZIP_STORED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -149,7 +150,7 @@ def make_manifest(base, editions):
                 "install_command": f'python -m pip install "{package["url"]}#sha256={package["sha256"]}"',
                 "source_url": base + "assets/" + source,
                 "source_sha256": python_wheel["source_sha256"],
-                "check_command": "python " + source,
+                "check_command": " ".join(("python", source, *python_wheel.get("check_args", []))),
                 "tested_demo_version": python_wheel["driver_demo"]["version"],
                 "tested_demo_tag": python_wheel["driver_demo"]["tag"],
                 "guide_urls": guides,
@@ -278,6 +279,36 @@ def app_cards(manifest, language, *, more=False):
                           f'width="{picture["width"]}" height="{picture["height"]}" src="{image_path}" alt="{alt}"></details>')
         cards.append(f'<article class="guide-card">{title}{intro}{steps}{command}{result}{screenshot}</article>')
     return '<div class="guide-grid">' + "\n".join(cards) + '</div>'
+
+
+def python_status_wheel_details(wheel, language):
+    if language == "fr":
+        title = "Vérifier le pilote avec Python"
+        intro = ('Utilise Python 3.10 ou plus récent en 64 bits sous Windows. Place le {package} et le {sample} '
+                 'dans le même dossier, puis ouvre PowerShell dans ce dossier.')
+        status = ('Avec la démo {demo}, <code>installed: true</code> confirme que le pilote de cette édition répond. '
+                  'Sur une installation neuve, <code>trial_state: 0</code> indique que le compteur est encore arrêté. '
+                  'Windows 2 indique que le script ne trouve pas le pilote de cette édition.')
+        package, sample, report = "paquet Python", "script", "Tests et SHA-256 du paquet"
+    else:
+        title = "Check the driver from Python"
+        intro = ('Use 64-bit Python 3.10 or later on Windows. Put the {package} and {sample} in the same folder, '
+                 'then open PowerShell there.')
+        status = ('With demo {demo}, <code>installed: true</code> means the driver for this edition answered. '
+                  'On a fresh install, <code>trial_state: 0</code> means its demo timer is still unstarted. '
+                  'Windows error 2 means the script could not find this edition’s driver.')
+        package, sample, report = "Python wheel", "check script", "Test results and wheel SHA-256"
+    package_link = f'<a href="{escape(wheel["url"], quote=True)}">{package}</a>'
+    source = "/" + urlsplit(wheel["source_url"]).path.lstrip("/")
+    sample_link = f'<a href="{escape(source, quote=True)}" download>{sample}</a>'
+    install = 'python -m pip install .\\' + wheel["filename"]
+    return (
+        f'<details class="more-info"><summary>{title}</summary><div id="python-sdk">'
+        f'<p>{intro.format(package=package_link, sample=sample_link)}</p>'
+        f'<pre><code>{escape(install)}\n{escape(wheel["check_command"])}</code></pre>'
+        f'<p>{status.format(demo=escape(wheel["tested_demo_version"]))}</p>'
+        f'<p><a href="{escape(wheel["evidence_url"], quote=True)}">{report}</a></p></div></details>'
+    )
 
 
 def first_sdk_check(product, starter_url, language):

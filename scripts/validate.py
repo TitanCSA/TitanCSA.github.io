@@ -485,6 +485,7 @@ for row in manifest['products']:
         assert wheel['tested_demo_tag'] == proof['driver_demo']['tag']
         assert wheel['source_sha256'] == proof['source_sha256']
         assert wheel['source_url'] == BASE + 'assets/' + proof['source_file']
+        assert wheel['check_command'] == ' '.join(('python', proof['source_file'], *proof.get('check_args', [])))
         assert sha256((OUT/wheel['source_url'].removeprefix(BASE)).read_bytes()).hexdigest() == wheel['source_sha256']
         if row['id'] == 'vdevice':
             assert proof['before_setup']['windows_error'] == proof['after_removal']['windows_error'] == 2
@@ -495,12 +496,23 @@ for row in manifest['products']:
             assert proof['after_removal']['driver_service_absent']
             assert wheel['installed_inventory']['command'] == wheel['check_command'] + ' --inventory'
             assert wheel['installed_inventory']['starts_demo_timer'] is True
+        if row['id'] in ('interceptor-keyboard-mouse', 'interceptor-gamepad-controller'):
+            assert proof['check_args'] == [row['id']]
+            assert proof['before_setup']['windows_error'] == proof['after_removal']['windows_error'] == 2
+            assert proof['after_removal']['service_absent'] and proof['after_setup']['installed']
+            assert not proof['after_setup']['active'] and proof['after_setup']['trial_state'] == 0
+            keyboard, gamepad = 'interceptor-keyboard-mouse', 'interceptor-gamepad-controller'
+            assert proof['coexistence']['keyboard_mouse_only'] == {keyboard: 0, gamepad: 2}
+            assert proof['coexistence']['gamepad_only'] == {keyboard: 2, gamepad: 0}
+            assert proof['coexistence']['both_installed'] == {keyboard: 0, gamepad: 0}
         for language, guide in wheel['guide_urls'].items():
             address, fragment = guide.split('#', 1)
             assert address == row['first_run_guides'][language]
             page = by_canonical[address]
             assert fragment in page.ids and wheel['url'] in page.links
             assert '/' + wheel['source_url'].removeprefix(BASE) in page.links
+            package_route = 'fr/installer-sdk-windows/' if language == 'fr' else 'guides/windows-input-sdk-packages/'
+            assert '/' + guide.removeprefix(BASE) in by_canonical[BASE + package_route].links
     setup_command = check['build_verification'].get('command_after_setup')
     if check['expected_after_setup'] != check['expected_without_driver']:
         assert setup_command == f"python scripts/test_first_sdk.py {row['id']} --expect-installed"
