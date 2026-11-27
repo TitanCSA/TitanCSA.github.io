@@ -4,6 +4,10 @@
   "editions": [
     {
       "slug": "interceptor",
+      "setup_requirements": {
+        "windows_10_minimum_build": 16299,
+        "documented_conflicts": ["interceptor-keyboard-mouse", "interceptor-gamepad-controller", "interception-v2"]
+      },
       "demo": "1.4.23.0",
       "tag": "v1.4.23.0-demo-r3",
       "commercial": {
@@ -34,6 +38,10 @@
     },
     {
       "slug": "interceptor-keyboard-mouse",
+      "setup_requirements": {
+        "windows_10_minimum_build": 16299,
+        "documented_conflicts": ["interceptor", "interception-v2"]
+      },
       "demo": "1.0.5.4",
       "tag": "v1.0.5.4-demo-r3",
       "commercial_checked": "2026-11-26",
@@ -65,6 +73,10 @@
     },
     {
       "slug": "interceptor-gamepad-controller",
+      "setup_requirements": {
+        "windows_10_minimum_build": 16299,
+        "documented_conflicts": ["interceptor"]
+      },
       "demo": "1.0.13.0",
       "tag": "v1.0.13.0-demo",
       "commercial": {
@@ -95,6 +107,11 @@
     },
     {
       "slug": "vdevice",
+      "setup_requirements": {
+        "windows_10_minimum_build": 19041,
+        "windows_10_minimum_build_by_feature": {"native-gip": 19044},
+        "documented_conflicts": []
+      },
       "demo": "1.0.6.1",
       "tag": "v1.0.6.1-demo",
       "commercial_checked": "2026-11-26",
@@ -126,6 +143,10 @@
     },
     {
       "slug": "interception-v2",
+      "setup_requirements": {
+        "windows_10_minimum_build": 16299,
+        "documented_conflicts": ["interceptor", "interceptor-keyboard-mouse", "original-interception"]
+      },
       "demo": "2.0.0.0",
       "tag": "v2.0.0",
       "commercial": {
@@ -149,6 +170,10 @@
     },
     {
       "slug": "titan-audio-link",
+      "setup_requirements": {
+        "windows_10_minimum_build": 19041,
+        "documented_conflicts": []
+      },
       "demo": "0.2.0.0",
       "tag": "v0.2.0-demo",
       "commercial": {

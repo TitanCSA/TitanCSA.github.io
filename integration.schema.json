@@ -95,6 +95,27 @@
         "evidence_url": { "$ref": "#/$defs/url" }
       }
     },
+    "setupRequirements": {
+      "type": "object",
+      "description": "Published prerequisites for installing the current demo driver. Application and DLL architectures are given separately by sdk_check.",
+      "required": ["windows_client_versions", "windows_10_minimum_build", "requires_administrator", "documented_conflicts"],
+      "properties": {
+        "windows_client_versions": { "const": ["10", "11"] },
+        "windows_10_minimum_build": { "type": "integer", "minimum": 10240 },
+        "requires_administrator": { "const": true },
+        "windows_10_minimum_build_by_feature": {
+          "type": "object",
+          "description": "Higher Windows 10 build floors for named optional device features.",
+          "additionalProperties": { "type": "integer", "minimum": 10240 }
+        },
+        "documented_conflicts": {
+          "type": "array",
+          "description": "Editions to remove before switching overlapping input stacks. Values are catalogue product IDs or original-interception for the upstream oblitum project.",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/id" }
+        }
+      }
+    },
     "driverProduct": {
       "type": "object",
       "required": ["id", "name", "source", "overview_url", "demo", "sdk_check"],
@@ -156,6 +177,7 @@
             "setup_format": { "enum": ["installer", "zip"] },
             "setup_member": { "type": ["string", "null"] },
             "supported_driver_architecture": { "enum": ["x64", "x86", "arm64"] },
+            "setup_requirements": { "$ref": "#/$defs/setupRequirements" },
             "trial_duration_minutes": { "type": "integer", "minimum": 1 },
             "trial_scope": { "const": "windows_kernel_boot" },
             "trial_starts_on": { "type": "string", "minLength": 1 },

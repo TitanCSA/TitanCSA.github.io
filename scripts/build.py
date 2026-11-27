@@ -272,6 +272,7 @@ reviewed.update(dict.fromkeys((
 reviewed.update(dict.fromkeys((
     'about/evidence/', 'fr/aide-et-verifications/', 'guides/release-activation-help/', 'fr/activation-release/',
     'guides/windows-input-release-compare/',
+    'guides/installer-and-sdk/', 'fr/installeur-et-sdk/',
     'guides/first-run/', 'fr/essayer-sans-pilote/', 'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
     'guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/', 'projects/vdevice/',
     'guides/interception-v2-migration/', 'fr/migrer-interception-v2/', 'projects/interception-v2/',
@@ -405,7 +406,7 @@ reference_links=['# TitanCSA','', '> Official documentation for TitanCSA Windows
     '## Start here','',
     f'- [Project catalogue]({BASE})',
     f'- [Catalogue des projets en français]({BASE}fr/)',
-    f'- [SDK integration manifest]({BASE}integration.json)',
+    f'- [SDK integration manifest with Windows requirements, driver conflicts and test commands]({BASE}integration.json)',
     f'- [Integration JSON schema]({BASE}integration.schema.json)',
     f'- [Windows driver and SDK quick reference in Markdown]({BASE}guides/installer-and-sdk/quick-reference.md)',
     f'- [Aide-mémoire des pilotes et SDK Windows en Markdown]({BASE}fr/installeur-et-sdk/quick-reference.md)',

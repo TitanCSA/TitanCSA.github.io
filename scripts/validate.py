@@ -477,6 +477,15 @@ assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]
     demo, check = row['demo'], row['sdk_check']
+    setup = demo['setup_requirements']
+    assert setup == {'windows_client_versions':['10','11'], 'requires_administrator':True,
+                     **edition['setup_requirements']}
+    conflicts = set(setup['documented_conflicts'])
+    assert row['id'] not in conflicts and conflicts <= set(editions) | {'original-interception'}, row['id']
+    for other in conflicts & set(editions):
+        assert row['id'] in editions[other]['setup_requirements']['documented_conflicts'], (row['id'],other)
+    assert all(build >= setup['windows_10_minimum_build']
+               for build in setup.get('windows_10_minimum_build_by_feature',{}).values()), row['id']
     if wheel := row.get('python_wheel'):
         proof = json.loads((OUT/wheel['evidence_url'].removeprefix(BASE)).read_text(encoding='utf8'))
         assert proof['edition'] == row['id']

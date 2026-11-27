@@ -30,7 +30,7 @@
   <p>The supplied first checks do not capture input, create virtual devices or start a demo timer. The driver’s package version and the API version printed by a sample are separate values.</p>
   <p>For an existing C++ app, use the header and implementation from the same SDK archive. Interception V2 uses an import library and a DLL instead of an implementation file. Put the DLL for your app’s architecture beside its executable. The manifest gives each exact filename.</p>
   <p>The manifest lists each edition’s compilation definitions, including the Unicode settings needed by the Windows C++ SDKs. It includes the SHA-256 of every installer, example and SDK download. See <a href="/guides/verify-windows-driver-package/">how to check a downloaded file</a>.</p>
-  <p>For automated VM tests, <code>demo.console_setup</code> gives the exact file, install and uninstall arguments, restart exit code and verification record.</p>
+  <p>Before setup, check <code>demo.setup_requirements</code> for the Windows build and overlapping editions. For an x86 app using Interception V2, choose the x86 DLL. The driver still needs x64 Windows. <code>demo.console_setup</code> gives the exact installer, arguments, restart exit code and test record.</p>
 <p><a href="/guides/windows-input-sdk-packages/">Find packages for Python, Node.js, .NET and PowerShell</a>.</p>
   <p><a href="/assets/native-sdk-manifest-check-2026-11-25.json">See the independent manifest test</a>. A separate consumer built and ran seven configurations using only the public integration JSON and its downloads.</p>
 </details>

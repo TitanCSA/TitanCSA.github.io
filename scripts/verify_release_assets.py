@@ -124,7 +124,8 @@ def candidate(edition, tag, version, sdk_role, overrides, verify_bytes=False):
     if verify_bytes:
         for url, digest in assets.values():
             verify_download(url, digest)
-    source_fields = {"slug", "demo", "tag", "commercial", "use", "api", "trial_starts", "note", "demo_files", "sdk_sha256", "setup_member"}
+    source_fields = {"slug", "demo", "tag", "commercial", "use", "api", "trial_starts", "note", "demo_files", "sdk_sha256",
+                     "setup_member", "setup_requirements"}
     row = {name: value for name, value in edition.items() if name in source_fields}
     row.update(demo=version, tag=tag, demo_files=filenames, sdk_sha256=assets[sdk_role][1],
                demo_asset_sha256={role: digest for role, (_, digest) in assets.items()})

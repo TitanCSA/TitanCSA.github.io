@@ -89,6 +89,11 @@ def make_manifest(base, editions):
                 "setup_format": "installer" if setup_role == "installer" else "zip",
                 "setup_member": edition.get("setup_member"),
                 "supported_driver_architecture": "x64",
+                "setup_requirements": {
+                    "windows_client_versions": ["10", "11"],
+                    "requires_administrator": True,
+                    **edition["setup_requirements"],
+                },
                 "trial_duration_minutes": 60,
                 "trial_scope": "windows_kernel_boot",
                 "trial_starts_on": edition["trial_starts"],
@@ -384,6 +389,8 @@ def write_sdk_reference(path, base, manifest, language):
         starter_label = "ZIP de départ"
         checks = "Ces tests n’ouvrent pas de capture et ne démarrent pas le compteur de la démo."
         member_label, after, before = "Installateur dans le ZIP", "Après installation", "Sans pilote installé"
+        host = "Windows 10 {arch} à partir du build {build}, ou Windows 11 {arch} · droits administrateur pour installer"
+        conflicts_label, original = "Si présent, désinstaller avant de changer de pilote", "Interception d’origine"
         contact = "Version sans la limite d’une heure · contacte titancsa sur Discord"
         contact_url = base + "fr/pilotes-entree-windows/#contact-release"
     else:
@@ -395,6 +402,8 @@ def write_sdk_reference(path, base, manifest, language):
         starter_label = "Starter ZIP"
         checks = "These checks leave input capture closed and the demo timer unstarted."
         member_label, after, before = "Installer inside the ZIP", "After setup", "With no driver installed"
+        host = "Windows 10 {arch} build {build} or later, or Windows 11 {arch} · administrator rights for setup"
+        conflicts_label, original = "If installed, remove before switching drivers", "Original Interception"
         contact = "Release without the one-hour demo limit · contact titancsa on Discord"
         contact_url = manifest["commercial_contact"]["contact_guide_url"]
     lines = [
@@ -402,12 +411,20 @@ def write_sdk_reference(path, base, manifest, language):
         f"[{starter_label}]({manifest['starter_zip_url']}) · [integration.json]({base}integration.json)",
         "", starter, checks,
     ]
+    names = {product["id"]: product["name"] for product in manifest["products"]}
+    names["original-interception"] = original
     for product in manifest["products"]:
         demo, sdk = product["demo"], product["sdk_check"]
+        requirements = demo["setup_requirements"]
         architectures = " / ".join(sdk["app_architectures"])
         lines.extend([
             "", f"## {product['name']}", "",
             f"- [{guide}]({product['first_run_guides'][language]})",
+            "- " + host.format(arch=demo["supported_driver_architecture"], build=requirements["windows_10_minimum_build"]),
+        ])
+        if conflicts := requirements["documented_conflicts"]:
+            lines.append(f"- {conflicts_label} · " + ", ".join(names[identifier] for identifier in conflicts))
+        lines.extend([
             f"- [{download} {demo['version']}]({demo['setup_download_url']}) · SHA-256 `{demo['setup_download_sha256']}`",
             f"- [{archive}]({sdk['archive_url']}) · {sdk['api']} · {architectures} · SHA-256 `{sdk['archive_sha256']}`",
             f"- [{source}]({sdk['source_url']})",

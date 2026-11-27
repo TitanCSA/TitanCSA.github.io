@@ -26,6 +26,7 @@ class ReleaseAssetChecks(unittest.TestCase):
             "demo_assets": {self.role: f"{self.base}/releases/download/{self.tag}/{self.name}"},
             "sdk_sha256": self.hash,
             "demo_asset_sha256": {self.role: self.hash},
+            "setup_requirements": {"windows_10_minimum_build": 19041, "documented_conflicts": []},
             "first_run_guides": {
                 "en": "https://titancsa.github.io/guides/example/",
                 "fr": "https://titancsa.github.io/fr/exemple/",
@@ -79,6 +80,7 @@ class ReleaseAssetChecks(unittest.TestCase):
         self.assertEqual(row["sdk_sha256"], self.hash)
         self.assertEqual(row["demo_asset_sha256"], {self.role: self.hash})
         self.assertEqual(row["demo_files"]["sdk"], filename)
+        self.assertEqual(row["setup_requirements"], self.edition["setup_requirements"])
         self.assertEqual(self.edition["tag"], self.tag)
         self.assertEqual(self.edition["demo_files"]["sdk"], self.name)
 

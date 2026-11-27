@@ -164,6 +164,7 @@ def main():
             assert section.startswith(product["name"] + "\n") and all(item in section for item in (
                 product["first_run_guides"][language], demo["setup_download_sha256"],
                 sdk["archive_sha256"], command, expected,
+                f'build {demo["setup_requirements"]["windows_10_minimum_build"]}',
             )), (language, product["id"])
             assert not installed_command or installed_command in section
 
