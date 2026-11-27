@@ -20,6 +20,7 @@ SOURCE = ROOT / "releases.json"
 RETRYABLE_STATUS = {429, 500, 502, 503, 504}
 SHA256_TAG = re.compile(r"sha256:([0-9a-f]{64})")
 PUBLIC_CHECKOUT = re.compile(r"licences\.configcsa\.com|checkout\.stripe\.com|buy\.stripe\.com", re.I)
+MARKDOWN_LINK = re.compile(r"\]\((https://[^\s)]+)\)")
 
 
 def fetch_release(url):
@@ -54,11 +55,15 @@ def official_assets(edition, tag, filenames, *, check_contact=False):
     if release["draft"] or tag != release["tag_name"]:
         raise ValueError(f"{edition['slug']}: unpublished or mismatched release {tag}")
     if check_contact:
-        body = (release.get("body") or "").casefold()
+        body = release.get("body") or ""
         if PUBLIC_CHECKOUT.search(body):
             raise ValueError(f"{edition['slug']} {tag}: public release notes contain a checkout link")
-        if not all(word in body for word in ("discord", "titancsa")):
+        if not all(word in body.casefold() for word in ("discord", "titancsa")):
             raise ValueError(f"{edition['slug']} {tag}: release notes are missing the Discord contact")
+        links = set(MARKDOWN_LINK.findall(body))
+        missing = [language for language, url in edition["first_run_guides"].items() if url not in links]
+        if missing:
+            raise ValueError(f"{edition['slug']} {tag}: release notes are missing first-run guides for {', '.join(missing)}")
 
     assets = {asset["name"]: asset for asset in release["assets"]}
     result = {}
@@ -161,7 +166,8 @@ def main():
     parser.add_argument("--asset", action="append", default=[], metavar="ROLE=FILENAME")
     parser.add_argument("--apply", action="store_true", help="Write the checked candidate revision to releases.json")
     parser.add_argument("--verify-downloads", action="store_true", help="Download each public file and hash its bytes")
-    parser.add_argument("--check-public-contact", action="store_true", help="Audit the pinned demo notes for the Discord purchase contact")
+    parser.add_argument("--check-public-contact", action="store_true",
+                        help="Audit the pinned demo notes for private purchase contact and first-run guide links")
     args = parser.parse_args()
     if (args.asset or args.apply) and not args.candidate:
         parser.error("--asset and --apply require --candidate")
@@ -200,7 +206,7 @@ def main():
     scope = "downloaded files" if args.verify_downloads else "asset references"
     print(f"Verified {checked + len(apps)} {scope} across {len(editions) + len(apps)} pinned releases.")
     if args.check_public_contact:
-        print(f"Verified the public Discord contact in all {len(editions)} pinned driver demo notes.")
+        print(f"Verified the Discord contact and first-run guides in all {len(editions)} pinned driver demo notes.")
     quickstarts = integration.get("sdk_quickstarts", [])
     for release_url in sorted({item["release_url"] for item in quickstarts}):
         repository, separator, tag = release_url.rpartition("/releases/tag/")

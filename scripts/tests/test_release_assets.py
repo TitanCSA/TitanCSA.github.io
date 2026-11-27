@@ -26,6 +26,10 @@ class ReleaseAssetChecks(unittest.TestCase):
             "demo_assets": {self.role: f"{self.base}/releases/download/{self.tag}/{self.name}"},
             "sdk_sha256": self.hash,
             "demo_asset_sha256": {self.role: self.hash},
+            "first_run_guides": {
+                "en": "https://titancsa.github.io/guides/example/",
+                "fr": "https://titancsa.github.io/fr/exemple/",
+            },
         }
 
     def public_release(self, tag, filename, digest=None):
@@ -55,6 +59,11 @@ class ReleaseAssetChecks(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "missing the Discord contact"):
                 checker.check_edition(self.edition, self.role, check_contact=True)
             release["body"] = "Contact TitanCSA on Discord for the full version."
+            en, fr = (self.edition["first_run_guides"][lang] for lang in ("en", "fr"))
+            release["body"] += f"\n[Guide]({en})\n[French guide]({fr}old/)"
+            with self.assertRaisesRegex(ValueError, "missing first-run guides for fr"):
+                checker.check_edition(self.edition, self.role, check_contact=True)
+            release["body"] = release["body"].replace(f"{fr}old/", fr)
             self.assertEqual(checker.check_edition(self.edition, self.role, check_contact=True), 1)
             release["body"] += " Payment: https://checkout.stripe.com/example"
             with self.assertRaisesRegex(ValueError, "contain a checkout link"):
