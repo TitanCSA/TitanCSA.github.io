@@ -19,6 +19,10 @@ PACKAGE_GUIDES = {
     "en": "guides/windows-input-sdk-packages/",
     "fr": "fr/installer-sdk-windows/",
 }
+DOWNLOAD_CHECK_GUIDES = (
+    "guides/verify-windows-driver-package/",
+    "fr/verifier-pilote-windows/",
+)
 
 
 def fetch(address, content_type=None, *, host="titancsa.github.io"):
@@ -41,6 +45,7 @@ class Guide(HTMLParser):
         self.canonicals = []
         self.ids = set()
         self.links = set()
+        self.download_options = {}
         self.feed(document)
 
     def handle_starttag(self, tag, attrs):
@@ -49,13 +54,16 @@ class Guide(HTMLParser):
             self.canonicals.append(attrs.get("href"))
         if tag == "a" and attrs.get("href"):
             self.links.add(urljoin(self.address, attrs["href"]))
+        if tag == "option" and "data-sha256" in attrs:
+            assert attrs["value"] not in self.download_options, self.address
+            self.download_options[attrs["value"]] = attrs["data-sha256"]
         if tag == "meta" and attrs.get("name", "").lower() in ("robots", *map(str.lower, SEARCH_AGENTS)):
             assert "noindex" not in attrs.get("content", "").lower(), self.address
         if "id" in attrs:
             self.ids.add(attrs["id"])
 
 
-def verify_project_readme(product, contact):
+def verify_project_public_files(product, contact):
     source = urlsplit(product["source"])
     assert source.scheme == "https" and source.netloc == "github.com", source.geturl()
     assert re.fullmatch(r"/[\w.-]+/[\w.-]+", source.path), source.geturl()
@@ -76,6 +84,10 @@ def verify_project_readme(product, contact):
     assert "## SDK and packages" in readme and product["first_run_guides"]["en"] + "#first-sdk-check" in readme, address
     if wheel := product.get("python_wheel"):
         assert wheel["guide_urls"]["en"] in readme, address
+    citation_url = f"https://{host}{source.path}/refs/heads/main/CITATION.cff"
+    citation = set(fetch(citation_url, "text/plain", host=host).splitlines())
+    for field, value in (("repository-code", product["source"]), ("url", product["overview_url"])):
+        assert f"{field}: {value}" in citation, citation_url
 
 
 def verify_python_wheel(product, guides, package_guides):
@@ -113,7 +125,7 @@ def main():
     assert contact["contact_guide_url"] in references and contact["username"] in contact_page
     assert contact_anchor in Guide(contact_url, contact_page).ids
     with ThreadPoolExecutor(max_workers=5) as pool:
-        list(pool.map(lambda product: verify_project_readme(product, contact), manifest["products"]))
+        list(pool.map(lambda product: verify_project_public_files(product, contact), manifest["products"]))
 
     robots = RobotFileParser()
     robots.parse(fetch(BASE + "robots.txt", "text/plain").splitlines())
@@ -132,6 +144,19 @@ def main():
         guides = dict(zip(documents, pool.map(lambda url: Guide(url, fetch(url, "text/html")), documents)))
     for address, page in guides.items():
         assert page.canonicals == [address] and "first-sdk-check" in page.ids, address
+
+    expected_options = {
+        f'{product["id"]}:{role}': asset["sha256"]
+        for product in manifest["products"]
+        for role, asset in product["demo"]["assets"].items()
+    }
+    for route in DOWNLOAD_CHECK_GUIDES:
+        address = BASE + route
+        assert address in references and address in sitemap, address
+        assert all(robots.can_fetch(agent, address) for agent in SEARCH_AGENTS), address
+        page = Guide(address, fetch(address, "text/html"))
+        assert page.canonicals == [address] and "check-download" in page.ids, address
+        assert page.download_options == expected_options, address
 
     sources = {(product["sdk_check"]["source_url"], product["sdk_check"]["source_sha256"])
                for product in manifest["products"]}
@@ -172,6 +197,8 @@ def main():
         "checked_utc": datetime.now(timezone.utc).isoformat(),
         "products": len(manifest["products"]),
         "github_readmes_with_verified_first_steps": len(manifest["products"]),
+        "github_citations_with_verified_links": len(manifest["products"]),
+        "bilingual_download_check_files": len(expected_options),
         "canonical_sdk_pages": len(guides),
         "sdk_sources_with_verified_hash": len(sources),
         "archived_python_wheels_with_verified_guides_and_sources": len(wheel_products),
