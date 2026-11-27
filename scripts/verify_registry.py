@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 from hashlib import sha256
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -20,6 +21,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 GALLERY = "{http://schemas.microsoft.com/ado/2007/08/dataservices}"
 POM = "{http://maven.apache.org/POM/4.0.0}"
+MAVEN_CENTRAL = "https://repo.maven.apache.org/maven2/"
+GOOGLE_MAVEN_MIRROR = "https://maven-central.storage-download.googleapis.com/maven2/"
 RETRYABLE_STATUS = {429, 500, 502, 503, 504}
 
 
@@ -30,7 +33,8 @@ def read(url):
             with urlopen(request, timeout=20) as response:
                 return response.read()
         except HTTPError as error:
-            if attempt == 2 or error.code not in RETRYABLE_STATUS:
+            maven_rate_limit = error.code == 429 and url.startswith(MAVEN_CENTRAL)
+            if attempt == 2 or error.code not in RETRYABLE_STATUS or maven_rate_limit:
                 raise
         except (TimeoutError, URLError):
             if attempt == 2:
@@ -44,11 +48,20 @@ def pypi_file(document, archive):
                  and file["digests"]["sha256"] == archive["sha256"]), None)
 
 
-def verify(row):
+def verify(row, *, maven_mirror=False):
     name, version = row["name"], row["version"]
     registry = row["ecosystem"]
-    metadata = read(row["metadata_url"])
+    metadata_url = row["metadata_url"]
     archive = row.get("verified_archive")
+    if registry == "maven" and maven_mirror:
+        if not (metadata_url.startswith(MAVEN_CENTRAL) and archive["url"].startswith(MAVEN_CENTRAL)):
+            raise ValueError(f"{name} {version} must use Maven Central URLs to use its mirror")
+        metadata_url = GOOGLE_MAVEN_MIRROR + metadata_url.removeprefix(MAVEN_CENTRAL)
+        archive = {**archive, "url": GOOGLE_MAVEN_MIRROR + archive["url"].removeprefix(MAVEN_CENTRAL)}
+    try:
+        metadata = read(metadata_url)
+    except HTTPError as error:
+        raise ValueError(f"{name} {version} metadata returned HTTP {error.code} at {metadata_url}") from error
     if registry == "powershell":
         entry = ET.fromstring(metadata)
         available = (entry.findtext(f".//{GALLERY}Id") == name
@@ -98,7 +111,8 @@ def verify(row):
                 available = available and sha256(read(archive["url"])).hexdigest() == archive["sha256"]
     if not available:
         raise ValueError(f"{name} {version} is missing or differs from the reviewed package")
-    return f"{name} {version} ({registry})"
+    source = "maven, Google mirror" if registry == "maven" and maven_mirror else registry
+    return f"{name} {version} ({source})"
 
 
 def verify_documentation(url):
@@ -343,6 +357,8 @@ def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--documentation", action="store_true",
                         help="Check the documentation links as well as registry packages")
+    parser.add_argument("--maven-mirror", action="store_true",
+                        help="Read Maven Central POMs and hash-pinned JARs from Google's published mirror")
     runtime = parser.add_mutually_exclusive_group()
     runtime.add_argument("--check-python-on-clean-windows", action="store_true",
                         help="Install and check the pinned PyPI and GitHub wheels in an isolated Windows Python environment")
@@ -369,7 +385,7 @@ def main():
         check_cargo_examples([row for row in rows if row["ecosystem"] == "cargo"])
         return
     with ThreadPoolExecutor(max_workers=5) as pool:
-        for result in pool.map(verify, rows):
+        for result in pool.map(partial(verify, maven_mirror=args.maven_mirror), rows):
             print(result)
         print(f"Verified {len(rows)} pinned registry versions.")
         if args.documentation:

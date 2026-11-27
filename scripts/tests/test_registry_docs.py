@@ -1,6 +1,7 @@
 import json
 import sys
 import unittest
+from hashlib import sha256
 from pathlib import Path
 from unittest.mock import call, patch
 from urllib.error import HTTPError
@@ -51,6 +52,30 @@ class RegistryDocumentationChecks(unittest.TestCase):
         with patch.object(registry, "read", return_value=json.dumps(doc).encode()):
             with self.assertRaisesRegex(ValueError, "different SDK guide"):
                 registry.verify(row)
+
+    def test_maven_mirror_preserves_the_archive_pin(self):
+        package = "io/github/titancsa/example/1.0.0/example-1.0.0"
+        pom = (b'<project xmlns="http://maven.apache.org/POM/4.0.0">'
+               b'<groupId>io.github.titancsa</groupId><artifactId>example</artifactId><version>1.0.0</version></project>')
+        jar = b"example jar fixture"
+        row = {
+            "name": "io.github.titancsa:example", "version": "1.0.0", "ecosystem": "maven",
+            "metadata_url": registry.MAVEN_CENTRAL + package + ".pom",
+            "verified_archive": {"url": registry.MAVEN_CENTRAL + package + ".jar", "sha256": sha256(jar).hexdigest()},
+        }
+        with patch.object(registry, "read", side_effect=[pom, jar]) as read:
+            registry.verify(row, maven_mirror=True)
+        self.assertEqual(read.call_args_list, [call(registry.GOOGLE_MAVEN_MIRROR + package + ext) for ext in (".pom", ".jar")])
+        with patch.object(registry, "read", side_effect=[pom, b"different fixture"]):
+            with self.assertRaisesRegex(ValueError, "differs from the reviewed package"):
+                registry.verify(row, maven_mirror=True)
+
+    def test_direct_maven_rate_limit_is_not_retried(self):
+        address = registry.MAVEN_CENTRAL + "example.pom"
+        with patch.object(registry, "urlopen", side_effect=self.failure(address, 429)) as fetch:
+            with self.assertRaises(HTTPError):
+                registry.read(address)
+        self.assertEqual(fetch.call_count, 1)
 
     def test_recovers_from_transient_github_view_error(self):
         with patch.object(registry, "read", side_effect=[self.failure(self.documentation, 503), b"# Python SDK"]) as read:

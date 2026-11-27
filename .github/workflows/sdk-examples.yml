@@ -92,7 +92,7 @@ jobs:
       - run: python3 scripts/verify_release_assets.py
         env:
           TITANCSA_CATALOGUE_TOKEN: ${{ github.token }}
-      - run: python3 scripts/verify_registry.py --documentation
+      - run: python3 scripts/verify_registry.py --documentation --maven-mirror
       - run: python3 -m pip install jsonschema==4.26.0 rfc3986-validator==0.1.1
       - run: python3 scripts/verify_integration_schema.py
       - run: python3 -m unittest discover -s scripts/tests
