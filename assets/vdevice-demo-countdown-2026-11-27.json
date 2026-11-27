@@ -19,7 +19,7 @@
   "method": {
     "same_boot_check": "Kernel-General event 12 record ID",
     "clock": "Host elapsed time and the driver's reported remaining time",
-    "fixture": "One virtual mouse with the Vdevice C++ SDK"
+    "fixture": "One vendor-defined virtual USB HID device with the Vdevice C++ SDK"
   },
   "without_driver_windows_error": 2,
   "setup_exit": 0,
