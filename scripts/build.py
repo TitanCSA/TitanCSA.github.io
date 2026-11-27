@@ -204,6 +204,8 @@ pages={
  'fr/tester-deux-claviers-windows/':('Identifier deux claviers sous Windows avec Interceptor Keyboard & Mouse — TitanCSA','Installe la démo signée et repère quel clavier envoie la touche dans le visualiseur.','guides/keyboard-mouse-first-run-fr.html'),
  'guides/titan-audio-link-first-run/':('Route Windows playback to a virtual microphone — Titan Audio Link','Download the signed Titan Audio Link demo, verify a stereo virtual audio pair on Windows 11, and find the matching commercial package.','guides/titan-audio-link-first-run.html'),
  'fr/micro-virtuel-titan-audio-link/':('Titan Audio Link · Envoyer le son vers un micro virtuel Windows','Installe la démo signée de Titan Audio Link. Teste la sortie et le micro virtuels, puis relie deux applications Windows.','guides/titan-audio-link-first-run-fr.html'),
+ 'guides/titan-audio-link-obs/':('Send Windows app audio to OBS through a virtual microphone — Titan Audio Link','Install the Titan Audio Link demo, select its recording endpoint in OBS Studio, and verify the virtual cable with the included test tone.','guides/titan-audio-link-obs.html'),
+ 'fr/audio-application-obs/':('Envoyer le son d’une application Windows dans OBS avec Titan Audio Link','Ajoute le micro virtuel Titan Audio Link à une scène OBS Studio. Vérifie le trajet du son avec le signal de la démo signée.','guides/titan-audio-link-obs-fr.html'),
  'guides/verify-windows-driver-package/':('Verify a signed Windows driver package before installation — TitanCSA','Compare the published SHA-256, verify the Microsoft-signed driver catalog and check the INF package version with PowerShell and SignTool.','guides/verify-windows-driver-package.html'),
  'fr/verifier-pilote-windows/':('Vérifier un pilote Windows signé avant de l’installer — TitanCSA','Vérifie le SHA-256 d’un ZIP, la signature du catalogue et la version du pilote avec PowerShell. Exemple avec la démo Vdevice.','guides/verify-windows-driver-package-fr.html'),
  'guides/vdevice-custom-hid-test/':('Test a custom virtual USB HID with Vdevice and hidapitester — TitanCSA','Create a vendor-defined virtual USB HID, read and return exact report bytes with hidapitester, and verify device removal on Windows.','guides/vdevice-custom-hid-test.html'),
@@ -231,6 +233,7 @@ translations=(
     {'en':'guides/vdevice-virtual-usb-mouse/','fr':'fr/souris-usb-virtuelle-vdevice/'},
     {'en':'guides/autohotkey-remap-second-keyboard/','fr':'fr/remapper-deuxieme-clavier-autohotkey/'},
     {'en':'guides/titan-audio-link-first-run/','fr':'fr/micro-virtuel-titan-audio-link/'},
+    {'en':'guides/titan-audio-link-obs/','fr':'fr/audio-application-obs/'},
     {'en':'guides/gamepad-controller-first-run/','fr':'fr/remapper-manette-windows/'},
     {'en':'projects/interceptor/','fr':'fr/essayer-interceptor/'},
     {'en':'guides/keyboard-mouse-first-run/','fr':'fr/tester-deux-claviers-windows/'},
@@ -261,6 +264,7 @@ published_dates['fr/migrer-interception-v2/']='2026-11-26'
 published_dates['fr/aide-et-verifications/']='2026-11-26'
 published_dates['fr/essayer-interceptor/']='2026-11-26'
 published_dates.update(dict.fromkeys(('guides/keyboard-mouse-first-run/','fr/tester-deux-claviers-windows/'),'2026-11-26'))
+published_dates.update(dict.fromkeys(('guides/titan-audio-link-obs/','fr/audio-application-obs/'),'2026-11-27'))
 reviewed.update(published_dates)
 reviewed.update(dict.fromkeys(('guides/vdevice-virtual-usb-mouse/',
                                'fr/souris-usb-virtuelle-vdevice/', 'guides/interception-v2-migration/'), '2026-11-25'))
@@ -468,6 +472,8 @@ reference_links.extend([
     f'- [Vérifier le pilote Gamepad & Controller avec Python]({BASE}fr/remapper-manette-windows/#python-sdk)',
     f'- [Titan Audio Link Python wheel and virtual audio inventory]({BASE}guides/titan-audio-link-first-run/#python-sdk)',
     f'- [Paquet Python Titan Audio Link et vérification de la paire audio]({BASE}fr/micro-virtuel-titan-audio-link/#python-sdk)',
+    f'- [Route Windows app audio into OBS with Titan Audio Link]({BASE}guides/titan-audio-link-obs/)',
+    f'- [Envoyer le son d’une application Windows dans OBS]({BASE}fr/audio-application-obs/)',
     f'- [Standalone Rust ZIP quickstarts]({BASE}{rust_proof_path})',
     f'- [Rust crate checks with exact package hashes]({BASE}assets/rust-sdk-first-checks-2026-11-26.json)',
     f'- [Go module checks with exact package hashes]({BASE}assets/go-sdk-first-checks-2026-11-26.json)',

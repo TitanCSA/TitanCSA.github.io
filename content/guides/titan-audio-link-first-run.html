@@ -9,6 +9,7 @@
 <li>Click <strong>Test virtual cable</strong>. The app sends a generated stereo signal into that virtual playback endpoint and checks the corresponding virtual recording endpoint.</li>
 <li>Select the pair's playback endpoint in the source app and its recording endpoint in the receiving app. Windows microphone permissions can affect access to the virtual recording endpoint. Use the installer's Uninstall option to remove the pair.</li>
 </ol>
+<p><a href="/guides/titan-audio-link-obs/">Send audio to OBS Studio</a>.</p>
 <p>The shared one-hour demo allowance starts on the first successful capture in a Windows boot. Listing endpoints leaves the allowance unstarted. The supported path is shared-mode WASAPI and the driver transports 48 kHz stereo PCM16. <a href="{{TITAN_AUDIO_LINK_DEMO_NOTES_URL}}">Read the release notes and archive SHA-256</a>.</p>
 <h2>Verify the pair from PowerShell</h2>
 <p>Use the bundled console tool from the extracted folder. With one active Titan Audio Link pair, <code>--test</code> selects its two verified endpoints. For multiple pairs, pass the playback and recording IDs from the same adapter as two quoted arguments after <code>--test</code>.</p>

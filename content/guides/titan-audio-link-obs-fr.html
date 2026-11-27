@@ -1,0 +1,16 @@
+<h1>Envoyer le son d’une application Windows dans OBS</h1>
+<p class="article-lead">Avec Titan Audio Link, OBS Studio reçoit le son d’une application Windows sur un micro virtuel.</p>
+<div class="actions"><a class="button primary" href="{{TITAN_AUDIO_LINK_DEMO_URL}}">Télécharger le ZIP signé de la démo</a><a class="button" href="/guides/titan-audio-link-obs/" lang="en">Read in English</a></div>
+<h2 id="first-steps">Ajouter la source dans OBS</h2>
+<ol>
+  <li>Décompresse le ZIP. Lance <code>TitanAudioLinkSetup.exe</code> dans <strong>Installers</strong> et redémarre Windows si demandé.</li>
+  <li>Dans ta scène OBS, clique sur <strong>+</strong> sous <strong>Sources</strong>, puis sur <strong>Capture audio (entrée)</strong>. Dans <strong>Périphérique</strong>, choisis le micro Titan Audio Link.</li>
+  <li>Lance <code>AudioLinkToneExample.exe</code> depuis le ZIP de la démo. Pendant les deux secondes du signal, regarde si la jauge de cette source bouge dans OBS. Choisis ensuite les haut-parleurs Titan Audio Link de la même paire comme sortie dans ton application. Sous Windows 11, ce réglage est aussi accessible pour une application ouverte dans <strong>Paramètres → Système → Son → Mélangeur de volume</strong>.</li>
+</ol>
+<details class="more-info">
+  <summary>Si la jauge reste fixe ou si le son passe deux fois</summary>
+  <p>Vérifie que l’application utilise les haut-parleurs Titan et qu’OBS utilise le micro de la même paire. Si tu as aussi ajouté ce micro dans <strong>Paramètres → Audio</strong>, désactive ce doublon dans OBS. Après le test, remets la sortie d’origine dans ton application.</p>
+  <p><a href="https://obsproject.com/kb/audio-sources" lang="en">Documentation OBS sur les sources audio</a>.</p>
+</details>
+<p>La démo dure une heure par démarrage de Windows, à partir de la première capture réussie.</p>
+<div class="related"><a href="/fr/micro-virtuel-titan-audio-link/">Premier essai et SDK Titan Audio Link</a><a href="/fr/pilotes-entree-windows/#contact-release">Version complète · Discord titancsa</a></div>

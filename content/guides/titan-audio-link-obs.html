@@ -1,0 +1,16 @@
+<h1>Send Windows app audio to OBS with Titan Audio Link</h1>
+<p class="article-lead">Use a virtual microphone in OBS Studio to capture the sound sent by another Windows app.</p>
+<div class="actions"><a class="button primary" href="{{TITAN_AUDIO_LINK_DEMO_URL}}">Download the signed demo ZIP</a><a class="button" href="/fr/audio-application-obs/" lang="fr">Lire en français</a></div>
+<h2 id="first-steps">Set up the OBS source</h2>
+<ol>
+  <li>Extract the demo ZIP. Run <code>TitanAudioLinkSetup.exe</code> from <strong>Installers</strong> and restart Windows if requested.</li>
+  <li>In your OBS scene, click <strong>+</strong> under <strong>Sources</strong> and choose <strong>Audio Input Capture</strong>. In <strong>Device</strong>, select the Titan Audio Link microphone.</li>
+  <li>Run <code>AudioLinkToneExample.exe</code> from the demo ZIP. While it plays its two-second tone, watch the level meter for that source in OBS. When the meter reacts, choose the matching Titan Audio Link speakers as the output in the app you want to capture. In Windows 11, you can also choose it for a running app under <strong>Settings → System → Sound → Volume mixer</strong>.</li>
+</ol>
+<details class="more-info">
+  <summary>If the meter stays still or the audio doubles</summary>
+  <p>Check that the sending app uses the Titan speakers and the OBS source uses the Titan microphone from the same pair. If you also added that microphone under <strong>Settings → Audio</strong>, disable the duplicate in OBS. When finished, return the sending app to its original output.</p>
+  <p><a href="https://obsproject.com/kb/audio-sources">OBS documentation about audio input sources</a>.</p>
+</details>
+<p>The demo allows one hour per Windows boot starting with the first successful capture.</p>
+<div class="related"><a href="/guides/titan-audio-link-first-run/">Titan Audio Link first run and SDK</a><a href="/about/evidence/#release-contact">Full version · Discord titancsa</a></div>
