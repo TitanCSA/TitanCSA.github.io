@@ -142,6 +142,30 @@ class ReleaseAssetChecks(unittest.TestCase):
             self.assertEqual(path.read_bytes(), saved)
             self.assertEqual(list(Path(scratch).iterdir()), [path])
 
+    def test_apply_audits_release_notes_and_downloads_before_writing(self):
+        release = self.public_release(self.tag, self.name)
+        argv = ["verify_release_assets.py", "--candidate", "example", self.tag, self.version, "--apply"]
+        with TemporaryDirectory() as scratch:
+            root = Path(scratch)
+            catalogue = root / "catalogue.json"
+            catalogue.write_text(json.dumps({"editions": [self.edition]}), encoding="utf-8")
+            (root / "sdk-checks.json").write_text(json.dumps({"example": {"asset_role": self.role}}), encoding="utf-8")
+            with (patch.object(checker, "ROOT", root), patch.object(checker, "CATALOGUE", catalogue),
+                  patch.object(checker, "fetch_release", return_value=release), patch.object(sys, "argv", argv),
+                  patch.object(checker, "verify_download") as download, patch.object(checker, "update_pin") as write):
+                with self.assertRaisesRegex(ValueError, "missing the Discord contact"):
+                    checker.main()
+                download.assert_not_called()
+                write.assert_not_called()
+
+                release["body"] = "Contact TitanCSA on Discord.\n" + "\n".join(
+                    f"[Guide]({url})" for url in self.edition["first_run_guides"].values())
+                download.side_effect = ValueError("Archive contains a checkout link")
+                with self.assertRaisesRegex(ValueError, "Archive contains a checkout link"):
+                    checker.main()
+                download.assert_called_once_with(self.edition["demo_assets"][self.role], self.hash, check_contact=True)
+                write.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

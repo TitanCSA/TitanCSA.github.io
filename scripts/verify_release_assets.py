@@ -126,7 +126,7 @@ def check_edition(edition, sdk_role, verify_bytes=False, *, check_contact=False)
     return len(assets)
 
 
-def candidate(edition, tag, version, sdk_role, overrides, verify_bytes=False):
+def candidate(edition, tag, version, sdk_role, overrides, verify_bytes=False, *, check_contact=False):
     if not re.fullmatch(r"\d+\.\d+\.\d+\.\d+", version):
         raise ValueError("Supply the four-part demo driver version")
     filenames = {role: name.replace(edition["demo"], version) for role, name in edition["demo_files"].items()}
@@ -135,7 +135,7 @@ def candidate(edition, tag, version, sdk_role, overrides, verify_bytes=False):
         if not sep or role not in filenames or not re.fullmatch(r"[A-Za-z0-9._-]+", filename):
             raise ValueError("Use --asset once per replacement with an existing role and a filename")
         filenames[role] = filename
-    assets = official_assets(edition, tag, filenames)
+    assets = official_assets(edition, tag, filenames, check_contact=check_contact)
     if verify_bytes:
         for url, digest in assets.values():
             verify_download(url, digest, check_contact=True)
@@ -180,7 +180,8 @@ def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--candidate", nargs=3, metavar=("EDITION", "TAG", "VERSION"))
     parser.add_argument("--asset", action="append", default=[], metavar="ROLE=FILENAME")
-    parser.add_argument("--apply", action="store_true", help="Write the checked candidate revision to releases.json")
+    parser.add_argument("--apply", action="store_true",
+                        help="Check the candidate release notes and downloads, then write to releases.json")
     parser.add_argument("--verify-downloads", action="store_true", help="Download each public file and hash its bytes")
     parser.add_argument("--check-public-contact", action="store_true",
                         help="Audit demo notes and any downloaded ZIP documentation for public purchase links")
@@ -198,7 +199,8 @@ def main():
         edition = next((row for row in editions if row["slug"] == name), None)
         if edition is None:
             parser.error(f"Unknown edition {name}")
-        reviewed = candidate(edition, tag, version, recipes[name]["asset_role"], args.asset, args.verify_downloads)
+        reviewed = candidate(edition, tag, version, recipes[name]["asset_role"], args.asset,
+                             args.verify_downloads or args.apply, check_contact=args.apply)
         if args.apply:
             update_pin(SOURCE, edition, reviewed)
         print(json.dumps(reviewed, ensure_ascii=False, indent=2))

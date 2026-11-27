@@ -54,7 +54,7 @@ The GitHub tag identifies the exact publication even when a revision retains the
 
 Use --asset role=filename when the new release changes a filename's pattern. The pipeline checks the URL and pinned SHA-256 of each asset against GitHub. Its Windows job builds and runs every listed architecture.
 
-Add `--apply` to save the verified candidate to `releases.json`. The command leaves the other editions and commercial metadata in place. Rebuild and run the validation commands below before submitting the change.
+Add `--apply` to save the candidate to `releases.json`. It downloads and hashes each file, checks the documentation in its ZIPs for public checkout links and verifies the Discord contact and both guide links in the release notes. Rebuild and run the validation commands below before submitting the change.
 
 Add `--verify-downloads` to fetch the public files and hash their actual bytes. Without a candidate, this checks the entire driver and application catalogue.
 
