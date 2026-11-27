@@ -42,7 +42,7 @@ REGISTRIES = {
     "powershell": {
         "label": "PowerShell",
         "runtime": "PowerShell 7.4+",
-        "command": "Install-Module {name} -RequiredVersion {version} -Scope CurrentUser",
+        "command": "Install-Module {name} -Repository PSGallery -RequiredVersion {version} -Scope CurrentUser",
         "page": "https://www.powershellgallery.com/packages/{name}/{version}",
         "metadata": "https://www.powershellgallery.com/api/v2/Packages(Id='{name}',Version='{version}')",
     },
