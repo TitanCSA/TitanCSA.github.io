@@ -107,6 +107,8 @@ def registry_catalogue(manifest, base):
         for row in manifest["products"]
     }
     browser = next(row for row in manifest["applications"] if row["id"] == "browser")
+    browser_proof_file = "assets/browser-python-first-run-2026-11-27.json"
+    browser_proof = json.loads((ROOT / browser_proof_file).read_text(encoding="utf-8"))
     targets["browser"] = {"name": browser["name"], "type": "windows_app",
                           "url": base + "guides/first-run/#browser",
                           "release_url": browser["source"] + "/releases/tag/" + browser["tag"]}
@@ -204,6 +206,11 @@ def registry_catalogue(manifest, base):
                 source_sha256=browser["test"]["source_sha256"],
                 command_from_app_folder="python browser-sdk-first-run.py --installed-client",
             )
+            if (browser_proof["wheel"]["version"] == version
+                    and browser_proof["wheel"]["sha256"] == row["verified_archive"]["sha256"]
+                    and browser_proof["application"]["archive_sha256"] == browser["sha256"]
+                    and browser_proof["source_sha256"] == row["first_check"]["source_sha256"]):
+                row["first_check"]["application_test_evidence_url"] = base + browser_proof_file
     return rows
 
 

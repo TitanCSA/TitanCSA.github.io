@@ -38,6 +38,12 @@ def read(url):
         sleep(1 + attempt)
 
 
+def pypi_file(document, archive):
+    return next((file for file in document["urls"]
+                 if not file["yanked"] and file["filename"] == archive["filename"]
+                 and file["digests"]["sha256"] == archive["sha256"]), None)
+
+
 def verify(row):
     name, version = row["name"], row["version"]
     registry = row["ecosystem"]
@@ -59,10 +65,7 @@ def verify(row):
             available = document["info"]["name"].casefold() == name.casefold()
             available = available and document["info"]["version"] == version and bool(release_files)
             if archive:
-                available = available and any(
-                    file["filename"] == archive["filename"] and file["digests"]["sha256"] == archive["sha256"]
-                    for file in release_files
-                )
+                available = available and pypi_file(document, archive) is not None
         elif registry == "npm":
             available = document["name"] == name and document["version"] == version and bool(document["dist"]["integrity"])
             if document.get("homepage") != row.get("documentation_url"):
@@ -119,6 +122,50 @@ def verify_documentation(url):
         raise ValueError(f"SDK documentation unavailable at {url}: {error}") from error
     except (TimeoutError, URLError) as error:
         raise ValueError(f"SDK documentation unavailable at {url}: {error}") from error
+
+
+def check_python_examples(rows):
+    if sys.platform != "win32" or sys.maxsize <= 2**32:
+        raise RuntimeError("The published Python SDK examples require Windows x64.")
+    environment = os.environ.copy()
+    environment.pop("INTERCEPTOR_NATIVE_PATH", None)
+    with TemporaryDirectory(prefix="titancsa-python-sdk-") as directory:
+        project = Path(directory)
+        venv = project / "venv"
+        subprocess.run([sys.executable, "-I", "-m", "venv", str(venv)], env=environment, check=True, timeout=90)
+        python = [str(venv / "Scripts" / "python.exe"), "-I"]
+        wheels = []
+        for row in rows:
+            archive = row["verified_archive"]
+            document = json.loads(read(row["metadata_url"]))
+            file = pypi_file(document, archive)
+            if not file or urlsplit(file["url"]).netloc != "files.pythonhosted.org":
+                raise ValueError(f"Could not locate the pinned PyPI wheel for {row['name']}.")
+            payload = read(file["url"])
+            if sha256(payload).hexdigest() != archive["sha256"]:
+                raise ValueError(f"Published wheel for {row['name']} differs from its SHA-256.")
+            wheel = project / archive["filename"]
+            wheel.write_bytes(payload)
+            wheels.append(str(wheel))
+        subprocess.run([*python, "-m", "pip", "--isolated", "--disable-pip-version-check", "install",
+                        "--no-index", "--no-deps", *wheels], cwd=project, env=environment, check=True, timeout=45)
+        for row in rows:
+            name, version = row["name"], row["version"]
+            code = f"from importlib.metadata import version; print(version({name!r}))"
+            if name == "browser-control-sdk":
+                code = "from browser_control import Browser; assert callable(Browser.launch); " + code
+            installed = subprocess.check_output([*python, "-c", code], cwd=project, env=environment, text=True, timeout=15)
+            if installed.strip() != version:
+                raise ValueError(f"The installed Python package did not match {name} {version}.")
+            if name == "interceptor-multilang":
+                sample = ROOT / "assets" / "python-interceptor-status.py"
+                if sha256(sample.read_bytes()).hexdigest() != row["first_check"]["source_sha256"]:
+                    raise ValueError("The Python status sample differs from the manifest.")
+                result = subprocess.run([*python, str(sample), "--status"], cwd=project, env=environment,
+                                        capture_output=True, text=True, timeout=15)
+                if result.returncode != 2 or "Windows error 2" not in result.stderr:
+                    raise RuntimeError("The Python status check did not report the expected missing driver.")
+            print(f"{name} {version} passed its clean-Windows Python check.")
 
 
 def check_node_examples(rows):
@@ -255,6 +302,8 @@ def main():
     parser.add_argument("--documentation", action="store_true",
                         help="Check the documentation links as well as registry packages")
     runtime = parser.add_mutually_exclusive_group()
+    runtime.add_argument("--check-python-on-clean-windows", action="store_true",
+                        help="Install and check the pinned PyPI wheels in an isolated Windows Python environment")
     runtime.add_argument("--check-node-on-clean-windows", action="store_true",
                         help="Install the pinned npm archives and run their documented status sample on Windows x64 without the drivers")
     runtime.add_argument("--check-go-on-clean-windows", action="store_true",
@@ -263,6 +312,9 @@ def main():
                          help="Run the published first checks with the pinned Rust crates on Windows x64 without the drivers")
     args = parser.parse_args()
     rows = json.loads((ROOT / "dist/integration.json").read_text(encoding="utf-8"))["sdk_registry"]
+    if args.check_python_on_clean_windows:
+        check_python_examples([row for row in rows if row["ecosystem"] == "pypi"])
+        return
     if args.check_node_on_clean_windows:
         check_node_examples([row for row in rows if row["ecosystem"] == "npm"])
         return

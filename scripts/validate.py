@@ -433,6 +433,8 @@ for row in rows:
         assert observed['edition']==row['edition'] and observed['demo_timer_started'] is False
         if 'verified_archive' in row:
             assert observed['package_sha256']==row['verified_archive']['sha256']
+        if 'test_source_sha256' in observed:
+            assert observed['test_source_sha256']==row['first_check']['source_sha256']
         if row['ecosystem']=='packagist':
             assert observed['package_source_reference']==row['source_reference']
             assert re.fullmatch(r'[a-f0-9]{64}', observed['inspected_source_archive_sha256'])
@@ -442,6 +444,17 @@ for row in rows:
             assert observed['driver_sha256']==installation['installed_kernel_sha256']
             if 'setup_sha256' in observed:
                 assert observed['setup_sha256']==installation['installer_sha256']
+    if browser_evidence := row['first_check'].get('application_test_evidence_url'):
+        observed=json.loads((OUT/browser_evidence.removeprefix(BASE)).read_text(encoding='utf8'))
+        browser=next(app for app in manifest['applications'] if app['id']=='browser')
+        assert observed['edition']==row['edition']=='browser'
+        assert observed['application']['archive_sha256']==browser['sha256']
+        assert observed['application']['executable_sha256']==browser['executable_sha256']
+        assert observed['source_sha256']==row['first_check']['source_sha256']
+        assert observed['wheel']=={'name':row['name'], 'version':row['version'],
+                                   'sha256':row['verified_archive']['sha256']}
+        assert {entry['client'] for entry in observed['checks']} == {'bundled', 'pypi'}
+        assert all(entry['result']==browser['test']['expected'] for entry in observed['checks'])
     if archive := row.get('verified_archive'):
         assert re.fullmatch(r'[a-f0-9]{64}', archive['sha256'])
         if row['ecosystem'].startswith('nuget-'):

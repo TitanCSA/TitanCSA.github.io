@@ -1,8 +1,11 @@
 """Try the Browser Control SDK on a page served only on this computer."""
 
 from argparse import ArgumentParser
+import csv
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import re
+import subprocess
 from tempfile import TemporaryDirectory
 from threading import Thread
 import os
@@ -15,7 +18,9 @@ PAGE = b"""<!doctype html><meta charset="utf-8">
 <script>
 const nameField = document.getElementById('name');
 document.getElementById('save').onclick = () => {
-  document.getElementById('result').textContent = 'Saved: ' + nameField.value;
+  const result = document.getElementById('result');
+  result.textContent = 'Saved: ' + nameField.value;
+  result.dataset.saved = 'true';
 };
 </script>"""
 
@@ -30,6 +35,21 @@ class PageHandler(BaseHTTPRequestHandler):
 
     def log_message(self, *_):
         pass
+
+
+def prepare_private_profile(folder):
+    system = Path(os.environ["SystemRoot"]) / "System32"
+    identity = subprocess.check_output([str(system / "whoami.exe"), "/user", "/fo", "csv", "/nh"],
+                                       encoding="oem", errors="replace")
+    account, = csv.reader(identity.splitlines())
+    sid = account[-1]
+    if not re.fullmatch(r"S-1-(?:[0-9]+-)*[0-9]+", sid):
+        raise RuntimeError("Could not read the current Windows account SID.")
+    # Windows Python 3.13+ can assign Owner Rights to a new temporary folder.
+    # Give the same access directly to the current user on this folder only.
+    subprocess.run([str(system / "icacls.exe"), str(folder), "/grant:r", f"*{sid}:(OI)(CI)F",
+                    "*S-1-5-18:(OI)(CI)F", "/inheritance:r", "/remove:g", "*S-1-3-4"],
+                   check=True, capture_output=True, timeout=15)
 
 
 def main():
@@ -52,6 +72,7 @@ def main():
     private_root = Path(os.environ["LOCALAPPDATA"])
     with TemporaryDirectory(prefix="TitanCSA-BrowserCheck-", dir=private_root, ignore_cleanup_errors=True) as scratch:
         profile = Path(scratch)
+        prepare_private_profile(profile)
         with ThreadingHTTPServer(("127.0.0.1", 0), PageHandler) as page:
             server_thread = Thread(target=page.serve_forever, daemon=True)
             server_thread.start()
@@ -60,10 +81,12 @@ def main():
                                          endpoint=profile / "endpoint.json")
                 try:
                     tab = browser.new_tab(f"http://127.0.0.1:{page.server_port}/")
+                    tab.wait(selector="#name", state="visible", timeout_ms=5000)
                     tab.fill("Ada", selector="#name")
                     tab.click(selector="#save")
+                    tab.wait(selector="#result[data-saved]", state="visible", timeout_ms=5000)
                     result = "Saved: Ada"
-                    if result not in tab.snapshot()["text"]:
+                    if tab.evaluate("document.getElementById('result').textContent") != result:
                         raise RuntimeError("The page did not show the expected result.")
                     print(result)
                 finally:

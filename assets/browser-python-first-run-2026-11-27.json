@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "checked_utc": "2026-11-27T01:08:12Z",
+  "edition": "browser",
+  "scope": "A temporary Browser Control profile loaded a local loopback page. The SDK typed a value, clicked Save and read the result.",
+  "windows": {"architecture": "x64", "build": 19045},
+  "application": {
+    "tag": "v0.2.0",
+    "archive_sha256": "332f285e5d1dd90673b61e7f84fa96b8982ce09a5a7cdb8dbed157f5901a48c5",
+    "executable_sha256": "f4bc88295269964459ae9e6665d96c3cf48c1cad886945cb651e095de86c9f77"
+  },
+  "wheel": {
+    "name": "browser-control-sdk",
+    "version": "0.2.1",
+    "sha256": "1167ad3f817ed164b32ef490ab196e4b6c5c06b28e4cb8f0a685d804d2056fca"
+  },
+  "source_sha256": "4dfb504a7a5f3486b13a1642f318d264883f1177736089f83f4d3ef52de9b5f2",
+  "checks": [
+    {"python": "3.10.11", "client": "bundled", "runs": 3, "result": "Saved: Ada"},
+    {"python": "3.10.11", "client": "pypi", "runs": 3, "result": "Saved: Ada"},
+    {"python": "3.14.9", "client": "bundled", "runs": 3, "result": "Saved: Ada"},
+    {"python": "3.14.9", "client": "pypi", "runs": 3, "result": "Saved: Ada"}
+  ]
+}

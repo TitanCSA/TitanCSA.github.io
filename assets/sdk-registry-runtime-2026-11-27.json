@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "checked": "2026-11-27",
+  "checked_utc": "2026-11-27T01:11:44.327691+00:00",
+  "environment": {
+    "windows_build": 26100,
+    "architecture": "x64",
+    "secure_boot": true,
+    "account": "administrator"
+  },
+  "scope": "Read-only status using the published PyPI wheel in an offline Windows 11 VM, before installing the exact signed demo, after setup, and after removal.",
+  "checks": [
+    {
+      "edition": "interceptor",
+      "driver_tag": "v1.4.23.0-demo-r3",
+      "driver_version": "1.4.23.0",
+      "driver_sha256": "07acd1cd68780e59411a4f1cb8145519644503d007a50fdb63ab2373026749f5",
+      "setup_sha256": "bcb953083ba71e64d0c65524f068395601165953da2501fbd637b643fcf822c0",
+      "demo_timer_started": false,
+      "ecosystem": "pypi",
+      "name": "interceptor-multilang",
+      "version": "1.0.2",
+      "runtime": "Python 3.14.9 x64",
+      "package_sha256": "74c04862b8413a70f032b7393a5e0d181451fa526a80f2208adc070e079adf24",
+      "test_source_sha256": "3b2ed2e0bd013046b954b055dda277abff3248a2e7c4fb834659ed428f8f04ec",
+      "result": {
+        "installed": true,
+        "active": false,
+        "trial_state": 0
+      },
+      "without_driver": {
+        "exit_code": 2,
+        "windows_error": 2
+      },
+      "after_removal": {
+        "exit_code": 2,
+        "windows_error": 2,
+        "driver_service_absent": true
+      }
+    }
+  ]
+}

@@ -281,6 +281,7 @@
             "source_sha256": { "$ref": "#/$defs/sha256" },
             "command_from_app_folder": { "type": "string", "minLength": 1 },
             "without_driver_evidence_url": { "$ref": "#/$defs/url" },
+            "application_test_evidence_url": { "$ref": "#/$defs/url" },
             "after_setup_command_from_app_folder": { "type": "string", "minLength": 1 },
             "create_example_project_command": { "type": "string", "minLength": 1 },
             "save_as": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" }

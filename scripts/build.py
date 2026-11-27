@@ -258,6 +258,7 @@ reviewed.update(dict.fromkeys((
 ), '2026-11-26'))
 reviewed.update(dict.fromkeys((
     'about/evidence/', 'fr/aide-et-verifications/', 'guides/release-activation-help/', 'fr/activation-release/',
+    'guides/first-run/', 'fr/essayer-sans-pilote/', 'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
 ), '2026-11-27'))
 
 
@@ -433,6 +434,8 @@ reference_links.extend([
     f'- [Four Company installation and removal tests on Windows 11]({BASE}assets/company-driver-package-checks-2026-11-26.json)',
     f'- [Windows mouse driver switching test with two synthetic USB HID devices]({BASE}assets/interceptor-mouse-driver-switch-2026-11-26.json)',
     f'- [Windows SDK capture test with two virtual USB keyboards]({BASE}assets/interceptor-keyboard-mouse-two-keyboard-check-2026-11-26.json)',
+    f'- [Browser Control first checks with Python 3.10 and 3.14]({BASE}assets/browser-python-first-run-2026-11-27.json)',
+    f'- [Interceptor PyPI status check before setup, after setup and after removal]({BASE}assets/sdk-registry-runtime-2026-11-27.json)',
     f'- [Standalone Rust ZIP quickstarts]({BASE}{rust_proof_path})',
     f'- [Rust crate checks with exact package hashes]({BASE}assets/rust-sdk-first-checks-2026-11-26.json)',
     f'- [Go module checks with exact package hashes]({BASE}assets/go-sdk-first-checks-2026-11-26.json)',
