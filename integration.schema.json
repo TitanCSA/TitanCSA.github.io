@@ -105,6 +105,27 @@
         "source": { "$ref": "#/$defs/url" },
         "overview_url": { "$ref": "#/$defs/url" },
         "first_run_guides": { "$ref": "#/$defs/guideUrls" },
+        "python_wheel": {
+          "type": "object",
+          "required": ["name", "version", "filename", "url", "sha256", "python_requires", "architecture", "install_command", "source_url", "source_sha256", "check_command", "tested_demo_version", "tested_demo_tag", "guide_urls", "evidence_url"],
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "version": { "type": "string", "minLength": 1 },
+            "filename": { "type": "string", "pattern": "\\.whl$" },
+            "url": { "$ref": "#/$defs/url" },
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "python_requires": { "type": "string", "minLength": 1 },
+            "architecture": { "const": "x64" },
+            "install_command": { "type": "string", "minLength": 1 },
+            "source_url": { "$ref": "#/$defs/url" },
+            "source_sha256": { "$ref": "#/$defs/sha256" },
+            "check_command": { "type": "string", "minLength": 1 },
+            "tested_demo_version": { "type": "string", "minLength": 1 },
+            "tested_demo_tag": { "type": "string", "minLength": 1 },
+            "guide_urls": { "$ref": "#/$defs/guideUrls" },
+            "evidence_url": { "$ref": "#/$defs/url" }
+          }
+        },
         "commercial_install_verification": {
           "type": "object",
           "required": ["url", "package_version", "driver_version"],

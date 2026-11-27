@@ -311,7 +311,8 @@ def main():
     runtime.add_argument("--check-rust-on-clean-windows", action="store_true",
                          help="Run the published first checks with the pinned Rust crates on Windows x64 without the drivers")
     args = parser.parse_args()
-    rows = json.loads((ROOT / "dist/integration.json").read_text(encoding="utf-8"))["sdk_registry"]
+    manifest = json.loads((ROOT / "dist/integration.json").read_text(encoding="utf-8"))
+    rows = manifest["sdk_registry"]
     if args.check_python_on_clean_windows:
         check_python_examples([row for row in rows if row["ecosystem"] == "pypi"])
         return
@@ -333,6 +334,13 @@ def main():
             for _ in pool.map(verify_documentation, links):
                 pass
             print(f"Verified {len(links)} distinct SDK documentation links.")
+            for product in manifest["products"]:
+                if wheel := product.get("python_wheel"):
+                    parsed = urlsplit(wheel["url"])
+                    if ((parsed.scheme, parsed.netloc) != ("https", "raw.githubusercontent.com")
+                            or sha256(read(wheel["url"])).hexdigest() != wheel["sha256"]):
+                        raise ValueError(f"Archived wheel for {product['name']} differs from the published SHA-256.")
+                    print(f"Verified the archived Python wheel for {product['name']}.")
 
 
 if __name__ == "__main__":

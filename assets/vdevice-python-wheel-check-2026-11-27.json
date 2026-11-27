@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "edition": "vdevice",
+  "checked_utc": "2026-11-27T01:18:06.821137+00:00",
+  "scope": "The Python wheel reads the demo driver status. The test creates no virtual device and does not start the trial.",
+  "windows": {
+    "architecture": "x64",
+    "build": 26100,
+    "secure_boot": true
+  },
+  "runtimes": {
+    "clean_install_from_url": "Python 3.10.11 x64",
+    "demo_lifecycle": "Python 3.14.9 x64"
+  },
+  "wheel": {
+    "name": "vdevice",
+    "version": "1.0.0",
+    "filename": "vdevice-1.0.0-py3-none-win_amd64.whl",
+    "url": "https://raw.githubusercontent.com/TitanCSA/sdk-packages/f6abf965e5a3e229c1b450322212aa07ec5a4cfc/release-assets/Vdevice/language-sdks-v1.0.0/vdevice-1.0.0-py3-none-win_amd64.whl",
+    "sha256": "1ce71e9a7e472b0e22a837c2e6762501e7fe17775febdd6a88564dd0b7b41f75"
+  },
+  "driver_demo": {
+    "tag": "v1.0.6.1-demo",
+    "version": "1.0.6.1",
+    "console_installer_sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848",
+    "kernel_sha256": "5b8669478581b463b5218c47a274c71107309ec037b2a26ae79c34273f04cee4"
+  },
+  "source_sha256": "f6c121402201073c4fcb9ab004dc39c2c664298ef7e93e7044c38e33a083fb48",
+  "before_setup": {
+    "exit_code": 2,
+    "windows_error": 2
+  },
+  "after_setup": {
+    "exit_code": 0,
+    "wheel_version": "1.0.0",
+    "driver_abi": 1,
+    "virtual_devices": 0,
+    "trial_started": false
+  },
+  "after_removal": {
+    "exit_code": 2,
+    "windows_error": 2,
+    "demo_service_absent": true
+  }
+}

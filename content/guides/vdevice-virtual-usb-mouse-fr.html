@@ -14,6 +14,16 @@
 <h2>Reprendre le même profil en C++</h2>
 <p>L’exemple configure le descripteur USB HID avec <code>Device_Config</code>, crée le périphérique avec <code>Create_Device</code>, puis envoie un rapport de sept octets avec <code>Send_Input</code>. Le rapport contient cinq bits de boutons, les déplacements relatifs X/Y signés et deux valeurs de molette.</p>
 <p><a href="https://github.com/TitanCSA/Vdevice/blob/{{VDEVICE_DEMO_TAG}}/Examples/UI/Mouse.cpp">Lire le code de la souris pour la démo {{VDEVICE_DEMO_VERSION}}</a> · <a href="/fr/verifier-pilote-windows/">Vérifier le ZIP et le catalogue signé</a></p>
+<details class="more-info">
+  <summary>Vérifier le pilote de démo avec Python</summary>
+  <div id="python-sdk">
+    <p>Utilise Python 3.10 ou plus récent en 64 bits sous Windows. Télécharge le <a href="{{VDEVICE_PYTHON_WHEEL_URL}}">paquet Python Vdevice</a> et le <a href="/assets/python-vdevice-status.py" download>script de vérification</a> dans le même dossier. Ouvre PowerShell dans ce dossier.</p>
+    <pre><code>python -m pip install .\{{VDEVICE_PYTHON_WHEEL_FILE}}
+python .\python-vdevice-status.py</code></pre>
+    <p>Avec la démo {{VDEVICE_PYTHON_TESTED_DEMO}} installée, le script affiche la version du paquet Python, l’ABI de la réponse d’état du pilote et l’état du compteur. Juste après l’installation, <code>"trial_started": false</code> indique que le compteur est encore arrêté. L’erreur Windows 2 indique que le script ne trouve pas l’interface du pilote de démo.</p>
+    <p><a href="/assets/vdevice-python-wheel-check-2026-11-27.json">Résultats des tests et SHA-256 du paquet</a></p>
+  </div>
+</details>
 <h2>Ce qui a été vérifié</h2>
 <p>La campagne Windows 11 Hyper-V avec Secure Boot a confirmé que la pile USB de Windows consommait les rapports de la souris dans les essais des cinq profils. Le déplacement du pointeur et le comportement de ton application restent à vérifier avec les étapes ci-dessus. <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Voir la validation publiée avec la démo</a>.</p>
 <p>Sous Windows 11 avec Secure Boot, le panneau officiel de la démo 1.0.6.1 a affiché <strong>READY</strong> puis <strong>State sent</strong> pour <code>x=32</code> et <code>y=0</code>. Windows a reconnu la souris HID, puis l’a retirée après <strong>Disconnect</strong>. Le déplacement du pointeur reste le contrôle manuel de l’étape 3. <a href="/assets/vdevice-mouse-panel-2026-11-25.json">Voir les résultats du panneau de la souris</a></p>

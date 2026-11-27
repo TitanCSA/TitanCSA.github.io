@@ -475,6 +475,24 @@ assert {row['id'] for row in manifest['products']} == set(editions)
 for row in manifest['products']:
     edition = editions[row['id']]
     demo, check = row['demo'], row['sdk_check']
+    if wheel := row.get('python_wheel'):
+        proof = json.loads((OUT/wheel['evidence_url'].removeprefix(BASE)).read_text(encoding='utf8'))
+        assert proof['edition'] == row['id'] == 'vdevice'
+        assert all(wheel[key] == value for key, value in proof['wheel'].items())
+        assert wheel['url'].startswith('https://raw.githubusercontent.com/TitanCSA/sdk-packages/')
+        assert wheel['install_command'] == f'python -m pip install "{wheel["url"]}#sha256={wheel["sha256"]}"'
+        assert wheel['tested_demo_version'] == proof['driver_demo']['version']
+        assert wheel['tested_demo_tag'] == proof['driver_demo']['tag']
+        assert wheel['source_sha256'] == proof['source_sha256']
+        assert sha256((OUT/wheel['source_url'].removeprefix(BASE)).read_bytes()).hexdigest() == wheel['source_sha256']
+        assert proof['before_setup']['windows_error'] == proof['after_removal']['windows_error'] == 2
+        assert proof['after_setup']['trial_started'] is False and proof['after_setup']['virtual_devices'] == 0
+        for language, guide in wheel['guide_urls'].items():
+            address, fragment = guide.split('#', 1)
+            assert address == row['first_run_guides'][language]
+            page = by_canonical[address]
+            assert fragment in page.ids and wheel['url'] in page.links
+            assert '/' + wheel['source_url'].removeprefix(BASE) in page.links
     setup_command = check['build_verification'].get('command_after_setup')
     if check['expected_after_setup'] != check['expected_without_driver']:
         assert setup_command == f"python scripts/test_first_sdk.py {row['id']} --expect-installed"

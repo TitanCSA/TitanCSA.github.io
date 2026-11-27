@@ -14,6 +14,16 @@
 <h2>Use the same profile from C++</h2>
 <p>The mouse example builds a USB HID descriptor in <code>Device_Config</code>, calls <code>Create_Device</code> and sends reports with <code>Send_Input</code>. Its seven-byte report carries five button bits, signed relative X/Y motion and two wheel values. Read the C++ example at the version used for this guide.</p>
 <p><a href="https://github.com/TitanCSA/Vdevice/blob/{{VDEVICE_DEMO_TAG}}/Examples/UI/Mouse.cpp">Mouse example source at {{VDEVICE_DEMO_VERSION}}</a> · <a href="{{VDEVICE_CHECKSUMS_URL}}">SHA-256 checksums</a></p>
+<details class="more-info">
+  <summary>Check the demo driver from Python</summary>
+  <div id="python-sdk">
+    <p>Use 64-bit Python 3.10 or later on Windows. Put the <a href="{{VDEVICE_PYTHON_WHEEL_URL}}">Vdevice Python wheel</a> and the <a href="/assets/python-vdevice-status.py" download>status script</a> in the same folder. Open PowerShell in that folder.</p>
+    <pre><code>python -m pip install .\{{VDEVICE_PYTHON_WHEEL_FILE}}
+python .\python-vdevice-status.py</code></pre>
+    <p>With demo {{VDEVICE_PYTHON_TESTED_DEMO}} installed, the script shows the package version, ABI version of the driver's status response and demo timer status. On a fresh install, it reports <code>"trial_started": false</code>. Windows error 2 means the script could not open the demo driver.</p>
+    <p><a href="/assets/vdevice-python-wheel-check-2026-11-27.json">Test results and exact wheel SHA-256</a></p>
+  </div>
+</details>
 <h2>Validation</h2>
 <p>For the signed 1.0.6.0 demo, the Windows 11 Hyper-V lab with Secure Boot enabled confirmed that the Windows USB stack consumed mouse reports during the five-device campaign. Cursor movement is the manual check in this guide. The lab did not assert desktop cursor position or application-specific behavior. <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Read the signed release validation</a>.</p>
 <p>In the Windows 11 Secure Boot run of demo 1.0.6.1, the published <code>VdeviceMouseUI.exe</code> reached <strong>READY</strong> and confirmed <strong>State sent</strong> for <code>x=32</code> and <code>y=0</code>. Windows independently detected the new HID mouse and removed it after <strong>Disconnect</strong>. The pointer movement is the manual check in step 3. <a href="/assets/vdevice-mouse-panel-2026-11-25.json">Read the mouse panel test results</a></p>
