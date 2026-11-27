@@ -10,6 +10,7 @@ on:
       - 'assets/interceptor-status.cpp'
       - 'assets/vdevice-status.cpp'
       - 'assets/audio-link-inventory.cpp'
+      - 'assets/audio-link-pair-check.cpp'
       - 'assets/interception-slot-types.c'
       - 'sdk-checks.json'
       - 'starter-apps.json'
@@ -23,9 +24,11 @@ on:
       - 'scripts/verify_registry.py'
       - 'scripts/verify_integration_schema.py'
       - 'assets/browser-sdk-first-run.py'
+      - 'assets/browser-python-first-run-*.json'
       - 'assets/node-sdk-status.cjs'
       - 'assets/gallery-sdk-status.ps1'
-      - 'assets/python-interceptor-status.py'
+      - 'assets/python-*.py'
+      - 'assets/*-python-wheel-check-*.json'
       - 'assets/dotnet-interceptor-status.cs'
       - 'assets/sdk-registry-runtime-*.json'
       - 'scripts/test_first_sdk.py'
@@ -43,6 +46,7 @@ on:
       - 'assets/interceptor-status.cpp'
       - 'assets/vdevice-status.cpp'
       - 'assets/audio-link-inventory.cpp'
+      - 'assets/audio-link-pair-check.cpp'
       - 'assets/interception-slot-types.c'
       - 'sdk-checks.json'
       - 'starter-apps.json'
@@ -56,9 +60,11 @@ on:
       - 'scripts/verify_registry.py'
       - 'scripts/verify_integration_schema.py'
       - 'assets/browser-sdk-first-run.py'
+      - 'assets/browser-python-first-run-*.json'
       - 'assets/node-sdk-status.cjs'
       - 'assets/gallery-sdk-status.ps1'
-      - 'assets/python-interceptor-status.py'
+      - 'assets/python-*.py'
+      - 'assets/*-python-wheel-check-*.json'
       - 'assets/dotnet-interceptor-status.cs'
       - 'assets/sdk-registry-runtime-*.json'
       - 'scripts/test_first_sdk.py'
@@ -117,6 +123,8 @@ jobs:
           Set-Location -LiteralPath $saved
           python scripts/test_first_sdk.py all --expect-clean
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Check pinned PyPI and GitHub wheels on clean Windows
+        run: python scripts/verify_registry.py --check-python-on-clean-windows
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
@@ -124,8 +132,6 @@ jobs:
           package-manager-cache: false
       - name: Run the documented npm status checks on clean Windows
         run: python scripts/verify_registry.py --check-node-on-clean-windows
-      - name: Check the pinned Python SDK wheels on clean Windows
-        run: python scripts/verify_registry.py --check-python-on-clean-windows
       - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
         with:
           go-version: '1.27.4'

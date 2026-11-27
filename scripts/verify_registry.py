@@ -124,29 +124,43 @@ def verify_documentation(url):
         raise ValueError(f"SDK documentation unavailable at {url}: {error}") from error
 
 
-def check_python_examples(rows):
+def check_python_examples(rows, archives):
     if sys.platform != "win32" or sys.maxsize <= 2**32:
         raise RuntimeError("The published Python SDK examples require Windows x64.")
     environment = os.environ.copy()
-    environment.pop("INTERCEPTOR_NATIVE_PATH", None)
+    for name in ("INTERCEPTOR_NATIVE_PATH", "INTERCEPTOR_KEYBOARD_MOUSE_NATIVE_PATH",
+                 "INTERCEPTOR_GAMEPAD_CONTROLLER_NATIVE_PATH", "VDEVICE_SDK_NATIVE_PATH",
+                 "INTERCEPTION_V2_SDK_NATIVE_PATH"):
+        environment.pop(name, None)
     with TemporaryDirectory(prefix="titancsa-python-sdk-") as directory:
         project = Path(directory)
         venv = project / "venv"
         subprocess.run([sys.executable, "-I", "-m", "venv", str(venv)], env=environment, check=True, timeout=90)
         python = [str(venv / "Scripts" / "python.exe"), "-I"]
         wheels = []
+
+        def stage_wheel(archive, url):
+            filename = archive["filename"]
+            if Path(filename).name != filename or not filename.endswith(".whl"):
+                raise ValueError(f"Invalid wheel filename {filename}.")
+            payload = read(url)
+            if sha256(payload).hexdigest() != archive["sha256"]:
+                raise ValueError(f"Published wheel {filename} differs from its SHA-256.")
+            wheel = project / filename
+            wheel.write_bytes(payload)
+            wheels.append(str(wheel))
+
         for row in rows:
             archive = row["verified_archive"]
             document = json.loads(read(row["metadata_url"]))
             file = pypi_file(document, archive)
             if not file or urlsplit(file["url"]).netloc != "files.pythonhosted.org":
                 raise ValueError(f"Could not locate the pinned PyPI wheel for {row['name']}.")
-            payload = read(file["url"])
-            if sha256(payload).hexdigest() != archive["sha256"]:
-                raise ValueError(f"Published wheel for {row['name']} differs from its SHA-256.")
-            wheel = project / archive["filename"]
-            wheel.write_bytes(payload)
-            wheels.append(str(wheel))
+            stage_wheel(archive, file["url"])
+        for archive in archives:
+            if not archive["url"].startswith("https://raw.githubusercontent.com/TitanCSA/sdk-packages/"):
+                raise ValueError(f"Unexpected source for archived wheel {archive['name']}.")
+            stage_wheel(archive, archive["url"])
         subprocess.run([*python, "-m", "pip", "--isolated", "--disable-pip-version-check", "install",
                         "--no-index", "--no-deps", *wheels], cwd=project, env=environment, check=True, timeout=45)
         for row in rows:
@@ -166,6 +180,34 @@ def check_python_examples(rows):
                 if result.returncode != 2 or "Windows error 2" not in result.stderr:
                     raise RuntimeError("The Python status check did not report the expected missing driver.")
             print(f"{name} {version} passed its clean-Windows Python check.")
+        for archive in archives:
+            name, version = archive["name"], archive["version"]
+            source = Path(urlsplit(archive["source_url"]).path).name
+            sample = ROOT / "assets" / source
+            if sha256(sample.read_bytes()).hexdigest() != archive["source_sha256"]:
+                raise ValueError(f"The Python sample for {name} differs from the manifest.")
+            proof_file = Path(urlsplit(archive["evidence_url"]).path).name
+            proof = json.loads((ROOT / "assets" / proof_file).read_text(encoding="utf-8"))
+            command = shlex.split(archive["check_command"])
+            if command != ["python", source, *proof.get("check_args", [])]:
+                raise ValueError(f"The Python command for {name} differs from the tested command.")
+            installed = subprocess.check_output(
+                [*python, "-c", f"from importlib.metadata import version; print(version({name!r}))"],
+                cwd=project, env=environment, text=True, timeout=15)
+            if installed.strip() != version:
+                raise ValueError(f"The installed archived package did not match {name} {version}.")
+            output = subprocess.run([*python, str(sample), *command[2:]], cwd=project, env=environment,
+                                    capture_output=True, text=True, timeout=15)
+            expected = proof["before_setup"]
+            if output.returncode != expected.get("exit_code", 0):
+                raise RuntimeError(f"The Python example for {name} returned an unexpected exit code.")
+            if output.returncode == 0:
+                fields = {key: value for key, value in expected.items() if key != "exit_code"}
+                if json.loads(output.stdout) != fields:
+                    raise RuntimeError(f"The Python example for {name} returned different library results.")
+            elif not output.stderr.startswith(f"Windows {expected['windows_error']}."):
+                raise RuntimeError(f"The Python example for {name} did not report the expected Windows error.")
+            print(f"{name} {version} passed its archived-wheel Python check.")
 
 
 def check_node_examples(rows):
@@ -303,7 +345,7 @@ def main():
                         help="Check the documentation links as well as registry packages")
     runtime = parser.add_mutually_exclusive_group()
     runtime.add_argument("--check-python-on-clean-windows", action="store_true",
-                        help="Install and check the pinned PyPI wheels in an isolated Windows Python environment")
+                        help="Install and check the pinned PyPI and GitHub wheels in an isolated Windows Python environment")
     runtime.add_argument("--check-node-on-clean-windows", action="store_true",
                         help="Install the pinned npm archives and run their documented status sample on Windows x64 without the drivers")
     runtime.add_argument("--check-go-on-clean-windows", action="store_true",
@@ -314,7 +356,8 @@ def main():
     manifest = json.loads((ROOT / "dist/integration.json").read_text(encoding="utf-8"))
     rows = manifest["sdk_registry"]
     if args.check_python_on_clean_windows:
-        check_python_examples([row for row in rows if row["ecosystem"] == "pypi"])
+        archives = [product["python_wheel"] for product in manifest["products"] if "python_wheel" in product]
+        check_python_examples([row for row in rows if row["ecosystem"] == "pypi"], archives)
         return
     if args.check_node_on_clean_windows:
         check_node_examples([row for row in rows if row["ecosystem"] == "npm"])

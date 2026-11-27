@@ -72,6 +72,8 @@ Run the last command on a Windows x64 host with Visual Studio 2022 C++ desktop t
 
 On Windows x64 with Node.js and npm, run `python scripts/verify_registry.py --check-node-on-clean-windows` to test the published JavaScript examples on a system without the Interceptor demo drivers. CI runs this check with Node.js 24.
 
+On Windows x64 without the demo drivers, run `python scripts/verify_registry.py --check-python-on-clean-windows`. It checks the pinned PyPI and GitHub wheel hashes, installs the wheels into a temporary environment and runs the archived examples against the pre-install outcomes in their dated reports.
+
 Run `python scripts/compile_documented_samples.py` to compile the Vdevice HID example, both architectures of the Interception V2 hardware-ID example, and the read-only HID driver list for Interceptor and Keyboard & Mouse. The check only builds these examples. The dated lab records still point to the versions they originally tested.
 
 Update `starter-apps.json` after checking a new app's released ZIP and exact first run. Update `sdk-registry.json` after confirming that its version is installable from the named registry. The site generates both languages from those records and checks the public links and hashes in CI.
