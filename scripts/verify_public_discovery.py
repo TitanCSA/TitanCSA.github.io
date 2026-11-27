@@ -6,7 +6,7 @@ from hashlib import sha256
 from html.parser import HTMLParser
 import json
 import re
-from urllib.parse import urldefrag, urlsplit
+from urllib.parse import urldefrag, urljoin, urlsplit
 from urllib.request import Request, urlopen
 from urllib.robotparser import RobotFileParser
 from xml.etree import ElementTree
@@ -15,6 +15,10 @@ from xml.etree import ElementTree
 BASE = "https://titancsa.github.io/"
 SEARCH_AGENTS = ("Googlebot", "Bingbot", "OAI-SearchBot", "Claude-SearchBot")
 PURCHASE_LINK = re.compile(r"licences\.configcsa\.com|checkout\.stripe\.com|buy\.stripe\.com", re.I)
+PACKAGE_GUIDES = {
+    "en": "guides/windows-input-sdk-packages/",
+    "fr": "fr/installer-sdk-windows/",
+}
 
 
 def fetch(address, content_type=None):
@@ -36,16 +40,40 @@ class Guide(HTMLParser):
         self.address = address
         self.canonicals = []
         self.ids = set()
+        self.links = set()
         self.feed(document)
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == "link" and attrs.get("rel") == "canonical":
             self.canonicals.append(attrs.get("href"))
+        if tag == "a" and attrs.get("href"):
+            self.links.add(urljoin(self.address, attrs["href"]))
         if tag == "meta" and attrs.get("name", "").lower() in ("robots", *map(str.lower, SEARCH_AGENTS)):
             assert "noindex" not in attrs.get("content", "").lower(), self.address
         if "id" in attrs:
             self.ids.add(attrs["id"])
+
+
+def verify_python_wheel(product, guides, package_guides):
+    wheel = product["python_wheel"]
+    evidence_url = wheel["evidence_url"]
+    evidence = json.loads(fetch(evidence_url, "application/json"))
+    assert evidence["edition"] == product["id"], evidence_url
+    assert all(evidence["wheel"][key] == wheel[key] for key in ("filename", "url", "sha256")), evidence_url
+    assert evidence["driver_demo"]["tag"] == wheel["tested_demo_tag"], evidence_url
+    assert evidence["driver_demo"]["version"] == wheel["tested_demo_version"], evidence_url
+    source_url = wheel["source_url"]
+    assert source_url == BASE + "assets/" + evidence["source_file"], source_url
+    source_digest = sha256(fetch(source_url).encode("utf-8")).hexdigest()
+    assert source_digest == wheel["source_sha256"] == evidence["source_sha256"], source_url
+    assert set(wheel["guide_urls"]) == set(product["first_run_guides"]), product["id"]
+    for language, guide in wheel["guide_urls"].items():
+        address, fragment = urldefrag(guide)
+        assert address == product["first_run_guides"][language], guide
+        assert fragment and fragment in guides[address].ids, guide
+        assert {wheel["url"], source_url} <= guides[address].links, guide
+        assert guide in package_guides[language].links, guide
 
 
 def main():
@@ -76,15 +104,26 @@ def main():
         BASE + "llms.txt", integration_url, *documents)), "robots.txt blocks a documentation route"
     assert set(documents) <= references, sorted(set(documents) - references)
     with ThreadPoolExecutor(max_workers=5) as pool:
-        guides = dict(zip(documents, pool.map(lambda url: fetch(url, "text/html"), documents)))
-    for address, document in guides.items():
-        page = Guide(address, document)
+        guides = dict(zip(documents, pool.map(lambda url: Guide(url, fetch(url, "text/html")), documents)))
+    for address, page in guides.items():
         assert page.canonicals == [address] and "first-sdk-check" in page.ids, address
 
     sources = {(product["sdk_check"]["source_url"], product["sdk_check"]["source_sha256"])
                for product in manifest["products"]}
     for address, digest in sorted(sources):
         assert sha256(fetch(address).encode("utf-8")).hexdigest() == digest, address
+
+    wheel_products = [product for product in manifest["products"] if "python_wheel" in product]
+    package_guides = {}
+    for language, route in PACKAGE_GUIDES.items():
+        address = BASE + route
+        assert address in references and address in sitemap, address
+        assert all(robots.can_fetch(agent, address) for agent in SEARCH_AGENTS), address
+        page = Guide(address, fetch(address, "text/html"))
+        assert page.canonicals == [address], address
+        package_guides[language] = page
+    for product in wheel_products:
+        verify_python_wheel(product, guides, package_guides)
 
     for language, guide in manifest["guides"].items():
         reference_url = guide + "quick-reference.md"
@@ -108,6 +147,7 @@ def main():
         "products": len(manifest["products"]),
         "canonical_sdk_pages": len(guides),
         "sdk_sources_with_verified_hash": len(sources),
+        "archived_python_wheels_with_verified_guides_and_sources": len(wheel_products),
         "markdown_languages": sorted(manifest["guides"]),
         "search_agents_allowed_by_robots": list(SEARCH_AGENTS),
     }))
