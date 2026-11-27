@@ -12,10 +12,15 @@ from render_social_previews import PREVIEWS, WIDTH as PREVIEW_WIDTH, HEIGHT as P
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'dist';BASE='https://titancsa.github.io/'
 class Page(HTMLParser):
-    def __init__(self):super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[];self.google_verification=None;self.language=None;self.alternates={};self.rss_feed=None;self.og_image=None;self.og_image_alt=None
+    def __init__(self):
+        super().__init__();self.links=[];self.ids=[];self.title='';self.description='';self.canonical='';self.h1=0;self.in_title=False;self.in_schema=False;self.schema_text='';self.schemas=[];self.google_verification=None;self.language=None;self.alternates={};self.rss_feed=None;self.og_image=None;self.og_image_alt=None
+        self.download_options={}
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
         if 'id' in a:self.ids.append(a['id'])
+        if tag=='option' and 'data-sha256' in a:
+            assert a['value'] not in self.download_options
+            self.download_options[a['value']]=a['data-sha256']
         if tag=='h1':self.h1+=1
         if tag=='title':self.in_title=True
         if tag=='meta' and a.get('name')=='description':self.description=a.get('content','')
@@ -215,6 +220,16 @@ assert feeds['fr/']==[url for url in feeds[''] if url.startswith(BASE+'fr/')]
 project_pages={path for path in parsed if path.parent.parent.name=='projects'}
 assert len(project_pages)==5
 editions={row['slug']:row for row in json.loads((OUT/'releases.json').read_text(encoding='utf8'))['editions']}
+expected_download_options={
+    f'{slug}:{role}':edition['demo_asset_sha256'][role]
+    for slug,edition in editions.items()
+    for role in edition['demo_files']
+}
+for route in ('guides/verify-windows-driver-package/', 'fr/verifier-pilote-windows/'):
+    checker=by_canonical[BASE+route]
+    assert checker.download_options==expected_download_options
+    assert {'check-download','manual-check','demo-check-reference','demo-check-file'} <= set(checker.ids)
+    assert '/assets/check-demo-download.js' in checker.links
 assert {row['slug'] for row in editions.values() if '/projects/' in row['overview_url']} == {path.parent.name for path in project_pages}
 company_check=json.loads((OUT/'assets/company-driver-package-checks-2026-11-26.json').read_text(encoding='utf8'))
 assert len({entry['project'] for entry in company_check['editions']})==len(company_check['editions'])==4

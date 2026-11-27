@@ -173,6 +173,12 @@ replacements["AUDIO_HVCI_FR"]=(f'<p>Le même ZIP a aussi réussi le test avec l�
                                f'<a href="/{audio_proof_link}">Voir le deuxième essai</a>.</p>' if audio_proof_link else "")
 replacements['RELEASE_COMPARISON_CARDS_EN']=edition_cards(editions.values(),projects,french_copy,BASE)
 replacements['RELEASE_COMPARISON_CARDS_FR']=edition_cards(editions.values(),projects,french_copy,BASE,french=True)
+replacements['DEMO_CHECK_OPTIONS']='\n'.join(
+    f'<option value="{slug}:{role}" data-sha256="{edition["demo_asset_sha256"][role]}">'
+    f'{escape(edition["name"])} · {escape(edition["tag"])} · {escape(filename)}</option>'
+    for slug,edition in editions.items()
+    for role,filename in edition['demo_files'].items()
+)
 pages={
  '':('TitanCSA — Windows tools, device SDKs and practical guides','Find Windows input tools, virtual devices, diagnostics and SDKs by workflow. Clear first-run guides, project licences, public evidence and known limits.','index.html'),
  'fr/':('TitanCSA — Outils Windows, pilotes et SDK','Trouve ton outil Windows par usage. Chaque fiche explique son rôle et le premier essai, avec les liens vers les démos et les SDK.','index-fr.html'),
@@ -200,8 +206,8 @@ pages={
  'fr/micro-virtuel-titan-audio-link/':('Titan Audio Link · Envoyer le son vers un micro virtuel Windows','Installe la démo signée de Titan Audio Link. Teste la sortie et le micro virtuels, puis relie deux applications Windows.','guides/titan-audio-link-first-run-fr.html'),
  'guides/titan-audio-link-obs/':('Send Windows app audio to OBS through a virtual microphone — Titan Audio Link','Install the Titan Audio Link demo, select its recording endpoint in OBS Studio, and verify the virtual cable with the included test tone.','guides/titan-audio-link-obs.html'),
  'fr/audio-application-obs/':('Envoyer le son d’une application Windows dans OBS avec Titan Audio Link','Ajoute le micro virtuel Titan Audio Link à une scène OBS Studio. Vérifie le trajet du son avec le signal de la démo signée.','guides/titan-audio-link-obs-fr.html'),
- 'guides/verify-windows-driver-package/':('Verify a signed Windows driver package before installation — TitanCSA','Compare the published SHA-256, verify the Microsoft-signed driver catalog and check the INF package version with PowerShell and SignTool.','guides/verify-windows-driver-package.html'),
- 'fr/verifier-pilote-windows/':('Vérifier un pilote Windows signé avant de l’installer — TitanCSA','Vérifie le SHA-256 d’un ZIP, la signature du catalogue et la version du pilote avec PowerShell. Exemple avec la démo Vdevice.','guides/verify-windows-driver-package-fr.html'),
+ 'guides/verify-windows-driver-package/':('Verify a Windows demo download before installation — TitanCSA','Check the SHA-256 of a demo installer, ZIP or SDK in your browser. The file stays on your computer. Includes a Windows driver signature walkthrough.','guides/verify-windows-driver-package.html'),
+ 'fr/verifier-pilote-windows/':('Vérifier un téléchargement de démo Windows — TitanCSA','Vérifie l’empreinte SHA-256 d’un installateur, ZIP ou SDK dans ton navigateur. Le fichier reste sur ton ordinateur. Exemple de signature avec Vdevice.','guides/verify-windows-driver-package-fr.html'),
  'guides/vdevice-custom-hid-test/':('Test a custom virtual USB HID with Vdevice and hidapitester — TitanCSA','Create a vendor-defined virtual USB HID, read and return exact report bytes with hidapitester, and verify device removal on Windows.','guides/vdevice-custom-hid-test.html'),
  'fr/installer-sdk-windows/':('Installer les SDK d’entrée Windows · Python, Node.js, C++, .NET, PowerShell, Go et Rust','Retrouvez les paquets vérifiés pour Interceptor, Vdevice et Interception V2. Commandes d’installation, versions et pilote Windows signé à associer.','guides/windows-input-sdk-packages-fr.html'),
  'fr/activation-release/':('Installer et activer une édition Release TitanCSA sous Windows','Résoudre les erreurs d’activation de Vdevice et Interceptor, vérifier les versions du pilote et du SDK et préparer un rapport de support.','guides/release-activation-fr.html'),
@@ -272,6 +278,7 @@ reviewed.update(dict.fromkeys((
 reviewed.update(dict.fromkeys((
     'about/evidence/', 'fr/aide-et-verifications/', 'guides/release-activation-help/', 'fr/activation-release/',
     'guides/windows-input-release-compare/',
+    'fr/pilotes-entree-windows/', 'guides/verify-windows-driver-package/', 'fr/verifier-pilote-windows/',
     'guides/installer-and-sdk/', 'fr/installeur-et-sdk/',
     'guides/first-run/', 'fr/essayer-sans-pilote/', 'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
     'guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/', 'projects/vdevice/',
@@ -462,8 +469,8 @@ reference_links.extend([
     f'- [Evidence and support]({BASE}about/evidence/)',
     f'- [Vérifications et assistance TitanCSA]({BASE}fr/aide-et-verifications/)',
     '', '## Optional', '',
-    f'- [Verify a Windows driver package before installation]({BASE}guides/verify-windows-driver-package/)',
-    f'- [Vérifier un pilote Windows signé avant installation]({BASE}fr/verifier-pilote-windows/)',
+    f'- [Check a demo download’s SHA-256 or inspect a signed driver catalog]({BASE}guides/verify-windows-driver-package/)',
+    f'- [Vérifier l’empreinte SHA-256 d’une démo ou la signature d’un pilote]({BASE}fr/verifier-pilote-windows/)',
     f'- [Vdevice signed Demo and Release validation]({BASE}assets/vdevice-signed-versions-2026-11-25.json)',
     f'- [Four Company installation and removal tests on Windows 11]({BASE}assets/company-driver-package-checks-2026-11-26.json)',
     f'- [Windows mouse driver switching test with two synthetic USB HID devices]({BASE}assets/interceptor-mouse-driver-switch-2026-11-26.json)',

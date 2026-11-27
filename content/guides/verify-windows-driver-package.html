@@ -1,5 +1,29 @@
-<h1>Verify a signed Windows driver package before installation</h1>
-<p class="article-lead">Use PowerShell to compare the ZIP against the release checksum, inspect the signed catalog and read the package version. This example uses the public Vdevice 1.0.6.1 demo.</p>
+<h1>Verify a Windows demo download before installation</h1>
+<p class="article-lead">Check an installer, ZIP or other file from one of the six TitanCSA demos before opening it.</p>
+<h2 id="check-download">Check a downloaded demo</h2>
+<p>Pick the project and file from the list, then select the copy on your computer. The file stays in your browser.</p>
+<form class="download-check" data-demo-check hidden
+      data-working="Calculating SHA-256…" data-match="The file matches the published demo."
+      data-mismatch="The file differs. Check your selection and download the file again from the official demo release."
+      data-error="Could not read the file. Select it again or use PowerShell below.">
+  <label for="demo-check-reference">Official file to compare against</label>
+  <select id="demo-check-reference" required>
+    <option value="">Choose a project and file</option>
+    {{DEMO_CHECK_OPTIONS}}
+  </select>
+  <label for="demo-check-file">File on your computer</label>
+  <input id="demo-check-file" type="file" required>
+  <div><button class="button primary" type="submit" disabled>Check file</button></div>
+  <p role="status"></p>
+  <dl hidden>
+    <dt>Published SHA-256</dt><dd><code data-expected></code></dd>
+    <dt>Calculated SHA-256</dt><dd><code data-actual></code></dd>
+  </dl>
+</form>
+<p data-demo-check-fallback><a href="#manual-check">Use PowerShell to check a download</a>.</p>
+<script src="/assets/check-demo-download.js" defer></script>
+<details id="manual-check" class="more-info">
+<summary>Check an archive and a driver signature in PowerShell</summary>
 <p class="byline">Verified with Windows PowerShell 5.1 and Windows SDK SignTool 10.0.26100.0 · 26 November 2026</p>
 <div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo">Open the Vdevice 1.0.6.1 release</a><a class="button" href="/projects/vdevice/">Vdevice overview</a></div>
 <h2>Compare the ZIP to the publisher's SHA-256</h2>
@@ -29,4 +53,5 @@ signtool verify /kp /c Vdevice.cat TitanDemoClock.sys</code></pre>
 <p>Both commands returned <code>Successfully verified</code> on the pinned archive. These checks use the catalog's signature and file membership. Device availability and application behavior are verified separately after setup on the intended Windows build.</p>
 <h2>Install and check the active package</h2>
 <p>Use the installer from the same release and the project installation guide. The Vdevice console installer reports its active image, payload comparison and driver API response with <code>VdeviceSetupConsole.exe /diagnose</code>. Check the Release installer and SDK from the purchase ZIP when evaluating the paid edition.</p>
+</details>
 <div class="related"><a href="/fr/verifier-pilote-windows/" lang="fr">Lire en français</a><a href="https://github.com/TitanCSA/Vdevice/blob/main/docs/INSTALLATION.md">Vdevice installation and removal</a><a href="/guides/release-activation-help/">Troubleshoot a commercial Release</a><a href="/guides/windows-input-release-compare/">Compare signed demos</a></div>

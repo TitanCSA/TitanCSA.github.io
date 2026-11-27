@@ -1,0 +1,54 @@
+(() => {
+    const form = document.querySelector("[data-demo-check]");
+    const manual = document.querySelector("#manual-check");
+    const fallback = document.querySelector("[data-demo-check-fallback]");
+    fallback.querySelector("a").addEventListener("click", () => {
+        manual.open = true;
+    });
+
+    if (!globalThis.crypto?.subtle || !Blob.prototype.arrayBuffer) return;
+
+    const reference = form.querySelector("select");
+    const localFile = form.querySelector('input[type="file"]');
+    const button = form.querySelector("button");
+    const status = form.querySelector('[role="status"]');
+    const fingerprints = form.querySelector("dl");
+
+    function updateSelection() {
+        status.textContent = "";
+        fingerprints.hidden = true;
+        button.disabled = !reference.value || !localFile.files.length;
+    }
+
+    form.addEventListener("change", updateSelection);
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (button.disabled) return;
+
+        const file = localFile.files[0];
+        const expected = reference.selectedOptions[0].dataset.sha256;
+        button.disabled = reference.disabled = localFile.disabled = true;
+        fingerprints.hidden = true;
+        status.textContent = form.dataset.working;
+
+        try {
+            const bytes = await file.arrayBuffer();
+            const digest = await crypto.subtle.digest("SHA-256", bytes);
+            const actual = Array.from(new Uint8Array(digest), (byte) =>
+                byte.toString(16).padStart(2, "0")
+            ).join("");
+            fingerprints.querySelector("[data-expected]").textContent = expected;
+            fingerprints.querySelector("[data-actual]").textContent = actual;
+            fingerprints.hidden = false;
+            status.textContent = actual === expected ? form.dataset.match : form.dataset.mismatch;
+        } catch {
+            status.textContent = form.dataset.error;
+        } finally {
+            button.disabled = reference.disabled = localFile.disabled = false;
+        }
+    });
+
+    updateSelection();
+    form.hidden = false;
+    fallback.hidden = true;
+})();

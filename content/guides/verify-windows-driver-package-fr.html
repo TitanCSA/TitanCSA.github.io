@@ -1,5 +1,29 @@
-<h1>Vérifier un pilote Windows avant de l’installer</h1>
-<p class="article-lead">Compare l’empreinte SHA-256 du fichier téléchargé, puis vérifie la signature du catalogue et la version du pilote. Voici un exemple avec la démo Vdevice 1.0.6.1.</p>
+<h1>Vérifier un téléchargement de démo Windows</h1>
+<p class="article-lead">Vérifie un installateur, un ZIP ou un autre fichier de l’une des six démos TitanCSA avant de l’ouvrir.</p>
+<h2 id="check-download">Vérifier une démo téléchargée</h2>
+<p>Choisis le projet et le fichier dans la liste, puis sélectionne la copie sur ton ordinateur. Le fichier reste dans ton navigateur.</p>
+<form class="download-check" data-demo-check hidden
+      data-working="Calcul du SHA-256…" data-match="Le fichier correspond à la démo publiée."
+      data-mismatch="Le fichier diffère. Vérifie ton choix et télécharge de nouveau le fichier depuis la publication officielle."
+      data-error="Impossible de lire le fichier. Sélectionne-le à nouveau ou utilise PowerShell ci-dessous.">
+  <label for="demo-check-reference">Fichier officiel à comparer</label>
+  <select id="demo-check-reference" required>
+    <option value="">Choisir un projet et un fichier</option>
+    {{DEMO_CHECK_OPTIONS}}
+  </select>
+  <label for="demo-check-file">Fichier sur ton ordinateur</label>
+  <input id="demo-check-file" type="file" required>
+  <div><button class="button primary" type="submit" disabled>Vérifier le fichier</button></div>
+  <p role="status"></p>
+  <dl hidden>
+    <dt>SHA-256 publié</dt><dd><code data-expected></code></dd>
+    <dt>SHA-256 calculé</dt><dd><code data-actual></code></dd>
+  </dl>
+</form>
+<p data-demo-check-fallback><a href="#manual-check">Vérifier un téléchargement avec PowerShell</a>.</p>
+<script src="/assets/check-demo-download.js" defer></script>
+<details id="manual-check" class="more-info">
+<summary>Vérifier une archive et la signature d’un pilote dans PowerShell</summary>
 <div class="actions"><a class="button primary" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/Vdevice-Driver-1.0.6.1.zip">Télécharger le ZIP du pilote</a><a class="button" href="https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/SHA256SUMS.txt">Télécharger SHA256SUMS.txt</a></div>
 <h2>1. Vérifier le fichier téléchargé</h2>
 <p>Place les deux fichiers dans le même dossier. Ouvre ce dossier dans l’Explorateur, tape <code>powershell</code> dans la barre d’adresse et appuie sur Entrée. Colle ces commandes dans la fenêtre qui s’ouvre.</p>
@@ -26,4 +50,5 @@ Select-String -LiteralPath .\Vdevice.inf -Pattern '^DriverVer\s*=', '^CatalogFil
 signtool verify /kp /c Vdevice.cat TitanDemoClock.sys</code></pre>
 </details>
 <p>Pour tester le pilote après la vérification, <a href="/fr/souris-usb-virtuelle-vdevice/">installe la démo et crée une souris virtuelle</a>.</p>
+</details>
 <div class="related"><a href="/guides/verify-windows-driver-package/" lang="en">Read in English</a><a href="/fr/pilotes-entree-windows/">Comparer les démos Windows</a><a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo">Notes de version Vdevice 1.0.6.1</a></div>

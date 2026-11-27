@@ -64,3 +64,11 @@
 .article .first-run-more .guide-grid{margin-top:14px}
 @media(max-width:740px){.article .guide-grid{grid-template-columns:minmax(0,1fr)}}
 .edition-grid .guide-card:target{outline:2px solid var(--focus);outline-offset:3px;scroll-margin-block-start:20px}
+.download-check:not([hidden]){display:grid;gap:8px;margin-block:18px;max-width:100%}
+.download-check label{font-weight:650}
+.download-check select,.download-check input{width:100%;min-width:0;margin-bottom:8px}
+.download-check select{font:inherit;padding:8px}
+.download-check [role="status"]{margin:0}
+.download-check button:disabled{opacity:.55;cursor:default}
+.download-check dl{margin:0}
+.download-check dd{margin:0 0 6px;overflow-wrap:anywhere}
