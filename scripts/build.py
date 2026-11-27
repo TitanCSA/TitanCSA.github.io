@@ -173,13 +173,16 @@ replacements["AUDIO_HVCI_FR"]=(f'<p>Le pilote a aussi été installé et retiré
                                f'<a href="/{audio_proof_link}">Voir le deuxième essai</a>.</p>' if audio_proof_link else "")
 replacements['RELEASE_COMPARISON_CARDS_EN']=edition_cards(editions.values(),projects,french_copy,BASE)
 replacements['RELEASE_COMPARISON_CARDS_FR']=edition_cards(editions.values(),projects,french_copy,BASE,french=True)
-replacements['DEMO_CHECK_OPTIONS']='\n'.join(
-    f'<option value="{slug}:{role}" data-sha256="{edition["demo_asset_sha256"][role]}"'
-    f' data-download="{escape(edition["demo_assets"][role])}">'
-    f'{escape(edition["name"])} · {escape(edition["tag"])} · {escape(filename)}</option>'
-    for slug,edition in editions.items()
-    for role,filename in edition['demo_files'].items()
-)
+demo_check_groups=[]
+for slug,edition in editions.items():
+    label=escape(f'{edition["name"]} · {edition["tag"]}')
+    options='\n'.join(
+        f'<option value="{slug}:{role}" data-sha256="{edition["demo_asset_sha256"][role]}"'
+        f' data-download="{escape(edition["demo_assets"][role])}">{escape(filename)}</option>'
+        for role,filename in edition['demo_files'].items()
+    )
+    demo_check_groups.append(f'<optgroup label="{label}">\n{options}\n</optgroup>')
+replacements['DEMO_CHECK_OPTIONS']='\n'.join(demo_check_groups)
 pages={
  '':('TitanCSA — Windows tools, device SDKs and practical guides','Find Windows input tools, virtual devices, diagnostics and SDKs by workflow. Clear first-run guides, project licences, public evidence and known limits.','index.html'),
  'fr/':('TitanCSA — Outils Windows, pilotes et SDK','Trouve ton outil Windows par usage. Chaque fiche explique son rôle et le premier essai, avec les liens vers les démos et les SDK.','index-fr.html'),

@@ -7,10 +7,11 @@
       data-mismatch="The file differs. Check that you picked the correct project and file."
       data-error="Could not read the file. Select it again or use PowerShell below.">
   <label for="demo-check-reference">Official file to compare against</label>
-  <select id="demo-check-reference" required>
+  <select id="demo-check-reference" aria-describedby="demo-check-edition" required>
     <option value="">Choose a project and file</option>
     {{DEMO_CHECK_OPTIONS}}
   </select>
+  <small id="demo-check-edition" data-demo-edition hidden></small>
   <label for="demo-check-file">File on your computer</label>
   <input id="demo-check-file" type="file" required>
   <div><button class="button primary" type="submit" disabled>Check file</button></div>

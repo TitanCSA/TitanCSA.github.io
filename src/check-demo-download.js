@@ -14,11 +14,16 @@
     const status = form.querySelector('[role="status"]');
     const fingerprints = form.querySelector("dl");
     const download = form.querySelector("[data-official-download]");
+    const edition = form.querySelector("[data-demo-edition]");
 
     function updateSelection() {
         status.textContent = "";
         fingerprints.hidden = true;
         if (download) download.hidden = true;
+        if (edition) {
+            edition.textContent = reference.selectedOptions[0]?.closest("optgroup")?.label || "";
+            edition.hidden = !edition.textContent;
+        }
         button.disabled = !reference.value || !localFile.files.length;
     }
 
