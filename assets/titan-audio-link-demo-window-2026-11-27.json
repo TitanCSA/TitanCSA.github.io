@@ -1,0 +1,158 @@
+{
+  "edition": "titan-audio-link",
+  "checked_utc": "2026-11-27T05:58:58.4283715Z",
+  "timed_test_completed_utc": "2026-11-27T05:54:20.3898334Z",
+  "demo_tag": "v0.2.0-demo-r2",
+  "demo_version": "0.2.0.0",
+  "pinned_assets": {
+    "archive": {
+      "url": "https://github.com/titanfyre/Titan-Audio-Link/releases/download/v0.2.0-demo-r2/Titan-Audio-Link-0.2.0-Demo-r2-Windows-x64.zip",
+      "sha256": "e154212b16444e26f70e1cd0876b3ae80e32eaed43529c2c09b1a547d0129c0e"
+    }
+  },
+  "environment": {
+    "windows_build": 26100,
+    "architecture": "x64",
+    "hypervisor": "Hyper-V",
+    "secure_boot": true,
+    "network": "offline"
+  },
+  "method": {
+    "monotonic_timer": "Elapsed host wall time checked against guest uptime",
+    "boot_method": "Kernel-General event 12 record ID",
+    "console_installer_member": "Installers/TitanAudioLinkSetupConsole.exe",
+    "console_installer_sha256": "4efb8deec1ebc494188d22ded019224ff8ae1d125fc068f551814457b64bb5e5",
+    "test_member": "AudioLinkCLI.exe",
+    "test_sha256": "1cd12d8e4415bac290a459ad8317cd31156df832b5c99e97a7435ad9735ae138",
+    "test_arguments": [
+      "--test"
+    ]
+  },
+  "scope": "One virtual playback and recording pair. Fresh short capture tests before and after the configured one-hour window. An existing open stream was outside this run.",
+  "first_capture": {
+    "exit_code": 0,
+    "verified_stereo_frames": 72000,
+    "matched_channels": 2
+  },
+  "before_limit": {
+    "same_windows_boot": true,
+    "host_elapsed_seconds": 3450,
+    "guest_elapsed_seconds": 3450.328,
+    "exit_code": 0,
+    "verified_stereo_frames": 72000,
+    "matched_channels": 2
+  },
+  "after_limit": {
+    "same_windows_boot": true,
+    "host_elapsed_seconds": 3750,
+    "guest_elapsed_seconds": 3750.984,
+    "exit_code": 1,
+    "error_stage": "validate_cable_signal",
+    "hresult": "0x800700E8",
+    "rendered_frames": 72000,
+    "captured_frames": 0,
+    "verified_stereo_frames": 0,
+    "explicit_expiry_message": false,
+    "repeat": {
+      "exit_code": 1,
+      "error_stage": "validate_cable_signal",
+      "hresult": "0x800700E8",
+      "rendered_frames": 72000,
+      "captured_frames": 0,
+      "verified_stereo_frames": 0,
+      "explicit_expiry_message": false
+    },
+    "inventory_exit_code": 0
+  },
+  "first_capture_after_timed_test_restart": {
+    "new_windows_boot": true,
+    "exit_code": 1,
+    "guest_uptime_seconds": 9.906,
+    "rendered_frames": 72000,
+    "captured_frames": 96000,
+    "verified_stereo_frames": 0,
+    "matched_channels": 0,
+    "correlation": 0.371256,
+    "capture_rms": 0.032563,
+    "error_stage": "validate_cable_signal",
+    "hresult": "0x800700E8"
+  },
+  "separate_startup_checks": {
+    "scope": "Two boot cycles with the same exact package and short generated captures. Each later capture starts after at least 30 seconds of additional Windows uptime.",
+    "boots_with_both_later_tests_passed": 2,
+    "boots": [
+      {
+        "boot_cycle": 1,
+        "immediate": {
+          "exit_code": 0,
+          "guest_uptime_seconds": 36.593,
+          "rendered_frames": 72000,
+          "captured_frames": 96000,
+          "verified_stereo_frames": 72000,
+          "matched_channels": 2,
+          "correlation": 1.0,
+          "capture_rms": 0.12
+        },
+        "settled": {
+          "exit_code": 0,
+          "guest_uptime_seconds": 68.859,
+          "rendered_frames": 72000,
+          "captured_frames": 96000,
+          "verified_stereo_frames": 72000,
+          "matched_channels": 2,
+          "correlation": 1.0,
+          "capture_rms": 0.12
+        },
+        "repeat": {
+          "exit_code": 0,
+          "guest_uptime_seconds": 73.968,
+          "rendered_frames": 72000,
+          "captured_frames": 96000,
+          "verified_stereo_frames": 72000,
+          "matched_channels": 2,
+          "correlation": 1.0,
+          "capture_rms": 0.12
+        }
+      },
+      {
+        "boot_cycle": 2,
+        "immediate": {
+          "exit_code": 0,
+          "guest_uptime_seconds": 34.781,
+          "rendered_frames": 72000,
+          "captured_frames": 96000,
+          "verified_stereo_frames": 72000,
+          "matched_channels": 2,
+          "correlation": 1.0,
+          "capture_rms": 0.12
+        },
+        "settled": {
+          "exit_code": 0,
+          "guest_uptime_seconds": 67.0,
+          "rendered_frames": 72000,
+          "captured_frames": 96000,
+          "verified_stereo_frames": 72000,
+          "matched_channels": 2,
+          "correlation": 1.0,
+          "capture_rms": 0.12
+        },
+        "repeat": {
+          "exit_code": 0,
+          "guest_uptime_seconds": 72.187,
+          "rendered_frames": 72000,
+          "captured_frames": 96000,
+          "verified_stereo_frames": 72000,
+          "matched_channels": 2,
+          "correlation": 1.0,
+          "capture_rms": 0.12
+        }
+      }
+    ],
+    "uninstall_exit": 0,
+    "driver_services_absent_after_restart": true
+  },
+  "uninstall": {
+    "exit_code": 0,
+    "driver_services_absent_after_restart": true
+  }
+}
