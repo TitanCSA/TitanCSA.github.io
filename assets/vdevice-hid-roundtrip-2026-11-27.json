@@ -1,0 +1,52 @@
+{
+  "edition": "vdevice",
+  "checked_utc": "2026-11-27T06:01:47.6655362Z",
+  "release": "https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo",
+  "driver_version": "1.0.6.1",
+  "driver_sha256": "5b8669478581b463b5218c47a274c71107309ec037b2a26ae79c34273f04cee4",
+  "environment": {
+    "secure_boot": true,
+    "architecture": "x64",
+    "network": "offline",
+    "windows_build": 26100,
+    "hypervisor": "Hyper-V",
+    "memory_integrity": false
+  },
+  "installer": {
+    "url": "https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/VdeviceSetupConsole.exe",
+    "sha256": "b70e1b76f8cd33fb99ba41e5e7e33c5d00400ffcc05b35fd4f52d22d75f08848"
+  },
+  "sdk": {
+    "url": "https://github.com/TitanCSA/Vdevice/releases/download/v1.0.6.1-demo/Vdevice-SDK-1.0.6.1.zip",
+    "sha256": "b0c8ceec0f872a8eb05e0281c87b6f30b3da23d35d94899fc220cce78efe5236"
+  },
+  "sample": {
+    "source_url": "https://titancsa.github.io/assets/vdevice-hid-test.cpp",
+    "source_sha256": "c463a1b90cc8f3ddf45ad6e5f227a4483636391d922fca67fb99ef53a98b2368",
+    "executable_sha256": "a66c736f518a54e8730228b3126fb6be5e8031fdcad79b6ba891572eca9ed2cf"
+  },
+  "receiver": {
+    "name": "hidapitester",
+    "version": "0.7",
+    "archive_url": "https://github.com/todbot/hidapitester/releases/download/v0.7/hidapitester-windows-x86_64.zip",
+    "archive_sha256": "f8c6fdc2a3f6c7b56d7cf16f60201eab9d49baeba624d110244e55d90b3bef33",
+    "executable_sha256": "81d4bfb0ab9f30220889446044274278aa2079b98424d84c7f48b2311ca99f30"
+  },
+  "device": {
+    "vid_pid": "FFFF:0010",
+    "usage_page": "FF00",
+    "usage": "0001"
+  },
+  "observations": {
+    "fixtures_before": 0,
+    "fixtures_running": 1,
+    "fixtures_after": 0,
+    "input": "54 43 53 41 10 20 30 40 50 60 70 80 90 A0 B0 C0",
+    "output": "48 49 44 41 11 22 33 44 55 66 77 88 99 AA BB CC",
+    "producer_exit": 0
+  },
+  "setup_exit": 0,
+  "uninstall_exit": 0,
+  "driver_missing_after_uninstall_and_restart_windows_error": 2,
+  "scope": "One vendor-defined USB HID test device and exact input/output payloads. The independent receiver enumerated the device during the test and confirmed its removal."
+}

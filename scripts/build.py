@@ -285,7 +285,7 @@ reviewed.update(dict.fromkeys((
     'fr/pilotes-entree-windows/', 'guides/verify-windows-driver-package/', 'fr/verifier-pilote-windows/',
     'guides/installer-and-sdk/', 'fr/installeur-et-sdk/',
     'guides/first-run/', 'fr/essayer-sans-pilote/', 'guides/windows-input-sdk-packages/', 'fr/installer-sdk-windows/',
-    'guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/', 'projects/vdevice/',
+    'guides/vdevice-virtual-usb-mouse/', 'fr/souris-usb-virtuelle-vdevice/', 'guides/vdevice-custom-hid-test/', 'projects/vdevice/',
     'guides/interception-v2-migration/', 'fr/migrer-interception-v2/', 'projects/interception-v2/',
     'guides/keyboard-mouse-first-run/', 'fr/tester-deux-claviers-windows/', 'projects/interceptor-keyboard-mouse/',
     'guides/gamepad-controller-first-run/', 'fr/remapper-manette-windows/', 'projects/interceptor-gamepad-controller/',

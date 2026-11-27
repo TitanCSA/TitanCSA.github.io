@@ -1,17 +1,17 @@
 <h1>Test a custom virtual USB HID device with Vdevice and hidapitester</h1>
 <p class="article-lead">Create a vendor-defined HID fixture on Windows, read its exact 16-byte input report from an independent application and check the 16-byte return report.</p>
-<p class="byline">Publisher lab result · Vdevice Demo 1.0.6.0 · Windows 11 build 26100 x64 · Secure Boot enabled · 24 November 2026</p>
-<p>On 25 November, the same pinned demo and independent receiver also passed in a Windows 11 build 26100 guest with Secure Boot and Memory Integrity active. Windows reported running HVCI through <code>Win32_DeviceGuard</code>. Both 16-byte HID payloads matched and the test device disappeared after disconnect. <a href="/assets/vdevice-hid-test-20261125-hvci.json">Read the separate Memory Integrity test record</a>.</p>
-<div class="actions"><a class="button primary" href="/assets/vdevice-hid-test.cpp" download>Download the C++ test</a><a class="button" href="/assets/vdevice-hid-test-20261124.json">Read the lab result</a></div>
+<p class="byline">Publisher lab result · Vdevice Demo 1.0.6.1 · Windows 11 build 26100 x64 · Secure Boot enabled · 27 November 2026</p>
+<p>An earlier run on 25 November used demo 1.0.6.0 with the same receiver on Windows 11 build 26100 with Secure Boot and Memory Integrity active. Windows reported running HVCI through <code>Win32_DeviceGuard</code>. Both 16-byte HID payloads matched and the test device disappeared after disconnect. <a href="/assets/vdevice-hid-test-20261125-hvci.json">Read the separate Memory Integrity test record</a>.</p>
+<div class="actions"><a class="button primary" href="/assets/vdevice-hid-test.cpp" download>Download the C++ test</a><a class="button" href="/assets/vdevice-hid-roundtrip-2026-11-27.json">Read the lab result</a></div>
 <h2>Prepare the signed demo and the independent HID reader</h2>
 <ol>
-<li>From the <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.0-demo">Vdevice Demo 1.0.6.0 release</a>, download <code>VdeviceSetupConsole.exe</code>, <code>Vdevice-SDK-1.0.6.0.zip</code> and <code>SHA256SUMS.txt</code>. <a href="/guides/verify-windows-driver-package/">Check the archive and driver catalog</a>.</li>
-<li>Use the demo setup as administrator. Follow its restart instructions and run <code>VdeviceSetupConsole.exe /diagnose</code>. In the verified run the loaded image and the package SHA-256 matched and the driver API responded.</li>
-<li>Extract the SDK under <code>Vdevice-SDK-1.0.6.0</code>. Extract the x64 Windows archive from the <a href="https://github.com/todbot/hidapitester/releases/tag/v0.7">hidapitester v0.7 release</a> and put <code>hidapitester.exe</code> beside the downloaded C++ test.</li>
+<li>From the <a href="https://github.com/TitanCSA/Vdevice/releases/tag/v1.0.6.1-demo">Vdevice Demo 1.0.6.1 release</a>, download <code>VdeviceSetupConsole.exe</code>, <code>Vdevice-SDK-1.0.6.1.zip</code> and <code>SHA256SUMS.txt</code>. <a href="/guides/verify-windows-driver-package/">Check the archive and driver catalog</a>.</li>
+<li>Use the demo setup as administrator. Follow its restart instructions and run <code>VdeviceSetupConsole.exe /diagnose</code>. The SDK status query worked after installation and the running driver matched the signed demo SHA-256.</li>
+<li>Extract the SDK under <code>Vdevice-SDK-1.0.6.1</code>. Extract the x64 Windows archive from the <a href="https://github.com/todbot/hidapitester/releases/tag/v0.7">hidapitester v0.7 release</a> and put <code>hidapitester.exe</code> beside the downloaded C++ test.</li>
 </ol>
 <h2>Build the test with the demo SDK</h2>
 <p>Open the Visual Studio x64 Native Tools Command Prompt in the folder containing the C++ test and the extracted SDK. The <code>/MT</code> flag links the C++ runtime statically.</p>
-<pre><code>cl /nologo /W4 /WX /MT /std:c++17 /EHsc /utf-8 /permissive- /DUNICODE /D_UNICODE /I Vdevice-SDK-1.0.6.0\Vdevice vdevice-hid-test.cpp Vdevice-SDK-1.0.6.0\Vdevice\Vdevice.cpp /Fe:vdevice-hid-test.exe</code></pre>
+<pre><code>cl /nologo /W4 /WX /MT /std:c++17 /EHsc /utf-8 /permissive- /DUNICODE /D_UNICODE /I Vdevice-SDK-1.0.6.1\Vdevice vdevice-hid-test.cpp Vdevice-SDK-1.0.6.1\Vdevice\Vdevice.cpp /Fe:vdevice-hid-test.exe</code></pre>
 <p>The test creates a vendor-defined collection on usage page <code>FF00</code> with development identity <code>FFFF/0010</code>. Its descriptors use interrupt IN <code>81</code>, interrupt OUT <code>01</code> and reports without a report ID. It produces only the fixture's synthetic report bytes.</p>
 <h2>Check input, output and removal</h2>
 <p>In a second terminal, run <code>.\hidapitester.exe --vidpid FFFF:0010 --usagePage 0xFF00 --list-usages</code> before starting the fixture. Expect no matching HID. If another device already matches, stop and use a test machine without that fixture.</p>
